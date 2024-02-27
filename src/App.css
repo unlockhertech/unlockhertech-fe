@@ -1,0 +1,39 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: pink;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.image {
+  display: flex;
+  justify-content: center;
+  margin: auto auto;
+  width: 70%;
+  height: 30%;
+}
+
+.eachCardHeader{
+  background-color: rgb(238, 238, 195);
+}
+
+.eachCard {
+  background-color: rgb(149, 216, 176);
+}
+
+.introduction {
+  text-align: center;
+  background-color: rgb(149, 216, 176);
+  color: black;
+  font: 500px;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px;
+  border-radius: 15%;
+}
