@@ -1,3 +1,5 @@
+import { Title } from "@/routes/home/components/title";
+
 export default function Home() {
-  return <div className="App">Unlock her tech</div>;
+  return <Title className="App">WELCOME</Title>;
 }
