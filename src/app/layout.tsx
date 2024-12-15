@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import StyledComponentsRegistry from "../../public/lib/registry";
 import { ThemeProvider } from "@/UI/Global/ThemeProvider";
-import { inter } from "@/UI/Global/fonts";
+import "@/UI/Global/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en">
       <body>
         <StyledComponentsRegistry>
           <ThemeProvider>{children}</ThemeProvider>
