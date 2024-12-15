@@ -1,5 +1,6 @@
 export const theme = {
   headerFont: "limelight",
   bodyFont: "inter",
-  blue: "#00FFFF",
+  green: "#91D79B",
+  pink: "#FF9FB0",
 };
