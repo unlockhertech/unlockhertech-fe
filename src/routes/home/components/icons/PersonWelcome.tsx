@@ -2,6 +2,8 @@
 import { JSX } from "react";
 import styled from "styled-components";
 
+//TODO : Add alt text
+
 const FlippedSVG = styled.svg`
   transform: scaleX(-1);
   margin: 0 0 0 15rem;

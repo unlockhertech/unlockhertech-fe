@@ -2,6 +2,8 @@
 import { JSX } from "react";
 import styled from "styled-components";
 
+//TODO : Add alt text
+
 const SVG = styled.svg`
   margin: 0 15rem 0 0;
   max-height: 40rem;
