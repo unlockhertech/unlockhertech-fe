@@ -17,6 +17,7 @@ export const Title = styled.h3`
 
 export const TitleBackground = styled(Row)`
   background: ${({ theme }) => theme.pink};
+  height: 40rem;
 `;
 
 export const TitleLink = styled(Link)`

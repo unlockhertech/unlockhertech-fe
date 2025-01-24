@@ -7,7 +7,7 @@ import { Row } from "@/UI/Atoms/Row";
 
 export default function Home() {
   return (
-    <TitleBackground justifyContent="center">
+    <TitleBackground justifyContent="center" alignItems="center">
       <Row alignItems="center" justifyContent="center">
         <TitleWithIcons />
       </Row>
