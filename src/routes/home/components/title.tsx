@@ -1,13 +1,17 @@
 "use client";
 import { Row } from "@/UI/Atoms/Row";
 import Link from "next/link";
+import { JSX } from "react";
 import styled from "styled-components";
+import { PregnantPersonWelcomeSVG } from "./icons/PregnantPersonWelcome";
+import { PersonWelcomeSVG } from "./icons/PersonWelcome";
 
 export const Title = styled.h3`
   font-family: ${({ theme }) => theme.headerFont};
   color: ${({ theme }) => theme.green};
   text-align: center;
-  font-size: 10rem;
+  position: absolute;
+  font-size: 7vw;
 `;
 
 export const TitleBackground = styled(Row)`
@@ -22,3 +26,13 @@ export const TitleLink = styled(Link)`
     margin: 0;
   }
 `;
+
+export const TitleWithIcons = (): JSX.Element => {
+  return (
+    <>
+      <PregnantPersonWelcomeSVG />
+      <Title>WELCOME</Title>
+      <PersonWelcomeSVG />
+    </>
+  );
+};

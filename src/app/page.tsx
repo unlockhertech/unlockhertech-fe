@@ -1,14 +1,16 @@
 import {
-  Title,
   TitleBackground,
   TitleLink,
+  TitleWithIcons,
 } from "@/routes/home/components/title";
 import { Row } from "@/UI/Atoms/Row";
 
 export default function Home() {
   return (
-    <TitleBackground justifyContent="center" padding="10rem 0 15rem">
-      <Title className="App">WELCOME</Title>
+    <TitleBackground justifyContent="center">
+      <Row alignItems="center" justifyContent="center">
+        <TitleWithIcons />
+      </Row>
       <Row justifyContent="center">
         <TitleLink href="">Home</TitleLink>
         <TitleLink href="">Podcasts</TitleLink>
