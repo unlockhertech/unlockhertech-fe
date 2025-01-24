@@ -11,7 +11,8 @@ export const Title = styled.h3`
   color: ${({ theme }) => theme.green};
   text-align: center;
   position: absolute;
-  font-size: 7vw;
+  //TODO: Change this based on screen size
+  font-size: 10rem;
 `;
 
 export const TitleBackground = styled(Row)`
