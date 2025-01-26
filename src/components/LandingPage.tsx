@@ -33,9 +33,7 @@ export const LandingPage = (): JSX.Element => {
         />
         <Carousel.Caption>
           <h3>Education</h3>
-          <p>
-            Self guide content
-          </p>
+          <p>Self guide content</p>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
