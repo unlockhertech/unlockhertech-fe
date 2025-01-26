@@ -19,7 +19,7 @@ body {
   height: 30%;
 }
 
-.eachCardHeader{
+.eachCardHeader {
   background-color: rgb(238, 238, 195);
 }
 
@@ -36,4 +36,27 @@ body {
   padding: 20px;
   border: 1px;
   border-radius: 15%;
+}
+
+.social-media-links {
+  display: flex;
+  gap: 15px;
+  font-size: 18px;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.social-link {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: #0073b1;
+}
+
+.social-link.instagram:hover {
+  color: #e1306c;
 }
