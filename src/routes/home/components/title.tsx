@@ -7,12 +7,12 @@ import { PregnantPersonWelcomeSVG } from "./icons/PregnantPersonWelcome";
 import { PersonWelcomeSVG } from "./icons/PersonWelcome";
 import { Column } from "@/UI/Atoms/Column";
 import { getBreakpoint } from "@/UI/Global/breakpoints";
+import { theme } from "@/UI/Global/theme";
 
 export const Title = styled.h3`
   font-family: ${({ theme }) => theme.headerFont};
   color: ${({ theme }) => theme.green};
   text-align: center;
-  //TODO: Change this based on screen size
   font-size: 5rem;
   z-index: 100;
   ${getBreakpoint({
@@ -22,8 +22,8 @@ export const Title = styled.h3`
   }
 `;
 
-export const TitleBackground = styled(Row)`
-  background: ${({ theme }) => theme.pink};
+export const TitleBackground = styled(Row)<{ $colour?: keyof typeof theme }>`
+  background: ${({ theme, $colour }) => ($colour ? theme[$colour] : "white")};
 `;
 
 export const TitleLink = styled(Link)`
