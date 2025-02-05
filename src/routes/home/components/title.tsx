@@ -24,7 +24,6 @@ export const Title = styled.h3`
 
 export const TitleBackground = styled(Row)`
   background: ${({ theme }) => theme.pink};
-  height: 40rem;
 `;
 
 export const TitleLink = styled(Link)`
@@ -38,7 +37,7 @@ export const TitleLink = styled(Link)`
 
 export const TitleWithIcons = (): JSX.Element => {
   return (
-    <Row justifyContent="center" alignItems="center">
+    <Row padding="5rem 0 0" justifyContent="center" alignItems="center">
       <Column alignItems="flex-end" xSmall={5} tablet={3.5}>
         <PregnantPersonWelcomeSVG />
       </Column>
