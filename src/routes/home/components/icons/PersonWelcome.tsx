@@ -6,27 +6,10 @@ import styled from "styled-components";
 
 const FlippedSVG = styled.svg`
   transform: scaleX(-1);
-  margin: 0 0 0 15rem;
   max-height: 40rem;
   max-width: 30rem;
   height: auto;
   width: auto;
-
-  //TODO: Change margins too
-  @media (max-width: 900px) {
-    max-height: 30rem; /* Reduce max height */
-    max-width: 20rem; /* Reduce max width */
-  }
-
-  @media (max-width: 700px) {
-    max-height: 30rem; /* Reduce max height */
-    max-width: 10rem; /* Reduce max width */
-  }
-
-  @media (max-width: 500px) {
-    max-height: 30rem; /* Reduce max height */
-    max-width: 5rem; /* Reduce max width */
-  }
 `;
 
 export function PersonWelcomeSVG(): JSX.Element {

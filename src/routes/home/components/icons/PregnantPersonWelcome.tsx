@@ -5,27 +5,10 @@ import styled from "styled-components";
 //TODO : Add alt text
 
 const SVG = styled.svg`
-  margin: 0 15rem 0 0;
   max-height: 40rem;
   max-width: 30rem;
   height: auto;
   width: auto;
-
-  //TODO: Change margins too
-  @media (max-width: 900px) {
-    max-height: 30rem; /* Reduce max height */
-    max-width: 20rem; /* Reduce max width */
-  }
-
-  @media (max-width: 700px) {
-    max-height: 30rem; /* Reduce max height */
-    max-width: 10rem; /* Reduce max width */
-  }
-
-  @media (max-width: 500px) {
-    max-height: 30rem; /* Reduce max height */
-    max-width: 5rem; /* Reduce max width */
-  }
 `;
 
 export function PregnantPersonWelcomeSVG(): JSX.Element {
