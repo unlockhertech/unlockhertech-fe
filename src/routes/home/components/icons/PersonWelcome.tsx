@@ -66,7 +66,7 @@ export function PersonWelcomeSVG(): JSX.Element {
         />
         <path
           fill="#000"
-          fill-opacity=".1"
+          fillOpacity=".1"
           d="M116.76523 182.49763C118.65915 198.34403 121.7374 209.84481 126 217h-22.34819c4.16197-9.7049 8.53311-21.20569 13.11342-34.50237Z"
         />
       </g>

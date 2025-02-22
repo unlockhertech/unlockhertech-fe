@@ -8,7 +8,11 @@ import {
 
 export function FirstRow(): React.JSX.Element {
   return (
-    <TitleBackground $colour="pink" justifyContent="center" alignItems="center">
+    <TitleBackground
+      $colour="green"
+      justifyContent="center"
+      alignItems="center"
+    >
       <TitleWithIcons />
       <Row padding="0 0 15rem" justifyContent="center">
         <TitleLink href="">Home</TitleLink>

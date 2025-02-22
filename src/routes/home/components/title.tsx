@@ -11,7 +11,7 @@ import { theme } from "@/UI/Global/theme";
 
 export const Title = styled.h3`
   font-family: ${({ theme }) => theme.headerFont};
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.pink};
   text-align: center;
   font-size: 5rem;
   z-index: 100;
@@ -27,7 +27,7 @@ export const TitleBackground = styled(Row)<{ $colour?: keyof typeof theme }>`
 `;
 
 export const TitleLink = styled(Link)`
-  color: ${({ theme }) => theme.green};
+  color: ${({ theme }) => theme.pink};
   text-decoration: none;
   margin: 0 2rem 0 0;
   &:last-of-type {

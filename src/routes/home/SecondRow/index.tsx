@@ -32,7 +32,7 @@ export function SecondRow(): React.JSX.Element {
       <Row alignItems="center" justifyContent="center">
         <PersonStanding />
       </Row>
-      <Row padding="0 5rem" alignItems="flex-start" justifyContent="center">
+      <Row padding="5rem" alignItems="flex-start" justifyContent="center">
         <Column padding={"1rem 1rem 0"} xSmall={12} large={6}>
           <H3>Surfing the Technological Wave</H3>
         </Column>
