@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   reactStrictMode: true,
+  appDir: true,
 };
 
 export default nextConfig;
