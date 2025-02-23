@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { JSX } from "react";
 import styled from "styled-components";
 
 //TODO : Add alt text
@@ -12,7 +12,7 @@ const SVG = styled.svg`
   width: auto;
 `;
 
-export function PersonWheelchair(): React.JSX.Element {
+export function PersonWheelchair(): JSX.Element {
   return (
     <SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 380 400">
       <g fill="none" fillRule="evenodd">
