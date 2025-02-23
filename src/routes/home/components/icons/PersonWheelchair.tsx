@@ -7,9 +7,9 @@ import styled from "styled-components";
 const SVG = styled.svg`
   max-height: 20rem;
   max-width: 20rem;
-  height: auto;
+  height: 100%;
   flex-shrink: 0;
-  width: auto;
+  width: 100%;
 `;
 
 export function PersonWheelchair(): JSX.Element {

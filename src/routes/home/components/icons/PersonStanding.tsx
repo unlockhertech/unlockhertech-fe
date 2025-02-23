@@ -8,9 +8,9 @@ const SVG = styled.svg`
   transform: scaleX(-1);
   max-height: 40rem;
   max-width: 30rem;
-  height: auto;
+  height: 100%;
   flex-shrink: 0;
-  width: auto;
+  width: 100%;
 `;
 
 export function PersonStanding(): JSX.Element {
