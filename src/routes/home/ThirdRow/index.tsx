@@ -19,9 +19,7 @@ import { PersonWheelchair } from "../components/icons/PersonWheelchair";
 export function ThirdRow(): React.JSX.Element {
   return (
     <TitleBackground $colour="pink" justifyContent="center" alignItems="center">
-      <Row padding="0 0 3rem" alignItems="center" justifyContent="center">
-        <PersonWheelchair></PersonWheelchair>
-      </Row>
+      <PersonWheelchair />
       <Row alignItems="center" justifyContent="center">
         <a
           style={{
