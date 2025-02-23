@@ -28,7 +28,7 @@ export function ThirdRow(): React.JSX.Element {
             padding: "1rem",
           }}
           target="_blank"
-          fill-rulehref="https://www.instagram.com/unlockhertech/"
+          href="https://www.instagram.com/unlockhertech/"
         >
           <img width="30" src="instagram.png" alt="Instagram icon"></img>
         </a>
