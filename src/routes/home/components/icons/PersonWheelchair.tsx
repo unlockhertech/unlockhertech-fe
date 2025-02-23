@@ -8,6 +8,7 @@ const SVG = styled.svg`
   max-height: 20rem;
   max-width: 20rem;
   height: auto;
+  flex-shrink: 0;
   width: auto;
 `;
 

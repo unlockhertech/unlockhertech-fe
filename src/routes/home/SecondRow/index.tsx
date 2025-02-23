@@ -2,7 +2,7 @@
 import { Row } from "@/UI/Atoms/Row";
 
 const H3 = styled.h3`
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-family: ${({ theme }) => theme.headerFont};
   color: black;
   z-index: 100;

@@ -9,6 +9,7 @@ const SVG = styled.svg`
   max-width: 30rem;
   height: auto;
   width: auto;
+  flex-shrink: 0;
 `;
 
 export function PregnantPersonWelcomeSVG(): JSX.Element {

@@ -9,6 +9,7 @@ const FlippedSVG = styled.svg`
   max-height: 40rem;
   max-width: 30rem;
   height: auto;
+  flex-shrink: 0;
   width: auto;
 `;
 
