@@ -6,7 +6,7 @@ import "@/UI/Global/fonts";
 export const metadata: Metadata = {
   title: "Unlock Her Tech",
   description:
-    "Your utopian 90s digital space filled with atomic purple flavour and Ventura highway feeling for all the tech queens.",
+    "Your utopian 90s digital space filled with atomic purple flavour and Ventura highway feeling for all the tech queens",
 };
 
 export default function RootLayout({
