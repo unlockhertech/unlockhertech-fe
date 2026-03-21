@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Unlock Her Tech Website
 
-## Getting Started
+The Unlock Her Tech website is a React-based application designed to support and showcase the initiative, providing a platform for podcasts, community resources, and more.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Framework:** [React 19](https://react.dev/) (using [SWC](https://swc.rs/))
+- **Bundler:** [Vite 7](https://vite.dev/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Component Library:** [Radix UI](https://www.radix-ui.com/) (customized via [shadcn/ui](https://ui.shadcn.com/))
+- **Package Manager:** npm
+- **Testing:** [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- **Linting:** [ESLint 9](https://eslint.org/)
+
+## Requirements
+
+- [Node.js](https://nodejs.org/) (latest LTS recommended, v20+)
+- npm (typically bundled with Node.js)
+
+## Setup & Run
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/unlockhertech/unlockhertech-fe.git
+   cd unlockhertech-fe
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+5. **Preview production build:**
+   ```bash
+   npm run preview
+   ```
+
+## Scripts
+
+- `npm run dev`: Starts the Vite development server with HMR.
+- `npm run build`: Runs TypeScript type checking (`tsc -b`) and compiles the application for production using Vite.
+- `npm run lint`: Runs ESLint to check for code quality and style issues.
+- `npm run preview`: Locally previews the production build.
+- `npx vitest`: Runs the test suite using Vitest.
+- `npx vitest --ui`: Runs Vitest with a graphical user interface.
+- `npx vitest run --coverage`: Runs tests and generates a coverage report.
+
+## Environment Variables
+
+Currently, no specific environment variables are required for the project to run.
+- TODO: Add instructions for `.env` if API keys or other secrets are added in the future.
+
+## Tests
+
+The project uses **Vitest** for unit and component testing.
+
+- **Run tests:** `npx vitest`
+- **Run tests in UI mode:** `npx vitest --ui`
+- **Run tests with coverage:** `npx vitest run --coverage` (uses `v8` provider)
+
+Tests are located in `src/test/` (e.g., `src/test/HomePage.test.tsx`).
+
+## Project Structure
+
+```text
+unlockhertech-fe/
+├── public/              # Static assets (favicons, etc.)
+├── src/                 # Source code
+│   ├── app/             # Application core
+│   │   ├── components/  # React components (including /ui for shadcn)
+│   │   ├── context/     # React context providers
+│   │   ├── hooks/       # Custom React hooks
+│   │   ├── pages/       # Page components (Home, About, etc.)
+│   │   ├── App.tsx      # Main application component
+│   │   ├── routes.ts    # Route definitions
+│   │   └── data.tsx     # Static data/constants
+│   ├── assets/          # Images and project-specific assets
+│   ├── imports/         # SVG illustrations
+│   ├── styles/          # CSS files (Tailwind, theme, etc.)
+│   ├── test/            # Global test setup and test files
+│   └── main.tsx         # React entry point
+├── eslint.config.js     # ESLint configuration
+├── index.html           # HTML template (Vite entry point)
+├── package.json         # Project metadata and dependencies
+├── tsconfig.json        # TypeScript configuration
+└── vite.config.ts       # Vite and Vitest configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## License
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- TODO: Specify the license (e.g., MIT, Apache 2.0).
