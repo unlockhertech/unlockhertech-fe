@@ -17,7 +17,7 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
       className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-white border border-black/7"
     >
       {/* Cover */}
-      <div className="h-48 relative overflow-hidden">
+      <div className="h-48 relative overflow-hidden bg-gray-100">
         {imageUrl ? (
           <ImageWithFallback src={imageUrl} alt={title} className="w-full h-full object-cover" />
         ) : (

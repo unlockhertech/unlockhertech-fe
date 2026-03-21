@@ -116,12 +116,17 @@ export function HomePage() {
 
             {/* Right – hero photo + floating player */}
             <div className="order-1 lg:order-2 relative pb-10 lg:pb-0">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-4/5 max-h-135">
-                <ImageWithFallback
-                  src={LATEST?.imageUrl || IMG_HERO}
-                  alt="Podcast host at microphone"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-4/5 max-h-135 bg-gray-200">
+                {!loading && (
+                  <ImageWithFallback
+                    src={LATEST?.imageUrl || IMG_HERO}
+                    alt="Podcast host at microphone"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                {loading && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                )}
                 <div
                   className="absolute inset-0 bg-linear-to-t from-brand-coral/80 via-brand-coral/30 to-transparent"
                 />

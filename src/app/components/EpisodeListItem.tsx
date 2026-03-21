@@ -23,7 +23,7 @@ export function EpisodeListItem({ episode }: EpisodeListItemProps) {
       }}
     >
       {/* Thumbnail */}
-      <div className="relative shrink-0 rounded-xl overflow-hidden w-18 h-18">
+      <div className="relative shrink-0 rounded-xl overflow-hidden w-18 h-18 bg-gray-100">
         {imageUrl ? (
           <ImageWithFallback src={imageUrl} alt={title} className="w-full h-full object-cover" />
         ) : (
