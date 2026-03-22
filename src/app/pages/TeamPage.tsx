@@ -33,7 +33,7 @@ export function TeamPage() {
             </h1>
           </div>
           <p className="text-white/70 max-w-125 leading-[1.8]">
-            Eight passionate people united by one mission — amplifying the voices of women in tech.
+            Nine passionate people united by one mission — amplifying the voices of women in tech.
           </p>
 
           {/* Colour dots */}
