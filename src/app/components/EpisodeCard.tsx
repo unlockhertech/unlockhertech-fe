@@ -1,4 +1,5 @@
-import { HiPlay, HiPause, HiOutlineClock } from "react-icons/hi2";
+import { useState } from "react";
+import { HiPlay, HiPause, HiOutlineClock, HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import type { Episode } from "../data";
@@ -11,6 +12,10 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
   const { title, description, duration, date, episodeNumber, coverColor, imageUrl } = episode;
   const { toggle, isThisPlaying } = useAudioPlayer();
   const playing = isThisPlaying(episode.id);
+    const [expanded, setExpanded] = useState(false);
+
+    // Only show the toggle if the description is long enough to be truncated
+    const isLong = description.length > 100;
 
   return (
     <div
@@ -19,7 +24,13 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
       {/* Cover */}
       <div className="h-48 relative overflow-hidden bg-gray-100">
         {imageUrl ? (
+                <>
           <ImageWithFallback src={imageUrl} alt={title} className="w-full h-full object-cover" />
+            <div
+                className="absolute inset-0"
+            style={{ background: `linear-gradient(135deg, ${coverColor}dd 0%, ${coverColor}88 50%, transparent 100%)` }}
+    />
+    </>
         ) : (
           <div className="w-full h-full" style={{ backgroundColor: coverColor }} />
         )}
@@ -69,7 +80,27 @@ export function EpisodeCard({ episode }: EpisodeCardProps) {
           <span className="flex items-center gap-1"><HiOutlineClock className="w-3 h-3" />{duration}</span>
         </div>
         <h3 className="mb-2 text-neutral-900">{title}</h3>
-        <p className="text-gray-500 text-sm line-clamp-2 leading-relaxed">{description}</p>
+        {/* Expandable description */}
+    <p
+        className="text-gray-500 text-sm transition-all"
+    style={{ lineHeight: 1.6, display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: expanded ? "unset" : 2, overflow: "hidden" }}
+>
+    {description}
+    </p>
+    {isLong && (
+        <button
+            onClick={() => setExpanded((v) => !v)}
+        className="flex items-center gap-1 text-xs mt-1.5 transition-colors hover:opacity-70"
+        style={{ color: coverColor, fontWeight: 600 }}
+    >
+        {expanded ? (
+            <><HiChevronUp className="w-3.5 h-3.5" /> Read less</>
+        ) : (
+            <><HiChevronDown className="w-3.5 h-3.5" /> Read more</>
+        )}
+        </button>
+    )}
+
         <div className="mt-4 h-0.5 w-10 rounded-full" style={{ backgroundColor: coverColor }} />
       </div>
 

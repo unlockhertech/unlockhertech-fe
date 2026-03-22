@@ -5,7 +5,7 @@ import logoImage from "../../assets/3b75a23b50c05dd92e772d611097d91604e0b5b1.png
 import { MiniPlayer } from "./MiniPlayer";
 import { AudioPlayerProvider } from "../context/AudioPlayerContext";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
-import { platforms } from "../data";
+import { BERRY, ORANGE, BLUE, PINK, GREEN, platforms } from "../data";
 
 export function Layout() {
   return (
@@ -34,8 +34,14 @@ function LayoutInner() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
 
-            <Link to="/" onClick={() => setMobileOpen(false)}>
-              <img src={logoImage} alt="Unlock Her Tech" className="h-10 w-auto object-contain" />
+            <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3">
+              <img src={logoImage} alt="Unlock Her Tech" className="h-12 w-auto object-contain" />
+              <span
+                  className="hidden sm:block text-white text-sm leading-tight"
+                  style={{ fontWeight: 700, letterSpacing: "0.01em", lineHeight: 1.25 }}
+              >
+                Unlock Her Tech
+              </span>
             </Link>
 
             {/* Desktop links */}
@@ -140,11 +146,9 @@ function LayoutInner() {
               <img src={logoImage} alt="Unlock Her Tech" className="h-9 w-auto object-contain mb-4" />
               <p className="text-gray-400 text-sm leading-relaxed">Conversations that inspire change and action.</p>
               <div className="flex gap-2 mt-5">
-                <div className="w-3 h-3 rounded-full bg-brand-coral" />
-                <div className="w-3 h-3 rounded-full bg-brand-yellow" />
-                <div className="w-3 h-3 rounded-full bg-brand-pink" />
-                <div className="w-3 h-3 rounded-full bg-brand-green" />
-                <div className="w-3 h-3 rounded-full bg-brand-blue" />
+          {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
+          <div key={c} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
+))}
               </div>
             </div>
 
@@ -181,11 +185,9 @@ function LayoutInner() {
           <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
             <p className="text-gray-500 text-sm">&copy; 2026 Unlock Her Tech. All rights reserved.</p>
             <div className="flex gap-1.5">
-              <div className="w-6 h-1.5 rounded-full bg-brand-coral" />
-              <div className="w-6 h-1.5 rounded-full bg-brand-yellow" />
-              <div className="w-6 h-1.5 rounded-full bg-brand-pink" />
-              <div className="w-6 h-1.5 rounded-full bg-brand-green" />
-              <div className="w-6 h-1.5 rounded-full bg-brand-blue" />
+        {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
+        <div key={c} className="w-6 h-1.5 rounded-full" style={{ backgroundColor: c }} />
+))}
             </div>
           </div>
         </div>

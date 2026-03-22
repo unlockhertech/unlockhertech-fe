@@ -3,7 +3,10 @@ import { Link } from "react-router";
 import { TeamMember } from "../components/TeamMember";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { useMetaData } from "../hooks/useMetaData";
-import {IMG_AUDIO_EQ, teamMembers} from "../data";
+import {BERRY, ORANGE, BLUE, PINK, GREEN, IMG_AUDIO_EQ, teamMembers} from "../data";
+
+const PALETTE = [BERRY, BLUE, GREEN, ORANGE, PINK];
+const cycleColor = (i: number) => PALETTE[i % PALETTE.length];
 
 export function TeamPage() {
   useMetaData("Meet the Team", "Meet the passionate team behind Unlock Her Tech, dedicated to telling the stories of women shaping the future of technology.");
@@ -35,11 +38,9 @@ export function TeamPage() {
 
           {/* Colour dots */}
           <div className="flex gap-2 mt-6">
-            <div className="w-3 h-3 rounded-full bg-white opacity-60" />
-            <div className="w-3 h-3 rounded-full bg-white opacity-60" />
-            <div className="w-3 h-3 rounded-full bg-white opacity-60" />
-            <div className="w-3 h-3 rounded-full bg-white opacity-60" />
-            <div className="w-3 h-3 rounded-full bg-white opacity-60" />
+        {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
+        <div key={c} className="w-3 h-3 rounded-full bg-white opacity-60" />
+))}
           </div>
         </div>
       </div>
@@ -56,8 +57,8 @@ export function TeamPage() {
 
           {/* Founders row (first 3) */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-14">
-            {teamMembers.slice(0, 2).map((m) => (
-              <TeamMember key={m.name} {...m} />
+        {teamMembers.slice(0, 2).map((m, i) => (
+                <TeamMember key={m.name} {...m} avatarColor={cycleColor(i)} />
             ))}
           </div>
 
@@ -69,8 +70,8 @@ export function TeamPage() {
 
           {/* Remaining team (4–7) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {teamMembers.slice(2).map((m) => (
-              <TeamMember key={m.name} {...m} />
+        {teamMembers.slice(2).map((m, i) => (
+                <TeamMember key={m.name} {...m} avatarColor={cycleColor(i + 2)} />
             ))}
           </div>
         </div>
