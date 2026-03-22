@@ -432,7 +432,7 @@ export function HomePage() {
       </section>
 
             {/* ── Subscribe CTA ──────────────────────────────────────────────────── */}
-        <SubscribeCTA bgImage={IMG_DESK_SETUP} />
+        <SubscribeCTA bgImage={IMG_AUDIO_EQ} />
 
       <style>{`@keyframes waveBar { from { transform: scaleY(1); } to { transform: scaleY(0.25); } }`}</style>
     </div>
