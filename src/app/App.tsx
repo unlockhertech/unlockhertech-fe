@@ -7,15 +7,15 @@ export default function App() {
   useEffect(() => {
     //set favicon
     const link: HTMLLinkElement =
-        document.querySelector('link[rel~="icon"]') ||
+        (document.querySelector('link[rel~="icon"]') as HTMLLinkElement) ||
         (() => {
           const link = document.createElement('link');
           link.rel = 'icon';
           document.getElementsByTagName('head')[0].appendChild(link);
           return link;
-        })
+        })();
     link.type = 'image/png';
-    link.href = {logoImage};
+    link.href = logoImage;
 
     //Set tab title
     document.title = "Unlock Her Tech";
