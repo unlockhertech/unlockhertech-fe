@@ -8,8 +8,8 @@ import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useRssFeed } from "../hooks/useRssFeed";
 import { useMetaData } from "../hooks/useMetaData";
 import {
-    BERRY, ORANGE, BLUE, PINK, GREEN,
-  IMG_HERO, IMG_DESK_SETUP,
+    BERRY,
+  IMG_HERO, IMG_AUDIO_EQ,
   platforms,
 } from "../data";
 
