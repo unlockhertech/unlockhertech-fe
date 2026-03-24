@@ -98,7 +98,16 @@ export function parseRssFeed(xml: Document): Episode[] {
     const title       = item.getElementsByTagName("title")[0]?.textContent?.trim() ?? `Episode ${i + 1}`;
     const rawDesc     = item.getElementsByTagName("description")[0]?.textContent ?? "";
     // Strip HTML tags from the description
-    const description = rawDesc.replace(/<[^>]+>/g, "").trim().slice(0, 220);
+    const description = rawDesc
+        .replace(/<[^>]+>/g, " ")   // replace tags with space so words don't merge
+        //.replace(/&nbsp;/g, " ")
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, "\"")
+        .replace(/&#39;/g, "'")
+        //.replace(/\s+/g, " ")       // collapse multiple spaces / newlines
+        .trim();
     const audioUrl    = item.getElementsByTagName("enclosure")[0]?.getAttribute("url") ?? "";
     const pubDate     = item.getElementsByTagName("pubDate")[0]?.textContent?.trim() ?? "";
     const duration    = parseDuration(getItunesText(item, "duration"));
