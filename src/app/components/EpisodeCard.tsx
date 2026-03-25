@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import {createPortal} from 'react-dom'
-import {HiPlay, HiPause, HiOutlineClock, HiXMark, HiCalendar, HiClock, HiMusicalNote} from "react-icons/hi2";
+import {HiPlay, HiPause, HiOutlineClock, HiXMark, HiCalendar, HiClock} from "react-icons/hi2";
+import { IoHeadset } from "react-icons/io5";
 import {ImageWithFallback} from "./ImageWithFallback";
 import {useAudioPlayer} from "../hooks/useAudioPlayer";
 import {platforms} from '../data'
@@ -157,7 +158,7 @@ function EpisodeModal({
                     {/* Listen on platforms */}
                     <div className="pt-2">
                         <p className="text-xs text-gray-400 mb-3 flex items-center gap-1.5">
-                            <HiMusicalNote className="w-3.5 h-3.5"/> Listen on
+                            <IoHeadset className="w-3.5 h-3.5"/> Listen on
                         </p>
                         <div className="flex flex-wrap gap-2">
                             {platforms.map((p) => {
