@@ -1,7 +1,7 @@
 import { HiPlay, HiPause, HiOutlineClock } from "react-icons/hi2";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
-import type { Episode } from "../data";
+import type { Episode } from "../types";
 
 interface EpisodeListItemProps {
   episode: Episode;

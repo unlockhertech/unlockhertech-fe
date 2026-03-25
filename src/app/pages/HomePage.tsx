@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { FaPlay, FaPause, FaChevronDown, FaArrowRight, FaMicrophone } from "react-icons/fa6";
+import { FaPlay, FaPause, FaChevronDown, FaMicrophone } from "react-icons/fa6";
+import { HiArrowRight } from "react-icons/hi2";
 import { Link } from "react-router";
 import { ImageWithFallback } from "../components/ImageWithFallback.tsx";
-import { Lady1Welcome, Lady2Welcome, WomanSitting, WheelChair, WomanStanding } from "../components/Illustrations";
+import { WomanSitting, WheelChair, WomanStanding } from "../components/Illustrations";
 import { SubscribeCTA } from "../components/SubscribeCTA";
+import { WelcomeStrip } from "../components/WelcomeStrip";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useRssFeed } from "../hooks/useRssFeed";
 import { useMetaData } from "../hooks/useMetaData";
@@ -24,6 +26,7 @@ const fmt = (s: number) => {
 export function HomePage() {
   useMetaData("Empowering Women in Technology", "Join us as we explore big ideas with brilliant minds in the tech industry. Honest conversations that inspire change.");
   const [showPlatforms, setShowPlatforms] = useState(false);
+    const [descExpanded, setDescExpanded] = useState(false);
   const { toggle, seek, isThisPlaying, isActive, currentTime, duration } = useAudioPlayer();
   const { episodes, loading } = useRssFeed();
 
@@ -214,6 +217,7 @@ export function HomePage() {
                   </>
                 )}
               </div>
+                            </div>
 
               {/* Episode badge */}
               <div
@@ -227,73 +231,11 @@ export function HomePage() {
                 )}
               </div>
             </div>
-          </div>
         </div>
       </section>
 
       {/* ── Welcome Strip ──────────────────────────────────────────────────── */}
-      <section className="overflow-hidden bg-linear-to-br from-[#fdf0f7] to-[#f0f6fd]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* Mobile layout: text top, illustrations bottom */}
-          <div className="flex flex-col items-center sm:hidden py-10 text-center">
-              <p className="mb-2 text-brand-coral font-bold text-[0.8rem] tracking-[0.12em] uppercase">
-                Welcome to the mic
-              </p>
-              <h2 className="mb-3 text-neutral-900 font-extrabold" style={{ fontSize: "clamp(1.35rem, 3vw, 1.9rem)" }}>
-                Every Voice Belongs Here
-              </h2>
-              <p className="text-gray-500 text-sm mx-auto mb-5 max-w-95 leading-[1.75]">
-                Unlock Her Tech is a space built for curious, ambitious women in tech — wherever you are in your journey.
-              </p>
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
-              >
-                Learn more about us <FaArrowRight className="w-4 h-4" />
-              </Link>
-    {/* Two illustrations side by side on mobile */}
-    <div className="flex items-end justify-center gap-4 w-full">
-    <div className="w-32 flex-shrink-0">
-    <Lady1Welcome className="w-full h-auto" />
-            </div>
-        <div className="w-32 flex-shrink-0">
-    <Lady2Welcome className="w-full h-auto" />
-        </div>
-        </div>
-        </div>
-
-    {/* Desktop layout: original side-by-side */}
-            <div className="hidden sm:flex items-end justify-between gap-4">
-    <div className="flex-shrink-0 w-52 -mb-2">
-    <Lady1Welcome className="w-full h-auto" />
-        </div>
-
-        <div className="flex-1 text-center py-12 px-4">
-    <p className="mb-2" style={{ color: BERRY, fontWeight: 700, fontSize: "0.8rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-    Welcome to the mic
-    </p>
-    <h2 className="mb-3" style={{ color: "#1a1a1a", fontSize: "clamp(1.35rem, 3vw, 1.9rem)", fontWeight: 800 }}>
-    Every Voice Belongs Here
-    </h2>
-    <p className="text-gray-500 text-sm mx-auto mb-5" style={{ maxWidth: "380px", lineHeight: 1.75 }}>
-    Unlock Her Tech is a space built for curious, ambitious women in tech — wherever you are in your journey.
-    </p>
-    <Link
-    to="/about"
-    className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80"
-    style={{ color: BERRY, fontWeight: 600 }}
->
-    Learn more about us <FaArrowRight className="w-4 h-4" />
-        </Link>
-            </div>
-
-        <div className="flex-shrink-0 w-52 -mb-2">
-    <Lady2Welcome className="w-full h-auto" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <WelcomeStrip />
 
       {/* ── Featured Latest Episode ─────────────────────────────────────────── */}
       <section className="py-20 bg-[#fdf0f7]">
@@ -307,7 +249,7 @@ export function HomePage() {
               to="/episodes"
               className="hidden sm:flex items-center gap-2 text-sm transition-colors hover:opacity-80 shrink-0 text-brand-coral font-semibold"
             >
-              Browse all <FaArrowRight className="w-4 h-4" />
+              Browse all <HiArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -351,7 +293,23 @@ export function HomePage() {
               <div className="flex-1 p-8">
                 <p className="text-gray-400 text-sm mb-1">Ep {LATEST.episodeNumber} · {LATEST.date} · {LATEST.duration}</p>
                 <h3 className="mb-3 text-neutral-900">{LATEST.title}</h3>
-                <p className="text-gray-500 text-sm mb-6 leading-[1.75]">{LATEST.description}</p>
+                <p className="text-gray-500 text-sm mb-6 leading-[1.75]" style={{
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: descExpanded ? "unset" : 3,
+                  overflow: "hidden",
+                }}>{LATEST.description}</p>
+                {LATEST.description.length > 160 && (
+                    <button
+                        onClick={() => setDescExpanded((v) => !v)}
+                        className="text-xs mt-1.5 mb-5 transition-colors hover:opacity-70 underline underline-offset-2"
+                        style={{ color: BERRY, fontWeight: 600 }}
+                    >
+                      {descExpanded ? "Read less" : "Read more"}
+                    </button>
+                )}
+                {!LATEST.description || LATEST.description.length <= 160 ? <div className="mb-6" /> : null}
+
 
                 <div className="flex flex-wrap gap-3">
                   <button
@@ -368,7 +326,7 @@ export function HomePage() {
                     to="/episodes"
                     className="flex items-center gap-2 px-6 py-3 rounded-full text-sm border-2 hover:bg-pink-50 transition-all border-brand-coral text-brand-coral"
                   >
-                    All Episodes <FaArrowRight className="w-4 h-4" />
+                    All Episodes <HiArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -425,7 +383,7 @@ export function HomePage() {
               to="/about"
               className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
             >
-              Read about our mission <FaArrowRight className="w-4 h-4" />
+              Read about our mission <HiArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

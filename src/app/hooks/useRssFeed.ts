@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { episodes as mockEpisodes } from "../data";
-import type { Episode } from "../data";
+import type { Episode } from "../types";
 
 export const RSS_FEED_URL = "https://anchor.fm/s/e6cb6024/podcast/rss";
 
@@ -73,10 +73,20 @@ function getEpisodeImageUrl(item: Element): string {
 /** Convert itunes:duration ("HH:MM:SS" | "MM:SS" | raw seconds) → "X min" */
 function parseDuration(raw: string): string {
   if (!raw) return "—";
-  if (/^\d+$/.test(raw)) return `${Math.round(Number(raw) / 60)} min`;
+  if (/^\d+$/.test(raw)) {
+    const totalSeconds = Number(raw);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return minutes > 0 ? `${minutes} min` : `${seconds} sec`;
+  }
   const parts = raw.split(":").map(Number);
-  if (parts.length === 3) return `${parts[0] * 60 + parts[1]} min`;
-  if (parts.length === 2) return `${parts[0]} min`;
+  if (parts.length === 3) {
+    const totalMinutes = parts[0] * 60 + parts[1];
+    return `${totalMinutes} min`;
+  }
+  if (parts.length === 2) {
+    return `${parts[0]} min`;
+  }
   return raw;
 }
 

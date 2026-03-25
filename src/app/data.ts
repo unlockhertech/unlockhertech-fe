@@ -1,6 +1,6 @@
 import { SiApplepodcasts, SiSpotify, SiYoutube } from "react-icons/si";
 import { FaAmazon } from "react-icons/fa6";
-import type { ElementType } from "react";
+import type { Episode, Platform } from "./types";
 import imgElaheh  from "../assets/ca5810f8de6d98da96a45d1d887e1f1510f03101.jpg";
 import imgShelly  from "../assets/8175fa61c548bd171865cd1d786abaac3950952e.jpeg";
 import imgPritty from '../assets/91e96dfd067ea6afbddec7a62daaf34f07638b4a.jpg'
@@ -22,25 +22,14 @@ export const IMG_DIVERSE     = "https://images.unsplash.com/photo-1573497701175-
 export const IMG_PODCAST_FUN = "https://images.unsplash.com/photo-1554200876-980213841c94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800";
 
 // ── Platforms ──────────────────────────────────────────────────────────────────
-export const platforms: { name: string; icon: ElementType; url: string }[] = [
+export const platforms: Platform[] = [
   { name: "Apple Podcasts", icon: SiApplepodcasts, url: 'https://podcasts.apple.com/us/podcast/unlock-her-tech/id1800087284'},
   { name: "Spotify",        icon: SiSpotify,        url: 'https://open.spotify.com/show/5I2RiIZwjv8YbuwhlHTAPc'},
   { name: "YouTube",        icon: SiYoutube,        url: 'https://www.youtube.com/channel/UChhVCKvYVmZovXQmpxdafpg'},
   { name: "Amazon Music",   icon: FaAmazon,         url: 'https://music.amazon.com/podcasts/69812754-839d-4b8b-a878-058014c1946d/unlock-her-tech-podcast'},
 ];
 
-// ── Episode type ───────────────────────────────────────────────────────────────
-export interface Episode {
-  id:            number;
-  title:         string;
-  description:   string;
-  audioUrl:      string;   // MP3 / audio file URL
-  duration:      string;   // e.g. "45 min"
-  date:          string;
-  episodeNumber: number;
-  coverColor:    string;
-  imageUrl?:     string;
-}
+export type { Episode };
 
 // ── Demo audio URLs (SoundHelix royalty-free samples) ─────────────────────────
 // Replace these with your real episode MP3 URLs from your podcast host, or let
