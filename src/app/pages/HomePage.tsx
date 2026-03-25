@@ -217,7 +217,6 @@ export function HomePage() {
                   </>
                 )}
               </div>
-                            </div>
 
               {/* Episode badge */}
               <div
@@ -231,6 +230,7 @@ export function HomePage() {
                 )}
               </div>
             </div>
+          </div>
         </div>
       </section>
 
@@ -293,12 +293,15 @@ export function HomePage() {
               <div className="flex-1 p-8">
                 <p className="text-gray-400 text-sm mb-1">Ep {LATEST.episodeNumber} · {LATEST.date} · {LATEST.duration}</p>
                 <h3 className="mb-3 text-neutral-900">{LATEST.title}</h3>
-                <p className="text-gray-500 text-sm mb-6 leading-[1.75]" style={{
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: descExpanded ? "unset" : 3,
-                  overflow: "hidden",
-                }}>{LATEST.description}</p>
+                <p className="text-gray-500 text-sm"
+                   style={{
+                     lineHeight: 1.75,
+                     display: "-webkit-box",
+                     WebkitBoxOrient: "vertical",
+                     WebkitLineClamp: descExpanded ? "unset" : 3,
+                     overflow: "hidden",
+                   }}>{LATEST.description}
+                </p>
                 {LATEST.description.length > 160 && (
                     <button
                         onClick={() => setDescExpanded((v) => !v)}
