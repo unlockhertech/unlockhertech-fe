@@ -167,6 +167,7 @@ function LayoutInner() {
               <ul className="space-y-2.5 text-gray-400 text-sm">
                 <li><Link to="/about" className="hover:text-white transition-colors">Our Mission</Link></li>
                 <li><Link to="/team"  className="hover:text-white transition-colors">Meet the Team</Link></li>
+                <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
                 <li><a href="#"       className="hover:text-white transition-colors">Contact Us</a></li>
               </ul>
             </div>
