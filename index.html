@@ -1,6 +1,41 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DG4KFXRK2K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Default consent settings
+      const savedConsent = localStorage.getItem('cookie-consent');
+      const initialConsent = savedConsent === 'granted' ? 'granted' : 'denied';
+
+      gtag('consent', 'default', {
+        'ad_storage': initialConsent,
+        'analytics_storage': initialConsent,
+        'personalization_storage': initialConsent,
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+
+      gtag('js', new Date());
+      gtag('config', 'G-DG4KFXRK2K');
+    </script>
+    <script>
+      function loadScript(a){
+        var b=document.getElementsByTagName("head")[0], c=document.createElement("script");
+        c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)
+      }
+      loadScript(function(){
+        beTracker.t({
+        hash:"138a511079cc333358e98fb9472e9bed"
+        })
+      });
+    </script>
+
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

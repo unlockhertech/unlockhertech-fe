@@ -3,6 +3,7 @@ import { Outlet, NavLink, Link, ScrollRestoration } from "react-router";
 import { HiBars3, HiXMark, HiChevronDown } from "react-icons/hi2";
 import logoImage from "../../assets/3b75a23b50c05dd92e772d611097d91604e0b5b1.png";
 import { MiniPlayer } from "./MiniPlayer";
+import { CookieBanner } from "./CookieBanner";
 import { AudioPlayerProvider } from "../context/AudioPlayerContext";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { BERRY, ORANGE, BLUE, PINK, GREEN, platforms } from "../data";
@@ -11,6 +12,7 @@ export function Layout() {
   return (
     <AudioPlayerProvider>
       <LayoutInner />
+      <CookieBanner />
     </AudioPlayerProvider>
   );
 }
