@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlay, FaPause, FaChevronDown, FaMicrophone } from "react-icons/fa6";
 import { HiArrowRight } from "react-icons/hi2";
 import { Link } from "react-router";
@@ -6,14 +6,17 @@ import { ImageWithFallback } from "../components/ImageWithFallback.tsx";
 import { WomanSitting, WheelChair, WomanStanding } from "../components/Illustrations";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { WelcomeStrip } from "../components/WelcomeStrip";
+import { BlogCard } from "../components/BlogCard";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useRssFeed } from "../hooks/useRssFeed";
 import { useMetaData } from "../hooks/useMetaData";
+import { getAllBlogPosts } from "../utils/markdown";
 import {
     BERRY,
   IMG_HERO, IMG_AUDIO_EQ,
   platforms,
 } from "../data";
+import type { BlogPost } from "../types";
 
 const WAVE_HEIGHTS = [20, 40, 60, 80, 55, 70, 35, 90, 50, 65, 45, 75, 30, 85, 55, 40, 70, 50, 60, 35];
 
@@ -29,6 +32,19 @@ export function HomePage() {
     const [descExpanded, setDescExpanded] = useState(false);
   const { toggle, seek, isThisPlaying, isActive, currentTime, duration } = useAudioPlayer();
   const { episodes, loading } = useRssFeed();
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    async function fetchBlogPosts() {
+      try {
+        const posts = await getAllBlogPosts();
+        setFeaturedPosts(posts.slice(0, 3));
+      } catch (err) {
+        console.error("Failed to load featured blog posts:", err);
+      }
+    }
+    fetchBlogPosts();
+  }, []);
 
   const LATEST = episodes[0];
 
@@ -391,6 +407,41 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Featured Blog Posts ────────────────────────────────────────────── */}
+      {featuredPosts.length > 0 && (
+        <section className="py-24 bg-stone-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <p className="text-xs mb-2 uppercase tracking-widest text-brand-coral font-bold">From the blog</p>
+                <h2 className="text-neutral-900 font-extrabold">Featured Insights</h2>
+              </div>
+              <Link
+                to="/blog"
+                className="hidden sm:flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
+              >
+                Read all posts <HiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredPosts.map((post) => (
+                <BlogCard key={post.slug} post={post} />
+              ))}
+            </div>
+
+            <div className="mt-12 text-center sm:hidden">
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
+              >
+                Read all posts <HiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
             {/* ── Subscribe CTA ──────────────────────────────────────────────────── */}
         <SubscribeCTA bgImage={IMG_AUDIO_EQ} />

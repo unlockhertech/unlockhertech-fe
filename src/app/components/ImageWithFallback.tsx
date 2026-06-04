@@ -21,10 +21,12 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
   const { src, alt, style, className, ...rest } = props
 
   // Reset states when src changes to handle transitions between images
-  React.useEffect(() => {
+  const [prevSrc, setPrevSrc] = useState(src)
+  if (src !== prevSrc) {
     setIsLoading(true)
     setDidError(false)
-  }, [src])
+    setPrevSrc(src)
+  }
 
   if (didError) {
     return (

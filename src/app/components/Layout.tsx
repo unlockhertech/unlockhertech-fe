@@ -21,10 +21,13 @@ function LayoutInner() {
   const [mobileOpen, setMobileOpen]       = useState(false);
   const [showPlatforms, setShowPlatforms] = useState(false);
 
+  const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
+
   const navLinks = [
     { to: "/episodes", label: "Episodes" },
     { to: "/about",    label: "About"    },
     { to: "/team",     label: "Team"     },
+    ...(enableBlog ? [{ to: "/blog", label: "Blog" }] : []),
   ];
 
   return (

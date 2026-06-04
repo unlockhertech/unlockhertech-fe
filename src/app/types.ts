@@ -25,3 +25,15 @@ export interface Platform {
   icon: ElementType;
   url: string;
 }
+
+export interface BlogPost {
+  title: string;
+  date: string;
+  author: string;
+  tags: string[];
+  canonicalUrl: string;
+  slug: string;
+  content?: string;
+  readingTime?: string;
+  imageUrl?: string;
+}

@@ -32,7 +32,7 @@ describe('AboutPage', () => {
     expect(screen.getByText(/For Every Woman in Tech/i)).toBeInTheDocument();
     expect(screen.getByText(/Inclusion at our core/i)).toBeInTheDocument();
     
-    // Check for some of the labels
+    // Check for the labels
     expect(screen.getByText(/Engineers/i)).toBeInTheDocument();
     expect(screen.getByText(/Founders/i)).toBeInTheDocument();
   });

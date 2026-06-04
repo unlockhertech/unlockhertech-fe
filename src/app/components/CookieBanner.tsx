@@ -1,18 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 import { BERRY } from "../data";
 import { CookiePolicyContent } from "../pages/CookiePolicy";
 
 export function CookieBanner() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    const consent = localStorage.getItem("cookie-consent");
-    if (!consent) {
-      setIsVisible(true);
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !localStorage.getItem("cookie-consent");
     }
-  }, []);
+    return false;
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleConsent = (status: "granted" | "denied") => {
     localStorage.setItem("cookie-consent", status);
@@ -20,8 +18,9 @@ export function CookieBanner() {
     setIsModalOpen(false);
 
     // Update gtag consent
-    if (typeof window !== "undefined" && (window as any).gtag) {
-      (window as any).gtag("consent", "update", {
+    const win = window as unknown as { gtag?: (command: string, action: string, params: Record<string, string>) => void };
+    if (typeof win !== "undefined" && win.gtag) {
+      win.gtag("consent", "update", {
         analytics_storage: status,
         ad_storage: status,
       });

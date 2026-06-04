@@ -59,8 +59,17 @@ The Unlock Her Tech website is a React-based application designed to support and
 
 ## Environment Variables
 
-Currently, no specific environment variables are required for the project to run.
-- TODO: Add instructions for `.env` if API keys or other secrets are added in the future.
+For TinaCMS (content management), you need to set up the following environment variables. You can find these in your [TinaCloud Dashboard](https://app.tina.io).
+
+1.  **Local Development**: Create a `.env` file in the root directory (based on `.env.example`) and add your keys:
+    ```bash
+    TINA_CLIENT_ID=your_client_id
+    TINA_TOKEN=your_read_only_token
+    ```
+2.  **Production (Netlify)**: Add these same variables in the Netlify UI (Site configuration > Environment variables).
+
+- `TINA_CLIENT_ID`: Your TinaCloud project Client ID.
+- `TINA_TOKEN`: Your TinaCloud project Content (Read-only) Token.
 
 ## Tests
 

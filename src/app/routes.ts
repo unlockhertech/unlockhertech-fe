@@ -5,6 +5,15 @@ import { EpisodesPage } from "./pages/EpisodesPage";
 import { AboutPage }    from "./pages/AboutPage";
 import { TeamPage }     from "./pages/TeamPage";
 import { CookiePolicy } from "./pages/CookiePolicy";
+import { BlogPostPage } from "./pages/BlogPostPage";
+import { BlogIndexPage } from "./pages/BlogIndexPage";
+
+const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
+
+const blogRoutes = enableBlog ? [
+  { path: "blog",          Component: BlogIndexPage },
+  { path: "blog/:slug",    Component: BlogPostPage },
+] : [];
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +25,7 @@ export const router = createBrowserRouter([
       { path: "about",     Component: AboutPage    },
       { path: "team",      Component: TeamPage     },
       { path: "cookie-policy", Component: CookiePolicy },
+      ...blogRoutes,
     ],
   },
 ]);
