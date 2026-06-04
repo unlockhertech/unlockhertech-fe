@@ -21,7 +21,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** References from another document, used as a foreign key */
+  /** References another document, used as a foreign key */
   Reference: { input: any; output: any; }
   JSON: { input: any; output: any; }
 };
@@ -421,7 +421,7 @@ const generateRequester = (
       branch?: string,
       /**
        * Aside from `method` and `body`, all fetch options are passed
-       * through to an underlying fetch request
+       * through to underlying fetch request
        */
       fetchOptions?: Omit<Parameters<typeof fetch>[1], 'body' | 'method'>,
     },

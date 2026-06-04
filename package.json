@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tinacms dev -c \"vite\"",
-    "build": "tinacms build && tsc -b && vite build",
+    "build": "if [ -z \"$TINA_TOKEN\" ]; then echo 'Skipping Tina build'; else tinacms build; fi && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "tina:dev": "tinacms dev",
