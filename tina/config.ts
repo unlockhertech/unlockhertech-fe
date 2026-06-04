@@ -3,6 +3,7 @@ import { defineConfig } from "tinacms";
 // Your hosting provider likely exposes this as an environment variable
 const branch =
     process.env.TINA_BRANCH?.trim() ||
+    process.env.BRANCH?.trim() ||
     process.env.VERCEL_GIT_COMMIT_REF?.trim() ||
     process.env.GITHUB_REF_NAME?.trim() ||
     process.env.HEAD?.trim() ||
