@@ -13,8 +13,8 @@ interface VitestConfigExport extends UserConfig {
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   define: {
-    'process.env.TINA_CLIENT_ID': JSON.stringify(process.env.TINA_CLIENT_ID || process.env.VITE_TINA_CLIENT_ID || ''),
-    'process.env.TINA_TOKEN': JSON.stringify(process.env.TINA_TOKEN || process.env.VITE_TINA_TOKEN || ''),
+    'process.env.TINA_CLIENT_ID': JSON.stringify(process.env.TINA_CLIENT_ID || ''),
+    'process.env.TINA_TOKEN': JSON.stringify(process.env.TINA_TOKEN || ''),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
   },
   assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg',
