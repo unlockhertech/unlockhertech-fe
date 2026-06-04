@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tinacms dev -c \"vite\"",
-    "build": "tinacms build --skip-cloud-checks && tsc -b && vite build",
+    "build": "tinacms build --skip-cloud-checks --noWatch && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "tina:dev": "tinacms dev",

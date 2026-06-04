@@ -4,7 +4,7 @@ var branch = process.env.TINA_BRANCH?.trim() || process.env.BRANCH?.trim() || pr
 if (!/^[A-Za-z0-9._/-]+$/.test(branch)) {
   throw new Error(`Invalid branch name: ${branch}`);
 }
-var isLocal = true;
+var isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true" || true;
 var config_default = defineConfig({
   branch,
   clientId: process.env.TINA_CLIENT_ID || process.env.VITE_TINA_CLIENT_ID || null,

@@ -11,14 +11,12 @@ interface VitestConfigExport extends UserConfig {
 
 // https://vite.dev/config/
 export default defineConfig({
-  define: {
-    'process.env': {
-      TINA_CLIENT_ID: JSON.stringify(process.env.TINA_CLIENT_ID || process.env.VITE_TINA_CLIENT_ID),
-      TINA_TOKEN: JSON.stringify(process.env.TINA_TOKEN || process.env.VITE_TINA_TOKEN),
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    },
-  },
   plugins: [react(), tailwindcss()],
+  define: {
+    'process.env.TINA_CLIENT_ID': JSON.stringify(process.env.TINA_CLIENT_ID || process.env.VITE_TINA_CLIENT_ID || ''),
+    'process.env.TINA_TOKEN': JSON.stringify(process.env.TINA_TOKEN || process.env.VITE_TINA_TOKEN || ''),
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+  },
   assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg',
     '**/*.gif', '**/*.webp', '**/*.csv'],
   resolve: {

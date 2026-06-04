@@ -13,7 +13,7 @@ if (!/^[A-Za-z0-9._/-]+$/.test(branch)) {
   throw new Error(`Invalid branch name: ${branch}`);
 }
 
-const isLocal = process.env.NODE_ENV === 'development' || !process.env.TINA_CLIENT_ID;
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true' || process.env.NODE_ENV === 'development' || !process.env.TINA_CLIENT_ID;
 
 export default defineConfig({
   branch,
