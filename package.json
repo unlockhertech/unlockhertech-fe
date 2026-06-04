@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tinacms dev -c \"vite\"",
-    "build": "tinacms build --skip-cloud-checks && tsc -b && vite build",
+    "build": "cross-env NODE_ENV=production HEAD=main tinacms build --skip-cloud-checks && tsc -b && vite build",
+    "build:local": "tinacms build --skip-cloud-checks && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "tina:dev": "tinacms dev",
@@ -91,6 +92,7 @@
     "jsdom": "^29.1.1",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
+    "cross-env": "^7.0.3",
     "tinacms": "^3.9.0",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.60.1",

@@ -16,6 +16,7 @@ export default defineConfig({
     'process.env.TINA_CLIENT_ID': JSON.stringify(process.env.TINA_CLIENT_ID || ''),
     'process.env.TINA_TOKEN': JSON.stringify(process.env.TINA_TOKEN || ''),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
+    'process.env.HEAD': JSON.stringify(process.env.HEAD || 'main'),
   },
   assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg',
     '**/*.gif', '**/*.webp', '**/*.csv'],
