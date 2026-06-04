@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tinacms dev -c \"vite\"",
-    "build": "tinacms build --skip-cloud-checks && tsc -b && vite build",
+    "build": "cross-env-shell \"HEAD=main tinacms build --skip-cloud-checks\" && tsc -b && vite build",
     "build:local": "tinacms build --skip-cloud-checks && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

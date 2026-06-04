@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import type { UserConfig } from 'vite'
+// @ts-ignore
 import type { InlineConfig } from 'vitest'
 
 interface VitestConfigExport extends UserConfig {
