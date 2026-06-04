@@ -1,6 +1,6 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
-var branch = process.env.TINA_BRANCH?.trim() || process.env.BRANCH?.trim() || process.env.VERCEL_GIT_COMMIT_REF?.trim() || process.env.GITHUB_REF_NAME?.trim() || process.env.HEAD?.trim() || "main";
+var branch = (process.env.TINA_BRANCH || process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.GITHUB_REF_NAME || (typeof process.env.HEAD === "string" ? process.env.HEAD : null) || "main").trim();
 if (!/^[A-Za-z0-9._/-]+$/.test(branch)) {
   throw new Error(`Invalid branch name: ${branch}`);
 }
