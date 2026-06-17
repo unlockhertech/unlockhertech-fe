@@ -77,8 +77,13 @@ function LayoutInner() {
                 </button>
                 {showPlatforms && (
                   <>
-                    <div className="fixed inset-0 z-40" onClick={() => setShowPlatforms(false)} />
-                                        <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10">
+                    <button
+                      className="fixed inset-0 z-40 cursor-default"
+                      onClick={() => setShowPlatforms(false)}
+                      aria-label="Close menu"
+                      type="button"
+                    />
+                    <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10">
                       {platforms.map(({ name, icon: Icon, url }) => (
                         <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
                           <Icon className="w-5 h-5 text-gray-400" />
@@ -151,10 +156,16 @@ function LayoutInner() {
               <img src={logoImage} alt="Unlock Her Tech" className="h-9 w-auto object-contain mb-4" />
               <p className="text-gray-400 text-sm leading-relaxed">Conversations that inspire change and action.</p>
               <div className="flex gap-2 mt-5">
-          {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
-          <div key={c} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
-))}
-              </div>
+            {[
+              { id: "dot-berry", c: BERRY },
+              { id: "dot-orange", c: ORANGE },
+              { id: "dot-pink", c: PINK },
+              { id: "dot-green", c: GREEN },
+              { id: "dot-blue", c: BLUE },
+            ].map((dot) => (
+              <div key={dot.id} className="w-3 h-3 rounded-full" style={{ backgroundColor: dot.c }} />
+            ))}
+          </div>
             </div>
 
             <div>
@@ -191,9 +202,15 @@ function LayoutInner() {
           <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
             <p className="text-gray-500 text-sm">&copy; 2026 Unlock Her Tech. All rights reserved.</p>
             <div className="flex gap-1.5">
-        {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
-        <div key={c} className="w-6 h-1.5 rounded-full" style={{ backgroundColor: c }} />
-))}
+              {[
+                { id: "bar-berry", c: BERRY },
+                { id: "bar-orange", c: ORANGE },
+                { id: "bar-pink", c: PINK },
+                { id: "bar-green", c: GREEN },
+                { id: "bar-blue", c: BLUE },
+              ].map((bar) => (
+                <div key={bar.id} className="w-6 h-1.5 rounded-full" style={{ backgroundColor: bar.c }} />
+              ))}
             </div>
           </div>
         </div>
@@ -206,7 +223,7 @@ function LayoutInner() {
 }
 
 /** Adds bottom padding equal to the mini-player height when it's visible */
-function PlayerPaddedContent({ children }: { children: React.ReactNode }) {
+function PlayerPaddedContent({ children }: Readonly<{ children: React.ReactNode }>) {
   const { currentEpisode } = useAudioPlayer();
   return (
     <div className={currentEpisode ? "pb-18" : "pb-0"}>

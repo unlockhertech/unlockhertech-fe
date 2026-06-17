@@ -7,7 +7,7 @@ interface EpisodeListItemProps {
   episode: Episode;
 }
 
-export function EpisodeListItem({ episode }: EpisodeListItemProps) {
+export function EpisodeListItem({ episode }: Readonly<EpisodeListItemProps>) {
   const { title, description, duration, date, episodeNumber, coverColor, imageUrl } = episode;
   const { toggle, isThisPlaying, isActive } = useAudioPlayer();
   const playing = isThisPlaying(episode.id);
@@ -33,12 +33,18 @@ export function EpisodeListItem({ episode }: EpisodeListItemProps) {
           {playing ? (
             /* Animated bars when playing */
             <div className="flex items-end gap-0.5 h-4">
-              {[3, 5, 4, 6, 3].map((h, i) => (
+              {[
+                { id: "bar-1", h: 3 },
+                { id: "bar-2", h: 5 },
+                { id: "bar-3", h: 4 },
+                { id: "bar-4", h: 6 },
+                { id: "bar-5", h: 3 },
+              ].map((bar, i) => (
                 <div
-                  key={i}
+                  key={bar.id}
                   className="w-0.5 rounded-full bg-white"
                   style={{
-                    height: `${h * 2}px`,
+                    height: `${bar.h * 2}px`,
                     animation: `bounce 0.6s ease-in-out ${i * 0.1}s infinite alternate`,
                   }}
                 />

@@ -1,13 +1,8 @@
 import { HiPlay, HiPause, HiXMark, HiOutlineArrowTopRightOnSquare, HiOutlineExclamationCircle } from "react-icons/hi2";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { platforms } from "../data";
+import { formatTime } from "../utils/format";
 import React from "react";
-
-const fmt = (s: number) => {
-  if (!s || isNaN(s)) return "0:00";
-  const m = Math.floor(s / 60);
-  return `${m}:${Math.floor(s % 60).toString().padStart(2, "0")}`;
-};
 
 export function MiniPlayer() {
   const { currentEpisode, isPlaying, currentTime, duration, hasError, toggle, seek, dismiss } = useAudioPlayer();
@@ -16,10 +11,9 @@ export function MiniPlayer() {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  function handleProgressClick(e: React.MouseEvent<HTMLDivElement>) {
+  function handleProgressChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    seek(((e.clientX - rect.left) / rect.width) * duration);
+    seek(Number.parseFloat(e.target.value));
   }
 
   return (
@@ -90,16 +84,20 @@ export function MiniPlayer() {
       ) : (
         <>
           {/* ── Progress bar — full width, clickable ──────────────────────── */}
-          <div
-            className="w-full h-1 cursor-pointer group bg-white/10"
-            onClick={handleProgressClick}
-            role="slider"
-            aria-label="Seek"
-            aria-valuenow={Math.round(progress)}
-          >
+          <div className="w-full relative h-1 bg-white/10 group cursor-pointer">
             <div
-              className="h-full transition-all group-hover:opacity-90 bg-brand-coral"
+              className="absolute top-0 left-0 h-full transition-all group-hover:opacity-90 bg-brand-coral pointer-events-none"
               style={{ width: `${progress}%` }}
+            />
+            <input
+              type="range"
+              min="0"
+              max={duration || 100}
+              value={currentTime}
+              onChange={handleProgressChange}
+              disabled={!duration}
+              className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+              aria-label="Seek"
             />
           </div>
 
@@ -120,7 +118,7 @@ export function MiniPlayer() {
                 {currentEpisode.title}
               </p>
               <p className="text-gray-500 text-xs">
-                Ep {currentEpisode.episodeNumber} · {fmt(currentTime)} / {fmt(duration) === "0:00" ? currentEpisode.duration : fmt(duration)}
+                Ep {currentEpisode.episodeNumber} · {formatTime(currentTime)} / {formatTime(duration) === "0:00" ? currentEpisode.duration : formatTime(duration)}
               </p>
             </div>
 

@@ -29,7 +29,7 @@ export function BlogPostPage() {
 
   useMetaData(post?.title || "Blog Post", post?.content?.substring(0, 160), post?.canonicalUrl);
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const shareUrl = globalThis.window === undefined ? "" : globalThis.location.href;
   const shareTitle = post?.title || "";
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export function BlogPostPage() {
               <HiOutlineTag className="w-4 h-4" />
               <div className="flex gap-2">
                 {post.tags.map(tag => (
-                  <span key={tag} className="bg-gray-100 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                  <span key={`tag-${tag}`} className="bg-gray-100 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
                     {tag}
                   </span>
                 ))}

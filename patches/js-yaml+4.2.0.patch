@@ -1,0 +1,16 @@
+diff --git a/node_modules/js-yaml/index.js b/node_modules/js-yaml/index.js
+index 0b66b8f..4a3507c 100644
+--- a/node_modules/js-yaml/index.js
++++ b/node_modules/js-yaml/index.js
+@@ -38,7 +38,7 @@ module.exports.types = {
+   str: require('./lib/type/str')
+ }
+ 
+-// Removed functions from JS-YAML 3.0.x
+-module.exports.safeLoad = renamed('safeLoad', 'load')
+-module.exports.safeLoadAll = renamed('safeLoadAll', 'loadAll')
+-module.exports.safeDump = renamed('safeDump', 'dump')
++// Restore removed functions for compatibility
++module.exports.safeLoad = loader.load
++module.exports.safeLoadAll = loader.loadAll
++module.exports.safeDump = dumper.dump

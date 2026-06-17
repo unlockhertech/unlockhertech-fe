@@ -7,7 +7,7 @@ interface BlogCardProps {
   post: BlogPost;
 }
 
-export function BlogCard({ post }: BlogCardProps) {
+export function BlogCard({ post }: Readonly<BlogCardProps>) {
   return (
     <Link 
       to={`/blog/${post.slug}`}
@@ -26,7 +26,7 @@ export function BlogCard({ post }: BlogCardProps) {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             {post.tags?.slice(0, 2).map(tag => (
-              <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-brand-coral bg-brand-coral/5 px-2.5 py-1 rounded-lg">
+              <span key={`tag-${tag}`} className="text-[10px] font-bold uppercase tracking-widest text-brand-coral bg-brand-coral/5 px-2.5 py-1 rounded-lg">
                 {tag}
               </span>
             ))}

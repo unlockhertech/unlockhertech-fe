@@ -1,5 +1,3 @@
-// import { FaLinkedinIn } from "react-icons/fa6";
-// import { HiOutlineEnvelope } from "react-icons/hi2";
 import { ImageWithFallback } from "./ImageWithFallback";
 
 interface TeamMemberProps {
@@ -23,7 +21,7 @@ function tintColor(hex: string): string {
   return `color-mix(in srgb, ${color} 10%, white)`;
 }
 
-export function TeamMember({ name, role, bio, avatarColor, photoUrl, initials }: TeamMemberProps) {
+export function TeamMember({ name, role, bio, avatarColor, photoUrl, initials }: Readonly<TeamMemberProps>) {
   return (
     <div
       className="rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border-2 border-black/5"
@@ -61,17 +59,6 @@ export function TeamMember({ name, role, bio, avatarColor, photoUrl, initials }:
       <div className="p-5" style={{ backgroundColor: tintColor(avatarColor) }}>
         <p className="text-gray-500 text-sm mb-4 leading-[1.65]">{bio}</p>
 
-        {/*<div className="flex gap-2">*/}
-        {/*  {[FaLinkedinIn, HiOutlineEnvelope].map((Icon, i) => (*/}
-        {/*    <button*/}
-        {/*      key={i}*/}
-        {/*      className="p-2 rounded-full bg-white hover:shadow-sm transition-all"*/}
-        {/*      style={{ color: avatarColor }}*/}
-        {/*    >*/}
-        {/*      <Icon className="w-4 h-4" />*/}
-        {/*    </button>*/}
-        {/*  ))}*/}
-        {/*</div>*/}
       </div>
     </div>
   );

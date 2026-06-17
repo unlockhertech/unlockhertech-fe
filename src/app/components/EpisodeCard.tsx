@@ -10,7 +10,7 @@ interface EpisodeCardProps {
     episode: Episode;
 }
 
-export function EpisodeCard({episode}: EpisodeCardProps) {
+export function EpisodeCard({episode}: Readonly<EpisodeCardProps>) {
     const {title, description, duration, date, episodeNumber, coverColor, imageUrl} = episode;
     const {toggle, isThisPlaying} = useAudioPlayer();
     const playing = isThisPlaying(episode.id);
@@ -60,12 +60,18 @@ export function EpisodeCard({episode}: EpisodeCardProps) {
                     {/* Animated playing indicator */}
                     {playing && (
                         <div className="absolute top-4 right-4 flex items-end gap-0.5 h-5">
-                            {[3, 5, 4, 6, 3].map((h, i) => (
+                            {[
+                                { id: "bar-1", h: 3 },
+                                { id: "bar-2", h: 5 },
+                                { id: "bar-3", h: 4 },
+                                { id: "bar-4", h: 6 },
+                                { id: "bar-5", h: 3 },
+                            ].map((bar, i) => (
                                 <div
-                                    key={i}
+                                    key={bar.id}
                                     className="w-1 rounded-full"
                                     style={{
-                                        height: `${h * 3}px`,
+                                        height: `${bar.h * 3}px`,
                                         backgroundColor: "white",
                                         animation: `bounce 0.6s ease-in-out ${i * 0.1}s infinite alternate`,
                                     }}

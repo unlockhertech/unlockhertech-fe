@@ -3,6 +3,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useMemo,
   type ReactNode,
 } from "react";
 import type { Episode } from "../data";
@@ -48,8 +49,8 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // ── toggle ─────────────────────────────────────────────────────────────────
-  // • Same episode  → play / pause
-  // • New episode   → swap src, start playing
+  // • Same episode → play / pause
+  // • New episode → swap src, start playing
   const toggle = useCallback((episode: Episode) => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -103,8 +104,21 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
   const isActive      = useCallback((id: number) => currentEpisode?.id === id, [currentEpisode]);
   const isThisPlaying = useCallback((id: number) => currentEpisode?.id === id && isPlaying, [currentEpisode, isPlaying]);
 
+  const value = useMemo(() => ({
+    currentEpisode,
+    isPlaying,
+    currentTime,
+    duration,
+    hasError,
+    toggle,
+    seek,
+    dismiss,
+    isActive,
+    isThisPlaying
+  }), [currentEpisode, isPlaying, currentTime, duration, hasError, toggle, seek, dismiss, isActive, isThisPlaying]);
+
   return (
-    <Ctx.Provider value={{ currentEpisode, isPlaying, currentTime, duration, hasError, toggle, seek, dismiss, isActive, isThisPlaying }}>
+    <Ctx.Provider value={value}>
       {children}
     </Ctx.Provider>
   );

@@ -111,7 +111,7 @@ export function EpisodesPage() {
           <div className="flex gap-2 flex-wrap mb-5">
             {TAG_FILTERS.map(({ label, value }) => (
               <button
-                key={value}
+                key={`filter-${label}`}
                 onClick={() => handleTagChange(value)}
                 className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all border ${
                   activeTag === value 
@@ -198,7 +198,7 @@ export function EpisodesPage() {
             <span className="text-brand-coral font-semibold">{Math.min(visibleCount, filtered.length)}</span>
             {" "}of{" "}
             <span className="font-semibold">{filtered.length}</span>
-            {" "}episode{filtered.length !== 1 ? "s" : ""}
+            {" "}episode{filtered.length === 1 ? "" : "s"}
             {search && <span> matching "<em>{search}</em>"</span>}
           </p>
 

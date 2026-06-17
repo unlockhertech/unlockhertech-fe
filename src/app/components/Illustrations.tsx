@@ -1,7 +1,7 @@
 // Inline SVG illustrations with brand palette applied
 // Brand: BERRY #B42970 | ORANGE #e8563a | BLUE #5f9de3 | PINK #f4a0b4 | GREEN #72c472
 
-export function WomanSitting({ className = "" }: { className?: string }) {
+export function WomanSitting({ className = "" }: Readonly<{ className?: string }>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 380 400" className={className}>
       {/* Head / hair */}
@@ -40,7 +40,7 @@ export function WomanSitting({ className = "" }: { className?: string }) {
   );
 }
 
-export function WomanStanding({ className = "" }: { className?: string }) {
+export function WomanStanding({ className = "" }: Readonly<{ className?: string }>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 380 480" className={className}>
       {/* Head / hair - BLUE */}
@@ -71,7 +71,7 @@ export function WomanStanding({ className = "" }: { className?: string }) {
   );
 }
 
-export function WheelChair({ className = "" }: { className?: string }) {
+export function WheelChair({ className = "" }: Readonly<{ className?: string }>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 380 400" className={className}>
       {/* Head / hair - GREEN */}
@@ -117,7 +117,7 @@ export function WheelChair({ className = "" }: { className?: string }) {
   );
 }
 
-export function Lady1Welcome({ className = "" }: { className?: string }) {
+export function Lady1Welcome({ className = "" }: Readonly<{ className?: string }>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 380 480" className={className}>
       {/* Head / hair - ORANGE */}
@@ -152,7 +152,7 @@ export function Lady1Welcome({ className = "" }: { className?: string }) {
   );
 }
 
-export function Lady2Welcome({ className = "" }: { className?: string }) {
+export function Lady2Welcome({ className = "" }: Readonly<{ className?: string }>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -25 380 480" className={className}>
       {/* Head / hair - ORANGE */}

@@ -1,6 +1,6 @@
 ﻿import '@testing-library/jest-dom';
 
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = () => Promise.resolve();
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.addTextTrack = () => ({}) as unknown as TextTrack;
+globalThis.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
+globalThis.HTMLMediaElement.prototype.play = () => Promise.resolve();
+globalThis.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
+globalThis.HTMLMediaElement.prototype.addTextTrack = () => ({}) as unknown as TextTrack;

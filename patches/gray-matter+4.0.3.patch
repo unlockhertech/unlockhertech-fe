@@ -1,0 +1,24 @@
+diff --git a/node_modules/gray-matter/lib/engines.js b/node_modules/gray-matter/lib/engines.js
+index 38f993d..7a3e47b 100644
+--- a/node_modules/gray-matter/lib/engines.js
++++ b/node_modules/gray-matter/lib/engines.js
+@@ -35,18 +35,7 @@ engines.json = {
+ 
+ engines.javascript = {
+   parse: function parse(str, options, wrap) {
+-    /* eslint no-eval: 0 */
+-    try {
+-      if (wrap !== false) {
+-        str = '(function() {\nreturn ' + str.trim() + ';\n}());';
+-      }
+-      return eval(str) || {};
+-    } catch (err) {
+-      if (wrap !== false && /(unexpected|identifier)/i.test(err.message)) {
+-        return parse(str, options, false);
+-      }
+-      throw new SyntaxError(err);
+-    }
++    throw new Error('JavaScript front-matter is disabled for security reasons');
+   },
+   stringify: function() {
+     throw new Error('stringifying JavaScript is not supported');

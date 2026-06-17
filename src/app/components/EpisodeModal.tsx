@@ -31,19 +31,23 @@ export function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    globalThis.addEventListener("keydown", handler);
+    return () => globalThis.removeEventListener("keydown", handler);
   }, [onClose]);
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
+    <dialog
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-transparent border-none w-full h-full"
+      open
       aria-labelledby="episode-modal-title"
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <button
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+        onClick={onClose}
+        aria-label="Close modal"
+        type="button"
+      />
 
       {/* Modal card */}
       <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
@@ -103,12 +107,18 @@ export function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
           {/* Playing indicator */}
           {playing && (
             <div className="absolute top-4 right-14 flex items-end gap-0.5 h-5">
-              {[3, 5, 4, 6, 3].map((h, i) => (
+              {[
+                { id: "bar-1", h: 3 },
+                { id: "bar-2", h: 5 },
+                { id: "bar-3", h: 4 },
+                { id: "bar-4", h: 6 },
+                { id: "bar-5", h: 3 },
+              ].map((bar, i) => (
                 <div
-                  key={i}
+                  key={bar.id}
                   className="w-1 rounded-full"
                   style={{
-                    height: `${h * 3}px`,
+                    height: `${bar.h * 3}px`,
                     backgroundColor: "white",
                     animation: `epBounce 0.6s ease-in-out ${i * 0.1}s infinite alternate`,
                     transformOrigin: "bottom",
@@ -184,7 +194,7 @@ export function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
           }
         `}</style>
       </div>
-    </div>,
+    </dialog>,
     document.body
   );
 }

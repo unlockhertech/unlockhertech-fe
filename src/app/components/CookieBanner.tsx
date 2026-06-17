@@ -5,7 +5,7 @@ import { CookiePolicyContent } from "../pages/CookiePolicy";
 
 export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(() => {
-    if (typeof window !== "undefined") {
+    if (globalThis.window !== undefined) {
       return !localStorage.getItem("cookie-consent");
     }
     return false;
@@ -18,8 +18,8 @@ export function CookieBanner() {
     setIsModalOpen(false);
 
     // Update gtag consent
-    const win = window as unknown as { gtag?: (command: string, action: string, params: Record<string, string>) => void };
-    if (typeof win !== "undefined" && win.gtag) {
+    const win = globalThis as unknown as { gtag?: (command: string, action: string, params: Record<string, string>) => void };
+    if (win?.gtag) {
       win.gtag("consent", "update", {
         analytics_storage: status,
         ad_storage: status,
@@ -33,7 +33,7 @@ export function CookieBanner() {
     <>
       <div className="fixed inset-0 z-[100] flex flex-col justify-end">
         {/* Background Overlay */}
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-auto" />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
         
         {/* Banner Content */}
         <div className="relative z-10 w-full bg-white border-t border-gray-100 p-6 md:p-8">
@@ -73,9 +73,12 @@ export function CookieBanner() {
       {/* Cookie Policy Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6">
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-md" 
+          {/* Backdrop */}
+          <button
+            className="absolute inset-0 bg-black/60 backdrop-blur-md cursor-default"
             onClick={() => setIsModalOpen(false)}
+            aria-label="Close modal"
+            type="button"
           />
           <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             {/* Modal Header */}

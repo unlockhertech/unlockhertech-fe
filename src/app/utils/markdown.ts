@@ -2,8 +2,8 @@ import matter from "gray-matter";
 import { Buffer } from "buffer";
 
 // Polyfill Buffer for gray-matter in browser
-if (typeof window !== "undefined" && typeof (window as unknown as { Buffer: typeof Buffer }).Buffer === "undefined") {
-  (window as unknown as { Buffer: typeof Buffer }).Buffer = Buffer;
+if (typeof window !== "undefined" && typeof (window as any).Buffer === "undefined") {
+  (window as any).Buffer = Buffer;
 }
 
 import type { BlogPost } from "../types";
@@ -40,7 +40,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     return postList.sort((a, b) => {
       const dateA = a.date ? new Date(a.date).getTime() : 0;
       const dateB = b.date ? new Date(b.date).getTime() : 0;
-      return (isNaN(dateB) ? 0 : dateB) - (isNaN(dateA) ? 0 : dateA);
+      return (Number.isNaN(dateB) ? 0 : dateB) - (Number.isNaN(dateA) ? 0 : dateA);
     });
   } catch (err) {
     console.error("Critical error in getAllBlogPosts:", err);

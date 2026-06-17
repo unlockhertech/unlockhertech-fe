@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import path from 'path'
+import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import type { UserConfig } from 'vite'
-// @ts-expect-error
+// @ts-expect-error: InlineConfig is not exported from vite but used by vitest
 import type { InlineConfig } from 'vitest'
 
 interface VitestConfigExport extends UserConfig {
@@ -13,6 +13,17 @@ interface VitestConfigExport extends UserConfig {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    target: 'es2022',
+  },
+  esbuild: {
+    target: 'es2022',
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2022',
+    },
+  },
   define: {
     'process.env.TINA_CLIENT_ID': JSON.stringify(process.env.TINA_CLIENT_ID || ''),
     'process.env.TINA_TOKEN': JSON.stringify(process.env.TINA_TOKEN || ''),
@@ -23,6 +34,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      buffer: 'buffer',
     },
   },
   test: {

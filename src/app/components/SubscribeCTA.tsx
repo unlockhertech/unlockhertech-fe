@@ -11,7 +11,7 @@ export function SubscribeCTA({
                                  title    = "Never Miss an Episode",
                                  subtitle = "Subscribe on your favourite platform and get notified the moment a new episode drops each month.",
   bgImage,
-}: SubscribeCTAProps) {
+}: Readonly<SubscribeCTAProps>) {
   return (
     <section className="py-20 relative overflow-hidden bg-brand-coral">
       {bgImage && (

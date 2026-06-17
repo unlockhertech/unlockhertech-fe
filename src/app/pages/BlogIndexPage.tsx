@@ -24,7 +24,7 @@ export function BlogIndexPage() {
         const tagsSet = new Set(postList.flatMap(post => post.tags ?? []));
 
         setPosts(postList);
-        setAllTags(Array.from(tagsSet).sort());
+        setAllTags(Array.from(tagsSet).sort((a, b) => a.localeCompare(b)));
       } catch (error) {
         console.error("Failed to fetch blog posts:", error);
       } finally {
@@ -71,9 +71,9 @@ export function BlogIndexPage() {
           <button
             onClick={() => setSearchParams({})}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              !activeTag 
-                ? "bg-brand-coral text-white shadow-md shadow-brand-coral/20" 
-                : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                activeTag
+                    ? "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                    : "bg-brand-coral text-white shadow-md shadow-brand-coral/20"
             }`}
           >
             All Posts

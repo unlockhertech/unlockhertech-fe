@@ -154,7 +154,7 @@ export function AboutPage() {
               { label: "Product Managers", className: "bg-brand-pink"   },
             ].map(({ label, className }) => (
               <span
-                key={label}
+                key={`tag-${label}`}
                 className={`px-4 py-1.5 rounded-full text-white text-sm font-semibold ${className}`}
               >
                 {label}
@@ -174,7 +174,7 @@ export function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map(({ icon: Icon, title, desc, color, bg }) => (
               <div
-                key={title}
+                key={`value-${title}`}
                 className="rounded-2xl p-6 hover:shadow-md transition-shadow"
                 style={{ backgroundColor: bg, border: `1.5px solid ${color}22` }}
               >

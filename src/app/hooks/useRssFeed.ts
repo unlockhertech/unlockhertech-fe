@@ -111,11 +111,11 @@ export function parseRssFeed(xml: Document): Episode[] {
     const description = rawDesc
         .replace(/<[^>]+>/g, " ")   // replace tags with space so words don't merge
         //.replace(/&nbsp;/g, " ")
-        .replace(/&amp;/g, "&")
-        .replace(/&lt;/g, "<")
-        .replace(/&gt;/g, ">")
-        .replace(/&quot;/g, "\"")
-        .replace(/&#39;/g, "'")
+        .replaceAll('&amp;', "&")
+        .replaceAll('&lt;', "<")
+        .replaceAll('&gt;', ">")
+        .replaceAll('&quot;', "\"")
+        .replaceAll('&#39;', "'")
         //.replace(/\s+/g, " ")       // collapse multiple spaces / newlines
         .trim();
     const audioUrl    = item.getElementsByTagName("enclosure")[0]?.getAttribute("url") ?? "";
@@ -125,7 +125,7 @@ export function parseRssFeed(xml: Document): Episode[] {
     const episodeImg  = getEpisodeImageUrl(item);
 
     // Use explicit itunes:episode if present, otherwise count down from total
-    const episodeNumber = epNumRaw ? parseInt(epNumRaw, 10) : items.length - i;
+    const episodeNumber = epNumRaw ? Number.parseInt(epNumRaw, 10) : items.length - i;
 
     return {
       // Always use array index as id to guarantee uniqueness —

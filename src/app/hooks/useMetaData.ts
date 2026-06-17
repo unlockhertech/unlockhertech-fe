@@ -23,7 +23,7 @@ export function useMetaData(title: string, description?: string, canonical?: str
       document.head.appendChild(canonicalLink);
     }
     
-    const canonicalUrl = canonical || window.location.href.split(/[?#]/)[0];
+    const canonicalUrl = canonical || globalThis.location.href.split(/[?#]/)[0];
     canonicalLink.setAttribute('href', canonicalUrl);
 
     return () => {

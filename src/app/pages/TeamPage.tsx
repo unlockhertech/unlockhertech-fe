@@ -38,9 +38,15 @@ export function TeamPage() {
 
           {/* Colour dots */}
           <div className="flex gap-2 mt-6">
-        {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
-        <div key={c} className="w-3 h-3 rounded-full bg-white opacity-60" />
-))}
+            {[
+              { id: "dot-berry", c: BERRY },
+              { id: "dot-orange", c: ORANGE },
+              { id: "dot-pink", c: PINK },
+              { id: "dot-green", c: GREEN },
+              { id: "dot-blue", c: BLUE },
+            ].map((dot) => (
+              <div key={dot.id} className="w-3 h-3 rounded-full bg-white opacity-60" />
+            ))}
           </div>
         </div>
       </div>
@@ -57,8 +63,8 @@ export function TeamPage() {
 
           {/* Founders row (first 3) */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-14">
-        {teamMembers.slice(0, 2).map((m, i) => (
-                <TeamMember key={m.name} {...m} avatarColor={cycleColor(i)} />
+            {teamMembers.slice(0, 2).map((m, i) => (
+              <TeamMember key={`founder-${m.name}`} {...m} avatarColor={cycleColor(i)} />
             ))}
           </div>
 
@@ -70,8 +76,8 @@ export function TeamPage() {
 
           {/* Remaining team (4–7) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {teamMembers.slice(2).map((m, i) => (
-                <TeamMember key={m.name} {...m} avatarColor={cycleColor(i + 2)} />
+            {teamMembers.slice(2).map((m, i) => (
+              <TeamMember key={`team-${m.name}`} {...m} avatarColor={cycleColor(i + 2)} />
             ))}
           </div>
         </div>

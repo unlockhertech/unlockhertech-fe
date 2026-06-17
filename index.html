@@ -4,7 +4,7 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DG4KFXRK2K"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
+      globalThis.dataLayer = globalThis.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
       // Default consent settings
@@ -26,7 +26,7 @@
     <script>
       function loadScript(a){
         var b=document.getElementsByTagName("head")[0], c=document.createElement("script");
-        c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)
+        c.type="text/javascript";c.src="https://tracker.metricool.com/resources/be.js";c.onreadystatechange=a;c.onload=a;b.appendChild(c)
       }
       loadScript(function(){
         beTracker.t({
