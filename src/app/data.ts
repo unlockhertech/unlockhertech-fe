@@ -3,10 +3,10 @@ import { FaAmazon } from "react-icons/fa6";
 import type { Episode, Platform } from "./types";
 import imgElaheh  from "../assets/ca5810f8de6d98da96a45d1d887e1f1510f03101.jpg";
 import imgShelly  from "../assets/8175fa61c548bd171865cd1d786abaac3950952e.jpeg";
-import imgPritty from '../assets/91e96dfd067ea6afbddec7a62daaf34f07638b4a.jpg'
-import imgJen from '../assets/cd6f99d060c133a423b34da6adc91fd0e3455bc8.jpg'
-import imgRupi from '../assets/5865071a697a5a7a468424e514c3437692713cc9.jpeg'
-import imgMartina from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.jpg'
+import imgPritty from '../assets/91e96dfd067ea6afbddec7a62daaf34f07638b4a.jpg';
+import imgJen from '../assets/cd6f99d060c133a423b34da6adc91fd0e3455bc8.jpg';
+import imgRupi from '../assets/5865071a697a5a7a468424e514c3437692713cc9.jpeg';
+import imgTim from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.jpeg'
 // ── Brand palette ──────────────────────────────────────────────────────────────
 export const BERRY  = "#b42970";
 export const ORANGE = "#e8563a";
@@ -60,8 +60,6 @@ export const teamMembers = [
     { name: "Jen Carswell",         role: "Co-Host",                                  bio: "Jen is a curious, empathetic co-host who brings warmth and wit to the mic. She has a gift for making guests feel at ease and drawing out the stories behind the stories — the pivots, the failures, the small wins that add up to something extraordinary.",   avatarColor: GREEN,  photoUrl: imgJen },
     { name: "Rupi Sagoo",           role: "Researcher",                               bio: "Rupi is the intellectual backbone of Unlock Her Tech. She dives deep into industry trends, and timely themes to ensure every episode is rich, informed, and relevant. Her thorough prep means no conversation ever scratches the surface.",                   avatarColor: ORANGE, photoUrl: imgRupi },
     { name: "Sabrina Scollan",      role: "Researcher",                               bio: "Sabrina fuels the show's substance with sharp, detail-oriented research. She uncovers the data, the nuance, and the untold angles that give each episode its depth — making sure Unlock Her Tech always has something meaningful to say and a solid foundation to say it from.",  avatarColor: PINK,   photoUrl: "https://ui-avatars.com/api/?name=Sabrina+Scollan&background=f4a0b4&color=fff&size=400&bold=true&rounded=true" },
-    { name: "Tim Price",            role: "Podcast Editor",                           bio: "Tim is the audio craftsman who transforms raw recordings into polished, professional episodes. With a keen ear for pacing, clarity, and storytelling flow, he ensures every listen feels seamless — from the first word to the final sign-off.",             avatarColor: BERRY,  photoUrl: "https://ui-avatars.com/api/?name=Tim+Price&background=B42970&color=fff&size=400&bold=true&rounded=true" },
+    { name: "Tim Price",            role: "Podcast Editor",                           bio: "Tim is the audio craftsman who transforms raw recordings into polished, professional episodes. With a keen ear for pacing, clarity, and storytelling flow, he ensures every listen feels seamless — from the first word to the final sign-off.",             avatarColor: BERRY,  photoUrl: imgTim },
     { name: "Shelly Chambers",      role: "Podcast Product & Audience Growth Manager", bio: "Shelly sits at the intersection of strategy and growth, steering Unlock Her Tech toward the listeners who need it most. She leads product decisions, platform strategy, and audience development — turning a passionate community into a thriving movement, one episode at a time.", avatarColor: BLUE,   photoUrl: imgShelly },
-    { name: "Imran Qureshi",        role: "Podcast Editor",                           bio: "Imran brings technical precision and a creative sensibility to the editing suite. He shapes the sonic identity of Unlock Her Tech — balancing music, voice, and silence to craft episodes that feel both professional and deeply human, making every recording a pleasure to listen to.", avatarColor: GREEN,  photoUrl: "https://ui-avatars.com/api/?name=Imran+Qureshi&background=72c472&color=fff&size=400&bold=true&rounded=true" },
-    { name: "Martina Rondinelli",   role: "Graphic & UX/UI Designer",                 bio: "Martina is the creative force shaping how Unlock Her Tech looks and feels across every touchpoint. From brand visuals and episode artwork to intuitive digital experiences, she blends bold aesthetics with thoughtful design thinking — ensuring the show's visual identity is as compelling as its conversations.", avatarColor: ORANGE, photoUrl: imgMartina },
 ];
