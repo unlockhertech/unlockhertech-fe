@@ -11,3 +11,10 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/api/*" # Apply to your sensitive paths
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    Pragma = "no-cache"
+    Expires = "0"
