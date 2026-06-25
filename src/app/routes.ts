@@ -27,11 +27,10 @@ export const router = createBrowserRouter([
       { path: "cookie-policy", Component: CookiePolicy },
       {
         path: "admin",
-        loader: () => {
-          globalThis.location.href = "/admin/index.html";
+        Component: () => {
+          window.location.assign("/admin/index.html");
           return null;
         },
-        Component: () => null,
       },
       ...blogRoutes,
     ],
