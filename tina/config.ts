@@ -2,6 +2,7 @@ import { defineConfig } from "tinacms";
 
 // 2. Identify the branch
 const branch =
+    process.env.HEAD ||
     process.env.VITE_TINA_BRANCH ||
     process.env.TINA_BRANCH ||
     process.env.BRANCH ||
