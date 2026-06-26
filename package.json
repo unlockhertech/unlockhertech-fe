@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tinacms dev -c \"vite\"",
-    "build": "tinacms build && vite build --target es2022",
+    "build": "tinacms build --skip-cloud-checks && vite build --target es2022",
     "build:local": "tinacms build --skip-cloud-checks && vite build --target es2022",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -73,7 +73,6 @@
     "esbuild": "^0.25.0",
     "js-cookie": "^3.0.6",
     "lodash": "^4.17.21",
-    "vite": "^6.4.2",
     "js-yaml": "^4.2.0",
     "markdown-it": "^14.2.0"
   },

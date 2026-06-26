@@ -12,7 +12,24 @@ interface VitestConfigExport extends UserConfig {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+      react(),
+    tailwindcss(),
+    // Intercepts the config after Tina sets it, but before esbuild crashes
+    {
+      name: 'fix-tina-vite-crash',
+      config(config) {
+        if (config.define && typeof config.define['process.env'] === 'object') {
+          // Replaces the raw object with a stringified empty object
+          config.define['process.env'] = '"{}"';
+        }
+      }
+    }],
+  define: {
+    // This forces process.env to be a plain object,
+    // overriding the broken 'new Object({})' from Tina
+    'process.env': JSON.stringify({}),
+  },
   build: {
     target: 'es2022',
   },
