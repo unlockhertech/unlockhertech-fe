@@ -1,6 +1,6 @@
 ---
 title: 'How Male Allies Drive Real Culture and Diversity in Tech '
-date: 2026-07-18T10:15:10.229Z
+date: 2026-07-19T10:15:10.229Z
 author: Rupi Sagoo
 canonicalUrl: unlockhertech.com
 ---
