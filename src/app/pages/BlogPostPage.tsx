@@ -31,6 +31,7 @@ export function BlogPostPage() {
 
   const shareUrl = globalThis.window === undefined ? "" : globalThis.location.href;
   const shareTitle = post?.title || "";
+  const postTags = post?.tags ?? [];
 
   useEffect(() => {
     if (!loading && post) {
@@ -121,7 +122,7 @@ export function BlogPostPage() {
             <div className="flex items-center gap-2">
               <HiOutlineTag className="w-4 h-4" />
               <div className="flex gap-2">
-                {post.tags.map(tag => (
+                {postTags.map(tag => (
                   <span key={`tag-${tag}`} className="bg-gray-100 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
                     {tag}
                   </span>
