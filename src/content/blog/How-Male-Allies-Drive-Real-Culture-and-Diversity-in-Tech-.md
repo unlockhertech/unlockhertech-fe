@@ -34,6 +34,7 @@ If we want to solve this crisis, it's time to look at how young women view a fut
 The most shocking and scariest figure:
 
 * It will take [over 130 years](https://www.grantthornton.global/en/insights/articles/the-role-of-male-allies-in-progressing-towards-gender-parity/) to close the global gender gap.
+*
 
 The irony is that there isn't the time to wait over a century for the industry to "naturally" balance itself. We need the 95% of current leaders - **the men in the room** - to treat this as a high-priority business objective. Yet this is layered; it goes much deeper and takes emotional intelligence too. In the words of Benjamin Ventham, an HR Technology leader at AstraZeneca, ["it's fundamentally about doing the right thing; striving for equality"](https://www.linkedin.com/pulse/women-tech-importance-men-allies-ben-ventham/). Using male privilege for good. To reach gender parity at a faster pace, it makes sense for men and women to join forces, since men are currently in a better position to bring about change and are therefore an essential part of the solution.
 
