@@ -43,7 +43,7 @@ Seeing as men hold the vast majority of decision-making power, active allyship i
 
 Moving the needle requires male executives to treat allyship as they would any other high-stakes project: by setting clear expectations, advocating for top talent behind closed doors, and proactively elevating underrepresented voices. This is about driving organisational excellence from the top down.
 
-### What does this look like in daily execution?
+What does this look like in daily execution?
 
 * It can be as simple as **challenging biases in the moment**: be the one who does not tolerate toxic behaviours, microaggressions, or "locker room" humour - call it out. Publicly defend anyone who male colleagues have sexually harassed. Stepping in to stop harassment or bias isn't just about chivalry; it's about setting a new normal and protecting the integrity of your team's operating environment.
 * **Amplify voices**: ensure clear attribution of ideas. Research by Creary, Caza, and Gibson highlights that truly effective allyship by male leaders means actively ensuring that contributions from all team members receive appropriate recognition and are put to use, helping to prevent the loss of innovation. When a woman's idea is ignored in a meeting, overlooked, or later co-opted by a colleague, the company loses out on its creative assets.
