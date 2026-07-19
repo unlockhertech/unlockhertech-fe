@@ -7,6 +7,7 @@ import { TeamPage }     from "./pages/TeamPage";
 import { CookiePolicy } from "./pages/CookiePolicy";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { BlogIndexPage } from "./pages/BlogIndexPage";
+import { RouteErrorFallback } from "./components/RouteErrorFallback";
 
 const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
 
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     Component: Layout,
+    ErrorBoundary: RouteErrorFallback,
     children: [
       { index: true,       Component: HomePage     },
       { path: "episodes",  Component: EpisodesPage },
