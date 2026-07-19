@@ -2,7 +2,7 @@
 title: 'How Male Allies Drive Real Culture and Diversity in Tech '
 date: 2026-07-18T10:15:10.229Z
 author: Rupi Sagoo
-canonicalUrl: unlockhertech.com
+canonicalUrl: 'https://www.unlockhertech.com/'
 ---
 
 Let's start with a simple exercise. Try naming 10 women currently in prominent leadership roles in the global tech industry without using a search engine. When I tried this myself, I struggled. Truth be told, the first names that come to mind are retrospective. Even now, I can see a couple of faces in my head, but do I remember their names? Honestly, no. Where's the progress in that?
