@@ -34,6 +34,7 @@ If we want to solve this crisis, it's time to look at how young women view a fut
 The most shocking and scariest figure:
 
 * It will take [over 130 years](https://www.grantthornton.global/en/insights/articles/the-role-of-male-allies-in-progressing-towards-gender-parity/) to close the global gender gap.
+*
 
 The irony is that there isn't the time to wait over a century for the industry to "naturally" balance itself. We need the 95% of current leaders - **the men in the room** - to treat this as a high-priority business objective. Yet this is layered; it goes much deeper and takes emotional intelligence too. In the words of Benjamin Ventham, an HR Technology leader at AstraZeneca, ["it's fundamentally about doing the right thing; striving for equality"](https://www.linkedin.com/pulse/women-tech-importance-men-allies-ben-ventham/). Using male privilege for good. To reach gender parity at a faster pace, it makes sense for men and women to join forces, since men are currently in a better position to bring about change and are therefore an essential part of the solution.
 
@@ -43,7 +44,7 @@ Seeing as men hold the vast majority of decision-making power, active allyship i
 
 Moving the needle requires male executives to treat allyship as they would any other high-stakes project: by setting clear expectations, advocating for top talent behind closed doors, and proactively elevating underrepresented voices. This is about driving organisational excellence from the top down.
 
-### What does this look like in daily execution?
+What does this look like in daily execution?
 
 * It can be as simple as **challenging biases in the moment**: be the one who does not tolerate toxic behaviours, microaggressions, or "locker room" humour - call it out. Publicly defend anyone who male colleagues have sexually harassed. Stepping in to stop harassment or bias isn't just about chivalry; it's about setting a new normal and protecting the integrity of your team's operating environment.
 * **Amplify voices**: ensure clear attribution of ideas. Research by Creary, Caza, and Gibson highlights that truly effective allyship by male leaders means actively ensuring that contributions from all team members receive appropriate recognition and are put to use, helping to prevent the loss of innovation. When a woman's idea is ignored in a meeting, overlooked, or later co-opted by a colleague, the company loses out on its creative assets.
