@@ -4,14 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tinacms dev -c \"vite\"",
-    "build": "tinacms build --skip-cloud-checks && vite build --target es2022",
-    "build:local": "tinacms build --skip-cloud-checks && vite build --target es2022",
+    "dev": "vite",
+    "build": "vite build --target es2022",
+    "build:local": "vite build --target es2022",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "patch-package",
-    "tina:dev": "tinacms dev",
-    "tina:build": "tinacms build"
+    "postinstall": "patch-package"
   },
   "engines": {
     "node": ">=22.13.1"
@@ -83,7 +81,6 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@tinacms/cli": "^2.5.6",
     "@types/jsdom": "^28.0.3",
     "@types/node": "^26.0.1",
     "@types/react": "^18.3.12",
