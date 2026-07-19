@@ -7,13 +7,19 @@ import { TeamPage }     from "./pages/TeamPage";
 import { CookiePolicy } from "./pages/CookiePolicy";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { BlogIndexPage } from "./pages/BlogIndexPage";
+import { EventsPage } from "./pages/EventsPage";
 import { RouteErrorFallback } from "./components/RouteErrorFallback";
 
 const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
+const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === 'true';
 
 const blogRoutes = enableBlog ? [
   { path: "blog",          Component: BlogIndexPage },
   { path: "blog/:slug",    Component: BlogPostPage },
+] : [];
+
+const eventRoutes = enableEvents ? [
+  { path: "events", Component: EventsPage },
 ] : [];
 
 export const router = createBrowserRouter([
@@ -34,6 +40,7 @@ export const router = createBrowserRouter([
           return null;
         },
       },
+      ...eventRoutes,
       ...blogRoutes,
     ],
   },

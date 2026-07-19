@@ -27,9 +27,9 @@ describe('AboutPage', () => {
     expect(screen.getByText(/We started Unlock Her Tech with a simple belief/i)).toBeInTheDocument();
   });
 
-  it('renders the "For Every Woman in Tech" section', () => {
+  it('renders the inclusive community section', () => {
     renderWithRouter();
-    expect(screen.getByText(/For Every Woman in Tech/i)).toBeInTheDocument();
+    expect(screen.getByText(/For Women, Non-Binary People, and Allies in Tech/i)).toBeInTheDocument();
     expect(screen.getByText(/Inclusion at our core/i)).toBeInTheDocument();
     
     // Check for the labels

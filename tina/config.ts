@@ -54,6 +54,24 @@ export default defineConfig({
           { type: "rich-text", name: "body", label: "Body", isBody: true, required: true },
         ],
       },
+      {
+        name: "event",
+        label: "External Events",
+        path: "src/content/events",
+        fields: [
+          { type: "string", name: "title", label: "Event Title", isTitle: true, required: true },
+          { type: "datetime", name: "date", label: "Event Date", required: true },
+          {
+            type: "string",
+            name: "platform",
+            label: "Platform",
+            options: ["Luma", "Eventbrite"],
+            required: true,
+          },
+          { type: "string", name: "urlOrId", label: "Event ID or Full URL", required: true },
+          { type: "image", name: "image", label: "Event Banner" },
+        ],
+      },
     ],
   },
 });

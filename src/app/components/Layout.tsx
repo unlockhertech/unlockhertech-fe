@@ -22,9 +22,11 @@ function LayoutInner() {
   const [showPlatforms, setShowPlatforms] = useState(false);
 
   const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
+  const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === 'true';
 
   const navLinks = [
     { to: "/episodes", label: "Episodes" },
+    ...(enableEvents ? [{ to: "/events", label: "Events" }] : []),
     { to: "/about",    label: "About"    },
     { to: "/team",     label: "Team"     },
     ...(enableBlog ? [{ to: "/blog", label: "Blog" }] : []),

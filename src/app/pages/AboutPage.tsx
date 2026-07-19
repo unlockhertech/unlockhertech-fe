@@ -10,14 +10,14 @@ const values = [
   {
     icon: HiOutlineMicrophone,
     title: "Authentic Storytelling",
-    desc: "Every episode is an unfiltered, honest conversation — no scripts, no filters, just real stories from real women.",
+    desc: "Every episode is an unfiltered, honest conversation — no scripts, no filters, just real stories from women, non-binary people, and allies.",
     color: "var(--podcast-coral)",
     bg: "#fdf0f7",
   },
   {
     icon: HiOutlineHeart,
     title: "Radical Inclusion",
-    desc: "We celebrate every woman in tech regardless of role, background, ability, or stage of career.",
+    desc: "We celebrate women, non-binary people, and male allies in tech regardless of role, background, ability, or career stage.",
     color: "var(--podcast-yellow)",
     bg: "#fff3f0",
   },
@@ -38,7 +38,7 @@ const values = [
 ];
 
 export function AboutPage() {
-  useMetaData("About Us", "Learn about our mission to amplify the voices of women in tech. Our story, values, and the initiative behind the podcast.");
+  useMetaData("About Us", "Learn about our mission to amplify the voices of women and non-binary people in tech, alongside supportive allies. Our story, values, and the initiative behind the podcast.");
   return (
     <div>
 
@@ -57,7 +57,7 @@ export function AboutPage() {
             About Our Initiative
           </h1>
           <p className="text-white/70 max-w-130 leading-[1.8]">
-            We started with a mic, a mission, and a belief that every woman's story in tech deserves to be heard.
+            We started with a mic, a mission, and a belief that women and non-binary voices in tech deserve to be heard — with allies helping drive change.
           </p>
         </div>
       </div>
@@ -96,8 +96,8 @@ export function AboutPage() {
                 Each month, we bring together thinkers, makers, and doers who are shaping our future.
               </p>
               <p className="text-gray-500 mb-8 text-[1.05rem] leading-[1.85]">
-                Our mission is to inspire action through stories that matter — stories of women who navigated
-                impossible odds, built extraordinary things, and refused to be invisible in their industry.
+                Our mission is to inspire action through stories that matter — stories from women and non-binary people
+                who navigated impossible odds, built extraordinary things, and refused to be invisible in their industry.
               </p>
 
               <div className="flex flex-wrap gap-4 mt-8">
@@ -120,16 +120,16 @@ export function AboutPage() {
         </div>
       </section>
 
-      {/* ── For Every Woman ─────────────────────────────────────────────────── */}
+      {/* ── Inclusive Community ─────────────────────────────────────────────── */}
       <section className="overflow-hidden bg-white border-t-4 border-brand-pink">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center pt-14 pb-4">
             <p className="mb-1 text-xs uppercase tracking-widest text-brand-coral font-bold">Inclusion at our core</p>
             <h2 className="text-neutral-900 font-extrabold" style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}>
-              For Every Woman in Tech
+              For Women, Non-Binary People, and Allies in Tech
             </h2>
             <p className="text-gray-500 text-sm mx-auto mt-2 max-w-110 leading-[1.75]">
-              We are intentional about who we platform and whose stories we amplify. Diversity is not an afterthought — it's our foundation.
+              We are intentional about who we platform and whose stories we amplify. Inclusion is not an afterthought — it's our foundation.
             </p>
           </div>
 

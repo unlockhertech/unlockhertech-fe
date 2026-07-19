@@ -142,3 +142,13 @@ dist
 # TinaCMS
 tina/__generated__
 tina/tina-lock.json
+
+# Terraform (state can contain plaintext secrets)
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

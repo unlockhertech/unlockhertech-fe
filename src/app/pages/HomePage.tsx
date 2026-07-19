@@ -3,6 +3,7 @@ import { FaPlay, FaPause, FaChevronDown, FaMicrophone } from "react-icons/fa6";
 import { HiArrowRight } from "react-icons/hi2";
 import { Link } from "react-router";
 import { ImageWithFallback } from "../components/ImageWithFallback.tsx";
+import { LumaCheckoutButton } from "../components/LumaCheckoutButton";
 import { WomanSitting, WheelChair, WomanStanding } from "../components/Illustrations";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { WelcomeStrip } from "../components/WelcomeStrip";
@@ -10,16 +11,18 @@ import { BlogCard } from "../components/BlogCard";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useRssFeed } from "../hooks/useRssFeed";
 import { useMetaData } from "../hooks/useMetaData";
-import { getAllBlogPosts } from "../utils/markdown";
+import { getAllBlogPosts, getAllExternalEvents } from "../utils/markdown";
 import { formatTime } from "../utils/format";
+import { getEventExternalUrl } from "../utils/luma";
 import {
     BERRY,
   IMG_HERO, IMG_AUDIO_EQ,
   platforms,
 } from "../data";
-import type { BlogPost, Episode } from "../types";
+import type { BlogPost, Episode, ExternalEvent } from "../types";
 
 const WAVE_HEIGHTS = [20, 40, 60, 80, 55, 70, 35, 90, 50, 65, 45, 75, 30, 85, 55, 40, 70, 50, 60, 35];
+const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === "true";
 
 interface HeroSectionProps {
   loading: boolean;
@@ -363,10 +366,10 @@ function CommunitySection() {
         <div className="text-center pt-14 pb-4">
           <p className="mb-1 text-xs uppercase tracking-widest text-brand-coral font-bold">Our community</p>
           <h2 className="text-neutral-900 font-extrabold" style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}>
-            For Every Woman in Tech
+            For Women, Non-Binary People, and Allies in Tech
           </h2>
           <p className="text-gray-500 text-sm mx-auto mt-2 max-w-110 leading-[1.75]">
-            No matter your background, role, or journey — this podcast celebrates all of you.
+            No matter your background, identity, role, or journey — this podcast celebrates all of you.
           </p>
         </div>
 
@@ -449,6 +452,70 @@ function BlogSection({ featuredPosts }: Readonly<{ featuredPosts: BlogPost[] }>)
   );
 }
 
+function HomeEventsSection({ featuredEvents }: Readonly<{ featuredEvents: ExternalEvent[] }>) {
+  if (featuredEvents.length === 0) return null;
+
+  return (
+    <section className="py-24 bg-white border-y border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between mb-12">
+          <div>
+            <p className="text-xs mb-2 uppercase tracking-widest text-brand-coral font-bold">Upcoming events</p>
+            <h2 className="text-neutral-900 font-extrabold">Join us live</h2>
+          </div>
+          <Link
+            to="/events"
+            className="hidden sm:flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
+          >
+            View all events <HiArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredEvents.map((event) => {
+            const externalUrl = getEventExternalUrl(event.urlOrId);
+
+            return (
+              <article key={event.slug} className="rounded-3xl border border-gray-200 bg-stone-50 p-6 flex flex-col">
+                <p className="text-xs uppercase tracking-wider text-brand-coral font-bold mb-2">{event.platform}</p>
+                <h3 className="text-xl font-extrabold text-gray-900 mb-2">{event.title}</h3>
+                <p className="text-sm text-gray-600 mb-5">{new Date(event.date).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</p>
+
+                {event.platform === "Luma" ? (
+                  <LumaCheckoutButton
+                    urlOrId={event.urlOrId}
+                    className="mt-auto px-5 py-2.5 rounded-full bg-brand-coral text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Reserve seat
+                  </LumaCheckoutButton>
+                ) : (
+                  <a
+                    href={externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                  >
+                    View event
+                  </a>
+                )}
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="mt-12 text-center sm:hidden">
+          <Link
+            to="/events"
+            className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
+          >
+            View all events <HiArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function HomePage() {
   useMetaData("Empowering Women in Technology", "Join us as we explore big ideas with brilliant minds in the tech industry. Honest conversations that inspire change.");
   const [showPlatforms, setShowPlatforms] = useState(false);
@@ -456,6 +523,7 @@ export function HomePage() {
   const { toggle, seek, isThisPlaying, isActive, currentTime, duration } = useAudioPlayer();
   const { episodes, loading } = useRssFeed();
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+  const [featuredEvents, setFeaturedEvents] = useState<ExternalEvent[]>([]);
 
   useEffect(() => {
     async function fetchBlogPosts() {
@@ -467,6 +535,21 @@ export function HomePage() {
       }
     }
     fetchBlogPosts();
+  }, []);
+
+  useEffect(() => {
+    if (!enableEvents) return;
+
+    async function fetchEvents() {
+      try {
+        const events = await getAllExternalEvents();
+        setFeaturedEvents(events.slice(0, 3));
+      } catch (err) {
+        console.error("Failed to load featured events:", err);
+      }
+    }
+
+    fetchEvents();
   }, []);
 
   const LATEST = episodes[0];
@@ -522,6 +605,8 @@ export function HomePage() {
       />
 
       <CommunitySection />
+
+      {enableEvents ? <HomeEventsSection featuredEvents={featuredEvents} /> : null}
 
       <BlogSection featuredPosts={featuredPosts} />
 

@@ -2,11 +2,15 @@ import matter from "gray-matter";
 import { Buffer } from "buffer";
 
 // Polyfill Buffer for gray-matter in browser
-if (typeof window !== "undefined" && typeof (window as any).Buffer === "undefined") {
-  (window as any).Buffer = Buffer;
+type WindowWithBuffer = Window & { Buffer?: typeof Buffer };
+if (typeof window !== "undefined") {
+  const browserWindow = window as WindowWithBuffer;
+  if (typeof browserWindow.Buffer === "undefined") {
+    browserWindow.Buffer = Buffer;
+  }
 }
 
-import type { BlogPost } from "../types";
+import type { BlogPost, EventPlatform, ExternalEvent } from "../types";
 
 /**
  * Parses all Markdown files in the blog content directory.
@@ -75,6 +79,50 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   }
 }
 
+export async function getAllExternalEvents(): Promise<ExternalEvent[]> {
+  try {
+    const modules = import.meta.glob("/src/content/events/*.md", { query: "?raw", import: "default" });
+    const events: ExternalEvent[] = [];
+
+    for (const path in modules) {
+      try {
+        const content = (await modules[path]()) as string;
+        const { data } = matter(content);
+        const slug = path.split("/").pop()?.replace(".md", "") || "";
+
+        if (slug === "TEMPLATE") continue;
+
+        const title = typeof data.title === "string" ? data.title.trim() : "";
+        const date = typeof data.date === "string" ? data.date : "";
+        const urlOrId = typeof data.urlOrId === "string" ? data.urlOrId.trim() : "";
+        const platform = normalizePlatform(data.platform);
+
+        if (!title || !date || !urlOrId) continue;
+
+        events.push({
+          title,
+          date,
+          platform,
+          urlOrId,
+          slug,
+          image: typeof data.image === "string" ? data.image : undefined,
+        });
+      } catch (err) {
+        console.error(`Error parsing event markdown file at ${path}:`, err);
+      }
+    }
+
+    return events.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return (Number.isNaN(dateA) ? 0 : dateA) - (Number.isNaN(dateB) ? 0 : dateB);
+    });
+  } catch (err) {
+    console.error("Critical error in getAllExternalEvents:", err);
+    return [];
+  }
+}
+
 /**
  * Calculates the estimated reading time for a given text.
  * Average reading speed is ~200-250 words per minute.
@@ -85,4 +133,8 @@ function calculateReadingTime(content: string): string {
   const minutes = noOfWords / wordsPerMinute;
   const readTime = Math.ceil(minutes);
   return `${readTime} min read`;
+}
+
+function normalizePlatform(value: unknown): EventPlatform {
+  return value === "Eventbrite" ? "Eventbrite" : "Luma";
 }

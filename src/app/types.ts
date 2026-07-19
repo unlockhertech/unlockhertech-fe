@@ -37,3 +37,14 @@ export interface BlogPost {
   readingTime?: string;
   imageUrl?: string;
 }
+
+export type EventPlatform = "Luma" | "Eventbrite";
+
+export interface ExternalEvent {
+  title: string;
+  date: string;
+  platform: EventPlatform;
+  urlOrId: string;
+  slug: string;
+  image?: string;
+}

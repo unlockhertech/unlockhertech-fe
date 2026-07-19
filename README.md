@@ -5,9 +5,9 @@ The Unlock Her Tech website is a React-based application designed to support and
 ## Stack
 
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Framework:** [React 19](https://react.dev/) (using [SWC](https://swc.rs/))
-- **Bundler:** [Vite 7](https://vite.dev/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Framework:** [React](https://react.dev/) (using [SWC](https://swc.rs/))
+- **Bundler:** [Vite](https://vite.dev/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **Component Library:** [Radix UI](https://www.radix-ui.com/) (customized via [shadcn/ui](https://ui.shadcn.com/))
 - **Package Manager:** npm
 - **Testing:** [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
@@ -50,9 +50,11 @@ The Unlock Her Tech website is a React-based application designed to support and
 ## Scripts
 
 - `npm run dev`: Starts the Vite development server with HMR.
-- `npm run build`: Runs TypeScript type checking (`tsc -b`) and compiles the application for production using Vite.
+- `npm run build`: Compiles the application for production using Vite (`--target es2022`).
+- `npm run build:local`: Local production build variant (same as `build`).
 - `npm run lint`: Runs ESLint to check for code quality and style issues.
 - `npm run preview`: Locally previews the production build.
+- `npm run postinstall`: Applies local dependency patches via `patch-package`.
 - `npx vitest`: Runs the test suite using Vitest.
 - `npx vitest --ui`: Runs Vitest with a graphical user interface.
 - `npx vitest run --coverage`: Runs tests and generates a coverage report.
@@ -70,6 +72,22 @@ For TinaCMS (content management), you need to set up the following environment v
 
 - `TINA_CLIENT_ID`: Your TinaCloud project Client ID.
 - `TINA_TOKEN`: Your TinaCloud project Content (Read-only) Token.
+
+### Feature Flags
+
+Feature flags are defined in `.env` (see `.env.example`):
+
+- `VITE_ENABLE_BLOG`: Enables/disables blog routes and blog navigation.
+- `VITE_ENABLE_EVENTS`: Enables/disables events routes, events navigation, and homepage event highlights.
+
+## Terraform State Security
+
+If Terraform is used for infrastructure around this project, never commit Terraform state to git.
+
+- Terraform state often contains sensitive values (tokens, passwords, provider credentials).
+- This repository ignores common Terraform state and local override files via `.gitignore`.
+- If a state file was ever committed, treat secrets as exposed: rotate credentials immediately and clean git history.
+- Prefer an encrypted remote backend (for example, Terraform Cloud or cloud object storage with encryption + strict access controls).
 
 ## Tests
 
