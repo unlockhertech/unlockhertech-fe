@@ -67,30 +67,37 @@ export function EventsPage() {
 
       <main className="max-w-7xl mx-auto px-4 space-y-12">
         {/* Featured She Leads Tech Practices Banner */}
-        <section className="bg-linear-to-r from-purple-900 via-neutral-900 to-neutral-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-white/10 overflow-hidden relative">
+        <section className="bg-linear-to-br from-[#8a1f55] via-[#b42970] to-[#e8563a] text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-white/20 overflow-hidden relative">
+          {/* Background glow accents */}
+          <div className="absolute -top-24 -left-20 w-80 h-80 bg-brand-pink/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-20 w-80 h-80 bg-brand-blue/30 rounded-full blur-3xl pointer-events-none" />
+
           <div className="grid md:grid-cols-12 gap-8 items-center relative z-10">
             <div className="md:col-span-4 flex justify-center">
-              <img
-                src={imgSheLeadsTech}
-                alt="She Leads Tech Practices"
-                className="w-full max-w-xs h-auto rounded-2xl border border-white/20 shadow-md object-cover aspect-video"
-              />
+              <div className="relative max-w-xs w-full">
+                <div className="absolute -inset-1 bg-linear-to-r from-brand-pink via-brand-yellow to-brand-blue rounded-2xl blur-sm opacity-80" />
+                <img
+                  src={imgSheLeadsTech}
+                  alt="She Leads Tech Practices"
+                  className="relative w-full h-auto rounded-2xl border border-white/20 shadow-md object-cover aspect-video bg-white"
+                />
+              </div>
             </div>
             <div className="md:col-span-8">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-pink-300 text-xs font-bold uppercase tracking-wider mb-3">
-                <HiSparkles className="w-3.5 h-3.5 text-brand-coral" /> Community Initiative
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider mb-3">
+                <HiSparkles className="w-3.5 h-3.5 text-brand-yellow" /> Community Initiative
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold mb-2">
+              <h2 className="text-2xl sm:text-3xl font-extrabold mb-2 text-white">
                 She Leads Tech Practices: LeetCode & Problem Solving Series
               </h2>
-              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+              <p className="text-white/90 text-sm leading-relaxed mb-6 font-medium">
                 Ongoing series held every two weeks. Join live interactive sessions to solve problems together, pair program, and master technical interview patterns in a supportive environment.
               </p>
               <Link
                 to="/practices"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-bold text-sm transition-all shadow-md"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold text-sm transition-all shadow-md hover:-translate-y-0.5"
               >
-                Learn More & View Details <HiArrowRight className="w-4 h-4" />
+                Learn More & View Details <HiArrowRight className="w-4 h-4 text-brand-coral" />
               </Link>
             </div>
           </div>
