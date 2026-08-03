@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import type { UserConfig } from 'vite'
@@ -13,23 +13,9 @@ interface VitestConfigExport extends UserConfig {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-      react(),
+    react(),
     tailwindcss(),
-    // Intercepts the config after Tina sets it, but before esbuild crashes
-    {
-      name: 'fix-tina-vite-crash',
-      config(config) {
-        if (config.define && typeof config.define['process.env'] === 'object') {
-          // Replaces the raw object with a stringified empty object
-          config.define['process.env'] = '"{}"';
-        }
-      }
-    }],
-  define: {
-    // This forces process.env to be a plain object,
-    // overriding the broken 'new Object({})' from Tina
-    'process.env': JSON.stringify({}),
-  },
+  ],
   build: {
     target: 'es2022',
   },
@@ -49,7 +35,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      buffer: 'buffer',
+      'react/compiler-runtime': path.resolve(__dirname, './src/app/utils/emptyCompilerRuntime.ts'),
     },
   },
   test: {

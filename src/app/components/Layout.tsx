@@ -4,6 +4,7 @@ import { HiBars3, HiXMark, HiChevronDown } from "react-icons/hi2";
 import logoImage from "../../assets/3b75a23b50c05dd92e772d611097d91604e0b5b1.png";
 import { MiniPlayer } from "./MiniPlayer";
 import { CookieBanner } from "./CookieBanner";
+import { AnnouncementBar } from "./AnnouncementBar";
 import { AudioPlayerProvider } from "../context/AudioPlayerContext";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { BERRY, ORANGE, BLUE, PINK, GREEN, platforms } from "../data";
@@ -25,16 +26,20 @@ function LayoutInner() {
   const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === 'true';
 
   const navLinks = [
-    { to: "/episodes", label: "Episodes" },
+    { to: "/practices", label: "Practices", isNew: true },
+    { to: "/episodes",  label: "Episodes" },
     ...(enableEvents ? [{ to: "/events", label: "Events" }] : []),
-    { to: "/about",    label: "About"    },
-    { to: "/team",     label: "Team"     },
+    { to: "/about",     label: "About"    },
+    { to: "/team",      label: "Team"     },
     ...(enableBlog ? [{ to: "/blog", label: "Blog" }] : []),
   ];
 
   return (
     <div className="min-h-screen flex flex-col bg-stone-50">
       <ScrollRestoration />
+
+      {/* ── Top Announcement Banner ────────────────────────────────────────────── */}
+      <AnnouncementBar />
 
       {/* ── Nav ────────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 shadow-sm bg-brand-coral">
@@ -53,18 +58,23 @@ function LayoutInner() {
 
             {/* Desktop links */}
             <div className="hidden md:flex items-center gap-6">
-              {navLinks.map(({ to, label }) => (
+              {navLinks.map(({ to, label, isNew }) => (
                 <NavLink
                   key={to}
                   to={to}
                   className={({ isActive }) =>
-                    `text-sm transition-all pb-0.5 ${isActive
+                    `text-sm transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
                       ? "text-white border-b-2 border-white"
                       : "text-white/70 hover:text-white"
                     }`
                   }
                 >
-                  {label}
+                  <span>{label}</span>
+                  {isNew && (
+                    <span className="px-1.5 py-0.2 rounded bg-white text-brand-coral font-extrabold text-[0.65rem] leading-none uppercase tracking-wider shadow-xs">
+                      NEW
+                    </span>
+                  )}
                 </NavLink>
               ))}
 
@@ -113,19 +123,24 @@ function LayoutInner() {
         {mobileOpen && (
           <div className="md:hidden border-t border-white/20 bg-brand-coral">
             <div className="px-4 py-4 space-y-1">
-              {navLinks.map(({ to, label }) => (
+              {navLinks.map(({ to, label, isNew }) => (
                 <NavLink
                   key={to}
                   to={to}
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `block px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                    `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
                       ? "bg-white/20 text-white font-semibold"
                       : "text-white/80 hover:bg-white/10 hover:text-white"
                     }`
                   }
                 >
-                  {label}
+                  <span>{label}</span>
+                  {isNew && (
+                    <span className="px-2 py-0.5 rounded bg-white text-brand-coral font-extrabold text-[0.65rem] uppercase tracking-wider">
+                      NEW
+                    </span>
+                  )}
                 </NavLink>
               ))}
               <div className="pt-3 mt-3 border-t border-white/20">

@@ -15,9 +15,10 @@ import "prismjs/components/prism-css";
 import "prismjs/components/prism-json";
 import { HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineCalendar, HiOutlineUser, HiOutlineTag, HiOutlineShare } from "react-icons/hi2";
 import { FaLinkedinIn, FaXTwitter, FaWhatsapp } from "react-icons/fa6";
+import { PortableText } from "@portabletext/react";
 import type { BlogPost } from "../types";
 import { useMetaData } from "../hooks/useMetaData";
-import { getAllBlogPosts, getBlogPostBySlug } from "../utils/markdown";
+import { getAllBlogPosts, getBlogPostBySlug } from "../utils/sanity";
 import { ImageWithFallback } from "../components/ImageWithFallback";
 
 export function BlogPostPage() {
@@ -173,7 +174,11 @@ export function BlogPostPage() {
       </header>
 
       <div className="prose prose-lg prose-rose max-w-none mb-16 blog-content">
-        <ReactMarkdown>{post.content || ""}</ReactMarkdown>
+        {post.body && Array.isArray(post.body) && post.body.length > 0 ? (
+          <PortableText value={post.body} />
+        ) : (
+          <ReactMarkdown>{post.content || ""}</ReactMarkdown>
+        )}
       </div>
 
       <nav className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-100 pt-12">

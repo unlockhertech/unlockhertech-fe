@@ -6,7 +6,10 @@ import imgShelly  from "../assets/8175fa61c548bd171865cd1d786abaac3950952e.jpeg"
 import imgPritty from '../assets/91e96dfd067ea6afbddec7a62daaf34f07638b4a.jpg';
 import imgJen from '../assets/cd6f99d060c133a423b34da6adc91fd0e3455bc8.jpg';
 import imgRupi from '../assets/5865071a697a5a7a468424e514c3437692713cc9.jpeg';
-import imgTim from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.jpeg'
+import imgTim from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.jpeg';
+import imgSheLeadsTech from '../assets/a6601dd5-4c26-44d0-9828-952122709520.jpeg';
+
+export { imgSheLeadsTech };
 // ── Brand palette ──────────────────────────────────────────────────────────────
 export const BERRY  = "#b42970";
 export const ORANGE = "#e8563a";

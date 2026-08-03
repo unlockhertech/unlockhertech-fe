@@ -139,10 +139,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# TinaCMS
-tina/__generated__
-tina/tina-lock.json
-
 # Terraform (state can contain plaintext secrets)
 .terraform/
 *.tfstate

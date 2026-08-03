@@ -8,6 +8,8 @@ import { CookiePolicy } from "./pages/CookiePolicy";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { BlogIndexPage } from "./pages/BlogIndexPage";
 import { EventsPage } from "./pages/EventsPage";
+import { PracticesPage } from "./pages/PracticesPage";
+import { AdminPage } from "./pages/AdminPage";
 import { RouteErrorFallback } from "./components/RouteErrorFallback";
 
 const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
@@ -24,22 +26,20 @@ const eventRoutes = enableEvents ? [
 
 export const router = createBrowserRouter([
   {
+    path: "/admin/*",
+    Component: AdminPage,
+  },
+  {
     path: "/",
     Component: Layout,
     ErrorBoundary: RouteErrorFallback,
     children: [
       { index: true,       Component: HomePage     },
+      { path: "practices", Component: PracticesPage },
       { path: "episodes",  Component: EpisodesPage },
       { path: "about",     Component: AboutPage    },
       { path: "team",      Component: TeamPage     },
       { path: "cookie-policy", Component: CookiePolicy },
-      {
-        path: "admin",
-        Component: () => {
-          window.location.assign("/admin/index.html");
-          return null;
-        },
-      },
       ...eventRoutes,
       ...blogRoutes,
     ],

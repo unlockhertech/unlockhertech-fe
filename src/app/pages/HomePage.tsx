@@ -7,11 +7,12 @@ import { LumaCheckoutButton } from "../components/LumaCheckoutButton";
 import { WomanSitting, WheelChair, WomanStanding } from "../components/Illustrations";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { WelcomeStrip } from "../components/WelcomeStrip";
+import { SheLeadsTechSpotlight } from "../components/SheLeadsTechSpotlight";
 import { BlogCard } from "../components/BlogCard";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { useRssFeed } from "../hooks/useRssFeed";
 import { useMetaData } from "../hooks/useMetaData";
-import { getAllBlogPosts, getAllExternalEvents } from "../utils/markdown";
+import { getAllBlogPosts, getAllExternalEvents } from "../utils/sanity";
 import { formatTime } from "../utils/format";
 import { getEventExternalUrl } from "../utils/luma";
 import {
@@ -592,6 +593,8 @@ export function HomePage() {
         setShowPlatforms={setShowPlatforms}
         nowPlayingContent={nowPlayingContent}
       />
+
+      <SheLeadsTechSpotlight />
 
       <WelcomeStrip />
 

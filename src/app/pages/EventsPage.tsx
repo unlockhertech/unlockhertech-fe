@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
+import { Link } from "react-router";
+import { HiOutlineArrowTopRightOnSquare, HiSparkles, HiArrowRight } from "react-icons/hi2";
 import type { ExternalEvent } from "../types";
 import { useMetaData } from "../hooks/useMetaData";
-import { getAllExternalEvents } from "../utils/markdown";
+import { getAllExternalEvents } from "../utils/sanity";
 import { getEventExternalUrl } from "../utils/luma";
 import { LumaCheckoutButton } from "../components/LumaCheckoutButton";
+import { imgSheLeadsTech } from "../data";
 
 function formatEventDate(dateValue: string): string {
   const parsedDate = new Date(dateValue);
@@ -63,7 +65,36 @@ export function EventsPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4">
+      <main className="max-w-7xl mx-auto px-4 space-y-12">
+        {/* Featured She Leads Tech Practices Banner */}
+        <section className="bg-linear-to-r from-purple-900 via-neutral-900 to-neutral-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-white/10 overflow-hidden relative">
+          <div className="grid md:grid-cols-12 gap-8 items-center relative z-10">
+            <div className="md:col-span-4 flex justify-center">
+              <img
+                src={imgSheLeadsTech}
+                alt="She Leads Tech Practices"
+                className="w-full max-w-xs h-auto rounded-2xl border border-white/20 shadow-md object-cover aspect-video"
+              />
+            </div>
+            <div className="md:col-span-8">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-pink-300 text-xs font-bold uppercase tracking-wider mb-3">
+                <HiSparkles className="w-3.5 h-3.5 text-brand-coral" /> Community Initiative
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold mb-2">
+                She Leads Tech Practices: LeetCode & Problem Solving Series
+              </h2>
+              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                Ongoing series held every two weeks. Join live interactive sessions to solve problems together, pair program, and master technical interview patterns in a supportive environment.
+              </p>
+              <Link
+                to="/practices"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-bold text-sm transition-all shadow-md"
+              >
+                Learn More & View Details <HiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
         {events.length === 0 ? (
           <div className="py-20 text-center bg-white rounded-3xl border border-gray-200">
             <h3 className="text-2xl font-bold text-gray-900 mb-2">No events published yet</h3>

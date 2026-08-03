@@ -34,6 +34,7 @@ export interface BlogPost {
   canonicalUrl: string;
   slug: string;
   content?: string;
+  body?: unknown[];
   readingTime?: string;
   imageUrl?: string;
 }

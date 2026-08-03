@@ -4,7 +4,7 @@ import { HiOutlineTag, HiXMark } from "react-icons/hi2";
 import type { BlogPost } from "../types";
 import { useMetaData } from "../hooks/useMetaData";
 import { BlogCard } from "../components/BlogCard";
-import { getAllBlogPosts } from "../utils/markdown";
+import { getAllBlogPosts } from "../utils/sanity";
 
 export function BlogIndexPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
