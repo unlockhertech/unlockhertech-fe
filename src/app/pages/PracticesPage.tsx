@@ -11,7 +11,7 @@ import {
   HiSparkles,
   HiHeart
 } from "react-icons/hi2";
-import { imgSheLeadsTech } from "../data";
+import { imgSheLeadsTech, BERRY } from "../data";
 import { useMetaData } from "../hooks/useMetaData";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 
@@ -38,7 +38,7 @@ export function PracticesPage() {
       icon: HiAcademicCap,
       title: "Master Interview Patterns",
       description: "Recognize patterns like Two Pointers, Sliding Window, Trees & Graphs quickly.",
-      color: "bg-amber-50 text-amber-600 border-amber-100",
+      color: "bg-amber-50 text-brand-coral border-amber-100",
     },
     {
       icon: HiChatBubbleLeftRight,
@@ -50,7 +50,7 @@ export function PracticesPage() {
       icon: HiRocketLaunch,
       title: "Build Interview Confidence",
       description: "Overcome interview anxiety with regular, structured practice among peers.",
-      color: "bg-purple-50 text-purple-600 border-purple-100",
+      color: "bg-pink-50 text-[#b42970] border-pink-100",
     },
   ];
 
@@ -63,48 +63,48 @@ export function PracticesPage() {
   return (
     <div className="bg-stone-50 min-h-screen">
       {/* ── Hero Section ─────────────────────────────────────────────────── */}
-      <header className="relative bg-linear-to-b from-purple-900 via-neutral-900 to-neutral-900 text-white overflow-hidden py-20 lg:py-24">
+      <header className="relative bg-linear-to-br from-[#8a1f55] via-[#b42970] to-[#e8563a] text-white overflow-hidden py-20 lg:py-24">
         {/* Glow backdrop effects */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-coral/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 -right-24 w-96 h-96 bg-brand-blue/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-pink/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -right-24 w-96 h-96 bg-brand-blue/30 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             {/* Left text column */}
             <div className="lg:col-span-7 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-pink-300 border border-white/15 text-sm font-semibold mb-6">
-                <HiSparkles className="w-4 h-4 text-brand-coral animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20 text-sm font-semibold mb-6">
+                <HiSparkles className="w-4 h-4 text-brand-yellow animate-pulse" />
                 <span>Community Initiative by Unlock Her Tech</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 text-white">
                 She Leads Tech <br />
-                <span className="bg-linear-to-r from-brand-coral via-brand-pink to-brand-blue bg-clip-text text-transparent">
+                <span className="text-brand-pink">
                   Practices
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-gray-300 font-medium mb-8 leading-relaxed max-w-2xl">
+              <p className="text-lg sm:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-2xl">
                 LeetCode & Problem Solving Series designed to help developers strengthen coding skills, master algorithmic patterns, and ace technical interviews in a supportive environment.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <a
                   href="#schedule"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-bold transition-all shadow-lg hover:shadow-brand-coral/25 flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2"
                 >
-                  <HiCalendarDays className="w-5 h-5" />
+                  <HiCalendarDays className="w-5 h-5 text-brand-coral" />
                   Explore Bi-Weekly Schedule
                 </a>
                 <Link
                   to="/events"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/30 font-bold transition-all flex items-center justify-center gap-2"
                 >
                   View Upcoming Sessions
                 </Link>
               </div>
 
-              <div className="mt-8 flex items-center justify-center lg:justify-start gap-6 text-sm text-gray-400">
+              <div className="mt-8 flex items-center justify-center lg:justify-start gap-6 text-sm text-white/80 font-medium">
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse" />
                   Bi-weekly live sessions
@@ -117,8 +117,8 @@ export function PracticesPage() {
             {/* Right Logo / Graphic Card */}
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative group max-w-md w-full">
-                <div className="absolute -inset-1 bg-linear-to-r from-brand-coral via-brand-pink to-brand-blue rounded-3xl blur-lg opacity-75 group-hover:opacity-100 transition duration-500" />
-                <div className="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden border border-gray-100 text-neutral-900">
+                <div className="absolute -inset-1 bg-linear-to-r from-brand-pink via-brand-yellow to-brand-blue rounded-3xl blur-lg opacity-75 group-hover:opacity-100 transition duration-500" />
+                <div className="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden border border-white/20 text-neutral-900">
                   <img
                     src={imgSheLeadsTech}
                     alt="She Leads Tech Practices Logo"
@@ -178,7 +178,7 @@ export function PracticesPage() {
             })}
 
             {/* Special Highlight Card */}
-            <div className="bg-linear-to-br from-brand-coral to-brand-pink text-white rounded-3xl p-8 shadow-xl flex flex-col justify-between">
+            <div className="bg-linear-to-br from-brand-coral to-[#b42970] text-white rounded-3xl p-8 shadow-xl flex flex-col justify-between">
               <div>
                 <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-6 text-white">
                   <HiHeart className="w-7 h-7" />
@@ -227,28 +227,28 @@ export function PracticesPage() {
 
             {/* Right: Cadence & Progression */}
             <div className="lg:col-span-6">
-              <div className="bg-linear-to-br from-neutral-900 to-neutral-800 text-white rounded-3xl p-8 sm:p-10 shadow-xl border border-neutral-700">
-                <div className="inline-flex items-center gap-2 text-pink-400 font-bold text-xs uppercase tracking-wider mb-4">
+              <div className="bg-linear-to-br from-[#8a1f55] via-[#b42970] to-[#e8563a] text-white rounded-3xl p-8 sm:p-10 shadow-xl border border-white/20">
+                <div className="inline-flex items-center gap-2 text-brand-yellow font-bold text-xs uppercase tracking-wider mb-4">
                   <span>🌱 Bi-Weekly Progression</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-extrabold mb-4">
                   Progressive Skill Growth
                 </h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                <p className="text-white/90 text-sm leading-relaxed mb-6">
                   This is an ongoing series held <strong className="text-white">every two weeks</strong>. We start with Easy and Medium problems, gradually progressing to harder challenges as we build our skills together.
                 </p>
 
                 <div className="space-y-4 text-sm">
-                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
-                    <span className="px-3 py-1 rounded-full bg-brand-green/20 text-emerald-300 font-bold text-xs">Phase 1</span>
+                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
+                    <span className="px-3 py-1 rounded-full bg-brand-green text-white font-bold text-xs">Phase 1</span>
                     <span>Easy & Foundational Algorithmic Warmups</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
-                    <span className="px-3 py-1 rounded-full bg-brand-blue/20 text-blue-300 font-bold text-xs">Phase 2</span>
+                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
+                    <span className="px-3 py-1 rounded-full bg-brand-blue text-white font-bold text-xs">Phase 2</span>
                     <span>Medium Level Core Interview Patterns</span>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
-                    <span className="px-3 py-1 rounded-full bg-brand-coral/20 text-pink-300 font-bold text-xs">Phase 3</span>
+                  <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
+                    <span className="px-3 py-1 rounded-full bg-brand-yellow text-neutral-900 font-bold text-xs">Phase 3</span>
                     <span>Advanced Problem-Solving & Mock Discussions</span>
                   </div>
                 </div>
