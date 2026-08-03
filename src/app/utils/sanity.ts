@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
+import {createImageUrlBuilder} from "@sanity/image-url";
+import type {SanityImageSource} from "@sanity/image-url";
 import type { BlogPost, ExternalEvent } from "../types";
 
 export const sanityClient = createClient({
@@ -9,9 +10,9 @@ export const sanityClient = createClient({
   useCdn: true,
 });
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
-export function urlFor(source: Parameters<typeof builder.image>[0]) {
+export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
@@ -91,9 +92,10 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 
 /**
- * Fetches all external events, sorted by date ascending.
+ * Fetches external events, sorted by date ascending.
+ * Automatically filters out past events unless `includePast` is set to true.
  */
-export async function getAllExternalEvents(): Promise<ExternalEvent[]> {
+export async function getAllExternalEvents(includePast = false): Promise<ExternalEvent[]> {
   try {
     if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
       console.warn("Sanity Project ID not configured. Returning empty event list.");
@@ -109,7 +111,17 @@ export async function getAllExternalEvents(): Promise<ExternalEvent[]> {
       "image": image.asset->url
     }`;
 
-    return await sanityClient.fetch(query);
+    const events: ExternalEvent[] = await sanityClient.fetch(query);
+    if (includePast) return events;
+
+    const now = Date.now();
+    const THREE_HOURS_MS = 3 * 60 * 60 * 1000; // Keep event card visible for 3 hours after start time
+
+    return events.filter((event) => {
+      const eventTime = new Date(event.date).getTime();
+      if (Number.isNaN(eventTime)) return true;
+      return eventTime + THREE_HOURS_MS >= now;
+    });
   } catch (error) {
     console.error("Error fetching external events from Sanity:", error);
     return [];

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { HiSparkles, HiXMark, HiArrowRight } from "react-icons/hi2";
 

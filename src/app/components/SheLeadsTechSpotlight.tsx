@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 import { HiArrowRight, HiSparkles, HiCodeBracket, HiUsers, HiCalendarDays } from "react-icons/hi2";
 import { imgSheLeadsTech } from "../data";

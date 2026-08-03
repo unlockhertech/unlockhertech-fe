@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { HiOutlineArrowTopRightOnSquare, HiSparkles, HiArrowRight } from "react-icons/hi2";
+import { HiOutlineArrowTopRightOnSquare, HiSparkles, HiArrowRight, HiClock } from "react-icons/hi2";
 import type { ExternalEvent } from "../types";
 import { useMetaData } from "../hooks/useMetaData";
 import { getAllExternalEvents } from "../utils/sanity";
@@ -22,18 +22,26 @@ function formatEventDate(dateValue: string): string {
   }).format(parsedDate);
 }
 
+function isEventUpcoming(dateValue: string): boolean {
+  const eventTime = new Date(dateValue).getTime();
+  if (Number.isNaN(eventTime)) return true;
+  const THREE_HOURS_MS = 3 * 60 * 60 * 1000; // Keep card visible for 3 hours after start time
+  return eventTime + THREE_HOURS_MS >= Date.now();
+}
+
 export function EventsPage() {
   useMetaData("Events", "Join upcoming Unlock Her Tech events and secure your spot in seconds.");
 
-  const [events, setEvents] = useState<ExternalEvent[]>([]);
+  const [allEvents, setAllEvents] = useState<ExternalEvent[]>([]);
+  const [showPast, setShowPast] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchEvents() {
       setLoading(true);
       try {
-        const eventList = await getAllExternalEvents();
-        setEvents(eventList);
+        const eventList = await getAllExternalEvents(true);
+        setAllEvents(eventList);
       } catch (err) {
         console.error("Failed to load events:", err);
       } finally {
@@ -51,6 +59,10 @@ export function EventsPage() {
       </div>
     );
   }
+
+  const upcomingEvents = allEvents.filter((e) => isEventUpcoming(e.date));
+  const pastEvents = allEvents.filter((e) => !isEventUpcoming(e.date));
+  const displayedEvents = showPast ? allEvents : upcomingEvents;
 
   return (
     <div className="bg-stone-50 min-h-screen pb-20">
@@ -102,50 +114,104 @@ export function EventsPage() {
             </div>
           </div>
         </section>
-        {events.length === 0 ? (
-          <div className="py-20 text-center bg-white rounded-3xl border border-gray-200">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No events published yet</h3>
-            <p className="text-gray-600">Please check back soon for new sessions.</p>
+
+        {displayedEvents.length === 0 ? (
+          <div className="py-20 text-center bg-white rounded-3xl border border-gray-200 shadow-xs">
+            <div className="w-12 h-12 rounded-full bg-brand-pink/20 text-brand-coral flex items-center justify-center mx-auto mb-4">
+              <HiClock className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">No upcoming events right now</h3>
+            <p className="text-gray-600 max-w-md mx-auto">
+              Check back soon for new sessions or explore our ongoing bi-weekly She Leads Tech Practices!
+            </p>
+            <div className="mt-6">
+              <Link
+                to="/practices"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-brand-coral text-white font-bold text-sm hover:opacity-90 transition-opacity"
+              >
+                Explore She Leads Tech Practices <HiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {events.map((event) => {
-              const externalUrl = getEventExternalUrl(event.urlOrId);
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">
+                {showPast ? "All Events" : "Upcoming Sessions"}
+              </h2>
+              {pastEvents.length > 0 && (
+                <button
+                  onClick={() => setShowPast(!showPast)}
+                  className="text-xs font-semibold text-brand-coral hover:underline"
+                >
+                  {showPast ? "Hide Past Events" : `Show Past Events (${pastEvents.length})`}
+                </button>
+              )}
+            </div>
 
-              return (
-                <article key={event.slug} className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm flex flex-col">
-                  {event.image ? (
-                    <img src={event.image} alt={event.title} className="h-44 w-full object-cover" loading="lazy" />
-                  ) : (
-                    <div className="h-44 bg-brand-coral/10 flex items-center justify-center text-brand-coral font-semibold">Event</div>
-                  )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {displayedEvents.map((event) => {
+                const externalUrl = getEventExternalUrl(event.urlOrId);
+                const isUpcoming = isEventUpcoming(event.date);
 
-                  <div className="p-6 flex-1 flex flex-col">
-                    <p className="text-xs uppercase tracking-wider text-brand-coral font-bold mb-2">{event.platform}</p>
-                    <h2 className="text-xl font-extrabold text-gray-900 mb-3">{event.title}</h2>
-                    <p className="text-sm text-gray-600 mb-6">{formatEventDate(event.date)}</p>
-
-                    {event.platform === "Luma" ? (
-                      <LumaCheckoutButton
-                        urlOrId={event.urlOrId}
-                        className="mt-auto px-5 py-2.5 rounded-full bg-brand-coral text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-                      >
-                        Get tickets
-                      </LumaCheckoutButton>
+                return (
+                  <article
+                    key={event.slug}
+                    className={`bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-xs flex flex-col ${
+                      !isUpcoming ? "opacity-70 bg-gray-50" : ""
+                    }`}
+                  >
+                    {event.image ? (
+                      <img src={event.image} alt={event.title} className="h-44 w-full object-cover" loading="lazy" />
                     ) : (
-                      <a
-                        href={externalUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
-                      >
-                        Open event <HiOutlineArrowTopRightOnSquare className="w-4 h-4" />
-                      </a>
+                      <div className="h-44 bg-brand-coral/10 flex items-center justify-center text-brand-coral font-semibold">
+                        Event
+                      </div>
                     )}
-                  </div>
-                </article>
-              );
-            })}
+
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs uppercase tracking-wider text-brand-coral font-bold">
+                          {event.platform}
+                        </span>
+                        {!isUpcoming && (
+                          <span className="text-[0.65rem] uppercase font-bold px-2 py-0.5 rounded-full bg-gray-200 text-gray-600">
+                            Past Event
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="text-xl font-extrabold text-gray-900 mb-3">{event.title}</h3>
+                      <p className="text-sm text-gray-600 mb-6">{formatEventDate(event.date)}</p>
+
+                      {isUpcoming ? (
+                        event.platform === "Luma" ? (
+                          <LumaCheckoutButton
+                            urlOrId={event.urlOrId}
+                            className="mt-auto px-5 py-2.5 rounded-full bg-brand-coral text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                          >
+                            Get tickets
+                          </LumaCheckoutButton>
+                        ) : (
+                          <a
+                            href={externalUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                          >
+                            Open event <HiOutlineArrowTopRightOnSquare className="w-4 h-4" />
+                          </a>
+                        )
+                      ) : (
+                        <div className="mt-auto text-xs font-semibold text-gray-400 py-2 text-center bg-gray-100 rounded-full">
+                          Session Concluded
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         )}
       </main>
