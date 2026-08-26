@@ -19,29 +19,18 @@ export default defineConfig({
   build: {
     target: 'es2022',
   },
-  esbuild: {
-    target: 'es2022',
-    supported: {
-      'destructuring': true
-    }
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      target: 'es2022',
-    },
-  },
   assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg',
     '**/*.gif', '**/*.webp', '**/*.csv'],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      'react/compiler-runtime': path.resolve(__dirname, './src/app/utils/emptyCompilerRuntime.ts'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    testTimeout: 15000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

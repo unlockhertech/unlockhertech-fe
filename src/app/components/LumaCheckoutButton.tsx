@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { ensureLumaCheckoutScript, getEventExternalUrl, getLumaEventId, openLumaCheckout } from "../utils/luma";
 
 interface LumaCheckoutButtonProps {
   urlOrId: string;
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function LumaCheckoutButton({ urlOrId, className, children }: Readonly<LumaCheckoutButtonProps>) {

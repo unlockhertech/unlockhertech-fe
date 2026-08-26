@@ -1,26 +1,26 @@
 import { Link } from "react-router";
-import { HiArrowRight, HiSparkles, HiCodeBracket, HiUsers, HiCalendarDays } from "react-icons/hi2";
+import { HiArrowRight, HiBolt, HiCodeBracket, HiUsers, HiCalendarDays } from "react-icons/hi2";
 import { imgSheLeadsTech } from "../data";
+import { BrandPatternOverlay } from "./BrandPatternBackground";
 
 export function SheLeadsTechSpotlight() {
   return (
-    <section className="py-16 bg-linear-to-br from-[#8a1f55] via-[#b42970] to-[#e8563a] text-white relative overflow-hidden">
-      {/* Background glow accents */}
-      <div className="absolute -top-24 -left-20 w-80 h-80 bg-brand-pink/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -right-20 w-80 h-80 bg-brand-blue/30 rounded-full blur-3xl pointer-events-none" />
+    <section className="py-16 bg-brand-coral text-white relative overflow-hidden">
+      {/* Brand Pattern Background */}
+      <BrandPatternOverlay />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           
           {/* Logo / Asset graphic */}
           <div className="lg:col-span-5 flex justify-center order-2 lg:order-1">
-            <div className="relative group max-w-sm w-full">
+            <div className="relative group max-w-xs sm:max-w-sm w-full">
               <div className="absolute -inset-1 bg-linear-to-r from-brand-pink via-brand-yellow to-brand-blue rounded-3xl blur-md opacity-80 group-hover:opacity-100 transition duration-300" />
-              <div className="relative bg-white rounded-3xl p-4 shadow-2xl overflow-hidden border border-white/20">
+              <div className="relative bg-white rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden border border-white/20 aspect-square flex items-center justify-center">
                 <img
                   src={imgSheLeadsTech}
                   alt="She Leads Tech Practices Logo"
-                  className="w-full h-auto rounded-2xl object-cover aspect-video"
+                  className="w-full h-full max-h-64 object-contain"
                 />
               </div>
             </div>
@@ -29,7 +29,7 @@ export function SheLeadsTechSpotlight() {
           {/* Text content */}
           <div className="lg:col-span-7 text-center lg:text-left order-1 lg:order-2">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20 text-xs font-bold uppercase tracking-wider mb-4">
-              <HiSparkles className="w-3.5 h-3.5 text-brand-yellow" />
+              <HiBolt className="w-3.5 h-3.5 text-brand-yellow" />
               <span>New Initiative by Unlock Her Tech</span>
             </div>
 

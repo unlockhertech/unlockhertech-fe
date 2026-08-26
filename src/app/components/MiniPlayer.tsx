@@ -1,8 +1,8 @@
+import type { ChangeEvent } from "react";
 import { HiPlay, HiPause, HiXMark, HiOutlineArrowTopRightOnSquare, HiOutlineExclamationCircle } from "react-icons/hi2";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { platforms } from "../data";
 import { formatTime } from "../utils/format";
-import React from "react";
 
 export function MiniPlayer() {
   const { currentEpisode, isPlaying, currentTime, duration, hasError, toggle, seek, dismiss } = useAudioPlayer();
@@ -11,7 +11,7 @@ export function MiniPlayer() {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  function handleProgressChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleProgressChange(e: ChangeEvent<HTMLInputElement>) {
     if (!duration) return;
     seek(Number.parseFloat(e.target.value));
   }

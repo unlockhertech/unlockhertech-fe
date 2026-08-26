@@ -11,6 +11,7 @@ export function BlogCard({ post }: Readonly<BlogCardProps>) {
   return (
     <Link 
       to={`/blog/${post.slug}`}
+      aria-label={`Read article: ${post.title}`}
       className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col"
     >
       {post.imageUrl && (
@@ -39,9 +40,9 @@ export function BlogCard({ post }: Readonly<BlogCardProps>) {
           )}
         </div>
         
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-brand-coral transition-colors line-clamp-2">
+        <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-brand-coral transition-colors line-clamp-2">
           {post.title}
-        </h2>
+        </h3>
         
         <p className="text-gray-600 mb-8 line-clamp-3 leading-relaxed">
           {post.content?.substring(0, 160).replace(/[#*`]/g, '')}...

@@ -1,0 +1,241 @@
+import { defineType, defineField, type SanityDocument } from 'sanity';
+
+export const jobSchema = defineType({
+  name: 'job',
+  title: 'Job Posting',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Job Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+      placeholder: 'e.g. Senior Frontend Engineer',
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: (doc: SanityDocument) => `${(doc.company as string | undefined) || 'job'}-${(doc.title as string | undefined) || 'role'}`,
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'company',
+      title: 'Company Name',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'companyLogo',
+      title: 'Company Logo',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'companyLogoUrl',
+      title: 'External Company Logo URL (Optional fallback)',
+      type: 'url',
+    }),
+    defineField({
+      name: 'category',
+      title: 'Job Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Engineering & Dev', value: 'Engineering & Dev' },
+          { title: 'Product & Design', value: 'Product & Design' },
+          { title: 'Data & Research', value: 'Data & Research' },
+          { title: 'Non-Technical Tech', value: 'Non-Technical Tech' },
+          { title: 'Freelance & Contract', value: 'Freelance & Contract' },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location / Region',
+      type: 'string',
+      placeholder: 'e.g. Remote (Global), London (Hybrid), San Francisco, CA',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'remoteStatus',
+      title: 'Workplace Model',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Remote (Global)', value: 'Remote (Global)' },
+          { title: 'Remote (US/Americas)', value: 'Remote (US/Americas)' },
+          { title: 'Remote (UK/Europe)', value: 'Remote (UK/Europe)' },
+          { title: 'Hybrid', value: 'Hybrid' },
+          { title: 'On-site', value: 'On-site' },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'employmentType',
+      title: 'Employment Type',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Full-time', value: 'Full-time' },
+          { title: 'Part-time', value: 'Part-time' },
+          { title: 'Contract', value: 'Contract' },
+          { title: 'Internship', value: 'Internship' },
+        ],
+      },
+      initialValue: 'Full-time',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'experienceLevel',
+      title: 'Experience Level',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Junior / Entry-Level', value: 'Junior' },
+          { title: 'Mid-Level', value: 'Mid-Level' },
+          { title: 'Senior', value: 'Senior' },
+          { title: 'Lead / Staff / Principal', value: 'Lead / Staff' },
+          { title: 'Executive / Director', value: 'Executive' },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'salaryRange',
+      title: 'Salary Range (Transparent & Mandatory)',
+      type: 'string',
+      placeholder: 'e.g. $130,000 – $160,000 USD or £75,000 – £90,000 GBP',
+      description: 'Transparent compensation is mandatory for all Unlock Her Tech job listings.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'minSalary',
+      title: 'Minimum Annual Salary (Numeric for filtering)',
+      type: 'number',
+      placeholder: 'e.g. 130000',
+    }),
+    defineField({
+      name: 'currency',
+      title: 'Currency',
+      type: 'string',
+      options: {
+        list: ['USD', 'GBP', 'EUR', 'CAD', 'AUD', 'Other'],
+      },
+      initialValue: 'USD',
+    }),
+    defineField({
+      name: 'techStack',
+      title: 'Tech Stack & Core Skills (Tags)',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
+      description: 'Add tags e.g. React, TypeScript, Python, AWS, Figma, GraphQL',
+    }),
+    defineField({
+      name: 'whyApply',
+      title: '"Why Apply?" Inclusive Highlight',
+      type: 'text',
+      rows: 2,
+      placeholder: 'e.g. 4-day work week, comprehensive parental leave, transparent pay bands, and a 50% women engineering team.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Role Overview / Responsibilities',
+      type: 'text',
+      rows: 6,
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'inclusiveHighlights',
+      title: 'Inclusive Culture Badges',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        list: [
+          { title: 'Verified Inclusive Culture', value: 'Verified Inclusive' },
+          { title: 'Mandatory Salary Transparency', value: 'Salary Transparent' },
+          { title: 'Equal Parental Leave (16+ Weeks)', value: 'Parental Leave' },
+          { title: 'Flexible / Async Hours', value: 'Flexible Hours' },
+          { title: 'Diverse Interview Panel', value: 'Diverse Panel' },
+          { title: 'Learning & Conference Stipend', value: 'Learning Stipend' },
+          { title: 'Neurodiversity Friendly', value: 'Neurodiversity Friendly' },
+          { title: 'LGBTQ+ Safe & Affirming', value: 'LGBTQ+ Safe' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'applyUrl',
+      title: 'Direct Job Application Link (Requisition URL)',
+      type: 'url',
+      description: 'Direct link to the specific job requisition on the ATS (Greenhouse, Lever, Ashby, Workday) or direct role page. Avoid generic /careers links.',
+      validation: (Rule) => Rule.required().uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'source',
+      title: 'Curation Source (Attribution)',
+      type: 'string',
+      placeholder: 'e.g. Greenhouse, Lever, GitLab Careers, Buffer Jobs',
+      initialValue: 'Company ATS',
+    }),
+    defineField({
+      name: 'status',
+      title: 'Listing Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Active (Visible on Job Board)', value: 'active' },
+          { title: 'Closed / Filled (Removed from Job Board)', value: 'closed' },
+          { title: 'Expired', value: 'expired' },
+        ],
+      },
+      initialValue: 'active',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'isArchived',
+      title: 'Archived / Hidden?',
+      type: 'boolean',
+      description: 'Set to true to immediately remove from public listing.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured Listing?',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'verifiedInclusive',
+      title: 'Verified Inclusive Employer?',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'publishedAt',
+      title: 'Published Date',
+      type: 'datetime',
+      initialValue: () => new Date().toISOString(),
+    }),
+    defineField({
+      name: 'deadline',
+      title: 'Application Deadline (Optional - Auto-expires when passed)',
+      type: 'date',
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'company',
+      media: 'companyLogo',
+    },
+  },
+});

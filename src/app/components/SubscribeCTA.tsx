@@ -1,5 +1,6 @@
 import { HiMicrophone } from "react-icons/hi2";
 import { platforms } from "../data";
+import { BrandPatternOverlay } from "./BrandPatternBackground";
 
 interface SubscribeCTAProps {
   title?: string;
@@ -8,18 +9,21 @@ interface SubscribeCTAProps {
 }
 
 export function SubscribeCTA({
-                                 title    = "Never Miss an Episode",
-                                 subtitle = "Subscribe on your favourite platform and get notified the moment a new episode drops each month.",
+  title    = "Never Miss an Episode",
+  subtitle = "Subscribe on your favourite platform and get notified the moment a new episode drops each month.",
   bgImage,
 }: Readonly<SubscribeCTAProps>) {
   return (
-    <section className="py-20 relative overflow-hidden bg-brand-coral">
+    <section className="py-20 relative overflow-hidden bg-brand-coral text-white">
+      {/* Brand Pattern Background */}
+      <BrandPatternOverlay />
+
       {bgImage && (
-        <div className="absolute inset-0">
-          <img src={bgImage} alt="" className="w-full h-full object-cover opacity-10" />
+        <div className="absolute inset-0 pointer-events-none">
+          <img src={bgImage} alt="" className="w-full h-full object-cover opacity-5" aria-hidden="true" />
         </div>
       )}
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-white/15"
         >

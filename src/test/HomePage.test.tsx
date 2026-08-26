@@ -17,13 +17,15 @@ describe('HomePage', () => {
 
   it('renders primary CTAs with correct text', () => {
     renderHomePage();
-    expect(screen.getByText(/Listen to the Latest Episode/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Subscribe Now/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Explore She Leads Tech Practices/i)).toBeInTheDocument();
+    expect(screen.getByText(/Listen to Episodes/i)).toBeInTheDocument();
+    expect(screen.getByText(/Never Miss an Episode/i)).toBeInTheDocument();
   });
 
-  it('renders secondary CTAs with correct text', () => {
+  it('renders hero and platform links', () => {
     renderHomePage();
-    expect(screen.getAllByText(/Browse All Episodes/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Learn More About Us/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Conversations That/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Spotify/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Apple Podcasts/i).length).toBeGreaterThan(0);
   });
 });

@@ -14,46 +14,39 @@ describe('AboutPage', () => {
 
   it('renders the page header with the correct title', () => {
     renderWithRouter();
-    expect(screen.getByText(/About Our Initiative/i)).toBeInTheDocument();
+    expect(screen.getByText(/About Unlock Her Tech/i)).toBeInTheDocument();
     expect(screen.getByText(/Home/i)).toBeInTheDocument();
-    // Use a more specific selector for the "About" breadcrumb
     expect(screen.getByText('About', { selector: 'span.text-white' })).toBeInTheDocument();
   });
 
-  it('renders the "Why We Started" section', () => {
+  it('renders the evolution and mission section', () => {
     renderWithRouter();
-    expect(screen.getByText(/Why We Started/i)).toBeInTheDocument();
-    expect(screen.getByText(/Our story/i)).toBeInTheDocument();
-    expect(screen.getByText(/We started Unlock Her Tech with a simple belief/i)).toBeInTheDocument();
+    expect(screen.getByText(/Our Evolution/i)).toBeInTheDocument();
+    expect(screen.getByText(/Hands-On Technical Community/i)).toBeInTheDocument();
   });
 
-  it('renders the inclusive community section', () => {
+  it('renders the two pillars section', () => {
     renderWithRouter();
-    expect(screen.getByText(/For Women, Non-Binary People, and Allies in Tech/i)).toBeInTheDocument();
-    expect(screen.getByText(/Inclusion at our core/i)).toBeInTheDocument();
-    
-    // Check for the labels
-    expect(screen.getByText(/Engineers/i)).toBeInTheDocument();
-    expect(screen.getByText(/Founders/i)).toBeInTheDocument();
+    expect(screen.getByText(/Two Pillars, Unified Purpose/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/She Leads Tech Practices/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/The Unlock Her Tech Podcast/i).length).toBeGreaterThan(0);
   });
 
-  it('renders the "Our Values" section with all values', () => {
+  it('renders the "Our Values" section with core values', () => {
     renderWithRouter();
-    expect(screen.getByText(/Our Values/i)).toBeInTheDocument();
-    expect(screen.getByText(/What drives us/i)).toBeInTheDocument();
-    
-    expect(screen.getByText(/Authentic Storytelling/i)).toBeInTheDocument();
-    expect(screen.getByText(/Radical Inclusion/i)).toBeInTheDocument();
-    expect(screen.getByText(/Actionable Insight/i)).toBeInTheDocument();
-    expect(screen.getByText(/Community First/i)).toBeInTheDocument();
+    expect(screen.getByText(/Our Community Values/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Technical Depth & Growth/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Authentic Storytelling/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Radical Inclusion & Safety/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Actionable Insights/i).length).toBeGreaterThan(0);
   });
 
   it('renders the call to action buttons', () => {
     renderWithRouter();
-    const browseLinks = screen.getAllByRole('link', { name: /Browse (All )?Episodes/i });
-    expect(browseLinks.length).toBeGreaterThan(0);
+    const explorePractices = screen.getAllByRole('link', { name: /Explore Practices/i });
+    expect(explorePractices.length).toBeGreaterThan(0);
     
-    const teamLinks = screen.getAllByRole('link', { name: /Meet the Team/i });
-    expect(teamLinks.length).toBeGreaterThan(0);
+    const listenPodcast = screen.getAllByRole('link', { name: /Listen to Podcast/i });
+    expect(listenPodcast.length).toBeGreaterThan(0);
   });
 });

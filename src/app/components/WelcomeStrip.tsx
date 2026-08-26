@@ -1,12 +1,14 @@
 import { Link } from "react-router";
 import { HiArrowRight } from "react-icons/hi2";
 import { Lady1Welcome, Lady2Welcome } from "./Illustrations";
+import { BrandPatternOverlay } from "./BrandPatternBackground";
 import { BERRY } from "../data";
 
 export function WelcomeStrip() {
   return (
-    <section className="overflow-hidden bg-linear-to-br from-[#fdf0f7] to-[#f0f6fd]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-linear-to-br from-[#fdf0f7] to-[#f0f6fd]">
+      <BrandPatternOverlay variant="light" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Mobile layout: text top, illustrations bottom */}
         <div className="flex flex-col items-center sm:hidden py-10 text-center">
           <p className="mb-2 text-brand-coral font-bold text-[0.8rem] tracking-[0.12em] uppercase">
@@ -19,8 +21,7 @@ export function WelcomeStrip() {
             Every Voice Belongs Here
           </h2>
           <p className="text-gray-500 text-sm mx-auto mb-5 max-w-95 leading-[1.75]">
-            Unlock Her Tech is a space built for curious, ambitious women in tech — wherever you are
-            in your journey.
+            Unlock Her Tech is a space built for curious, ambitious women, non-binary people, and allies in tech — wherever you are in your journey.
           </p>
           <Link
             to="/about"
@@ -66,10 +67,9 @@ export function WelcomeStrip() {
             </h2>
             <p
               className="text-gray-500 text-sm mx-auto mb-5"
-              style={{ maxWidth: "380px", lineHeight: 1.75 }}
+              style={{ maxWidth: "420px", lineHeight: 1.75 }}
             >
-              Unlock Her Tech is a space built for curious, ambitious women in tech — wherever you are
-              in your journey.
+              Unlock Her Tech is a space built for curious, ambitious women, non-binary people, and allies in tech — wherever you are in your journey.
             </p>
             <Link
               to="/about"

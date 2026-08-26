@@ -3,6 +3,7 @@ import { episodes as mockEpisodes } from "../data";
 import type { Episode } from "../types";
 
 export const RSS_FEED_URL = "https://anchor.fm/s/e6cb6024/podcast/rss";
+const CACHE_KEY = "uht_rss_episodes_cache";
 
 // Cover colours cycle for RSS-sourced episodes (they have no custom colours)
 const COLORS = ["#B42970", "#72c472", "#5f9de3", "#e8563a", "#f4a0b4"];
@@ -34,11 +35,9 @@ function getChannelImageUrl(xml: Document): string {
   const channel = xml.getElementsByTagName("channel")[0];
   if (!channel) return "";
 
-  // 1. Try itunes:image at channel level
   const itunesImg = getItunesAttr(channel, "image", "href");
   if (itunesImg) return itunesImg;
 
-  // 2. Try standard RSS <image> tag
   const image = channel.getElementsByTagName("image")[0];
   if (image) {
     const url = image.getElementsByTagName("url")[0]?.textContent?.trim();
@@ -70,7 +69,6 @@ function getEpisodeImageUrl(item: Element): string {
   return "";
 }
 
-/** Convert itunes:duration ("HH:MM:SS" | "MM:SS" | raw seconds) → "X min" */
 function parseDuration(raw: string): string {
   if (!raw) return "—";
   if (/^\d+$/.test(raw)) {
@@ -90,7 +88,6 @@ function parseDuration(raw: string): string {
   return raw;
 }
 
-/** Best-effort date formatting */
 function parseDate(raw: string): string {
   try {
     return new Date(raw).toLocaleDateString("en-US", {
@@ -107,16 +104,13 @@ export function parseRssFeed(xml: Document): Episode[] {
   return items.map((item, i) => {
     const title       = item.getElementsByTagName("title")[0]?.textContent?.trim() ?? `Episode ${i + 1}`;
     const rawDesc     = item.getElementsByTagName("description")[0]?.textContent ?? "";
-    // Strip HTML tags from the description
     const description = rawDesc
-        .replace(/<[^>]+>/g, " ")   // replace tags with space so words don't merge
-        //.replace(/&nbsp;/g, " ")
+        .replace(/<[^>]+>/g, " ")
         .replaceAll('&amp;', "&")
         .replaceAll('&lt;', "<")
         .replaceAll('&gt;', ">")
         .replaceAll('&quot;', "\"")
         .replaceAll('&#39;', "'")
-        //.replace(/\s+/g, " ")       // collapse multiple spaces / newlines
         .trim();
     const audioUrl    = item.getElementsByTagName("enclosure")[0]?.getAttribute("url") ?? "";
     const pubDate     = item.getElementsByTagName("pubDate")[0]?.textContent?.trim() ?? "";
@@ -124,12 +118,9 @@ export function parseRssFeed(xml: Document): Episode[] {
     const epNumRaw    = getItunesText(item, "episode");
     const episodeImg  = getEpisodeImageUrl(item);
 
-    // Use explicit itunes:episode if present, otherwise count down from total
     const episodeNumber = epNumRaw ? Number.parseInt(epNumRaw, 10) : items.length - i;
 
     return {
-      // Always use array index as id to guarantee uniqueness —
-      // itunes:episode numbers are optional and may collide when mixed.
       id:            i + 1,
       title,
       description:   description || title,
@@ -148,52 +139,79 @@ interface UseRssFeedResult {
   episodes: Episode[];
   loading:  boolean;
   error:    string | null;
-  isLive:   boolean;  // true = data came from the live RSS feed
+  isLive:   boolean;
+}
+
+function getInitialRssState(): { episodes: Episode[]; isLive: boolean } {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { data } = JSON.parse(cached);
+      if (data && Array.isArray(data) && data.length > 0) {
+        return { episodes: data, isLive: true };
+      }
+    }
+  } catch (err) {
+    console.warn("[RSS Cache] Read error:", err);
+  }
+  return { episodes: mockEpisodes, isLive: false };
 }
 
 export function useRssFeed(): UseRssFeedResult {
-  const [episodes, setEpisodes] = useState<Episode[]>(mockEpisodes);
-  const [loading,  setLoading]  = useState(!!RSS_FEED_URL && RSS_FEED_URL.trim() !== "");
+  const [initial] = useState(getInitialRssState);
+  const [episodes, setEpisodes] = useState<Episode[]>(initial.episodes);
+  const [loading,  setLoading]  = useState(() => !initial.isLive && Boolean(RSS_FEED_URL?.trim()));
   const [error,    setError]    = useState<string | null>(null);
-  const [isLive,   setIsLive]   = useState(false);
+  const [isLive,   setIsLive]   = useState(initial.isLive);
 
   useEffect(() => {
-    // Skip fetch when the URL is empty / still a template placeholder
-    if (!RSS_FEED_URL || RSS_FEED_URL.trim() === "") return;
+    if (!RSS_FEED_URL || RSS_FEED_URL.trim() === "") {
+      return;
+    }
 
+    let isMounted = true;
+
+    // Fetch fresh feed in background
     fetch(RSS_FEED_URL)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status} — ${res.statusText}`);
         return res.text();
       })
       .then((text) => {
+        if (!isMounted) return;
         const xml    = new DOMParser().parseFromString(text, "text/xml");
         const parsed = parseRssFeed(xml);
 
         if (parsed.length === 0) {
-          throw new Error("RSS feed parsed successfully but contained 0 episodes.");
+          throw new Error("RSS feed contained 0 episodes.");
         }
 
-        console.info(`[RSS] Loaded ${parsed.length} episodes from feed.`);
+        console.info(`[RSS] Successfully fetched ${parsed.length} live episodes.`);
         setEpisodes(parsed);
         setIsLive(true);
+        setLoading(false);
+
+        // Update cache
+        try {
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ timestamp: Date.now(), data: parsed })
+          );
+        } catch (e) {
+          console.warn("[RSS Cache] Write error:", e);
+        }
       })
       .catch((err: Error) => {
-        console.warn(
-          `[RSS] Feed fetch failed — showing mock data instead.\n` +
-          `Error: ${err.message}\n\n` +
-          `Possible causes:\n` +
-          `  • The URL is incorrect\n` +
-          `  • The feed server doesn't send CORS headers (Access-Control-Allow-Origin: *)\n` +
-          `  • You are running behind a firewall / proxy\n\n` +
-          `Tip: If you get a CORS error, route the fetch through a lightweight\n` +
-          `serverless function (e.g. a Vercel Edge Function) that adds CORS headers.`
-        );
+        if (!isMounted) return;
+        console.warn("[RSS] Live fetch failed, using fallback:", err.message);
         setError(err.message);
-        // Keep mock data — no setEpisodes call needed
-      })
-      .finally(() => setLoading(false));
-  }, []); // run once on mount
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return { episodes, loading, error, isLive };
 }

@@ -7,43 +7,137 @@
       globalThis.dataLayer = globalThis.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
-      // Default consent settings
-      const savedConsent = localStorage.getItem('cookie-consent');
-      const initialConsent = savedConsent === 'granted' ? 'granted' : 'denied';
+      try {
+        const savedConsent = typeof localStorage !== 'undefined' ? localStorage.getItem('cookie-consent') : null;
+        const initialConsent = savedConsent === 'granted' ? 'granted' : 'denied';
 
-      gtag('consent', 'default', {
-        'ad_storage': initialConsent,
-        'analytics_storage': initialConsent,
-        'personalization_storage': initialConsent,
-        'functionality_storage': 'granted',
-        'security_storage': 'granted',
-        'wait_for_update': 500
-      });
+        gtag('consent', 'default', {
+          'ad_storage': initialConsent,
+          'analytics_storage': initialConsent,
+          'personalization_storage': initialConsent,
+          'functionality_storage': 'granted',
+          'security_storage': 'granted',
+          'wait_for_update': 500
+        });
 
-      gtag('js', new Date());
-      gtag('config', 'G-DG4KFXRK2K');
+        gtag('js', new Date());
+        gtag('config', 'G-DG4KFXRK2K');
+      } catch (e) {
+        console.warn('Analytics init error:', e);
+      }
     </script>
     <script>
       function loadScript(a){
-        var b=document.getElementsByTagName("head")[0], c=document.createElement("script");
-        c.type="text/javascript";c.src="https://tracker.metricool.com/resources/be.js";c.onreadystatechange=a;c.onload=a;b.appendChild(c)
+        try {
+          var b=document.getElementsByTagName("head")[0], c=document.createElement("script");
+          c.type="text/javascript";c.src="https://tracker.metricool.com/resources/be.js";c.onreadystatechange=a;c.onload=a;b.appendChild(c);
+        } catch (e) {
+          console.warn('Metricool load error:', e);
+        }
       }
       loadScript(function(){
-        beTracker.t({
-        hash:"138a511079cc333358e98fb9472e9bed"
-        })
+        try {
+          if (typeof beTracker !== "undefined" && beTracker && typeof beTracker.t === "function") {
+            beTracker.t({
+              hash:"138a511079cc333358e98fb9472e9bed"
+            });
+          }
+        } catch (e) {
+          console.warn('Metricool tracking error:', e);
+        }
       });
     </script>
 
 
+    <!-- Resource Hints & Preconnects -->
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://tracker.metricool.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unlock Her Tech | Empowering Women in Tech Podcast</title>
-    <meta name="description" content="A podcast that amplifies the voices of women in technology through authentic conversations that inspire change and action." />
+    <meta name="theme-color" content="#FF6B6B" />
+    <title>Unlock Her Tech | Tech Community, Podcast & LeetCode Practices</title>
+    <meta name="description" content="Unlock Her Tech is an inclusive tech community empowering women, non-binary people, and allies through fortnightly LeetCode problem-solving practices, career mentorship, and authentic podcast conversations." />
+    <link rel="canonical" href="https://unlockhertech.com/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Unlock Her Tech" />
+    <meta property="og:url" content="https://unlockhertech.com/" />
+    <meta property="og:title" content="Unlock Her Tech | Tech Community, Podcast & LeetCode Practices" />
+    <meta property="og:description" content="Unlock Her Tech is an inclusive tech community empowering women, non-binary people, and allies through fortnightly LeetCode problem-solving practices, career mentorship, and authentic podcast conversations." />
+    <meta property="og:image" content="https://unlockhertech.com/logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Unlock Her Tech Community and Podcast Logo" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://unlockhertech.com/" />
+    <meta name="twitter:title" content="Unlock Her Tech | Tech Community, Podcast & LeetCode Practices" />
+    <meta name="twitter:description" content="Unlock Her Tech is an inclusive tech community empowering women, non-binary people, and allies through fortnightly LeetCode problem-solving practices, career mentorship, and authentic podcast conversations." />
+    <meta name="twitter:image" content="https://unlockhertech.com/logo.png" />
+    <meta name="twitter:image:alt" content="Unlock Her Tech Community and Podcast Logo" />
+
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://unlockhertech.com/#organization",
+            "name": "Unlock Her Tech",
+            "url": "https://unlockhertech.com",
+            "logo": "https://unlockhertech.com/logo.png",
+            "description": "An inclusive tech community empowering women, non-binary people, and allies through hands-on LeetCode workshops, mentorship, and podcast conversations.",
+            "sameAs": [
+              "https://www.linkedin.com/company/unlock-her-tech",
+              "https://open.spotify.com/show/2BvOQ9uR2Q4fWJjQ5YxQ8c"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://unlockhertech.com/#website",
+            "url": "https://unlockhertech.com",
+            "name": "Unlock Her Tech",
+            "description": "Tech Community, Podcast & LeetCode Problem Solving Practices for Women & Allies in Technology",
+            "publisher": {
+              "@id": "https://unlockhertech.com/#organization"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "PodcastSeries",
+            "@id": "https://unlockhertech.com/#podcast",
+            "name": "Unlock Her Tech Podcast",
+            "description": "A podcast that amplifies the voices of women and underrepresented leaders in technology through authentic conversations that inspire change and action.",
+            "url": "https://unlockhertech.com/episodes",
+            "inLanguage": "en",
+            "author": {
+              "@id": "https://unlockhertech.com/#organization"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
+    <!-- Hidden form for Netlify bots static form parsing -->
+    <form name="resources-lead-magnet" data-netlify="true" hidden>
+      <input type="text" name="fullName" />
+      <input type="email" name="email" />
+      <input type="text" name="roleInterest" />
+      <input type="text" name="resourceTitle" />
+      <input type="text" name="mode" />
+    </form>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
+
 </html>

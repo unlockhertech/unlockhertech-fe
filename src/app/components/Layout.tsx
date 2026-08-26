@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Outlet, NavLink, Link, ScrollRestoration } from "react-router";
 import { HiBars3, HiXMark, HiChevronDown } from "react-icons/hi2";
 import logoImage from "../../assets/3b75a23b50c05dd92e772d611097d91604e0b5b1.png";
@@ -19,24 +19,30 @@ export function Layout() {
 }
 
 function LayoutInner() {
-  const [mobileOpen, setMobileOpen]       = useState(false);
-  const [showPlatforms, setShowPlatforms] = useState(false);
+  const [mobileOpen, setMobileOpen]             = useState(false);
+  const [showPlatforms, setShowPlatforms]       = useState(false);
+  const [showResources, setShowResources]       = useState(false);
 
   const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
   const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === 'true';
+  const enableResources = import.meta.env.VITE_ENABLE_RESOURCES === 'true';
+  const enableAssessment = import.meta.env.VITE_ENABLE_ASSESSMENT === 'true';
+  const enableGetInvolved = import.meta.env.VITE_ENABLE_GET_INVOLVED === 'true';
+  const enableJobs = import.meta.env.VITE_ENABLE_JOBS !== 'false';
 
-  const navLinks = [
-    { to: "/practices", label: "Practices", isNew: true },
-    { to: "/episodes",  label: "Episodes" },
-    ...(enableEvents ? [{ to: "/events", label: "Events" }] : []),
-    { to: "/about",     label: "About"    },
-    { to: "/team",      label: "Team"     },
-    ...(enableBlog ? [{ to: "/blog", label: "Blog" }] : []),
-  ];
+  const hasMultipleResources = enableResources && enableAssessment;
 
   return (
     <div className="min-h-screen flex flex-col bg-stone-50">
       <ScrollRestoration />
+
+      {/* ── Accessible Skip to Main Content Link ─────────────────────────────────── */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-brand-coral focus:text-white focus:font-extrabold focus:rounded-xl focus:shadow-2xl focus:outline-none"
+      >
+        Skip to main content
+      </a>
 
       {/* ── Top Announcement Banner ────────────────────────────────────────────── */}
       <AnnouncementBar />
@@ -47,45 +53,190 @@ function LayoutInner() {
           <div className="flex justify-between items-center h-16">
 
             <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3">
-              <img src={logoImage} alt="Unlock Her Tech" className="h-12 w-auto object-contain" />
+              <img src={logoImage} alt="Unlock Her Tech" className="h-11 w-auto object-contain" />
               <span
-                  className="hidden sm:block text-white text-sm leading-tight"
-                  style={{ fontWeight: 700, letterSpacing: "0.01em", lineHeight: 1.25 }}
+                  className="hidden sm:block text-white text-sm leading-tight font-bold tracking-tight"
               >
                 Unlock Her Tech
               </span>
             </Link>
 
-            {/* Desktop links */}
-            <div className="hidden md:flex items-center gap-6">
-              {navLinks.map(({ to, label, isNew }) => (
-                <NavLink
-                  key={to}
-                  to={to}
+            {/* Desktop Navigation (Miller's Law 7±2 Items) */}
+            <div className="hidden md:flex items-center gap-5 lg:gap-6">
+
+              {/* 1. Episodes */}
+              <NavLink
+                  to="/episodes"
                   className={({ isActive }) =>
-                    `text-sm transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                      `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                          ? "text-white border-b-2 border-white"
+                          : "text-white/80 hover:text-white"
+                      }`
+                  }
+              >
+                Episodes
+              </NavLink>
+
+              {/* 2. Practices */}
+              <NavLink
+                to="/practices"
+                className={({ isActive }) =>
+                  `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                    ? "text-white border-b-2 border-white"
+                    : "text-white/80 hover:text-white"
+                  }`
+                }
+              >
+                Practices
+              </NavLink>
+
+              {/* 3. Jobs (if enabled) */}
+              {enableJobs && (
+                <NavLink
+                  to="/jobs"
+                  className={({ isActive }) =>
+                    `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
                       ? "text-white border-b-2 border-white"
-                      : "text-white/70 hover:text-white"
+                      : "text-white/80 hover:text-white"
                     }`
                   }
                 >
-                  <span>{label}</span>
-                  {isNew && (
-                    <span className="px-1.5 py-0.2 rounded bg-white text-brand-coral font-extrabold text-[0.65rem] leading-none uppercase tracking-wider shadow-xs">
-                      NEW
-                    </span>
-                  )}
+                  Jobs
                 </NavLink>
-              ))}
+              )}
 
-              {/* Subscribe dropdown */}
-              <div className="relative ml-2">
+              {/* 4. Events (if enabled) */}
+              {enableEvents && (
+                <NavLink
+                  to="/events"
+                  className={({ isActive }) =>
+                    `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                      ? "text-white border-b-2 border-white"
+                      : "text-white/80 hover:text-white"
+                    }`
+                  }
+                >
+                  Events
+                </NavLink>
+              )}
+
+              {/* 4. Resources (Grouped Dropdown when multiple resources exist) */}
+              {hasMultipleResources ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowResources(!showResources)}
+                    className="text-sm font-semibold text-white/80 hover:text-white transition-all inline-flex items-center gap-1 pb-0.5 cursor-pointer"
+                  >
+                    <span>Resources</span>
+                    <HiChevronDown className={`w-3.5 h-3.5 transition-transform ${showResources ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {showResources && (
+                    <>
+                      <button
+                        className="fixed inset-0 z-40 cursor-default"
+                        onClick={() => setShowResources(false)}
+                        aria-label="Close resources menu"
+                        type="button"
+                      />
+                      <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10 p-2">
+                        <Link
+                          to="/resources"
+                          onClick={() => setShowResources(false)}
+                          className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
+                        >
+                          <span className="text-gray-900 font-bold text-sm">Career Playbooks</span>
+                          <span className="text-gray-500 text-xs">Free weekly downloadable PDF guides</span>
+                        </Link>
+                        <Link
+                          to="/assessment"
+                          onClick={() => setShowResources(false)}
+                          className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
+                        >
+                          <span className="text-gray-900 font-bold text-sm">Career Fit Assessment</span>
+                          <span className="text-gray-500 text-xs">Interactive 16-question worksheet</span>
+                        </Link>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : enableResources ? (
+                <NavLink
+                  to="/resources"
+                  className={({ isActive }) =>
+                    `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                      ? "text-white border-b-2 border-white"
+                      : "text-white/80 hover:text-white"
+                    }`
+                  }
+                >
+                  Resources
+                </NavLink>
+              ) : enableAssessment ? (
+                <NavLink
+                  to="/assessment"
+                  className={({ isActive }) =>
+                    `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                      ? "text-white border-b-2 border-white"
+                      : "text-white/80 hover:text-white"
+                    }`
+                  }
+                >
+                  Assessment
+                </NavLink>
+              ) : null}
+
+              {/* 5. Blog (if enabled) */}
+              {enableBlog && (
+                <NavLink
+                  to="/blog"
+                  className={({ isActive }) =>
+                    `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                      ? "text-white border-b-2 border-white"
+                      : "text-white/80 hover:text-white"
+                    }`
+                  }
+                >
+                  Blog
+                </NavLink>
+              )}
+
+              {/* 6. About */}
+              <NavLink
+                to="/about"
+                className={({ isActive }) =>
+                  `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
+                    ? "text-white border-b-2 border-white"
+                    : "text-white/80 hover:text-white"
+                  }`
+                }
+              >
+                About
+              </NavLink>
+
+              {/* 7. Get Involved (if enabled) */}
+              {enableGetInvolved && (
+                <NavLink
+                  to="/get-involved"
+                  className={({ isActive }) =>
+                    `text-sm font-semibold transition-all px-3 py-1 rounded-full ${isActive
+                      ? "bg-white/25 text-white"
+                      : "bg-white/10 hover:bg-white/20 text-white"
+                    }`
+                  }
+                >
+                  Get Involved
+                </NavLink>
+              )}
+
+              {/* Subscribe Dropdown CTA */}
+              <div className="relative ml-1">
                 <button
                   onClick={() => setShowPlatforms(!showPlatforms)}
-                                    className="flex items-center gap-2 px-5 py-2 rounded-full text-sm transition-all hover:opacity-90 bg-white text-brand-coral font-bold"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all hover:opacity-95 bg-white text-brand-coral shadow-xs cursor-pointer"
                 >
-                  Subscribe Now
-                  <HiChevronDown className={`w-4 h-4 transition-transform ${showPlatforms ? "rotate-180" : ""}`} />
+                  <span>Listen to Podcast On</span>
+                  <HiChevronDown className={`w-3.5 h-3.5 transition-transform ${showPlatforms ? "rotate-180" : ""}`} />
                 </button>
                 {showPlatforms && (
                   <>
@@ -97,9 +248,9 @@ function LayoutInner() {
                     />
                     <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10">
                       {platforms.map(({ name, icon: Icon, url }) => (
-                        <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                        <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={`Listen on ${name}`} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
                           <Icon className="w-5 h-5 text-gray-400" />
-                          <span className="text-gray-700 text-sm">{name}</span>
+                          <span className="text-gray-700 text-sm font-medium">{name}</span>
                         </a>
                       ))}
                     </div>
@@ -108,9 +259,9 @@ function LayoutInner() {
               </div>
             </div>
 
-            {/* Mobile hamburger */}
+            {/* Mobile Hamburger Button */}
             <button
-              className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -123,10 +274,35 @@ function LayoutInner() {
         {mobileOpen && (
           <div className="md:hidden border-t border-white/20 bg-brand-coral">
             <div className="px-4 py-4 space-y-1">
-              {navLinks.map(({ to, label, isNew }) => (
+              <NavLink
+                to="/practices"
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                    ? "bg-white/20 text-white font-semibold"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`
+                }
+              >
+                Practices
+              </NavLink>
+
+              <NavLink
+                to="/episodes"
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                    ? "bg-white/20 text-white font-semibold"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`
+                }
+              >
+                Episodes
+              </NavLink>
+
+              {enableJobs && (
                 <NavLink
-                  key={to}
-                  to={to}
+                  to="/jobs"
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
                     `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
@@ -135,18 +311,102 @@ function LayoutInner() {
                     }`
                   }
                 >
-                  <span>{label}</span>
-                  {isNew && (
-                    <span className="px-2 py-0.5 rounded bg-white text-brand-coral font-extrabold text-[0.65rem] uppercase tracking-wider">
-                      NEW
-                    </span>
-                  )}
+                  Jobs
                 </NavLink>
-              ))}
+              )}
+
+              {enableEvents && (
+                <NavLink
+                  to="/events"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Events
+                </NavLink>
+              )}
+
+              {enableResources && (
+                <NavLink
+                  to="/resources"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Career Playbooks
+                </NavLink>
+              )}
+
+              {enableAssessment && (
+                <NavLink
+                  to="/assessment"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Career Fit Assessment
+                </NavLink>
+              )}
+
+              {enableBlog && (
+                <NavLink
+                  to="/blog"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Blog
+                </NavLink>
+              )}
+
+              <NavLink
+                to="/about"
+                onClick={() => setMobileOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
+                    ? "bg-white/20 text-white font-semibold"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`
+                }
+              >
+                About
+              </NavLink>
+
+              {enableGetInvolved && (
+                <NavLink
+                  to="/get-involved"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${isActive
+                      ? "bg-white text-brand-coral"
+                      : "bg-white/15 text-white hover:bg-white/25"
+                    }`
+                  }
+                >
+                  Get Involved
+                </NavLink>
+              )}
+
               <div className="pt-3 mt-3 border-t border-white/20">
                 <p className="text-white/50 text-xs px-4 mb-2 uppercase tracking-wider">Listen on</p>
                 {platforms.map(({ name, icon: Icon, url }) => (
-                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition-all text-sm">
+                  <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={`Listen on ${name}`} className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition-all text-sm">
                     <Icon className="w-4 h-4" />
                     {name}
                   </a>
@@ -159,8 +419,9 @@ function LayoutInner() {
 
       {/* ── Page content ────────────────────────────────────────────────────── */}
       {/* Extra bottom padding when the mini-player is visible */}
-      <main className="flex-1">
+      <main className="flex-1 focus:outline-none" id="main-content" tabIndex={-1}>
         <PlayerPaddedContent>
+
           <Outlet />
         </PlayerPaddedContent>
       </main>
@@ -168,48 +429,81 @@ function LayoutInner() {
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
       <footer className="py-14 bg-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${enableGetInvolved ? "lg:grid-cols-5" : "lg:grid-cols-4"} gap-8 lg:gap-6 mb-12`}>
             <div>
               <img src={logoImage} alt="Unlock Her Tech" className="h-9 w-auto object-contain mb-4" />
-              <p className="text-gray-400 text-sm leading-relaxed">Conversations that inspire change and action.</p>
-              <div className="flex gap-2 mt-5">
-            {[
-              { id: "dot-berry", c: BERRY },
-              { id: "dot-orange", c: ORANGE },
-              { id: "dot-pink", c: PINK },
-              { id: "dot-green", c: GREEN },
-              { id: "dot-blue", c: BLUE },
-            ].map((dot) => (
-              <div key={dot.id} className="w-3 h-3 rounded-full" style={{ backgroundColor: dot.c }} />
-            ))}
-          </div>
+              <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">Conversations and technical practices that inspire change and action.</p>
+              <div className="flex gap-1.5 mt-5">
+                {[
+                  { id: "dot-berry", c: BERRY },
+                  { id: "dot-orange", c: ORANGE },
+                  { id: "dot-pink", c: PINK },
+                  { id: "dot-green", c: GREEN },
+                  { id: "dot-blue", c: BLUE },
+                ].map((dot) => (
+                  <div key={dot.id} className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: dot.c }} />
+                ))}
+              </div>
             </div>
 
             <div>
-              <p className="text-white text-sm mb-4 font-bold">Episodes</p>
-              <ul className="space-y-2.5 text-gray-400 text-sm">
+              <p className="text-white text-sm mb-4 font-bold">Content</p>
+              <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm">
                 <li><Link to="/episodes" className="hover:text-white transition-colors">Latest Episode</Link></li>
                 <li><Link to="/episodes" className="hover:text-white transition-colors">All Episodes</Link></li>
+                <li><Link to="/practices" className="hover:text-white transition-colors">Practices</Link></li>
+                {enableJobs && (
+                    <li><Link to="/jobs" className="hover:text-white transition-colors">Inclusive Job Board</Link></li>
+                )}
+                {enableResources && (
+                    <li><Link to="/resources" className="hover:text-white transition-colors">Free Career Guides</Link></li>
+                )}
+                {enableAssessment && (
+                    <li><Link to="/assessment" className="hover:text-white transition-colors">Career Fit Self-Assessment</Link></li>
+                )}
+                {enableBlog ? <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li> : null}
+                {enableEvents ? <li><Link to="/events" className="hover:text-white transition-colors">Upcoming Events</Link></li> : null}
               </ul>
             </div>
 
             <div>
-              <p className="text-white text-sm mb-4 font-bold">About</p>
-              <ul className="space-y-2.5 text-gray-400 text-sm">
-                <li><Link to="/about" className="hover:text-white transition-colors">Our Mission</Link></li>
-                <li><Link to="/team"  className="hover:text-white transition-colors">Meet the Team</Link></li>
+              <p className="text-white text-sm mb-4 font-bold">About & Team</p>
+              <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm">
+                <li><Link to="/about" className="hover:text-white transition-colors">Our Mission & Story</Link></li>
+                <li><Link to="/team" className="hover:text-white transition-colors">Meet the Team</Link></li>
+              </ul>
+            </div>
+
+            {enableGetInvolved && (
+              <div>
+                <p className="text-white text-sm mb-4 font-bold">Get Involved</p>
+                <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm">
+                  <li><Link to="/get-involved" className="hover:text-white transition-colors">Mentor With Us</Link></li>
+                  <li><Link to="/get-involved" className="hover:text-white transition-colors">Request to be a Guest</Link></li>
+                  <li><Link to="/get-involved" className="hover:text-white transition-colors">Partner With Us</Link></li>
+                </ul>
+              </div>
+            )}
+
+            <div>
+              <p className="text-white text-sm mb-4 font-bold">Trust & Legal</p>
+              <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm mb-4">
+                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/community-guidelines" className="hover:text-white transition-colors">Community Guidelines</Link></li>
                 <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-                <li><a href="#"       className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="mailto:info@unlockhertech.com" className="hover:text-white transition-colors" aria-label="Contact us via email">Contact Us</a></li>
               </ul>
-            </div>
-
-            <div>
-              <p className="text-white text-sm mb-4 font-bold">Subscribe</p>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex gap-2 pt-1">
                 {platforms.map(({ name, icon: Icon, url }) => (
-                  <a key={name} href={url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm">
-                    <Icon className="w-4 h-4 shrink-0" />
-                    {name}
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Listen on ${name}`}
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                  >
+                    <Icon className="w-3.5 h-3.5" />
                   </a>
                 ))}
               </div>
@@ -240,10 +534,10 @@ function LayoutInner() {
 }
 
 /** Adds bottom padding equal to the mini-player height when it's visible */
-function PlayerPaddedContent({ children }: Readonly<{ children: React.ReactNode }>) {
+function PlayerPaddedContent({ children }: Readonly<{ children: ReactNode }>) {
   const { currentEpisode } = useAudioPlayer();
   return (
-    <div className={currentEpisode ? "pb-18" : "pb-0"}>
+    <div className={currentEpisode ? "pb-24" : ""}>
       {children}
     </div>
   );

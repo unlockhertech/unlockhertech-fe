@@ -148,3 +148,7 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+# Generated assessment and career plan test PDFs
+unlock-her-tech-career-plan-*.pdf
+

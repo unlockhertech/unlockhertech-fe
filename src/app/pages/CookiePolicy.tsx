@@ -1,5 +1,7 @@
+import { HiShieldCheck } from "react-icons/hi2";
 import { useMetaData } from "../hooks/useMetaData";
-import { BERRY } from "../data";
+import { CookieTable } from "./cookie/CookieTable";
+import { BrandPatternOverlay } from "../components/BrandPatternBackground";
 
 export function CookiePolicyContent() {
   return (
@@ -27,32 +29,7 @@ export function CookiePolicyContent() {
       </ul>
 
       <h2 className="text-2xl font-bold text-gray-900 mb-4">3. Specific cookies we use</h2>
-      <div className="overflow-x-auto mb-8">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead>
-            <tr>
-              <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-900 border-b">Cookie Name</th>
-              <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-900 border-b">Provider</th>
-              <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-900 border-b">Purpose</th>
-              <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-900 border-b">Duration</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            <tr>
-              <td className="px-4 py-3 font-mono">cookie-consent</td>
-              <td className="px-4 py-3">Unlock Her Tech</td>
-              <td className="px-4 py-3">Stores your cookie consent preferences.</td>
-              <td className="px-4 py-3">Persistent</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-3 font-mono">_ga, _ga_*</td>
-              <td className="px-4 py-3">Google Analytics</td>
-              <td className="px-4 py-3">Distinguishes users and tracks site usage.</td>
-              <td className="px-4 py-3">Up to 2 years</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <CookieTable />
 
       <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Your choices</h2>
       <p className="text-gray-600 mb-4 leading-relaxed">
@@ -63,37 +40,58 @@ export function CookiePolicyContent() {
       </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mb-4">5. More information</h2>
-      <p className="text-gray-600 leading-relaxed">
+      <p className="text-gray-600 leading-relaxed mb-6">
         For more information about how we handle your privacy, please contact us. 
         European residents have certain rights under the General Data Protection Regulation (GDPR) regarding their personal data, including the right to withdraw consent at any time.
+      </p>
+
+      <p className="text-xs text-gray-500 pt-6 border-t border-gray-100">
+        Last updated: August 24, 2026.
       </p>
     </div>
   );
 }
 
 export function CookiePolicy() {
-  useMetaData("Cookie Policy - Unlock Her Tech", "Information about how we use cookies and your privacy on our website.");
+  useMetaData(
+    "Cookie Policy | Unlock Her Tech",
+    "Information about how Unlock Her Tech uses cookies, analytics, and your privacy on our website.",
+    "https://unlockhertech.com/cookie-policy",
+    {
+      image: "/logo.png",
+      type: "website",
+    }
+  );
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Header */}
-      <section className="py-16 md:py-24" style={{ backgroundColor: `${BERRY}10` }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
-            Cookie Policy
+    <div className="bg-stone-50 min-h-screen pb-24">
+      {/* ── Header Banner (Matching Community Guidelines & Privacy Policy) ── */}
+      <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white">
+        <BrandPatternOverlay />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider mb-6">
+            <HiShieldCheck className="w-4 h-4 text-brand-yellow" />
+            <span>Privacy & Tracking Transparency</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl font-black text-white mb-6 tracking-tight leading-[1.15]">
+            Cookie Policy & <br />
+            <span className="text-brand-pink">Consent Choices</span>
           </h1>
-          <p className="text-lg text-gray-600">
-            Last updated: April 14, 2026
+
+          <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
+            Learn how Unlock Her Tech uses essential and analytics cookies to maintain website reliability and improve your experience.
           </p>
         </div>
-      </section>
+      </header>
 
-      {/* Content */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── Content Container Card ── */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-gray-200/80 shadow-xs">
           <CookiePolicyContent />
         </div>
-      </section>
+      </main>
     </div>
   );
 }
