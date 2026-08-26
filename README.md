@@ -173,6 +173,12 @@ VITE_ENABLE_GET_INVOLVED=true
 VITE_ENABLE_JOBS=true
 ```
 
+> **Dynamic Feature Pruning**: When a feature toggle is set to `false`, the platform automatically:
+> 1. Omit the corresponding pages and sub-routes from React Router (`src/app/routes.ts`).
+> 2. Hide navigation links from the desktop navbar and mobile drawer (`src/app/components/Layout.tsx`).
+> 3. Exclude disabled paths from the generated `sitemap.xml` (`scripts/generate-sitemap.mjs`).
+> 4. Prune disabled features and links from the AI agent knowledge base (`public/llms.txt` & `public/llms-full.txt`).
+
 ---
 
 ## Testing & Quality Assurance

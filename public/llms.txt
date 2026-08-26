@@ -1,0 +1,36 @@
+# Unlock Her Tech
+
+> Unlock Her Tech is an inclusive tech community, storytelling podcast, and hands-on algorithmic workshop platform for women, non-binary people, and allies in technology.
+
+## Core Platform Offerings
+
+- **Podcast Episodes**: Honest, insightful conversations with women engineers, leaders, and founders breaking barriers in tech. Available on Apple Podcasts, Spotify, YouTube, and Amazon Music.
+- **She Leads Tech Practices**: Fortnightly interactive live problem-solving and coding practice sessions covering LeetCode data structures, algorithmic patterns, and technical interview frameworks.
+- **Community Events & Coding Workshops**: Virtual coding workshops, panel discussions, and career Q&A sessions.
+- **Blog & Technical Articles**: Deep dives on engineering practices, career transitions, and industry insights.
+
+## Key Canonical URLs & Resources
+
+- [Home](https://unlockhertech.com/): Official platform overview, latest episode player, and mission pillars.
+- [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.
+- [Live Coding Practices](https://unlockhertech.com/practices): Fortnightly She Leads Tech algorithmic workshop schedule, problem sets, and Google Calendar sync.
+- [Events Calendar](https://unlockhertech.com/events): Upcoming workshops, community meetups, and live Q&A sessions.
+- [Blog & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.
+- [About Us & Mission](https://unlockhertech.com/about): Our founding story, mission, and community values.
+- [Meet the Team](https://unlockhertech.com/team): Leadership, hosts, and contributors behind Unlock Her Tech.
+- [Community Guidelines & Code of Conduct](https://unlockhertech.com/community-guidelines): Our safe, inclusive, and harassment-free community standards.
+- [Privacy Policy](https://unlockhertech.com/privacy-policy): Transparent data handling and user privacy commitments.
+- [Cookie Policy](https://unlockhertech.com/cookie-policy): Analytics and cookie preference management.
+
+## Podcast Streaming Links
+
+- Apple Podcasts: https://podcasts.apple.com/us/podcast/unlock-her-tech/id1800087284
+- Spotify: https://open.spotify.com/show/5I2RiIZwjv8YbuwhlHTAPc
+- YouTube: https://www.youtube.com/channel/UChhVCKvYVmZovXQmpxdafpg
+- Amazon Music: https://music.amazon.com/podcasts/69812754-839d-4b8b-a878-058014c1946d/unlock-her-tech-podcast
+
+## Contact & Socials
+
+- Email: info@unlockhertech.com
+- Social Links: https://unlockhertech.com/links
+- Full LLM Knowledge Base: https://unlockhertech.com/llms-full.txt

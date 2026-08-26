@@ -1,0 +1,53 @@
+# Unlock Her Tech — Full LLM Knowledge Base
+
+## Organization & Mission
+
+Unlock Her Tech is a digital community platform and podcast designed to empower women, non-binary people, and underrepresented talent in the technology industry. We provide a blend of honest storytelling, career frameworks, and live technical practice to bridge the gender gap and help technologists grow into leadership.
+
+Website: https://unlockhertech.com
+Contact: info@unlockhertech.com
+
+---
+
+## 1. Podcast Series: Unlock Her Tech
+
+The podcast amplifies the authentic stories, career pivots, leadership triumphs, and technical expertise of women in software engineering, product design, engineering management, and startup founders.
+
+- Primary Platforms:
+  - Apple Podcasts: https://podcasts.apple.com/us/podcast/unlock-her-tech/id1800087284
+  - Spotify: https://open.spotify.com/show/5I2RiIZwjv8YbuwhlHTAPc
+  - YouTube: https://www.youtube.com/channel/UChhVCKvYVmZovXQmpxdafpg
+  - Amazon Music: https://music.amazon.com/podcasts/69812754-839d-4b8b-a878-058014c1946d/unlock-her-tech-podcast
+- Format: Deep-dive interviews, 30–60 minutes, covering both technical mastery and lived workplace experiences.
+- All Episodes Archive: https://unlockhertech.com/episodes
+
+---
+
+## 2. She Leads Tech: Fortnightly Algorithmic Practices
+
+A hands-on, live technical problem-solving series held every two weeks. The practice creates a high-trust, safe space where participants can practice coding, dissect data structures, and discuss interview strategies without judgment.
+
+- Cadence: Fortnightly on Sundays at 18:30 BST (17:30 UTC).
+- Next Anchor Session: Sunday, August 30, 2026.
+- Three-Phase Learning Arc:
+  - Phase 1: Foundational warmups and algorithmic intuition.
+  - Phase 2: Medium-level core interview patterns (Two Pointers, Sliding Window, DFS/BFS, Dynamic Programming).
+  - Phase 3: Advanced problem-solving, trade-off analysis, and mock interviews.
+- Curriculum Topics:
+  1. Two Pointers & In-Place Array Transformations
+  2. Sliding Window & Substring Optimization
+  3. Trees: DFS, BFS Level Order Traversal & Validation
+  4. Hash Maps, Frequency Counters & Fast Lookups
+  5. Graphs, Island Counts & Matrix Traversals
+  6. Dynamic Programming, Memoization & Recurrence Relations
+  7. Binary Search & Monotonic Condition Optimization
+  8. Stacks, Queues & Monotonic Frameworks
+- Practice Details & Google Calendar Sync: https://unlockhertech.com/practices
+
+---
+
+## 7. Community Standards & Policies
+
+- Community Guidelines & Code of Conduct: https://unlockhertech.com/community-guidelines
+- Privacy Policy: https://unlockhertech.com/privacy-policy
+- Cookie Policy: https://unlockhertech.com/cookie-policy
