@@ -89,13 +89,15 @@ export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
                 <HiUsers className="w-7 h-7" />
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-brand-green text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
-                Get Involved
+                {enableGetInvolved ? "Get Involved" : "Community"}
               </div>
               <h3 className="text-xl font-extrabold text-gray-900 mb-3">
                 Mentorship & Connection
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                Share knowledge as a practice lead, guest speaker, or community partner. We foster genuine connections that open doors across the industry.
+                {enableGetInvolved
+                  ? "Share knowledge as a practice lead, guest speaker, or community partner. We foster genuine connections that open doors across the industry."
+                  : "Connect with like-minded peers, mentors, and allies. We foster genuine connections that open doors and empower everyone across the industry."}
               </p>
             </div>
 
