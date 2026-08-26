@@ -276,6 +276,16 @@ export function AssessmentResults({
           </button>
         </div>
       </div>
+
+      {/* Privacy Guarantee Note */}
+      <div className="mt-8 pt-6 border-t border-stone-100 flex items-center justify-center text-center">
+        <p className="text-xs text-stone-500 max-w-xl">
+          🔒 <strong>Privacy Assurance</strong>: Your responses and reflections are processed locally in your browser and never sold or shared. Learn more in our{" "}
+          <Link to="/privacy-policy" className="text-brand-coral font-bold hover:underline">
+            Privacy Policy
+          </Link>.
+        </p>
+      </div>
     </div>
   );
 }

@@ -319,9 +319,13 @@ export function GetInvolvedForm({
         </button>
 
         <p className="text-[11px] text-gray-500 leading-relaxed max-w-sm">
-          We respect your privacy. Submissions are processed directly by our team. View our{" "}
-          <Link to="/privacy-policy" className="text-brand-coral underline hover:text-brand-coral/80 font-medium">
+          We respect your privacy. Submissions are handled directly in accordance with our{" "}
+          <Link to="/privacy-policy" className="text-brand-coral underline hover:text-brand-coral/80 font-semibold">
             Privacy Policy
+          </Link>
+          {" "}and{" "}
+          <Link to="/community-guidelines" className="text-brand-coral underline hover:text-brand-coral/80 font-semibold">
+            Code of Conduct
           </Link>.
         </p>
       </div>

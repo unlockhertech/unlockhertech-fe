@@ -1,6 +1,6 @@
-import { useState, type ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 import { Link } from "react-router";
-import { FaPlay, FaPause, FaChevronDown, FaMicrophone } from "react-icons/fa6";
+import { FaPlay, FaPause, FaMicrophone } from "react-icons/fa6";
 import { HiCodeBracket } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 import { ImageWithFallback } from "../../components/ImageWithFallback";
@@ -35,8 +35,6 @@ export function HomeHero({
   onPlayToggle,
   onSeek,
 }: Readonly<HomeHeroProps>) {
-  const [showPlatforms, setShowPlatforms] = useState(false);
-
   function handleProgressChange(e: ChangeEvent<HTMLInputElement>) {
     if (!latestIsActive || !duration) return;
     onSeek(Number.parseFloat(e.target.value));
@@ -59,12 +57,9 @@ export function HomeHero({
               </span>
             </div>
 
-            <h1
-              className="mb-6 text-neutral-900 font-black leading-[1.08] tracking-tight"
-              style={{ fontSize: "clamp(2.4rem, 4.8vw, 3.75rem)" }}
-            >
-              Conversations That <span className="text-brand-coral">Inspire</span>.<br />
-              Skills That <span className="text-brand-blue">Empower</span>.
+            <h1 className="mb-6 text-neutral-900 font-black text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.5rem] leading-[1.18] tracking-tight text-balance">
+              Conversations That <span className="text-brand-coral">Inspire</span>.<br className="hidden sm:inline" />
+              {" "}Skills That <span className="text-brand-blue">Empower</span>.
             </h1>
 
             <p className="text-gray-600 mb-8 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
@@ -90,59 +85,35 @@ export function HomeHero({
               </Link>
             </div>
 
-            {/* Sub-bar with Quick Platform Links */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs font-semibold text-gray-500">
-              <div className="relative">
-                <button
-                  type="button"
-                  className="text-brand-blue font-bold hover:underline flex items-center gap-1.5 cursor-pointer"
-                  onClick={() => setShowPlatforms(!showPlatforms)}
-                  aria-label="Subscribe on podcast platforms"
-                >
-                  <span>Listen to Podcast On</span>
-                  <FaChevronDown className={`w-3 h-3 transition-transform ${showPlatforms ? "rotate-180" : ""}`} />
-                </button>
-
-                {showPlatforms && (
-                  <>
-                    <button
-                      className="fixed inset-0 z-40 cursor-default"
-                      onClick={() => setShowPlatforms(false)}
-                      aria-label="Close menu"
-                      type="button"
-                    />
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-gray-100 text-left">
-                      {platforms.map(({ name, icon: Icon, url }) => (
-                        <a
-                          key={name}
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-stone-50 transition-colors text-gray-700"
-                        >
-                          <Icon className="w-4 h-4 text-gray-400" />
-                          <span className="font-medium text-xs">{name}</span>
-                        </a>
-                      ))}
-                    </div>
-                  </>
-                )}
+            {/* Podcast Platform Badges & Trust Signals */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 text-xs font-semibold text-gray-500">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500">
+                Listen On:
+              </span>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+                {platforms.map(({ name, icon: Icon, url }) => (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Listen on ${name}`}
+                    title={`Listen on ${name}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-stone-50 border border-stone-200/90 text-stone-700 hover:text-brand-coral transition-all text-xs font-bold shadow-2xs hover:shadow-xs hover:-translate-y-0.5"
+                  >
+                    <Icon className="w-3.5 h-3.5 text-stone-600" />
+                    <span>{name}</span>
+                  </a>
+                ))}
               </div>
 
               {enableGetInvolved && (
-                <>
-                  <span>•</span>
-                  <Link to="/get-involved" className="text-gray-600 hover:text-brand-coral transition-colors">
-                    Become a Mentor / Lead
+                <div className="hidden xl:flex items-center gap-2 pl-2 border-l border-stone-200">
+                  <Link to="/get-involved" className="text-stone-600 hover:text-brand-coral font-bold transition-colors">
+                    Become a Mentor / Lead →
                   </Link>
-                </>
+                </div>
               )}
-
-              <span>•</span>
-
-              <Link to="/about" className="text-gray-600 hover:text-brand-coral transition-colors">
-                Our Mission & Team
-              </Link>
             </div>
           </div>
 
@@ -158,6 +129,9 @@ export function HomeHero({
                     <ImageWithFallback
                       src={latestEpisode?.imageUrl || IMG_HERO}
                       alt={latestEpisode?.title ? `${latestEpisode.title} cover art` : "Unlock Her Tech podcast"}
+                      width={640}
+                      height={360}
+                      loading="eager"
                       className="absolute inset-0 w-full h-full object-cover opacity-90"
                     />
                   )}

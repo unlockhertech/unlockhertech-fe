@@ -47,8 +47,8 @@ export function LinksPage() {
         {/* ── 4. Social Bar ─────────────────────────────────────────────── */}
         <LinksSocialNav onSocialClick={handleLinkClick} />
 
-        {/* ── 5. Back to Main Website ───────────────────────────────────── */}
-        <footer className="pt-2 text-center">
+        {/* ── 5. Back to Main Website & Quick Policy Links ─────────────── */}
+        <footer className="pt-2 text-center space-y-3">
           <Link
             to="/"
             onClick={() => handleLinkClick("Main Website Footer", "/")}
@@ -57,6 +57,20 @@ export function LinksPage() {
             <HiGlobeAlt className="w-4 h-4 text-brand-yellow" />
             <span>Visit unlockhertech.com</span>
           </Link>
+
+          <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-[11px] text-white/70">
+            <Link to="/community-guidelines" className="hover:text-white hover:underline transition-colors">
+              Community Guidelines
+            </Link>
+            <span>•</span>
+            <Link to="/privacy-policy" className="hover:text-white hover:underline transition-colors">
+              Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link to="/cookie-policy" className="hover:text-white hover:underline transition-colors">
+              Cookie Policy
+            </Link>
+          </div>
         </footer>
       </div>
     </main>

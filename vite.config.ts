@@ -18,6 +18,26 @@ export default defineConfig({
   ],
   build: {
     target: 'es2022',
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            if (id.includes('react-icons')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('sanity') || id.includes('@sanity')) {
+              return 'vendor-sanity';
+            }
+            if (id.includes('jspdf')) {
+              return 'vendor-pdf';
+            }
+          }
+        },
+      },
+    },
   },
   assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg',
     '**/*.gif', '**/*.webp', '**/*.csv'],

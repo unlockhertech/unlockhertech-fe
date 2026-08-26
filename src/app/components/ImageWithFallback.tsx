@@ -18,14 +18,14 @@ export function ImageWithFallback(props: Readonly<ImgHTMLAttributes<HTMLImageEle
     setDidError(false)
   }
 
-  const { src, alt, style, className, ...rest } = props
+  const { src, alt, style, className, width, height, loading = "lazy", decoding = "async", ...rest } = props;
 
   // Reset states when src changes to handle transitions between images
-  const [prevSrc, setPrevSrc] = useState(src)
+  const [prevSrc, setPrevSrc] = useState(src);
   if (src !== prevSrc) {
-    setIsLoading(true)
-    setDidError(false)
-    setPrevSrc(src)
+    setIsLoading(true);
+    setDidError(false);
+    setPrevSrc(src);
   }
 
   const isAbsolute = className?.includes('absolute');
@@ -38,7 +38,7 @@ export function ImageWithFallback(props: Readonly<ImgHTMLAttributes<HTMLImageEle
         style={style}
       >
         <div className="flex items-center justify-center w-full h-full">
-          <img src={ERROR_IMG_SRC} alt="Loading error" {...rest} data-original-url={src} className="w-8 h-8 opacity-40" />
+          <img src={ERROR_IMG_SRC} alt="Loading error" {...rest} data-original-url={src} className="w-8 h-8 opacity-40" width={width} height={height} />
         </div>
       </div>
     );
@@ -52,6 +52,10 @@ export function ImageWithFallback(props: Readonly<ImgHTMLAttributes<HTMLImageEle
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding={decoding}
         className={`w-full h-full object-cover block transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         {...rest}
         onLoad={handleLoad}

@@ -118,34 +118,34 @@ export function PracticeCountdownCard({ customTargetDate }: PracticeCountdownCar
                   <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 font-mono tracking-tight">
                     {String(days).padStart(2, "0")}
                   </span>
-                  <span className="text-[10px] sm:text-xs font-extrabold text-stone-500 uppercase tracking-wider mt-1">
+                  <span className="text-[10px] sm:text-xs font-extrabold text-stone-600 uppercase tracking-wider mt-1">
                     Days
                   </span>
                 </div>
 
                 {/* Hours */}
                 <div className="bg-stone-50 border border-stone-200/80 rounded-2xl p-3 sm:p-4 shadow-xs flex flex-col justify-center">
-                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-coral font-mono tracking-tight">
+                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 font-mono tracking-tight">
                     {String(hours).padStart(2, "0")}
                   </span>
-                  <span className="text-[10px] sm:text-xs font-extrabold text-stone-500 uppercase tracking-wider mt-1">
+                  <span className="text-[10px] sm:text-xs font-extrabold text-stone-600 uppercase tracking-wider mt-1">
                     Hours
                   </span>
                 </div>
 
                 {/* Minutes */}
                 <div className="bg-stone-50 border border-stone-200/80 rounded-2xl p-3 sm:p-4 shadow-xs flex flex-col justify-center">
-                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-blue font-mono tracking-tight">
+                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 font-mono tracking-tight">
                     {String(minutes).padStart(2, "0")}
                   </span>
-                  <span className="text-[10px] sm:text-xs font-extrabold text-stone-500 uppercase tracking-wider mt-1">
+                  <span className="text-[10px] sm:text-xs font-extrabold text-stone-600 uppercase tracking-wider mt-1">
                     Mins
                   </span>
                 </div>
 
                 {/* Seconds */}
-                <div className="bg-pink-50/60 border border-brand-pink/50 rounded-2xl p-3 sm:p-4 shadow-xs flex flex-col justify-center">
-                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-coral font-mono tracking-tight">
+                <div className="bg-pink-50/70 border border-brand-pink/50 rounded-2xl p-3 sm:p-4 shadow-xs flex flex-col justify-center">
+                  <span className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-900 font-mono tracking-tight">
                     {String(seconds).padStart(2, "0")}
                   </span>
                   <span className="text-[10px] sm:text-xs font-extrabold text-brand-coral uppercase tracking-wider mt-1">
@@ -177,6 +177,14 @@ export function PracticeCountdownCard({ customTargetDate }: PracticeCountdownCar
                 <HiArrowTopRightOnSquare className="w-3.5 h-3.5 text-stone-500" />
               </a>
             </div>
+
+            {/* Safe Space & Code of Conduct Notice */}
+            <p className="text-[11px] text-stone-500 text-center lg:text-right">
+              ✨ Free, safe & inclusive environment. Guided by our{" "}
+              <Link to="/community-guidelines" className="text-brand-coral font-bold hover:underline">
+                Code of Conduct
+              </Link>.
+            </p>
           </div>
         </div>
       </div>

@@ -19,12 +19,12 @@ export const BLUE   = "#5f9de3";
 export const PINK   = "#f4a0b4";
 export const GREEN  = "#72c472";
 // ── Images ─────────────────────────────────────────────────────────────────────
-export const IMG_HERO        = "https://images.unsplash.com/photo-1617745546548-9324da9e2b7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080";
-export const IMG_STUDIO_MIC  = "https://images.unsplash.com/photo-1769509068789-f242b5a6fc47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800";
-export const IMG_DESK_SETUP  = "https://images.unsplash.com/photo-1632454005805-7bee57f76ee8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800";
-export const IMG_AUDIO_EQ    = "https://images.unsplash.com/photo-1595598237436-bf64a3bf18cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800";
-export const IMG_DIVERSE     = "https://images.unsplash.com/photo-1573497701175-00c200fd57f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080";
-export const IMG_PODCAST_FUN = "https://images.unsplash.com/photo-1554200876-980213841c94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800";
+export const IMG_HERO        = "https://images.unsplash.com/photo-1617745546548-9324da9e2b7c?auto=format&fit=crop&q=80&w=800";
+export const IMG_STUDIO_MIC  = "https://images.unsplash.com/photo-1769509068789-f242b5a6fc47?auto=format&fit=crop&q=80&w=600";
+export const IMG_DESK_SETUP  = "https://images.unsplash.com/photo-1632454005805-7bee57f76ee8?auto=format&fit=crop&q=80&w=600";
+export const IMG_AUDIO_EQ    = "https://images.unsplash.com/photo-1595598237436-bf64a3bf18cd?auto=format&fit=crop&q=80&w=600";
+export const IMG_DIVERSE     = "https://images.unsplash.com/photo-1573497701175-00c200fd57f0?auto=format&fit=crop&q=80&w=600";
+export const IMG_PODCAST_FUN = "https://images.unsplash.com/photo-1554200876-980213841c94?auto=format&fit=crop&q=80&w=600";
 
 // ── Platforms ──────────────────────────────────────────────────────────────────
 export const platforms: Platform[] = [

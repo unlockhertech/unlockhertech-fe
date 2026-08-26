@@ -273,7 +273,7 @@ export async function generateCareerPlanPdf({
   doc.setTextColor(...COLOR_MUTED);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  doc.text("Unlock Her Tech  |  Empowering Women in Technology  |  unlockhertech.com", marginX, pageHeight - 9);
+  doc.text("Unlock Her Tech  |  Where Skills Grow And Voices Are Heard  |  unlockhertech.com", marginX, pageHeight - 9);
   doc.text("Page 1 of 2", marginX + contentWidth, pageHeight - 9, { align: "right" });
 
   // ═══════════════════════════════════════════════════════════════════════════

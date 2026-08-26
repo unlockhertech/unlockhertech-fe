@@ -22,6 +22,7 @@ function LayoutInner() {
   const [mobileOpen, setMobileOpen]             = useState(false);
   const [showPlatforms, setShowPlatforms]       = useState(false);
   const [showResources, setShowResources]       = useState(false);
+  const [showAbout, setShowAbout]               = useState(false);
 
   const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
   const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === 'true';
@@ -52,11 +53,15 @@ function LayoutInner() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
 
-            <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3">
-              <img src={logoImage} alt="Unlock Her Tech" className="h-11 w-auto object-contain" />
-              <span
-                  className="hidden sm:block text-white text-sm leading-tight font-bold tracking-tight"
-              >
+            <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 sm:gap-3">
+              <img
+                src={logoImage}
+                alt="Unlock Her Tech Logo"
+                width={44}
+                height={44}
+                className="h-10 sm:h-11 w-auto object-contain"
+              />
+              <span className="text-white text-base sm:text-lg lg:text-xl font-black tracking-tight leading-none">
                 Unlock Her Tech
               </span>
             </Link>
@@ -201,18 +206,57 @@ function LayoutInner() {
                 </NavLink>
               )}
 
-              {/* 6. About */}
-              <NavLink
-                to="/about"
-                className={({ isActive }) =>
-                  `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${isActive
-                    ? "text-white border-b-2 border-white"
-                    : "text-white/80 hover:text-white"
-                  }`
-                }
-              >
-                About
-              </NavLink>
+              {/* 6. About Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setShowAbout(!showAbout);
+                    setShowResources(false);
+                    setShowPlatforms(false);
+                  }}
+                  className="text-sm font-semibold text-white/80 hover:text-white transition-all inline-flex items-center gap-1 pb-0.5 cursor-pointer"
+                >
+                  <span>About</span>
+                  <HiChevronDown className={`w-3.5 h-3.5 transition-transform ${showAbout ? "rotate-180" : ""}`} />
+                </button>
+
+                {showAbout && (
+                  <>
+                    <button
+                      className="fixed inset-0 z-40 cursor-default"
+                      onClick={() => setShowAbout(false)}
+                      aria-label="Close about menu"
+                      type="button"
+                    />
+                    <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10 p-2">
+                      <Link
+                        to="/about"
+                        onClick={() => setShowAbout(false)}
+                        className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
+                      >
+                        <span className="text-gray-900 font-bold text-sm">Our Mission & Story</span>
+                        <span className="text-gray-500 text-xs">Why we started Unlock Her Tech</span>
+                      </Link>
+                      <Link
+                        to="/team"
+                        onClick={() => setShowAbout(false)}
+                        className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
+                      >
+                        <span className="text-gray-900 font-bold text-sm">Meet the Team</span>
+                        <span className="text-gray-500 text-xs">Leaders & contributors</span>
+                      </Link>
+                      <Link
+                        to="/community-guidelines"
+                        onClick={() => setShowAbout(false)}
+                        className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
+                      >
+                        <span className="text-gray-900 font-bold text-sm">Community Guidelines</span>
+                        <span className="text-gray-500 text-xs">Our values & code of conduct</span>
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </div>
 
               {/* 7. Get Involved (if enabled) */}
               {enableGetInvolved && (
@@ -375,18 +419,46 @@ function LayoutInner() {
                 </NavLink>
               )}
 
-              <NavLink
-                to="/about"
-                onClick={() => setMobileOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${isActive
-                    ? "bg-white/20 text-white font-semibold"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                  }`
-                }
-              >
-                About
-              </NavLink>
+              {/* About & Mission Sub-links */}
+              <div className="bg-black/10 rounded-xl overflow-hidden p-1 space-y-0.5">
+                <p className="text-white/60 text-[11px] font-bold uppercase tracking-wider px-3 pt-2 pb-1">About Unlock Her Tech</p>
+                <NavLink
+                  to="/about"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/85 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Our Mission & Story
+                </NavLink>
+                <NavLink
+                  to="/team"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/85 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Meet the Team
+                </NavLink>
+                <NavLink
+                  to="/community-guidelines"
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-white/85 hover:bg-white/10 hover:text-white"
+                    }`
+                  }
+                >
+                  Community Guidelines
+                </NavLink>
+              </div>
 
               {enableGetInvolved && (
                 <NavLink
@@ -431,7 +503,15 @@ function LayoutInner() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${enableGetInvolved ? "lg:grid-cols-5" : "lg:grid-cols-4"} gap-8 lg:gap-6 mb-12`}>
             <div>
-              <img src={logoImage} alt="Unlock Her Tech" className="h-9 w-auto object-contain mb-4" />
+              <img
+                src={logoImage}
+                alt="Unlock Her Tech Logo"
+                width={36}
+                height={36}
+                loading="lazy"
+                decoding="async"
+                className="h-9 w-auto object-contain mb-4"
+              />
               <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">Conversations and technical practices that inspire change and action.</p>
               <div className="flex gap-1.5 mt-5">
                 {[
@@ -490,6 +570,7 @@ function LayoutInner() {
               <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm mb-4">
                 <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/community-guidelines" className="hover:text-white transition-colors">Community Guidelines</Link></li>
+                <li><Link to="/code-of-conduct" className="hover:text-white transition-colors">Code of Conduct</Link></li>
                 <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
                 <li><a href="mailto:info@unlockhertech.com" className="hover:text-white transition-colors" aria-label="Contact us via email">Contact Us</a></li>
               </ul>

@@ -1,21 +1,6 @@
 import { createBrowserRouter } from "react-router";
-import { Layout }       from "./components/Layout";
-import { HomePage }     from "./pages/HomePage";
-import { EpisodesPage } from "./pages/EpisodesPage";
-import { AboutPage }    from "./pages/AboutPage";
-import { TeamPage }     from "./pages/TeamPage";
-import { CookiePolicy } from "./pages/CookiePolicy";
-import { PrivacyPolicy } from "./pages/PrivacyPolicy";
-import { BlogPostPage } from "./pages/BlogPostPage";
-import { BlogIndexPage } from "./pages/BlogIndexPage";
-import { EventsPage } from "./pages/EventsPage";
-import { PracticesPage } from "./pages/PracticesPage";
-import { ResourcesPage } from "./pages/ResourcesPage";
-import { AssessmentPage } from "./pages/AssessmentPage";
-import { CommunityGuidelinesPage } from "./pages/CommunityGuidelinesPage";
-import { GetInvolvedPage } from "./pages/GetInvolvedPage";
-import { LinksPage } from "./pages/LinksPage";
-import { JobsPage } from "./pages/JobsPage";
+import { Layout } from "./components/Layout";
+import { HomePage } from "./pages/HomePage";
 import { RouteErrorFallback } from "./components/RouteErrorFallback";
 
 const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
@@ -26,32 +11,98 @@ const enableGetInvolved = import.meta.env.VITE_ENABLE_GET_INVOLVED === 'true';
 const enableJobs = import.meta.env.VITE_ENABLE_JOBS !== 'false';
 
 const blogRoutes = enableBlog ? [
-  { path: "blog",          Component: BlogIndexPage },
-  { path: "blog/:slug",    Component: BlogPostPage },
+  {
+    path: "blog",
+    lazy: async () => {
+      const { BlogIndexPage } = await import("./pages/BlogIndexPage");
+      return { Component: BlogIndexPage };
+    },
+  },
+  {
+    path: "blog/:slug",
+    lazy: async () => {
+      const { BlogPostPage } = await import("./pages/BlogPostPage");
+      return { Component: BlogPostPage };
+    },
+  },
 ] : [];
 
 const eventRoutes = enableEvents ? [
-  { path: "events", Component: EventsPage },
+  {
+    path: "events",
+    lazy: async () => {
+      const { EventsPage } = await import("./pages/EventsPage");
+      return { Component: EventsPage };
+    },
+  },
 ] : [];
 
 const resourceRoutes = enableResources ? [
-  { path: "resources", Component: ResourcesPage },
+  {
+    path: "resources",
+    lazy: async () => {
+      const { ResourcesPage } = await import("./pages/ResourcesPage");
+      return { Component: ResourcesPage };
+    },
+  },
 ] : [];
 
 const assessmentRoutes = enableAssessment ? [
-  { path: "assessment", Component: AssessmentPage },
+  {
+    path: "assessment",
+    lazy: async () => {
+      const { AssessmentPage } = await import("./pages/AssessmentPage");
+      return { Component: AssessmentPage };
+    },
+  },
 ] : [];
 
 const jobRoutes = enableJobs ? [
-  { path: "jobs", Component: JobsPage },
-  { path: "careers", Component: JobsPage },
+  {
+    path: "jobs",
+    lazy: async () => {
+      const { JobsPage } = await import("./pages/JobsPage");
+      return { Component: JobsPage };
+    },
+  },
+  {
+    path: "careers",
+    lazy: async () => {
+      const { JobsPage } = await import("./pages/JobsPage");
+      return { Component: JobsPage };
+    },
+  },
 ] : [];
 
 const getInvolvedRoutes = enableGetInvolved ? [
-  { path: "get-involved", Component: GetInvolvedPage },
-  { path: "collaborate", Component: GetInvolvedPage },
-  { path: "become-a-guest", Component: GetInvolvedPage },
-  { path: "mentor", Component: GetInvolvedPage },
+  {
+    path: "get-involved",
+    lazy: async () => {
+      const { GetInvolvedPage } = await import("./pages/GetInvolvedPage");
+      return { Component: GetInvolvedPage };
+    },
+  },
+  {
+    path: "collaborate",
+    lazy: async () => {
+      const { GetInvolvedPage } = await import("./pages/GetInvolvedPage");
+      return { Component: GetInvolvedPage };
+    },
+  },
+  {
+    path: "become-a-guest",
+    lazy: async () => {
+      const { GetInvolvedPage } = await import("./pages/GetInvolvedPage");
+      return { Component: GetInvolvedPage };
+    },
+  },
+  {
+    path: "mentor",
+    lazy: async () => {
+      const { GetInvolvedPage } = await import("./pages/GetInvolvedPage");
+      return { Component: GetInvolvedPage };
+    },
+  },
 ] : [];
 
 export const router = createBrowserRouter([
@@ -64,35 +115,90 @@ export const router = createBrowserRouter([
   },
   {
     path: "/links",
-    Component: LinksPage,
+    lazy: async () => {
+      const { LinksPage } = await import("./pages/LinksPage");
+      return { Component: LinksPage };
+    },
     ErrorBoundary: RouteErrorFallback,
   },
   {
     path: "/bio",
-    Component: LinksPage,
+    lazy: async () => {
+      const { LinksPage } = await import("./pages/LinksPage");
+      return { Component: LinksPage };
+    },
     ErrorBoundary: RouteErrorFallback,
   },
   {
     path: "/linktree",
-    Component: LinksPage,
+    lazy: async () => {
+      const { LinksPage } = await import("./pages/LinksPage");
+      return { Component: LinksPage };
+    },
     ErrorBoundary: RouteErrorFallback,
   },
-
-
   {
     path: "/",
     Component: Layout,
     ErrorBoundary: RouteErrorFallback,
     children: [
-      { index: true,       Component: HomePage     },
-      { path: "episodes",  Component: EpisodesPage },
-      { path: "practices", Component: PracticesPage },
-      { path: "about",     Component: AboutPage    },
-      { path: "team",      Component: TeamPage     },
-      { path: "cookie-policy", Component: CookiePolicy },
-      { path: "privacy-policy", Component: PrivacyPolicy },
-      { path: "community-guidelines", Component: CommunityGuidelinesPage },
-      { path: "code-of-conduct", Component: CommunityGuidelinesPage },
+      { index: true, Component: HomePage },
+      {
+        path: "episodes",
+        lazy: async () => {
+          const { EpisodesPage } = await import("./pages/EpisodesPage");
+          return { Component: EpisodesPage };
+        },
+      },
+      {
+        path: "practices",
+        lazy: async () => {
+          const { PracticesPage } = await import("./pages/PracticesPage");
+          return { Component: PracticesPage };
+        },
+      },
+      {
+        path: "about",
+        lazy: async () => {
+          const { AboutPage } = await import("./pages/AboutPage");
+          return { Component: AboutPage };
+        },
+      },
+      {
+        path: "team",
+        lazy: async () => {
+          const { TeamPage } = await import("./pages/TeamPage");
+          return { Component: TeamPage };
+        },
+      },
+      {
+        path: "cookie-policy",
+        lazy: async () => {
+          const { CookiePolicy } = await import("./pages/CookiePolicy");
+          return { Component: CookiePolicy };
+        },
+      },
+      {
+        path: "privacy-policy",
+        lazy: async () => {
+          const { PrivacyPolicy } = await import("./pages/PrivacyPolicy");
+          return { Component: PrivacyPolicy };
+        },
+      },
+      {
+        path: "community-guidelines",
+        lazy: async () => {
+          const { CommunityGuidelinesPage } = await import("./pages/CommunityGuidelinesPage");
+          return { Component: CommunityGuidelinesPage };
+        },
+      },
+      {
+        path: "code-of-conduct",
+        lazy: async () => {
+          const { CommunityGuidelinesPage } = await import("./pages/CommunityGuidelinesPage");
+          return { Component: CommunityGuidelinesPage };
+        },
+      },
       ...jobRoutes,
       ...getInvolvedRoutes,
       ...resourceRoutes,

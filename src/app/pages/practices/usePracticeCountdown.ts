@@ -30,8 +30,8 @@ export const PRACTICE_TOPICS = [
   "Stacks, Queues & Monotonic Frameworks",
 ];
 
-// Anchor epoch: Thursday, Aug 27, 2026 at 18:30 BST (17:30 UTC)
-export const PRACTICE_ANCHOR_UTC = new Date("2026-08-27T17:30:00Z").getTime();
+// Anchor epoch: Sunday, Aug 30, 2026 at 18:30 BST (17:30 UTC)
+export const PRACTICE_ANCHOR_UTC = new Date("2026-08-30T10:00:00Z").getTime();
 export const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 export const SESSION_DURATION_MS = 75 * 60 * 1000; // 75 mins live duration
 

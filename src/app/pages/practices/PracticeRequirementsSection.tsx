@@ -30,6 +30,15 @@ export function PracticeRequirementsSection() {
                   </div>
                 ))}
               </div>
+
+              <div className="pt-4 mt-6 border-t border-gray-200">
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  🛡️ <strong>Safe & Supportive Space</strong>: All attendees and mentors uphold our{" "}
+                  <Link to="/community-guidelines" className="text-brand-coral font-bold hover:underline">
+                    Community Guidelines & Code of Conduct
+                  </Link>.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -38,7 +47,7 @@ export function PracticeRequirementsSection() {
             <div className="relative bg-brand-coral text-white rounded-3xl p-8 sm:p-10 shadow-xl border border-white/20 overflow-hidden">
               <BrandPatternOverlay />
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 text-brand-yellow font-bold text-xs uppercase tracking-wider mb-4">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-neutral-950 font-black text-xs uppercase tracking-wider mb-4 shadow-sm">
                   <span>🌱 Fortnightly Progression</span>
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-extrabold mb-4">
