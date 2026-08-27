@@ -1,8 +1,32 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unlock Her Tech | Where Skills Grow And Voices Are Heard.</title>
+
+    <!-- Resource Hints & Preconnects -->
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="preconnect" href="https://wsrv.nl" crossorigin />
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="dns-prefetch" href="https://wsrv.nl" />
+    <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Unlock Her Tech" />
+    <meta name="theme-color" content="#b42970" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#b42970" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#b42970" />
+
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DG4KFXRK2K"></script>
     <script>
       globalThis.dataLayer = globalThis.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -25,8 +49,16 @@
       } catch (_e) {
         // Tracker blocked or unavailable; fail silently
       }
-    </script>
-    <script>
+
+      function loadGtag() {
+        try {
+          var s = document.createElement("script");
+          s.async = true;
+          s.src = "https://www.googletagmanager.com/gtag/js?id=G-DG4KFXRK2K";
+          document.head.appendChild(s);
+        } catch (_e) {}
+      }
+
       function loadMetricool() {
         try {
           var b = document.getElementsByTagName("head")[0], c = document.createElement("script");
@@ -46,34 +78,18 @@
 
       if (typeof window !== "undefined") {
         if ("requestIdleCallback" in window) {
-          window.requestIdleCallback(loadMetricool, { timeout: 2500 });
+          window.requestIdleCallback(function() {
+            loadGtag();
+            loadMetricool();
+          }, { timeout: 2500 });
         } else {
-          window.addEventListener("load", loadMetricool);
+          window.addEventListener("load", function() {
+            loadGtag();
+            loadMetricool();
+          });
         }
       }
     </script>
-
-    <!-- Resource Hints & Preconnects -->
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Unlock Her Tech" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#b42970" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#b42970" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#b42970" />
-    <title>Unlock Her Tech | Where Skills Grow And Voices Are Heard.</title>
     <meta name="description" content="Unlock Her Tech is an inclusive tech community empowering women, non-binary people, and allies through fortnightly LeetCode problem-solving practices, career mentorship, and authentic podcast conversations." />
     <link rel="canonical" href="https://unlockhertech.com/" />
 
@@ -173,9 +189,22 @@
     <script type="module" src="/src/main.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
-        });
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            for (var r of registrations) {
+              r.unregister();
+            }
+          });
+          if ('caches' in window) {
+            caches.keys().then(function (keys) {
+              keys.forEach(function (k) { caches.delete(k); });
+            });
+          }
+        } else {
+          window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
+          });
+        }
       }
     </script>
   </body>

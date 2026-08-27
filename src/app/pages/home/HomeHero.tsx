@@ -129,8 +129,8 @@ export function HomeHero({
                     <ImageWithFallback
                       src={latestEpisode?.imageUrl || IMG_HERO}
                       alt={latestEpisode?.title ? `${latestEpisode.title} cover art` : "Unlock Her Tech podcast"}
-                      width={640}
-                      height={360}
+                      width={400}
+                      height={225}
                       loading="eager"
                       className="absolute inset-0 w-full h-full object-cover opacity-90"
                     />

@@ -59,10 +59,10 @@ export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
           {/* Pillar 2: The Podcast */}
           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-brand-blue border border-blue-100 flex items-center justify-center mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center mb-6">
                 <HiOutlineMusicalNote className="w-7 h-7" />
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-brand-blue text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
                 Monthly Drops
               </div>
               <h3 className="text-xl font-extrabold text-gray-900 mb-3">
@@ -75,7 +75,7 @@ export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
 
             <Link
               to="/episodes"
-              className="inline-flex items-center gap-2 text-sm font-bold text-brand-blue hover:gap-3 transition-all pt-4 border-t border-gray-100"
+              className="inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:gap-3 transition-all pt-4 border-t border-gray-100"
             >
               <span>Browse all episodes</span>
               <HiArrowRight className="w-4 h-4" />
@@ -85,10 +85,10 @@ export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
           {/* Pillar 3: Community & Mentorship */}
           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-brand-green border border-emerald-100 flex items-center justify-center mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center mb-6">
                 <HiUsers className="w-7 h-7" />
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-brand-green text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
                 {enableGetInvolved ? "Get Involved" : "Community"}
               </div>
               <h3 className="text-xl font-extrabold text-gray-900 mb-3">
@@ -103,8 +103,8 @@ export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
 
             <Link
               to={enableGetInvolved ? "/get-involved" : "/about"}
-              aria-label={enableGetInvolved ? "Get involved with Unlock Her Tech as a mentor or partner" : "Learn more about the Unlock Her Tech community"}
-              className="inline-flex items-center gap-2 text-sm font-bold text-brand-green hover:gap-3 transition-all pt-4 border-t border-gray-100"
+              aria-label={enableGetInvolved ? "Get involved with us as a mentor or partner" : "Learn more about us and the Unlock Her Tech community"}
+              className="inline-flex items-center gap-2 text-sm font-bold text-emerald-700 hover:gap-3 transition-all pt-4 border-t border-gray-100"
             >
               <span>{enableGetInvolved ? "Get involved with us" : "Learn more about us"}</span>
               <HiArrowRight className="w-4 h-4" />

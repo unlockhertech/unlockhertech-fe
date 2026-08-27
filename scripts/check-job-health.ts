@@ -10,7 +10,7 @@
  *   npx tsx scripts/check-job-health.ts
  */
 
-import { CURATED_SEED_JOBS } from "../src/app/utils/sanity.js";
+import { CURATED_SEED_JOBS } from "../src/app/utils/jobsSanity.js";
 import { checkAllJobsHealth } from "../src/app/utils/linkHealthChecker.js";
 
 async function main() {
@@ -56,4 +56,4 @@ async function main() {
   }
 }
 
-main();
+await main();

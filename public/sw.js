@@ -33,6 +33,16 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
 
+  // Never intercept localhost development or Vite dev server internals
+  if (
+    url.hostname === 'localhost' ||
+    url.hostname === '127.0.0.1' ||
+    url.pathname.startsWith('/@') ||
+    url.pathname.includes('node_modules')
+  ) {
+    return;
+  }
+
   // Only handle same-origin requests
   if (url.origin !== self.location.origin) return;
 
@@ -59,7 +69,7 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       return fetch(request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+        if (networkResponse?.status !== 200 || networkResponse.type !== 'basic') {
           return networkResponse;
         }
         const copy = networkResponse.clone();

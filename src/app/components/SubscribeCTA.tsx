@@ -20,7 +20,7 @@ export function SubscribeCTA({
 
       {bgImage && (
         <div className="absolute inset-0 pointer-events-none">
-          <img src={bgImage} alt="" className="w-full h-full object-cover opacity-5" aria-hidden="true" />
+          <img src={bgImage} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-5" aria-hidden="true" />
         </div>
       )}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

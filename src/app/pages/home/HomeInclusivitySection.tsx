@@ -4,10 +4,10 @@ import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 
 const ROLES = [
   { label: "Software Engineers", className: "bg-pink-50 text-brand-coral border-pink-200" },
-  { label: "Engineering Managers", className: "bg-blue-50 text-brand-blue border-blue-200" },
+  { label: "Engineering Managers", className: "bg-blue-50 text-blue-700 border-blue-200" },
   { label: "Product Designers", className: "bg-amber-50 text-amber-800 border-amber-200" },
   { label: "Data & AI Scientists", className: "bg-purple-50 text-purple-800 border-purple-200" },
-  { label: "Founders & Tech Leads", className: "bg-emerald-50 text-brand-green border-emerald-200" },
+  { label: "Founders & Tech Leads", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
   { label: "Career Switchers", className: "bg-stone-100 text-gray-800 border-stone-200" },
 ];
 

@@ -23,14 +23,7 @@ export default defineConfig({
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules')) {
-            // Admin-only Sanity Studio and styled-components (heavy 5MB+ packages)
-            if (id.includes('node_modules/sanity/') || id.includes('node_modules/sanity\\') || (id.includes('sanity') && !id.includes('@sanity/client') && !id.includes('@sanity/image-url'))) {
-              return 'vendor-sanity-studio';
-            }
-            if (id.includes('styled-components')) {
-              return 'vendor-styled-components';
-            }
-            // Core React runtime (lightweight ~140KB)
+            // Core React runtime
             if (
               id.includes('/node_modules/react/') ||
               id.includes('\\node_modules\\react\\') ||

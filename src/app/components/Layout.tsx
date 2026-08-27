@@ -528,53 +528,53 @@ function LayoutInner() {
 
             <div>
               <p className="text-white text-sm mb-4 font-bold">Content</p>
-              <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm">
-                <li><Link to="/episodes" className="hover:text-white transition-colors">Latest Episode</Link></li>
-                <li><Link to="/episodes" className="hover:text-white transition-colors">All Episodes</Link></li>
-                <li><Link to="/practices" className="hover:text-white transition-colors">Practices</Link></li>
+              <ul className="space-y-1 text-gray-400 text-xs sm:text-sm">
+                <li><Link to="/episodes" className="inline-block py-1 hover:text-white transition-colors">Latest Episode</Link></li>
+                <li><Link to="/episodes" className="inline-block py-1 hover:text-white transition-colors">All Episodes</Link></li>
+                <li><Link to="/practices" className="inline-block py-1 hover:text-white transition-colors">Practices</Link></li>
                 {enableJobs && (
-                    <li><Link to="/jobs" className="hover:text-white transition-colors">Inclusive Job Board</Link></li>
+                    <li><Link to="/jobs" className="inline-block py-1 hover:text-white transition-colors">Inclusive Job Board</Link></li>
                 )}
                 {enableResources && (
-                    <li><Link to="/resources" className="hover:text-white transition-colors">Free Career Guides</Link></li>
+                    <li><Link to="/resources" className="inline-block py-1 hover:text-white transition-colors">Free Career Guides</Link></li>
                 )}
                 {enableAssessment && (
-                    <li><Link to="/assessment" className="hover:text-white transition-colors">Career Fit Self-Assessment</Link></li>
+                    <li><Link to="/assessment" className="inline-block py-1 hover:text-white transition-colors">Career Fit Self-Assessment</Link></li>
                 )}
-                {enableBlog ? <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li> : null}
-                {enableEvents ? <li><Link to="/events" className="hover:text-white transition-colors">Upcoming Events</Link></li> : null}
+                {enableBlog ? <li><Link to="/blog" className="inline-block py-1 hover:text-white transition-colors">Blog</Link></li> : null}
+                {enableEvents ? <li><Link to="/events" className="inline-block py-1 hover:text-white transition-colors">Upcoming Events</Link></li> : null}
               </ul>
             </div>
 
             <div>
               <p className="text-white text-sm mb-4 font-bold">About & Team</p>
-              <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm">
-                <li><Link to="/about" className="hover:text-white transition-colors">Our Mission & Story</Link></li>
-                <li><Link to="/team" className="hover:text-white transition-colors">Meet the Team</Link></li>
+              <ul className="space-y-1 text-gray-400 text-xs sm:text-sm">
+                <li><Link to="/about" className="inline-block py-1 hover:text-white transition-colors">Our Mission & Story</Link></li>
+                <li><Link to="/team" className="inline-block py-1 hover:text-white transition-colors">Meet the Team</Link></li>
               </ul>
             </div>
 
             {enableGetInvolved && (
               <div>
                 <p className="text-white text-sm mb-4 font-bold">Get Involved</p>
-                <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm">
-                  <li><Link to="/get-involved" className="hover:text-white transition-colors">Mentor With Us</Link></li>
-                  <li><Link to="/get-involved" className="hover:text-white transition-colors">Request to be a Guest</Link></li>
-                  <li><Link to="/get-involved" className="hover:text-white transition-colors">Partner With Us</Link></li>
+                <ul className="space-y-1 text-gray-400 text-xs sm:text-sm">
+                  <li><Link to="/get-involved" className="inline-block py-1 hover:text-white transition-colors">Mentor With Us</Link></li>
+                  <li><Link to="/get-involved" className="inline-block py-1 hover:text-white transition-colors">Request to be a Guest</Link></li>
+                  <li><Link to="/get-involved" className="inline-block py-1 hover:text-white transition-colors">Partner With Us</Link></li>
                 </ul>
               </div>
             )}
 
             <div>
               <p className="text-white text-sm mb-4 font-bold">Trust & Legal</p>
-              <ul className="space-y-2.5 text-gray-400 text-xs sm:text-sm mb-4">
-                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/community-guidelines" className="hover:text-white transition-colors">Community Guidelines</Link></li>
-                <li><Link to="/code-of-conduct" className="hover:text-white transition-colors">Code of Conduct</Link></li>
-                <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-                <li><a href="mailto:info@unlockhertech.com" className="hover:text-white transition-colors" aria-label="Contact us via email">Contact Us</a></li>
+              <ul className="space-y-1 text-gray-400 text-xs sm:text-sm mb-4">
+                <li><Link to="/privacy-policy" className="inline-block py-1 hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/community-guidelines" className="inline-block py-1 hover:text-white transition-colors">Community Guidelines</Link></li>
+                <li><Link to="/code-of-conduct" className="inline-block py-1 hover:text-white transition-colors">Code of Conduct</Link></li>
+                <li><Link to="/cookie-policy" className="inline-block py-1 hover:text-white transition-colors">Cookie Policy</Link></li>
+                <li><a href="mailto:info@unlockhertech.com" className="inline-block py-1 hover:text-white transition-colors" aria-label="Contact us via email">Contact Us</a></li>
               </ul>
-              <div className="flex gap-2 pt-1">
+              <div className="flex gap-2.5 pt-1">
                 {platforms.map(({ name, icon: Icon, url }) => (
                   <a
                     key={name}
@@ -582,9 +582,9 @@ function LayoutInner() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Listen on ${name}`}
-                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
                   >
-                    <Icon className="w-3.5 h-3.5" />
+                    <Icon className="w-4 h-4" />
                   </a>
                 ))}
               </div>
@@ -592,7 +592,7 @@ function LayoutInner() {
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
-            <p className="text-gray-500 text-sm">&copy; 2026 Unlock Her Tech. All rights reserved.</p>
+            <p className="text-gray-400 text-sm">&copy; 2026 Unlock Her Tech. All rights reserved.</p>
             <div className="flex gap-1.5">
               {[
                 { id: "bar-berry", c: BERRY },

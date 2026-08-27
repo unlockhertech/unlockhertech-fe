@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import { Layout } from "./components/Layout";
+import { HomePage } from "./pages/HomePage";
 import { RouteErrorFallback } from "./components/RouteErrorFallback";
 
 const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
@@ -143,10 +144,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: async () => {
-          const { HomePage } = await import("./pages/HomePage");
-          return { Component: HomePage };
-        },
+        Component: HomePage,
       },
       {
         path: "episodes",

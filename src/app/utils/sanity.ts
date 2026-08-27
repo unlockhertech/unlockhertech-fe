@@ -4,10 +4,22 @@ import type {SanityImageSource} from "@sanity/image-url";
 import type { BlogPost, ExternalEvent, Resource } from "../types";
 
 
+const getEnv = () => {
+  if (import.meta?.env) {
+    return import.meta.env;
+  }
+  if (typeof process !== "undefined" && process?.env) {
+    return process.env;
+  }
+  return {};
+};
+
+const env = getEnv();
+
 export const sanityClient = createClient({
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || "",
-  dataset: import.meta.env.VITE_SANITY_DATASET || "production",
-  apiVersion: import.meta.env.VITE_SANITY_API_VERSION || "2024-03-01",
+  projectId: env.VITE_SANITY_PROJECT_ID || "uht-preview",
+  dataset: env.VITE_SANITY_DATASET || "production",
+  apiVersion: env.VITE_SANITY_API_VERSION || "2024-03-01",
   useCdn: true,
 });
 
@@ -34,8 +46,7 @@ function calculateReadingTime(content: string = ""): string {
  */
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   try {
-    if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
-      console.warn("Sanity Project ID not configured. Returning empty blog post list.");
+    if (!env.VITE_SANITY_PROJECT_ID) {
       return [];
     }
 
@@ -57,7 +68,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       readingTime: calculateReadingTime(post.content || ""),
     }));
   } catch (error) {
-    console.error("Error fetching blog posts from Sanity:", error);
+    console.warn("Could not fetch blog posts from Sanity, using fallback:", error);
     return [];
   }
 }
@@ -67,8 +78,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
  */
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
-      console.warn("Sanity Project ID not configured.");
+    if (!env.VITE_SANITY_PROJECT_ID) {
       return null;
     }
 
@@ -92,7 +102,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       readingTime: calculateReadingTime(post.content || ""),
     };
   } catch (error) {
-    console.error(`Error fetching blog post with slug "${slug}" from Sanity:`, error);
+    console.warn(`Could not fetch blog post "${slug}" from Sanity:`, error);
     return null;
   }
 }
@@ -103,8 +113,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
  */
 export async function getAllExternalEvents(includePast = false): Promise<ExternalEvent[]> {
   try {
-    if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
-      console.warn("Sanity Project ID not configured. Returning empty event list.");
+    if (!env.VITE_SANITY_PROJECT_ID) {
       return [];
     }
 
@@ -129,7 +138,7 @@ export async function getAllExternalEvents(includePast = false): Promise<Externa
       return eventTime + THREE_HOURS_MS >= now;
     });
   } catch (error) {
-    console.error("Error fetching external events from Sanity:", error);
+    console.warn("Could not fetch external events from Sanity:", error);
     return [];
   }
 }
@@ -139,8 +148,7 @@ export async function getAllExternalEvents(includePast = false): Promise<Externa
  */
 export async function getAllResources(): Promise<Resource[]> {
   try {
-    if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
-      console.warn("Sanity Project ID not configured. Returning empty resources list.");
+    if (!env.VITE_SANITY_PROJECT_ID) {
       return [];
     }
 
@@ -161,7 +169,7 @@ export async function getAllResources(): Promise<Resource[]> {
     const resources: Resource[] = await sanityClient.fetch(query);
     return resources;
   } catch (error) {
-    console.error("Error fetching resources from Sanity:", error);
+    console.warn("Could not fetch resources from Sanity:", error);
     return [];
   }
 }
