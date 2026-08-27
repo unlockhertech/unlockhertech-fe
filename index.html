@@ -22,47 +22,57 @@
 
         gtag('js', new Date());
         gtag('config', 'G-DG4KFXRK2K');
-      } catch (e) {
-        console.warn('Analytics init error:', e);
+      } catch (_e) {
+        // Tracker blocked or unavailable; fail silently
       }
     </script>
     <script>
-      function loadScript(a){
+      function loadMetricool() {
         try {
-          var b=document.getElementsByTagName("head")[0], c=document.createElement("script");
-          c.type="text/javascript";c.src="https://tracker.metricool.com/resources/be.js";c.onreadystatechange=a;c.onload=a;b.appendChild(c);
-        } catch (e) {
-          console.warn('Metricool load error:', e);
+          var b = document.getElementsByTagName("head")[0], c = document.createElement("script");
+          c.type = "text/javascript";
+          c.async = true;
+          c.src = "https://tracker.metricool.com/resources/be.js";
+          c.onload = function() {
+            if (typeof beTracker !== "undefined" && beTracker && typeof beTracker.t === "function") {
+              beTracker.t({ hash: "138a511079cc333358e98fb9472e9bed" });
+            }
+          };
+          b.appendChild(c);
+        } catch (_e) {
+          // Fail silently
         }
       }
-      loadScript(function(){
-        try {
-          if (typeof beTracker !== "undefined" && beTracker && typeof beTracker.t === "function") {
-            beTracker.t({
-              hash:"138a511079cc333358e98fb9472e9bed"
-            });
-          }
-        } catch (e) {
-          console.warn('Metricool tracking error:', e);
-        }
-      });
-    </script>
 
+      if (typeof window !== "undefined") {
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(loadMetricool, { timeout: 2500 });
+        } else {
+          window.addEventListener("load", loadMetricool);
+        }
+      }
+    </script>
 
     <!-- Resource Hints & Preconnects -->
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
     <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <link rel="preconnect" href="https://tracker.metricool.com" crossorigin />
     <link rel="dns-prefetch" href="https://images.unsplash.com" />
     <link rel="dns-prefetch" href="https://cdn.sanity.io" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Unlock Her Tech" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#FF6B6B" />
+    <meta name="theme-color" content="#b42970" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#b42970" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#b42970" />
     <title>Unlock Her Tech | Where Skills Grow And Voices Are Heard.</title>
     <meta name="description" content="Unlock Her Tech is an inclusive tech community empowering women, non-binary people, and allies through fortnightly LeetCode problem-solving practices, career mentorship, and authentic podcast conversations." />
     <link rel="canonical" href="https://unlockhertech.com/" />
@@ -161,6 +171,13 @@
     </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
+        });
+      }
+    </script>
   </body>
 
 </html>

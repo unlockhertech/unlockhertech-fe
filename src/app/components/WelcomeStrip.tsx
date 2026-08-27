@@ -20,12 +20,13 @@ export function WelcomeStrip() {
           >
             Every Voice Belongs Here
           </h2>
-          <p className="text-gray-500 text-sm mx-auto mb-5 max-w-95 leading-[1.75]">
+          <p className="text-stone-600 text-sm mx-auto mb-5 max-w-95 leading-[1.75]">
             Unlock Her Tech is a space built for curious, ambitious women, non-binary people, and allies in tech — wherever you are in your journey.
           </p>
           <Link
             to="/about"
-            className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-semibold"
+            aria-label="Learn more about our mission and community at Unlock Her Tech"
+            className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80 text-brand-coral font-bold"
           >
             Learn more about us <HiArrowRight className="w-4 h-4" />
           </Link>
@@ -66,15 +67,16 @@ export function WelcomeStrip() {
               Every Voice Belongs Here
             </h2>
             <p
-              className="text-gray-500 text-sm mx-auto mb-5"
+              className="text-stone-600 text-sm mx-auto mb-5"
               style={{ maxWidth: "420px", lineHeight: 1.75 }}
             >
               Unlock Her Tech is a space built for curious, ambitious women, non-binary people, and allies in tech — wherever you are in your journey.
             </p>
             <Link
               to="/about"
+              aria-label="Learn more about our mission and community at Unlock Her Tech"
               className="inline-flex items-center gap-2 text-sm transition-colors hover:opacity-80"
-              style={{ color: BERRY, fontWeight: 600 }}
+              style={{ color: BERRY, fontWeight: 700 }}
             >
               Learn more about us <HiArrowRight className="w-4 h-4" />
             </Link>

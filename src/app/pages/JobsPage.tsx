@@ -131,20 +131,23 @@ export function JobsPage() {
             </button>
           </div>
         ) : (
-          <div className="space-y-4 sm:space-y-6">
-            {filteredJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                isSaved={savedJobIds.includes(job.id)}
-                copiedSlug={copiedSlug}
-                onSelectJob={setActiveJobModal}
-                onToggleSave={toggleSaveJob}
-                onShare={handleShareJob}
-                onReport={handleReportJob}
-              />
-            ))}
-          </div>
+          <section>
+            <h2 className="sr-only">Available Vetted Opportunities</h2>
+            <div className="space-y-4 sm:space-y-6">
+              {filteredJobs.map((job) => (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  isSaved={savedJobIds.includes(job.id)}
+                  copiedSlug={copiedSlug}
+                  onSelectJob={setActiveJobModal}
+                  onToggleSave={toggleSaveJob}
+                  onShare={handleShareJob}
+                  onReport={handleReportJob}
+                />
+              ))}
+            </div>
+          </section>
         )}
       </main>
 

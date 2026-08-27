@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo, useCallback, type MouseEvent } from "react";
 import { useSearchParams } from "react-router";
 import type { Job } from "../../types";
-import { getAllJobs } from "../../utils/sanity";
+import { getAllJobs } from "../../utils/jobsSanity";
 import { trackJobSave, trackJobShare } from "../../utils/analytics";
+import { filterAndSortJobs, type JobSortOption } from "./jobUtils";
 
 const STORAGE_KEY_SAVED_JOBS = "uht_saved_jobs";
 
-export type JobSortOption = "newest" | "salary" | "company";
+export type { JobSortOption };
 
 export function useJobs() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -142,80 +143,37 @@ export function useJobs() {
     setSortBy("newest");
   }, []);
 
-  const filteredJobs = useMemo(() => {
-    return jobs
-      .filter((job) => {
-        if (job.status === "closed" || job.status === "expired" || job.isArchived) {
-          return false;
-        }
-        if (reportedJobIds.includes(job.id)) {
-          return false;
-        }
-
-        if (showSavedOnly && !savedJobIds.includes(job.id)) {
-          return false;
-        }
-
-        if (selectedCategory !== "all" && job.category !== selectedCategory) {
-          return false;
-        }
-
-        if (selectedRemote !== "all" && job.remoteStatus !== selectedRemote) {
-          return false;
-        }
-
-        if (selectedExperience !== "all" && job.experienceLevel !== selectedExperience) {
-          return false;
-        }
-
-        if (selectedMinSalary > 0 && (job.minSalary || 0) < selectedMinSalary) {
-          return false;
-        }
-
-        if (selectedHighlight !== "all" && !job.inclusiveHighlights?.includes(selectedHighlight)) {
-          return false;
-        }
-
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase();
-          const matchTitle = (job.title || "").toLowerCase().includes(q);
-          const matchCompany = (job.company || "").toLowerCase().includes(q);
-          const matchLocation = (job.location || "").toLowerCase().includes(q);
-          const matchStack = job.techStack?.some((t) => t.toLowerCase().includes(q));
-          const matchWhy = (job.whyApply || "").toLowerCase().includes(q);
-          if (!matchTitle && !matchCompany && !matchLocation && !matchStack && !matchWhy) {
-            return false;
-          }
-        }
-
-        return true;
-      })
-      .sort((a, b) => {
-        if (sortBy === "salary") {
-          return (b.minSalary || 0) - (a.minSalary || 0);
-        }
-        if (sortBy === "company") {
-          return a.company.localeCompare(b.company);
-        }
-        if (a.featured && !b.featured) return -1;
-        if (!a.featured && b.featured) return 1;
-        const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-        const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-        return dateB - dateA;
-      });
-  }, [
-    jobs,
-    searchQuery,
-    selectedCategory,
-    selectedRemote,
-    selectedExperience,
-    selectedMinSalary,
-    selectedHighlight,
-    showSavedOnly,
-    savedJobIds,
-    reportedJobIds,
-    sortBy,
-  ]);
+  const filteredJobs = useMemo(
+    () =>
+      filterAndSortJobs(
+        jobs,
+        {
+          searchQuery,
+          selectedCategory,
+          selectedRemote,
+          selectedExperience,
+          selectedMinSalary,
+          selectedHighlight,
+          showSavedOnly,
+          savedJobIds,
+          reportedJobIds,
+        },
+        sortBy
+      ),
+    [
+      jobs,
+      searchQuery,
+      selectedCategory,
+      selectedRemote,
+      selectedExperience,
+      selectedMinSalary,
+      selectedHighlight,
+      showSavedOnly,
+      savedJobIds,
+      reportedJobIds,
+      sortBy,
+    ]
+  );
 
   return {
     jobs,

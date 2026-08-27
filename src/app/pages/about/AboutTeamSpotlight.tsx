@@ -34,10 +34,14 @@ export function AboutTeamSpotlight() {
                   <img
                     src={m.photoUrl}
                     alt={m.name}
+                    width={64}
+                    height={64}
+                    loading="lazy"
+                    decoding="async"
                     className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-xs"
                   />
                   <div>
-                    <h4 className="font-extrabold text-gray-900 text-lg leading-tight">{m.name}</h4>
+                    <h3 className="font-extrabold text-gray-900 text-lg leading-tight">{m.name}</h3>
                     <p className="text-xs font-bold text-brand-coral uppercase tracking-wider mt-0.5">{m.role}</p>
                   </div>
                 </div>
@@ -57,6 +61,7 @@ export function AboutTeamSpotlight() {
                     href={m.linkedinUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`View ${m.name}'s LinkedIn profile`}
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0a66c2] hover:underline"
                   >
                     <FaLinkedin className="w-3.5 h-3.5" />

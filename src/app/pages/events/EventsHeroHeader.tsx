@@ -12,10 +12,10 @@ export function EventsHeroHeader({ upcomingCount }: EventsHeroHeaderProps) {
       <BrandPatternOverlay />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-        <div className="flex items-center gap-2 text-white/60 text-sm mb-4">
+        <div className="flex items-center gap-2 text-white/90 text-sm mb-4">
           <Link to="/" className="hover:text-white transition-colors">Home</Link>
           <span>/</span>
-          <span className="text-white">Events</span>
+          <span className="text-white font-semibold">Events</span>
         </div>
         <div className="flex items-center gap-4 mb-3">
           <div className="p-3 rounded-2xl bg-white/15">
@@ -25,17 +25,17 @@ export function EventsHeroHeader({ upcomingCount }: EventsHeroHeaderProps) {
             Community Events
           </h1>
         </div>
-        <p className="text-white/80 max-w-140 leading-[1.8] text-base sm:text-lg">
+        <p className="text-white/90 max-w-140 leading-[1.8] text-base sm:text-lg">
           Hands-on LeetCode practices, technical workshops, and inspiring community conversations.
         </p>
         <div className="flex flex-wrap gap-3 mt-6">
-          <span className="px-3 py-1 rounded-full text-white text-xs font-semibold bg-brand-pink">
+          <span className="px-3.5 py-1 rounded-full text-white text-xs font-bold bg-white/20 border border-white/20 backdrop-blur-xs">
             {upcomingCount} Upcoming
           </span>
-          <span className="px-3 py-1 rounded-full text-white text-xs font-semibold bg-brand-yellow">
+          <span className="px-3.5 py-1 rounded-full text-stone-950 text-xs font-black bg-brand-yellow shadow-xs">
             Fortnightly Practices
           </span>
-          <span className="px-3 py-1 rounded-full text-white text-xs font-semibold bg-brand-blue">
+          <span className="px-3.5 py-1 rounded-full text-white text-xs font-bold bg-white/20 border border-white/20 backdrop-blur-xs">
             Virtual & Live
           </span>
         </div>

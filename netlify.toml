@@ -18,6 +18,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://tracker.metricool.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; media-src 'self' https: blob:; connect-src 'self' https://*.sanity.io https://*.sanity.studio https://www.google-analytics.com https://www.googletagmanager.com https://tracker.metricool.com https://*.metricool.com https://api.rss2json.com https://feeds.buzzsprout.com https://raw.githubusercontent.com https://api.allorigins.win https://corsproxy.io; frame-src 'self' https://open.spotify.com https://www.youtube.com https://www.youtube-nocookie.com https://lu.ma; object-src 'none'; base-uri 'self'; form-action 'self' https:; upgrade-insecure-requests;"
 
 [[headers]]
   for = "/admin/*"
@@ -32,27 +33,32 @@
 [[headers]]
   for = "/*.png"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/*.jpg"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/*.webp"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/*.svg"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/*.ico"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/sitemap.xml"

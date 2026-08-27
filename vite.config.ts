@@ -18,21 +18,28 @@ export default defineConfig({
   ],
   build: {
     target: 'es2022',
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+            // Admin-only Sanity Studio and styled-components (heavy 5MB+ packages)
+            if (id.includes('node_modules/sanity/') || id.includes('node_modules/sanity\\') || (id.includes('sanity') && !id.includes('@sanity/client') && !id.includes('@sanity/image-url'))) {
+              return 'vendor-sanity-studio';
+            }
+            if (id.includes('styled-components')) {
+              return 'vendor-styled-components';
+            }
+            // Core React runtime (lightweight ~140KB)
+            if (
+              id.includes('/node_modules/react/') ||
+              id.includes('\\node_modules\\react\\') ||
+              id.includes('/node_modules/react-dom/') ||
+              id.includes('\\node_modules\\react-dom\\') ||
+              id.includes('/node_modules/react-router/') ||
+              id.includes('\\node_modules\\react-router\\')
+            ) {
               return 'vendor-react';
-            }
-            if (id.includes('react-icons')) {
-              return 'vendor-icons';
-            }
-            if (id.includes('sanity') || id.includes('@sanity')) {
-              return 'vendor-sanity';
-            }
-            if (id.includes('jspdf')) {
-              return 'vendor-pdf';
             }
           }
         },

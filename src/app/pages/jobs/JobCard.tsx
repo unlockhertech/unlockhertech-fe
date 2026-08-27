@@ -72,9 +72,9 @@ export function JobCard({
 
           {/* Job Title & Company */}
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-gray-900 leading-snug group-hover:text-brand-coral transition-colors">
+            <h3 className="text-xl sm:text-2xl font-black text-gray-900 leading-snug group-hover:text-brand-coral transition-colors">
               {job.title}
-            </h2>
+            </h3>
             <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mt-1 font-medium">
               <span className="font-bold text-gray-900">{job.company}</span>
               <span>•</span>
@@ -121,6 +121,7 @@ export function JobCard({
             <button
               type="button"
               onClick={(e) => onShare(job, e)}
+              aria-label={`Share job posting for ${job.title} at ${job.company}`}
               className="p-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-gray-600 transition-colors cursor-pointer"
               title="Share / Copy role link"
             >
@@ -135,6 +136,7 @@ export function JobCard({
             <button
               type="button"
               onClick={(e) => onToggleSave(job.id, e)}
+              aria-label={isSaved ? `Remove ${job.title} at ${job.company} from saved roles` : `Save ${job.title} at ${job.company}`}
               className={`p-2.5 rounded-full transition-colors cursor-pointer ${
                 isSaved
                   ? "bg-pink-100 text-brand-coral"
@@ -153,6 +155,7 @@ export function JobCard({
             <button
               type="button"
               onClick={(e) => onReport(job, e)}
+              aria-label={`Report ${job.title} at ${job.company} as expired or closed`}
               className="p-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-gray-400 hover:text-amber-600 transition-colors cursor-pointer"
               title="Report job as expired or closed"
             >
@@ -165,6 +168,7 @@ export function JobCard({
             href={job.applyUrl}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Apply directly for ${job.title} at ${job.company}`}
             onClick={(e) => {
               e.stopPropagation();
               trackJobApplyClick(job.company, job.title, job.applyUrl);
@@ -178,6 +182,7 @@ export function JobCard({
           <button
             type="button"
             onClick={() => onSelectJob(job)}
+            aria-label={`View full details for ${job.title} at ${job.company}`}
             className="text-xs font-bold text-gray-500 hover:text-brand-coral transition-colors underline cursor-pointer"
           >
             View Full Details

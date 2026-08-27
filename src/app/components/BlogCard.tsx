@@ -33,7 +33,7 @@ export function BlogCard({ post }: Readonly<BlogCardProps>) {
             ))}
           </div>
           {post.readingTime && (
-            <div className="flex items-center gap-1.5 text-gray-400 text-[10px] font-bold uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 text-stone-500 text-[11px] font-extrabold uppercase tracking-wider">
               <HiOutlineClock className="w-3.5 h-3.5" />
               <span>{post.readingTime}</span>
             </div>

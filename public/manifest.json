@@ -1,0 +1,44 @@
+{
+  "name": "Unlock Her Tech",
+  "short_name": "UnlockHerTech",
+  "description": "An inclusive tech community empowering women, non-binary people, and allies through LeetCode problem-solving practices, mentorship, and podcast conversations.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#b42970",
+  "theme_color": "#b42970",
+  "categories": [
+    "education",
+    "technology",
+    "community",
+    "podcasts"
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

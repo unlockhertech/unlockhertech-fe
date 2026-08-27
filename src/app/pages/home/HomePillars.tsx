@@ -103,6 +103,7 @@ export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
 
             <Link
               to={enableGetInvolved ? "/get-involved" : "/about"}
+              aria-label={enableGetInvolved ? "Get involved with Unlock Her Tech as a mentor or partner" : "Learn more about the Unlock Her Tech community"}
               className="inline-flex items-center gap-2 text-sm font-bold text-brand-green hover:gap-3 transition-all pt-4 border-t border-gray-100"
             >
               <span>{enableGetInvolved ? "Get involved with us" : "Learn more about us"}</span>

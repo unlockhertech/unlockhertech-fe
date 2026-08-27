@@ -2,7 +2,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { JobsPage } from '../app/pages/JobsPage';
-import * as sanityUtils from '../app/utils/sanity';
+import * as jobsSanityUtils from '../app/utils/jobsSanity';
 import type { Job } from '../app/types';
 
 const MOCK_JOBS: Job[] = [
@@ -57,7 +57,7 @@ const MOCK_JOBS: Job[] = [
 describe('JobsPage', () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.spyOn(sanityUtils, 'getAllJobs').mockResolvedValue(MOCK_JOBS);
+    vi.spyOn(jobsSanityUtils, 'getAllJobs').mockResolvedValue(MOCK_JOBS);
   });
 
   const renderJobsPage = () => {

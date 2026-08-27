@@ -16,7 +16,7 @@ export function BlogPostNav({ prevPost, nextPost }: BlogPostNavProps) {
           aria-label={`Read previous post: ${prevPost.title}`}
           className="group p-6 rounded-3xl bg-white border border-gray-200 hover:border-brand-coral/40 hover:shadow-md transition-all text-left"
         >
-          <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+          <div className="flex items-center gap-2 text-xs font-extrabold text-stone-500 uppercase tracking-wider mb-2">
             <HiOutlineArrowLeft className="w-4 h-4 text-brand-coral" />
             <span>Previous Article</span>
           </div>
@@ -34,7 +34,7 @@ export function BlogPostNav({ prevPost, nextPost }: BlogPostNavProps) {
           aria-label={`Read next post: ${nextPost.title}`}
           className="group p-6 rounded-3xl bg-white border border-gray-200 hover:border-brand-coral/40 hover:shadow-md transition-all text-right"
         >
-          <div className="flex items-center justify-end gap-2 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+          <div className="flex items-center justify-end gap-2 text-xs font-extrabold text-stone-500 uppercase tracking-wider mb-2">
             <span>Next Article</span>
             <HiOutlineArrowRight className="w-4 h-4 text-brand-coral" />
           </div>

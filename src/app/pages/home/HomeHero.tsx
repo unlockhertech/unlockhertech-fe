@@ -155,9 +155,9 @@ export function HomeHero({
                     </div>
                   ) : (
                     <>
-                      <h3 className="text-sm sm:text-base font-extrabold line-clamp-1 mb-0.5 text-white">
+                      <p className="text-sm sm:text-base font-extrabold line-clamp-1 mb-0.5 text-white">
                         {latestEpisode.title}
-                      </h3>
+                      </p>
                       <p className="text-[11px] sm:text-xs text-pink-200/70 mb-3">
                         {latestEpisode.date} · {latestEpisode.duration}
                       </p>

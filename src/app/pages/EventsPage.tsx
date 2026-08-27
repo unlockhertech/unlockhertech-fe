@@ -74,7 +74,7 @@ export function EventsPage() {
             <div className="w-12 h-12 rounded-full bg-brand-pink/20 text-brand-coral flex items-center justify-center mx-auto mb-4">
               <HiClock className="w-6 h-6" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No events match this filter</h3>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">No events match this filter</h2>
             <p className="text-gray-600 max-w-md mx-auto">
               Check back soon for new sessions or explore our ongoing fortnightly She Leads Tech Practices!
             </p>

@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Outlet, NavLink, Link, ScrollRestoration } from "react-router";
 import { HiBars3, HiXMark, HiChevronDown } from "react-icons/hi2";
-import logoImage from "../../assets/3b75a23b50c05dd92e772d611097d91604e0b5b1.png";
+import logoImage from "../../assets/logo-header.webp";
 import { MiniPlayer } from "./MiniPlayer";
 import { CookieBanner } from "./CookieBanner";
 import { AnnouncementBar } from "./AnnouncementBar";

@@ -9,8 +9,10 @@ export function LinksProfileHeader({ onHandleClick }: LinksProfileHeaderProps) {
       <div className="relative mb-4 group">
         <div className="absolute -inset-1 rounded-full bg-linear-to-r from-brand-yellow via-brand-pink to-brand-blue blur-xs opacity-75 group-hover:opacity-100 transition-opacity" />
         <img
-          src="/logo.png"
+          src="/logo.webp"
           alt="Unlock Her Tech Logo"
+          width={96}
+          height={96}
           className="relative w-24 h-24 rounded-full object-cover border-3 border-white shadow-xl bg-white"
         />
       </div>

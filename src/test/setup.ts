@@ -10,10 +10,13 @@ vi.mock('../app/utils/sanity', () => ({
   getAllBlogPosts: vi.fn(() => Promise.resolve([])),
   getAllExternalEvents: vi.fn(() => Promise.resolve([])),
   getAllResources: vi.fn(() => Promise.resolve([])),
-  getAllJobs: vi.fn(() => Promise.resolve([])),
-  getJobBySlug: vi.fn(() => Promise.resolve(null)),
-  CURATED_SEED_JOBS: [],
   sanityClient: { fetch: vi.fn(() => Promise.resolve([])) },
   urlFor: vi.fn(() => ({ auto: vi.fn(() => ({ url: vi.fn(() => '') })) })),
   urlForOptimized: vi.fn(() => ''),
+}));
+
+vi.mock('../app/utils/jobsSanity', () => ({
+  getAllJobs: vi.fn(() => Promise.resolve([])),
+  getJobBySlug: vi.fn(() => Promise.resolve(null)),
+  CURATED_SEED_JOBS: [],
 }));

@@ -1,15 +1,15 @@
 import { SiApplepodcasts, SiSpotify, SiYoutube } from "react-icons/si";
 import { FaAmazon } from "react-icons/fa6";
 import type { Episode, Platform } from "./types";
-import imgElaheh  from "../assets/ca5810f8de6d98da96a45d1d887e1f1510f03101.jpeg";
-import imgShelly  from "../assets/8175fa61c548bd171865cd1d786abaac3950952e.jpeg";
-import imgPritty from '../assets/91e96dfd067ea6afbddec7a62daaf34f07638b4a.jpg';
-import imgJen from '../assets/cd6f99d060c133a423b34da6adc91fd0e3455bc8.jpg';
-import imgRupi from '../assets/5865071a697a5a7a468424e514c3437692713cc9.jpeg';
-import imgTim from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.jpeg';
-import imgAlbert from '../assets/cc744fd1-b50d-4441-ad1e-722214345c01.jpg';
-import imgOlha from '../assets/317e3cec-2b64-424f-bbda-6e01d712f8f3.jpeg';
-import imgSheLeadsTech from '../assets/a6601dd5-4c26-44d0-9828-952122709520.png';
+import imgElaheh  from "../assets/ca5810f8de6d98da96a45d1d887e1f1510f03101.webp";
+import imgShelly  from "../assets/8175fa61c548bd171865cd1d786abaac3950952e.webp";
+import imgPritty from '../assets/91e96dfd067ea6afbddec7a62daaf34f07638b4a.webp';
+import imgJen from '../assets/cd6f99d060c133a423b34da6adc91fd0e3455bc8.webp';
+import imgRupi from '../assets/5865071a697a5a7a468424e514c3437692713cc9.webp';
+import imgTim from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.webp';
+import imgAlbert from '../assets/cc744fd1-b50d-4441-ad1e-722214345c01.webp';
+import imgOlha from '../assets/317e3cec-2b64-424f-bbda-6e01d712f8f3.webp';
+import imgSheLeadsTech from '../assets/a6601dd5-4c26-44d0-9828-952122709520.webp';
 
 export { imgSheLeadsTech };
 // ── Brand palette ──────────────────────────────────────────────────────────────

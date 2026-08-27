@@ -23,6 +23,7 @@ export function AnnouncementBar() {
         <div className="flex items-center gap-3 shrink-0">
           <Link
             to="/practices"
+            aria-label="Learn more about She Leads Tech Practices"
             className="hidden sm:inline-flex items-center gap-1 px-3.5 py-1 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition-colors border border-white/30"
           >
             Learn More <HiArrowRight className="w-3 h-3" />

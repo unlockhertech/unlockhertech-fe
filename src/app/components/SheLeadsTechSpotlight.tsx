@@ -20,6 +20,10 @@ export function SheLeadsTechSpotlight() {
                 <img
                   src={imgSheLeadsTech}
                   alt="She Leads Tech Practices Logo"
+                  width={260}
+                  height={260}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full max-h-64 object-contain"
                 />
               </div>

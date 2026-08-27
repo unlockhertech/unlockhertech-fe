@@ -14,9 +14,9 @@ export function PracticeRequirementsSection() {
               <div className="inline-flex items-center gap-2 text-brand-coral font-bold text-xs uppercase tracking-wider mb-4">
                 <span>📌 What You'll Need</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
                 Simple Prerequisites
-              </h3>
+              </h2>
               <div className="space-y-6">
                 {REQUIREMENTS.map((req) => (
                   <div key={req.text} className="flex items-start gap-4">
@@ -24,7 +24,7 @@ export function PracticeRequirementsSection() {
                       <HiCheckCircle className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-base">{req.text}</h4>
+                      <h3 className="font-bold text-gray-900 text-base">{req.text}</h3>
                       <p className="text-gray-500 text-sm">{req.detail}</p>
                     </div>
                   </div>
@@ -50,9 +50,9 @@ export function PracticeRequirementsSection() {
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-neutral-950 font-black text-xs uppercase tracking-wider mb-4 shadow-sm">
                   <span>🌱 Fortnightly Progression</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold mb-4">
+                <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">
                   Progressive Skill Growth
-                </h3>
+                </h2>
                 <p className="text-white/90 text-sm leading-relaxed mb-6">
                   This is an ongoing series held <strong className="text-white">every two weeks</strong>. We start with Easy and Medium problems, gradually progressing to harder challenges as we build our skills together.
                 </p>

@@ -134,7 +134,7 @@ describe('ATS Sync and Ingestion Engine', () => {
 
   describe('Sanity Fallback Dataset', () => {
     it('loads more than 10 vetted jobs from fallback data', async () => {
-      const realSanity = await vi.importActual<typeof import('../app/utils/sanity')>('../app/utils/sanity');
+      const realSanity = await vi.importActual<typeof import('../app/utils/jobsSanity')>('../app/utils/jobsSanity');
       expect(realSanity.CURATED_SEED_JOBS.length).toBeGreaterThan(10);
       const jobs = await realSanity.getAllJobs();
       expect(jobs.length).toBeGreaterThan(10);

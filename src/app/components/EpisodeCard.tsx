@@ -83,15 +83,15 @@ export function EpisodeCard({episode}: Readonly<EpisodeCardProps>) {
 
                 {/* Content */}
                 <div className="p-5">
-                    <div className="flex items-center gap-3 text-gray-400 text-xs mb-3">
+                    <div className="flex items-center gap-3 text-stone-500 text-xs mb-3 font-medium">
                         <span>{date}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300"/>
-                        <span className="flex items-center gap-1"><HiOutlineClock className="w-3 h-3"/>{duration}</span>
+                        <span className="w-1 h-1 rounded-full bg-stone-300"/>
+                        <span className="flex items-center gap-1"><HiOutlineClock className="w-3.5 h-3.5"/>{duration}</span>
                     </div>
-                    <h3 className="mb-2 text-neutral-900">{title}</h3>
+                    <h3 className="mb-2 text-neutral-900 font-extrabold">{title}</h3>
                     {/* description */}
                     <p
-                        className="text-gray-500 text-sm"
+                        className="text-stone-600 text-sm"
                         style={{
                             lineHeight: 1.6,
                             display: "-webkit-box",
@@ -107,8 +107,9 @@ export function EpisodeCard({episode}: Readonly<EpisodeCardProps>) {
                     {isLong && (
                         <button
                             onClick={() => setModalOpen(true)}
-                            className="flex items-center gap-1 text-xs mt-1.5 transition-colors hover:opacity-70 underline underline-offset-2"
-                            style={{color: coverColor, fontWeight: 600}}
+                            aria-label={`Read full description for episode ${episodeNumber}: ${title}`}
+                            className="flex items-center gap-1 text-xs mt-1.5 transition-colors hover:opacity-70 underline underline-offset-2 cursor-pointer"
+                            style={{color: coverColor, fontWeight: 700}}
                         >
                             Read more
                         </button>

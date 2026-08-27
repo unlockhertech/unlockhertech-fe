@@ -13,9 +13,9 @@ export function PrivacyPolicyContent() {
       <div className="p-6 rounded-2xl bg-pink-50/60 border border-brand-pink/30 flex items-start gap-4 not-prose">
         <HiShieldCheck className="w-8 h-8 text-brand-coral shrink-0 mt-1" />
         <div>
-          <h3 className="font-extrabold text-stone-900 text-base mb-1">
+          <p className="font-extrabold text-stone-900 text-base mb-1">
             Our Privacy Commitment
-          </h3>
+          </p>
           <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
             Unlock Her Tech is committed to protecting your privacy under the General Data Protection Regulation (GDPR), the UK Data Protection Act 2018, and global privacy standards. We collect only what is strictly necessary, provide full control over your data, and never sell or monetize your personal information.
           </p>
@@ -68,19 +68,19 @@ export function PrivacyPolicyContent() {
         <p>Under GDPR and UK GDPR, we rely on the following lawful bases:</p>
         <div className="grid sm:grid-cols-2 gap-4 mt-4 not-prose">
           <div className="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs">
-            <h4 className="font-extrabold text-sm text-stone-900 mb-1 flex items-center gap-1.5">
+            <h3 className="font-extrabold text-sm text-stone-900 mb-1 flex items-center gap-1.5">
               <HiShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>Explicit Consent (Art. 6(1)(a))</span>
-            </h4>
+            </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
               When you voluntarily provide your email or details to download guides, receive assessment plans, or join our WhatsApp / Discord community circles.
             </p>
           </div>
           <div className="p-4 rounded-2xl bg-white border border-stone-200 shadow-xs">
-            <h4 className="font-extrabold text-sm text-stone-900 mb-1 flex items-center gap-1.5">
+            <h3 className="font-extrabold text-sm text-stone-900 mb-1 flex items-center gap-1.5">
               <HiLockClosed className="w-4 h-4 text-brand-blue" />
               <span>Legitimate Interests (Art. 6(1)(f))</span>
-            </h4>
+            </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
               To ensure website reliability, prevent spam/abuse, maintain cyber security, and understand aggregate community trends.
             </p>

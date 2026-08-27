@@ -67,6 +67,9 @@ export function PracticesHero() {
                   <img
                     src={imgSheLeadsTech}
                     alt="She Leads Tech Practices Logo"
+                    width={260}
+                    height={260}
+                    decoding="async"
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -74,9 +77,9 @@ export function PracticesHero() {
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-coral bg-brand-pink/20 px-3 py-1 rounded-full">
                     Live Problem-Solving Series
                   </span>
-                  <h3 className="text-lg font-bold text-gray-900 mt-2.5">
+                  <p className="text-lg font-bold text-gray-900 mt-2.5">
                     Build your problem-solving habit together
-                  </h3>
+                  </p>
                 </div>
               </div>
             </div>
