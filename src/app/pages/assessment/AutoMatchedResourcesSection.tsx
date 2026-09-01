@@ -15,7 +15,13 @@ interface AutoMatchedResourcesSectionProps {
   matches: CategoryResourceMatch[];
 }
 
-export function AutoMatchedResourcesSection({ matches }: AutoMatchedResourcesSectionProps) {
+function getResourceIcon(type: string) {
+  if (type === "guide") return HiDocumentText;
+  if (type === "podcast") return HiMicrophone;
+  return HiCodeBracket;
+}
+
+export function AutoMatchedResourcesSection({ matches }: Readonly<AutoMatchedResourcesSectionProps>) {
   if (!matches || matches.length === 0) {
     return null;
   }
@@ -83,12 +89,7 @@ export function AutoMatchedResourcesSection({ matches }: AutoMatchedResourcesSec
             {/* Resources Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {match.resources.map((res) => {
-                const Icon =
-                  res.type === "guide"
-                    ? HiDocumentText
-                    : res.type === "podcast"
-                    ? HiMicrophone
-                    : HiCodeBracket;
+                const Icon = getResourceIcon(res.type);
 
                 return (
                   <div

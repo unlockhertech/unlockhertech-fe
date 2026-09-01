@@ -31,12 +31,11 @@ export function JobCard({
   onToggleSave,
   onShare,
   onReport,
-}: JobCardProps) {
+}: Readonly<JobCardProps>) {
   return (
     <article
       id={job.slug}
-      onClick={() => onSelectJob(job)}
-      className={`bg-white rounded-3xl p-6 sm:p-8 border transition-all cursor-pointer hover:shadow-lg ${
+      className={`bg-white rounded-3xl p-6 sm:p-8 border transition-all hover:shadow-lg ${
         job.featured
           ? "border-pink-200 ring-1 ring-brand-coral/20 shadow-sm"
           : "border-gray-200/80 shadow-xs hover:border-gray-300"
@@ -72,8 +71,14 @@ export function JobCard({
 
           {/* Job Title & Company */}
           <div>
-            <h3 className="text-xl sm:text-2xl font-black text-gray-900 leading-snug group-hover:text-brand-coral transition-colors">
-              {job.title}
+            <h3>
+              <button
+                type="button"
+                onClick={() => onSelectJob(job)}
+                className="text-left text-xl sm:text-2xl font-black text-gray-900 leading-snug hover:text-brand-coral transition-colors cursor-pointer"
+              >
+                {job.title}
+              </button>
             </h3>
             <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mt-1 font-medium">
               <span className="font-bold text-gray-900">{job.company}</span>
@@ -100,7 +105,7 @@ export function JobCard({
           </div>
 
           {/* Tech Stack Chips */}
-          {job.techStack && job.techStack.length > 0 && (
+          {(job.techStack?.length ?? 0) > 0 && (
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
               {job.techStack.map((tech) => (
                 <span

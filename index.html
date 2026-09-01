@@ -46,22 +46,24 @@
 
         gtag('js', new Date());
         gtag('config', 'G-DG4KFXRK2K');
-      } catch (_e) {
-        // Tracker blocked or unavailable; fail silently
+      } catch (err) {
+        console.debug("Analytics initialization blocked or failed:", err);
       }
 
       function loadGtag() {
         try {
-          var s = document.createElement("script");
+          let s = document.createElement("script");
           s.async = true;
           s.src = "https://www.googletagmanager.com/gtag/js?id=G-DG4KFXRK2K";
           document.head.appendChild(s);
-        } catch (_e) {}
+        } catch (err) {
+          console.debug("Gtag script injection blocked or failed:", err);
+        }
       }
 
       function loadMetricool() {
         try {
-          var b = document.getElementsByTagName("head")[0], c = document.createElement("script");
+          let b = document.getElementsByTagName("head")[0], c = document.createElement("script");
           c.type = "text/javascript";
           c.async = true;
           c.src = "https://tracker.metricool.com/resources/be.js";
@@ -71,8 +73,8 @@
             }
           };
           b.appendChild(c);
-        } catch (_e) {
-          // Fail silently
+        } catch (err) {
+          console.debug("Metricool script injection blocked or failed:", err);
         }
       }
 
@@ -158,11 +160,17 @@
   <body>
     <!-- Hidden form for Netlify bots static form parsing -->
     <form name="resources-lead-magnet" data-netlify="true" hidden>
-      <input type="text" name="fullName" />
-      <input type="email" name="email" />
-      <input type="text" name="roleInterest" />
-      <input type="text" name="resourceTitle" />
-      <input type="text" name="mode" />
+      <input type="text" name="fullName" aria-label="fullName"/>
+      <input type="email" name="email"  aria-label="email"/>
+      <input type="text" name="roleInterest" aria-label="roleInterest"/>
+      <input type="text" name="resourceTitle" aria-label="resourceTitle"/>
+      <input type="text" name="mode" aria-label="mode"/>
+    </form>
+    <form name="partner-event-discount" data-netlify="true" hidden>
+      <input type="text" name="fullName" aria-label="fullName"/>
+      <input type="email" name="email" aria-label="email"/>
+      <input type="text" name="eventTitle" aria-label="eventTitle"/>
+      <input type="text" name="discountCode" aria-label="discountCode"/>
     </form>
     <noscript>
       <header>
@@ -172,7 +180,7 @@
       <nav aria-label="Main Navigation">
         <ul>
           <li><a href="/episodes">Podcast Episodes</a></li>
-          <li><a href="/practices">She Leads Tech Problem Solving Practices</a></li>
+          <li><a href="/practice">She Leads Tech Problem-Solving Practice</a></li>
           <li><a href="/about">About & Mission</a></li>
           <li><a href="/team">Meet the Team</a></li>
           <li><a href="/community-guidelines">Community Guidelines & Code of Conduct</a></li>
@@ -191,7 +199,7 @@
       if ('serviceWorker' in navigator) {
         if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
           navigator.serviceWorker.getRegistrations().then(function (registrations) {
-            for (var r of registrations) {
+            for (let r of registrations) {
               r.unregister();
             }
           });

@@ -175,7 +175,7 @@ describe('jobUtils', () => {
 
     it('filters and sorts correctly across multiple criteria', () => {
       const results = filterAndSortJobs([SAMPLE_JOB_1, SAMPLE_JOB_2, SAMPLE_JOB_CLOSED], criteria, "newest");
-      expect(results.length).toBe(2);
+      expect(results).toHaveLength(2);
       expect(results[0].id).toBe("job-1");
     });
   });

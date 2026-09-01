@@ -18,14 +18,18 @@ export function BlogToolbar({
   totalPostsCount,
   onSelectTag,
   onResetFilters,
-}: BlogToolbarProps) {
+}: Readonly<BlogToolbarProps>) {
   return (
     <div className="bg-white p-5 rounded-3xl border border-gray-200/80 shadow-xs mb-10 space-y-4">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Search Input */}
         <div className="relative flex-1">
+          <label htmlFor="blog-search-input" className="sr-only">
+            Search articles
+          </label>
           <HiOutlineMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
+            id="blog-search-input"
             type="text"
             placeholder="Search articles by title, topic, or author…"
             value={searchQuery}

@@ -8,7 +8,7 @@ interface ResourceCategoryFilterProps {
 export function ResourceCategoryFilter({
   selectedCategory,
   onSelectCategory,
-}: ResourceCategoryFilterProps) {
+}: Readonly<ResourceCategoryFilterProps>) {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
       <div className="bg-white rounded-2xl shadow-sm p-3 border border-stone-200/80 flex items-center justify-start md:justify-center gap-2 overflow-x-auto no-scrollbar">

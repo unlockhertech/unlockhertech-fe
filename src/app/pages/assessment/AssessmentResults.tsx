@@ -44,7 +44,7 @@ export function AssessmentResults({
   reflectionNotes,
   onNotesChange,
   onTriggerConfetti,
-}: AssessmentResultsProps) {
+}: Readonly<AssessmentResultsProps>) {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const isComplete = totalAnswered === TOTAL_QUESTIONS_COUNT;
 
@@ -249,11 +249,14 @@ export function AssessmentResults({
 
       {/* Personal Reflection Notes */}
       <div className="mt-10 pt-8 border-t border-stone-100">
-        <h3 className="text-lg font-extrabold text-stone-900 mb-2">Personal Reflection & Next Actions</h3>
+        <label htmlFor="reflection-notes" className="block text-lg font-extrabold text-stone-900 mb-2">
+          Personal Reflection & Next Actions
+        </label>
         <p className="text-xs text-stone-500 mb-4">
           Write down 2-3 immediate steps you will take based on your score summary. Saved automatically in your browser.
         </p>
         <textarea
+          id="reflection-notes"
           rows={4}
           value={reflectionNotes}
           onChange={(e) => onNotesChange(e.target.value)}

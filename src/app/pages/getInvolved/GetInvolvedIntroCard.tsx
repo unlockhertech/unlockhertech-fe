@@ -12,7 +12,7 @@ interface GetInvolvedIntroCardProps {
   activeTab: InvolvementType;
 }
 
-export function GetInvolvedIntroCard({ activeTab }: GetInvolvedIntroCardProps) {
+export function GetInvolvedIntroCard({ activeTab }: Readonly<GetInvolvedIntroCardProps>) {
   if (activeTab === "job") {
     return (
       <div>

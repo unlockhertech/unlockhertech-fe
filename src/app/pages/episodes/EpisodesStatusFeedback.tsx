@@ -16,7 +16,7 @@ export function EpisodesStatusFeedback({
   visibleCount,
   totalFiltered,
   searchQuery,
-}: EpisodesStatusFeedbackProps) {
+}: Readonly<EpisodesStatusFeedbackProps>) {
   return (
     <>
       {/* Live / fallback status badge */}

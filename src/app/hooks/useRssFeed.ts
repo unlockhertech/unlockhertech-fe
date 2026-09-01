@@ -79,11 +79,14 @@ function parseDuration(raw: string): string {
   }
   const parts = raw.split(":").map(Number);
   if (parts.length === 3) {
-    const totalMinutes = parts[0] * 60 + parts[1];
+    const hours = parts[0] ?? 0;
+    const minutes = parts[1] ?? 0;
+    const totalMinutes = hours * 60 + minutes;
     return `${totalMinutes} min`;
   }
   if (parts.length === 2) {
-    return `${parts[0]} min`;
+    const minutes = parts[0] ?? 0;
+    return `${minutes} min`;
   }
   return raw;
 }
@@ -93,7 +96,8 @@ function parseDate(raw: string): string {
     return new Date(raw).toLocaleDateString("en-US", {
       month: "short", day: "numeric", year: "numeric",
     });
-  } catch {
+  } catch (err) {
+    console.debug("Date parsing failed, returning raw string:", err);
     return raw;
   }
 }
@@ -128,8 +132,8 @@ export function parseRssFeed(xml: Document): Episode[] {
       duration,
       date:          parseDate(pubDate),
       episodeNumber,
-      coverColor:    COLORS[i % COLORS.length],
-      imageUrl:      episodeImg || channelImg || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
+      coverColor:    COLORS[Math.abs(i) % COLORS.length] ?? "#8a1f55",
+      imageUrl:      episodeImg || channelImg || (FALLBACK_IMAGES[Math.abs(i) % FALLBACK_IMAGES.length] ?? "/logo.png"),
     };
   });
 }
@@ -171,15 +175,16 @@ export function useRssFeed(): UseRssFeedResult {
 
     let isMounted = true;
 
-    // Fetch fresh feed in background
-    fetch(RSS_FEED_URL)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status} — ${res.statusText}`);
-        return res.text();
-      })
-      .then((text) => {
+    async function fetchLiveFeed() {
+      try {
+        const res = await fetch(RSS_FEED_URL);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+        }
+        const text = await res.text();
         if (!isMounted) return;
-        const xml    = new DOMParser().parseFromString(text, "text/xml");
+
+        const xml = new DOMParser().parseFromString(text, "text/xml");
         const parsed = parseRssFeed(xml);
 
         if (parsed.length === 0) {
@@ -191,7 +196,6 @@ export function useRssFeed(): UseRssFeedResult {
         setIsLive(true);
         setLoading(false);
 
-        // Update cache
         try {
           localStorage.setItem(
             CACHE_KEY,
@@ -200,13 +204,16 @@ export function useRssFeed(): UseRssFeedResult {
         } catch (e) {
           console.warn("[RSS Cache] Write error:", e);
         }
-      })
-      .catch((err: Error) => {
+      } catch (err: unknown) {
         if (!isMounted) return;
-        console.warn("[RSS] Live fetch failed, using fallback:", err.message);
-        setError(err.message);
+        const msg = err instanceof Error ? err.message : "Live fetch failed";
+        console.warn("[RSS] Live fetch failed, using fallback:", msg);
+        setError(msg);
         setLoading(false);
-      });
+      }
+    }
+
+    fetchLiveFeed();
 
     return () => {
       isMounted = false;

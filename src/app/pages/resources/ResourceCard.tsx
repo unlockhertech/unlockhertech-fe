@@ -17,31 +17,111 @@ interface ResourceCardProps {
   onOpenDownload: (item: ExtendedResource, earlyAccess?: boolean) => void;
 }
 
+function getActionButtonClasses(
+  isReleased: boolean,
+  requiresCredentials: boolean,
+  isUnlockedForUser: boolean
+): string {
+  if (!isReleased) {
+    return "bg-brand-coral text-white hover:opacity-90 hover:scale-105";
+  }
+  if (!requiresCredentials || isUnlockedForUser) {
+    return "bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-105";
+  }
+  return "bg-stone-900 text-white hover:bg-brand-coral hover:scale-105";
+}
+
 export function ResourceCard({
   item,
   index,
   now,
   userEmail,
   onOpenDownload,
-}: ResourceCardProps) {
+}: Readonly<ResourceCardProps>) {
   const weekNum = item.weekNumber || index + 1;
   const requiresCredentials = item.requiresLogin || weekNum > 3;
   const releaseTime = item.releaseTimestamp || new Date("2026-08-24T00:00:00Z").getTime();
   const isReleased = releaseTime <= now;
-  const isUnlockedForUser = isReleased && (!requiresCredentials || !!userEmail);
+  const isUnlockedForUser = Boolean(userEmail) || (!requiresCredentials && isReleased);
+
+  const renderStatusPill = () => {
+    if (!isReleased) {
+      return (
+        <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">
+          <HiCalendar className="w-3 h-3" /> Drops {item.releaseDate || "Sep 7"}
+        </span>
+      );
+    }
+    if (!requiresCredentials) {
+      return (
+        <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+          Free (No Login)
+        </span>
+      );
+    }
+    if (isUnlockedForUser) {
+      return (
+        <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
+          <HiCheckCircle className="w-3 h-3" /> Unlocked
+        </span>
+      );
+    }
+    return (
+      <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-brand-coral bg-brand-coral/10 px-2 py-0.5 rounded-md">
+        <HiLockClosed className="w-3 h-3" /> Community Exclusive
+      </span>
+    );
+  };
+
+  const renderButtonContent = () => {
+    if (!isReleased) {
+      return (
+        <>
+          <HiBell className="w-4 h-4" />
+          <span>Get Notified</span>
+        </>
+      );
+    }
+    if (!requiresCredentials) {
+      return (
+        <>
+          <HiArrowDownTray className="w-4 h-4" />
+          <span>Download PDF</span>
+        </>
+      );
+    }
+    if (isUnlockedForUser) {
+      return (
+        <>
+          <HiDocumentCheck className="w-4 h-4 text-emerald-300" />
+          <span>Download PDF</span>
+        </>
+      );
+    }
+    return (
+      <>
+        <HiLockClosed className="w-4 h-4" />
+        <span>Unlock Free</span>
+      </>
+    );
+  };
 
   return (
-    <div className="group bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-200/80 flex flex-col justify-between">
+    <div
+      className={`group bg-white rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
+        isReleased ? "border-stone-200/90 shadow-sm" : "border-stone-200/60 bg-stone-50/50 shadow-xs"
+      }`}
+    >
       <div>
-        {/* Stylized Miniature Paper Graphic Thumbnail */}
+        {/* Document Visual Header */}
         <PdfPaperThumbnail
-          colorIndex={index}
-          customColor={item.accentColor}
           title={item.title}
           category={item.category}
           pageCount={item.pageCount || "3 Pages"}
           weekNumber={weekNum}
           releaseDate={item.releaseDate || "Sep 7, 2026"}
+          colorIndex={index}
+          customColor={item.accentColor}
           requiresLogin={requiresCredentials}
           isUnlocked={isUnlockedForUser}
           isReleased={isReleased}
@@ -55,23 +135,7 @@ export function ResourceCard({
             </span>
 
             {/* Access / Launch Status Pill */}
-            {!isReleased ? (
-              <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">
-                <HiCalendar className="w-3 h-3" /> Drops {item.releaseDate || "Sep 7"}
-              </span>
-            ) : !requiresCredentials ? (
-              <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
-                Free (No Login)
-              </span>
-            ) : isUnlockedForUser ? (
-              <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
-                <HiCheckCircle className="w-3 h-3" /> Unlocked
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-brand-coral bg-brand-coral/10 px-2 py-0.5 rounded-md">
-                <HiLockClosed className="w-3 h-3" /> Community Exclusive
-              </span>
-            )}
+            {renderStatusPill()}
           </div>
 
           <h3 className="text-lg font-bold text-stone-900 group-hover:text-brand-coral transition-colors line-clamp-2">
@@ -92,35 +156,13 @@ export function ResourceCard({
         <button
           type="button"
           onClick={() => onOpenDownload(item, false)}
-          className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ${
-            !isReleased
-              ? "bg-brand-coral text-white hover:opacity-90 hover:scale-105"
-              : !requiresCredentials || isUnlockedForUser
-              ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-105"
-              : "bg-stone-900 text-white hover:bg-brand-coral hover:scale-105"
-          }`}
+          className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ${getActionButtonClasses(
+            isReleased,
+            requiresCredentials,
+            isUnlockedForUser
+          )}`}
         >
-          {!isReleased ? (
-            <>
-              <HiBell className="w-4 h-4" />
-              <span>Get Notified</span>
-            </>
-          ) : !requiresCredentials ? (
-            <>
-              <HiArrowDownTray className="w-4 h-4" />
-              <span>Download PDF</span>
-            </>
-          ) : isUnlockedForUser ? (
-            <>
-              <HiDocumentCheck className="w-4 h-4 text-emerald-300" />
-              <span>Download PDF</span>
-            </>
-          ) : (
-            <>
-              <HiLockClosed className="w-4 h-4" />
-              <span>Join Community to Unlock</span>
-            </>
-          )}
+          {renderButtonContent()}
         </button>
       </div>
     </div>

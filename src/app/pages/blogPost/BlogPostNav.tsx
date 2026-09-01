@@ -7,7 +7,7 @@ interface BlogPostNavProps {
   nextPost: AdjacentPost | null;
 }
 
-export function BlogPostNav({ prevPost, nextPost }: BlogPostNavProps) {
+export function BlogPostNav({ prevPost, nextPost }: Readonly<BlogPostNavProps>) {
   return (
     <nav className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 pt-12" aria-label="Blog post navigation">
       {prevPost ? (

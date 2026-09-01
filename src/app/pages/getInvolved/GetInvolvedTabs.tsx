@@ -11,7 +11,7 @@ interface GetInvolvedTabsProps {
   onTabClick: (tab: InvolvementType) => void;
 }
 
-export function GetInvolvedTabs({ activeTab, onTabClick }: GetInvolvedTabsProps) {
+export function GetInvolvedTabs({ activeTab, onTabClick }: Readonly<GetInvolvedTabsProps>) {
   const tabs = [
     { id: "job" as const, label: "Submit a Role", icon: HiBriefcase },
     { id: "mentor" as const, label: "Become a Mentor", icon: HiUserGroup },

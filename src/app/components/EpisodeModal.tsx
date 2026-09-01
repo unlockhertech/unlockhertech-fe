@@ -12,7 +12,7 @@ interface EpisodeModalProps {
   onClose: () => void;
 }
 
-export function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
+export function EpisodeModal({ episode, onClose }: Readonly<EpisodeModalProps>) {
   const { title, description, duration, date, episodeNumber, coverColor, imageUrl } = episode;
   const { toggle, isThisPlaying } = useAudioPlayer();
   const playing = isThisPlaying(episode.id);
@@ -84,8 +84,9 @@ export function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
 
           {/* Close button */}
           <button
+            type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 rounded-full p-1.5 bg-black/30 backdrop-blur-sm text-white hover:bg-black/50 transition-colors"
+            className="absolute top-4 right-4 rounded-full p-1.5 bg-black/30 backdrop-blur-sm text-white hover:bg-black/50 transition-colors cursor-pointer"
             aria-label="Close"
           >
             <HiXMark className="w-4 h-4" />
@@ -93,8 +94,9 @@ export function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
 
           {/* Play / Pause */}
           <button
+            type="button"
             onClick={() => toggle(episode)}
-            className="absolute bottom-4 right-4 rounded-full p-3.5 shadow-lg hover:scale-110 transition-transform bg-white"
+            className="absolute bottom-4 right-4 rounded-full p-3.5 shadow-lg hover:scale-110 transition-transform bg-white cursor-pointer"
             aria-label={playing ? "Pause episode" : "Play episode"}
           >
             {playing ? (

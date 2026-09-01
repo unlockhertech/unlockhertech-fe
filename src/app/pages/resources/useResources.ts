@@ -12,7 +12,8 @@ export function useResources() {
   const [userEmail, setUserEmail] = useState<string | null>(() => {
     try {
       return localStorage.getItem(STORAGE_KEY_USER_EMAIL);
-    } catch {
+    } catch (err) {
+      console.warn("Could not read user email from localStorage:", err);
       return null;
     }
   });
@@ -28,11 +29,11 @@ export function useResources() {
       setIsLoading(true);
       try {
         const sanityData = await getAllResources();
-        if (sanityData && sanityData.length > 0) {
+        if ((sanityData?.length ?? 0) > 0) {
           const enriched: ExtendedResource[] = sanityData.map((item, idx) => ({
             ...item,
             weekNumber: item.weekNumber || idx + 1,
-            requiresLogin: item.requiresLogin !== undefined ? item.requiresLogin : idx + 1 > 3,
+            requiresLogin: item.requiresLogin ?? idx + 1 > 3,
             releaseDate: item.publishedAt
               ? new Date(item.publishedAt).toLocaleDateString("en-US", {
                   month: "short",
@@ -73,7 +74,7 @@ export function useResources() {
       link.download = `${resource.slug || "unlock-her-tech-guide"}.pdf`;
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      link.remove();
     }
   }, []);
 
@@ -122,8 +123,8 @@ export function useResources() {
     try {
       localStorage.removeItem(STORAGE_KEY_USER_EMAIL);
       localStorage.removeItem("uht_community_member");
-    } catch {
-      // ignore
+    } catch (err) {
+      console.warn("Could not clear user email from localStorage:", err);
     }
     setUserEmail(null);
   }, []);

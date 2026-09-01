@@ -228,7 +228,7 @@ unlockhertech-fe/
 │   │   │   ├── home/        # Homepage hero, pillars, banner & waveform player
 │   │   │   ├── jobs/        # Job board filter controls, detail modal & cards
 │   │   │   ├── links/       # Linktree bio profile & video spotlight
-│   │   │   ├── practices/   # She Leads Tech practice countdown & curriculum
+│   │   │   ├── practice/   # She Leads Tech practice countdown & curriculum
 │   │   │   ├── resources/   # Playbook downloads & modal triggers
 │   │   │   └── team/        # Core team members & mission details
 │   │   ├── routes.ts        # Declarative React Router v7 routes

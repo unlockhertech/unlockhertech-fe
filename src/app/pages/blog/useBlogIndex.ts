@@ -38,8 +38,8 @@ export function useBlogIndex() {
       const matchesSearch =
         !q ||
         post.title.toLowerCase().includes(q) ||
-        (post.content && post.content.toLowerCase().includes(q)) ||
-        (post.author && post.author.toLowerCase().includes(q));
+        (post.content?.toLowerCase().includes(q)) ||
+        (post.author?.toLowerCase().includes(q));
       return matchesTag && matchesSearch;
     });
   }, [posts, activeTag, searchQuery]);

@@ -59,6 +59,58 @@ export function JobsPage() {
     }
   );
 
+  const renderJobList = () => {
+    if (loading) {
+      return (
+        <div className="py-20 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-coral mx-auto mb-4" />
+          <p className="text-sm font-semibold text-gray-600">Loading verified inclusive opportunities…</p>
+        </div>
+      );
+    }
+
+    if (filteredJobs.length === 0) {
+      return (
+        <div className="py-20 text-center bg-white rounded-3xl border border-gray-200/80 p-8 shadow-xs max-w-2xl mx-auto">
+          <div className="w-16 h-16 rounded-full bg-pink-50 text-brand-coral flex items-center justify-center mx-auto mb-4">
+            <HiFunnel className="w-8 h-8 opacity-60" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">No roles match your filters</h2>
+          <p className="text-sm text-gray-600 leading-relaxed mb-6">
+            Try relaxing your compensation filter, clearing specific tech tags, or exploring our broader categories.
+          </p>
+          <button
+            type="button"
+            onClick={resetAllFilters}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-coral text-white font-bold text-sm shadow-sm hover:opacity-90 transition-opacity cursor-pointer"
+          >
+            Reset Filters
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <section>
+        <h2 className="sr-only">Available Vetted Opportunities</h2>
+        <div className="space-y-4 sm:space-y-6">
+          {filteredJobs.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              isSaved={savedJobIds.includes(job.id)}
+              copiedSlug={copiedSlug}
+              onSelectJob={setActiveJobModal}
+              onToggleSave={toggleSaveJob}
+              onShare={handleShareJob}
+              onReport={handleReportJob}
+            />
+          ))}
+        </div>
+      </section>
+    );
+  };
+
   return (
     <div className="bg-stone-50 min-h-screen">
       {/* ── Toast Notification for Reporting ─────────────────────────────── */}
@@ -108,47 +160,7 @@ export function JobsPage() {
 
       {/* ── 3. Jobs Listing Grid ─────────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {loading ? (
-          <div className="py-20 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-coral mx-auto mb-4" />
-            <p className="text-sm font-semibold text-gray-600">Loading verified inclusive opportunities…</p>
-          </div>
-        ) : filteredJobs.length === 0 ? (
-          <div className="py-20 text-center bg-white rounded-3xl border border-gray-200/80 p-8 shadow-xs max-w-2xl mx-auto">
-            <div className="w-16 h-16 rounded-full bg-pink-50 text-brand-coral flex items-center justify-center mx-auto mb-4">
-              <HiFunnel className="w-8 h-8 opacity-60" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">No roles match your filters</h2>
-            <p className="text-sm text-gray-600 leading-relaxed mb-6">
-              Try relaxing your compensation filter, clearing specific tech tags, or exploring our broader categories.
-            </p>
-            <button
-              type="button"
-              onClick={resetAllFilters}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-coral text-white font-bold text-sm shadow-sm hover:opacity-90 transition-opacity cursor-pointer"
-            >
-              Reset Filters
-            </button>
-          </div>
-        ) : (
-          <section>
-            <h2 className="sr-only">Available Vetted Opportunities</h2>
-            <div className="space-y-4 sm:space-y-6">
-              {filteredJobs.map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  isSaved={savedJobIds.includes(job.id)}
-                  copiedSlug={copiedSlug}
-                  onSelectJob={setActiveJobModal}
-                  onToggleSave={toggleSaveJob}
-                  onShare={handleShareJob}
-                  onReport={handleReportJob}
-                />
-              ))}
-            </div>
-          </section>
-        )}
+        {renderJobList()}
       </main>
 
       {/* ── 4. Inclusivity & Transparency Vetting Standards ──────────────── */}

@@ -6,7 +6,7 @@ interface LinksListProps {
   onLinkClick: (title: string, url: string) => void;
 }
 
-export function LinksList({ links, onLinkClick }: LinksListProps) {
+export function LinksList({ links, onLinkClick }: Readonly<LinksListProps>) {
   return (
     <section aria-label="Quick links" className="w-full space-y-3.5 mb-8">
       {links.map((item) => {

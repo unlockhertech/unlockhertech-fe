@@ -47,8 +47,9 @@ export function EpisodeCard({episode}: Readonly<EpisodeCardProps>) {
 
                     {/* Play / Pause button */}
                     <button
+                        type="button"
                         onClick={() => toggle(episode)}
-                        className="absolute bottom-4 right-4 rounded-full p-3 shadow-lg hover:scale-110 transition-transform bg-white"
+                        className="absolute bottom-4 right-4 rounded-full p-3 shadow-lg hover:scale-110 transition-transform bg-white cursor-pointer"
                         aria-label={playing ? `Pause episode ${episodeNumber}` : `Play episode ${episodeNumber}`}
                     >
                         {playing
@@ -106,6 +107,7 @@ export function EpisodeCard({episode}: Readonly<EpisodeCardProps>) {
                     {/* Read more → opens modal */}
                     {isLong && (
                         <button
+                            type="button"
                             onClick={() => setModalOpen(true)}
                             aria-label={`Read full description for episode ${episodeNumber}: ${title}`}
                             className="flex items-center gap-1 text-xs mt-1.5 transition-colors hover:opacity-70 underline underline-offset-2 cursor-pointer"

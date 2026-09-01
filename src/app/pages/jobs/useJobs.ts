@@ -29,7 +29,8 @@ export function useJobs() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_SAVED_JOBS);
       return saved ? JSON.parse(saved) : [];
-    } catch {
+    } catch (err) {
+      console.warn("Failed to load saved jobs from localStorage:", err);
       return [];
     }
   });
@@ -93,16 +94,23 @@ export function useJobs() {
     }
   }, [jobs]);
 
-  const handleShareJob = useCallback((job: Job, e?: MouseEvent) => {
+  const handleShareJob = useCallback(async (job: Job, e?: MouseEvent) => {
     e?.stopPropagation();
     const url = `${window.location.origin}/jobs?selected=${job.slug || job.id}`;
     if (navigator.share) {
-      navigator.share({ title: `${job.title} at ${job.company}`, url }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(url).then(() => {
+      try {
+        await navigator.share({ title: `${job.title} at ${job.company}`, url });
+      } catch (err) {
+        console.debug("Native share dismissed or failed:", err);
+      }
+    } else if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url);
         setCopiedSlug(job.slug || job.id);
         setTimeout(() => setCopiedSlug(null), 2000);
-      });
+      } catch (err) {
+        console.debug("Clipboard copy failed:", err);
+      }
     }
     trackJobShare(job.company, job.title);
   }, []);

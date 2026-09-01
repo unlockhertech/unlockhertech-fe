@@ -4,7 +4,7 @@ interface LinksSocialNavProps {
   onSocialClick: (name: string, url: string) => void;
 }
 
-export function LinksSocialNav({ onSocialClick }: LinksSocialNavProps) {
+export function LinksSocialNav({ onSocialClick }: Readonly<LinksSocialNavProps>) {
   return (
     <nav aria-label="Social media links" className="flex items-center justify-center gap-3 mb-8 flex-wrap">
       {SOCIAL_LINKS.map((social) => {

@@ -53,6 +53,100 @@ const CLOSED_JOB_PHRASES = [
 /**
  * Validates a single job listing's applyUrl by performing an HTTP check.
  */
+function createStaleResult(
+  job: Job,
+  reason: string,
+  checkedAt: string,
+  statusCode?: number
+): JobHealthResult {
+  return {
+    jobId: job.id,
+    slug: job.slug,
+    title: job.title,
+    company: job.company,
+    applyUrl: job.applyUrl,
+    isAvailable: false,
+    statusCode,
+    reason,
+    checkedAt,
+  };
+}
+
+function isGenericRedirect(resUrl: string, applyUrl: string): boolean {
+  const finalUrl = resUrl.toLowerCase();
+  const isGenericPath =
+    finalUrl.endsWith("/careers") ||
+    finalUrl.endsWith("/careers/") ||
+    finalUrl.endsWith("/jobs") ||
+    finalUrl.endsWith("/jobs/") ||
+    finalUrl.includes("/404") ||
+    finalUrl.includes("/not-found");
+
+  if (!isGenericPath) return false;
+
+  try {
+    const originalPath = new URL(applyUrl).pathname;
+    const finalPath = new URL(resUrl).pathname;
+    return originalPath.length > finalPath.length + 3;
+  } catch (err) {
+    console.debug("Failed to compare URL paths during redirect check:", err);
+    return false;
+  }
+}
+
+async function checkBodyForClosedPhrase(res: Response): Promise<string | null> {
+  const contentType = res.headers.get("content-type") || "";
+  if (!contentType.includes("text/html") && !contentType.includes("application/json")) {
+    return null;
+  }
+
+  const htmlText = (await res.text()).toLowerCase();
+  for (const phrase of CLOSED_JOB_PHRASES) {
+    if (htmlText.includes(phrase)) {
+      return phrase;
+    }
+  }
+  return null;
+}
+
+function evaluateResponseStatus(job: Job, res: Response, checkedAt: string): JobHealthResult | null {
+  if (res.status === 404 || res.status === 410) {
+    const statusLabel = res.status === 410 ? "Gone" : "Not Found";
+    return createStaleResult(
+      job,
+      `Requisition URL returned HTTP ${res.status} (${statusLabel})`,
+      checkedAt,
+      res.status
+    );
+  }
+
+  if (!res.ok) {
+    return createStaleResult(job, `HTTP ${res.status} ${res.statusText}`, checkedAt, res.status);
+  }
+
+  if (isGenericRedirect(res.url, job.applyUrl)) {
+    return createStaleResult(job, `Redirected to generic index: ${res.url}`, checkedAt, res.status);
+  }
+
+  return null;
+}
+
+function formatFetchError(
+  job: Job,
+  err: unknown,
+  timeoutMs: number,
+  checkedAt: string
+): JobHealthResult {
+  const errorMessage = err instanceof Error ? err.message : "Network error";
+  const isTimeout = err instanceof Error && err.name === "AbortError";
+  const reason = isTimeout ? `Request timed out after ${timeoutMs}ms` : errorMessage;
+
+  return createStaleResult(job, reason, checkedAt);
+}
+
+/**
+ * Validates a single job listing's applyUrl by performing an HTTP check.
+ */
 export async function checkJobLinkHealth(
   job: Job,
   options: LinkCheckOptions = {}
@@ -62,16 +156,7 @@ export async function checkJobLinkHealth(
   const checkedAt = new Date().toISOString();
 
   if (!job.applyUrl || !job.applyUrl.startsWith("http")) {
-    return {
-      jobId: job.id,
-      slug: job.slug,
-      title: job.title,
-      company: job.company,
-      applyUrl: job.applyUrl,
-      isAvailable: false,
-      reason: "Missing or invalid HTTP application URL",
-      checkedAt,
-    };
+    return createStaleResult(job, "Missing or invalid HTTP application URL", checkedAt);
   }
 
   const controller = new AbortController();
@@ -90,81 +175,19 @@ export async function checkJobLinkHealth(
 
     clearTimeout(timeoutId);
 
-    // 404, 410, 403, 500 errors
-    if (res.status === 404 || res.status === 410) {
-      return {
-        jobId: job.id,
-        slug: job.slug,
-        title: job.title,
-        company: job.company,
-        applyUrl: job.applyUrl,
-        isAvailable: false,
-        statusCode: res.status,
-        reason: `Requisition URL returned HTTP ${res.status} (${res.status === 410 ? "Gone" : "Not Found"})`,
+    const statusError = evaluateResponseStatus(job, res, checkedAt);
+    if (statusError) {
+      return statusError;
+    }
+
+    const closedPhrase = await checkBodyForClosedPhrase(res);
+    if (closedPhrase) {
+      return createStaleResult(
+        job,
+        `Page content contains closed job notice: "${closedPhrase}"`,
         checkedAt,
-      };
-    }
-
-    if (!res.ok) {
-      return {
-        jobId: job.id,
-        slug: job.slug,
-        title: job.title,
-        company: job.company,
-        applyUrl: job.applyUrl,
-        isAvailable: false,
-        statusCode: res.status,
-        reason: `HTTP ${res.status} ${res.statusText}`,
-        checkedAt,
-      };
-    }
-
-    // Check if redirected to a generic /careers or /404 page
-    const finalUrl = res.url.toLowerCase();
-    if (
-      finalUrl.endsWith("/careers") ||
-      finalUrl.endsWith("/careers/") ||
-      finalUrl.endsWith("/jobs") ||
-      finalUrl.endsWith("/jobs/") ||
-      finalUrl.includes("/404") ||
-      finalUrl.includes("/not-found")
-    ) {
-      const originalPath = new URL(job.applyUrl).pathname;
-      const finalPath = new URL(res.url).pathname;
-      if (originalPath.length > finalPath.length + 3) {
-        return {
-          jobId: job.id,
-          slug: job.slug,
-          title: job.title,
-          company: job.company,
-          applyUrl: job.applyUrl,
-          isAvailable: false,
-          statusCode: res.status,
-          reason: `Redirected to generic index: ${res.url}`,
-          checkedAt,
-        };
-      }
-    }
-
-    // Sample body text for closed requisition signatures
-    const contentType = res.headers.get("content-type") || "";
-    if (contentType.includes("text/html") || contentType.includes("application/json")) {
-      const htmlText = (await res.text()).toLowerCase();
-      for (const phrase of CLOSED_JOB_PHRASES) {
-        if (htmlText.includes(phrase)) {
-          return {
-            jobId: job.id,
-            slug: job.slug,
-            title: job.title,
-            company: job.company,
-            applyUrl: job.applyUrl,
-            isAvailable: false,
-            statusCode: res.status,
-            reason: `Page content contains closed job notice: "${phrase}"`,
-            checkedAt,
-          };
-        }
-      }
+        res.status
+      );
     }
 
     return {
@@ -179,19 +202,7 @@ export async function checkJobLinkHealth(
     };
   } catch (err: unknown) {
     clearTimeout(timeoutId);
-    const errorMessage = err instanceof Error ? err.message : "Network error";
-    const isTimeout = err instanceof Error && err.name === "AbortError";
-
-    return {
-      jobId: job.id,
-      slug: job.slug,
-      title: job.title,
-      company: job.company,
-      applyUrl: job.applyUrl,
-      isAvailable: false,
-      reason: isTimeout ? `Request timed out after ${timeoutMs}ms` : errorMessage,
-      checkedAt,
-    };
+    return formatFetchError(job, err, timeoutMs, checkedAt);
   }
 }
 

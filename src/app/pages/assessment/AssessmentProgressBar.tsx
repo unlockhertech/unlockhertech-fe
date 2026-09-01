@@ -13,7 +13,7 @@ export function AssessmentProgressBar({
   totalAnswered,
   viewMode,
   onToggleViewMode,
-}: AssessmentProgressBarProps) {
+}: Readonly<AssessmentProgressBarProps>) {
   return (
     <div className="mb-8 bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs print:hidden space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

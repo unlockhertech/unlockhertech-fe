@@ -6,7 +6,7 @@ interface EpisodesHeroHeaderProps {
   totalEpisodes: number;
 }
 
-export function EpisodesHeroHeader({ totalEpisodes }: EpisodesHeroHeaderProps) {
+export function EpisodesHeroHeader({ totalEpisodes }: Readonly<EpisodesHeroHeaderProps>) {
   return (
     <header className="relative py-16 overflow-hidden bg-brand-coral text-white">
       <BrandPatternOverlay />

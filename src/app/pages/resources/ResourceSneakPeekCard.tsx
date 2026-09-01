@@ -5,7 +5,7 @@ interface ResourceSneakPeekCardProps {
   onNotifyClick: () => void;
 }
 
-export function ResourceSneakPeekCard({ onNotifyClick }: ResourceSneakPeekCardProps) {
+export function ResourceSneakPeekCard({ onNotifyClick }: Readonly<ResourceSneakPeekCardProps>) {
   return (
     <div className="group bg-white/70 rounded-3xl p-6 border-2 border-dashed border-stone-300 hover:border-brand-coral transition-all duration-300 flex flex-col justify-between shadow-xs">
       <div>

@@ -1,12 +1,12 @@
 import { Link } from "react-router";
-import { HiCalendarDays } from "react-icons/hi2";
+import { HiCalendarDays, HiArrowTopRightOnSquare } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 
 interface EventsHeroHeaderProps {
   upcomingCount: number;
 }
 
-export function EventsHeroHeader({ upcomingCount }: EventsHeroHeaderProps) {
+export function EventsHeroHeader({ upcomingCount }: Readonly<EventsHeroHeaderProps>) {
   return (
     <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white">
       <BrandPatternOverlay />
@@ -28,16 +28,22 @@ export function EventsHeroHeader({ upcomingCount }: EventsHeroHeaderProps) {
         <p className="text-white/90 max-w-140 leading-[1.8] text-base sm:text-lg">
           Hands-on LeetCode practices, technical workshops, and inspiring community conversations.
         </p>
-        <div className="flex flex-wrap gap-3 mt-6">
+        <div className="flex flex-wrap items-center gap-3 mt-6">
           <span className="px-3.5 py-1 rounded-full text-white text-xs font-bold bg-white/20 border border-white/20 backdrop-blur-xs">
             {upcomingCount} Upcoming
           </span>
           <span className="px-3.5 py-1 rounded-full text-stone-950 text-xs font-black bg-brand-yellow shadow-xs">
             Fortnightly Practices
           </span>
-          <span className="px-3.5 py-1 rounded-full text-white text-xs font-bold bg-white/20 border border-white/20 backdrop-blur-xs">
-            Virtual & Live
-          </span>
+          <a
+            href="https://luma.com/sheleadstechpractice"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-white text-xs font-bold bg-white/15 hover:bg-white/25 border border-white/30 transition-all cursor-pointer shadow-xs"
+          >
+            <span>Subscribe to Series on Luma</span>
+            <HiArrowTopRightOnSquare className="w-3.5 h-3.5" />
+          </a>
         </div>
       </div>
     </header>

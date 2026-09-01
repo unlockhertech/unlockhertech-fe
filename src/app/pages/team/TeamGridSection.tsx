@@ -1,11 +1,13 @@
 import { TeamMember } from "../../components/TeamMember";
 import { teamMembers } from "../../data";
+import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 import { cycleColor } from "./teamUtils";
 
 export function TeamGridSection() {
   return (
-    <section className="py-20 bg-stone-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-stone-50 relative overflow-hidden">
+      <BrandPatternOverlay variant="watermark" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Co-founders label */}
         <div className="mb-8">
           <p className="text-xs uppercase tracking-widest mb-1 text-brand-coral font-bold">Co-Founders</p>

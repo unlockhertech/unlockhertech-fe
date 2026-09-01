@@ -26,7 +26,7 @@ const COLOR_GREEN = [114, 196, 114] as const; // #72c472
 const COLOR_DARK  = [28, 25, 23] as const;   // Stone 900
 const COLOR_MUTED = [87, 83, 78] as const;   // Stone 600
 const COLOR_LIGHT = [248, 248, 247] as const; // Stone 50
-const COLOR_BORDER = [229, 231, 235] as const; // Gray 200
+const COLOR_BORDER = [229, 231, 235] as const; // Grey 200
 
 const CATEGORY_COLOR_MAP: Record<string, readonly [number, number, number]> = {
   m1: COLOR_BERRY,
@@ -59,7 +59,7 @@ const CATEGORY_ACTION_ITEMS: Record<string, string[]> = {
 };
 
 /**
- * Sanitizes strings for jsPDF standard fonts (Helvetica, Times, Courier)
+ * Sanitises strings for jsPDF standard fonts (Helvetica, Times, Courier)
  * which only support WinAnsi / ASCII (0-255).
  * Removes emojis and replaces Unicode symbols (bullets, em-dashes, smart quotes)
  * with clean printable ASCII equivalents to prevent corrupted characters like Ø<ß¯, Ø=Ü», Ø=ÜÚ.
@@ -75,10 +75,10 @@ export function sanitizeForPdf(text: string): string {
     // Replace bullets
     .replace(/[\u2022\u2023\u25E6\u2043\u2219]/g, "|")
     // Replace ellipsis
-    .replace(/\u2026/g, "...")
+    .replaceAll('\u2026', "...")
     // Strip emojis and miscellaneous symbols outside ASCII printable range
     .replace(/\p{Extended_Pictographic}/gu, "")
-    .replace(/[\u{1F300}-\u{1F9FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1FA00}-\u{1FAFF}]/gu, "")
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, "")
     .replace(/[\uFE00-\uFE0F]/g, "")
     // Remove any remaining non-ASCII characters that corrupt standard PDF encoding
     .replace(/[^\x20-\x7E\r\n\t]/g, "")
@@ -191,11 +191,16 @@ export async function generateCareerPlanPdf({
   doc.setTextColor(...COLOR_MUTED);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  const summaryExplanation = grandTotal >= 65
-    ? "You demonstrate strong foundations across mindsets, technical fluency, and strategy. Prioritize high-leverage portfolio projects and direct networking to secure interviews."
-    : grandTotal >= 45
-    ? "You have solid momentum in core competency areas. Focus on bridging identified gap areas and maintaining consistent practice routines."
-    : "You are in the foundational discovery stage. Focus on daily study habits, basic conceptual models, and connecting with supportive peer communities.";
+  const getSummaryExplanation = (total: number): string => {
+    if (total >= 65) {
+      return "You demonstrate strong foundations across mindsets, technical fluency, and strategy. Prioritize high-leverage portfolio projects and direct networking to secure interviews.";
+    }
+    if (total >= 45) {
+      return "You have solid momentum in core competency areas. Focus on bridging identified gap areas and maintaining consistent practice routines.";
+    }
+    return "You are in the foundational discovery stage. Focus on daily study habits, basic conceptual models, and connecting with supportive peer communities.";
+  };
+  const summaryExplanation = getSummaryExplanation(grandTotal);
   
   const splitSummary = doc.splitTextToSize(summaryExplanation, 98);
   doc.text(splitSummary, rightX, currentY + 22);
@@ -224,7 +229,7 @@ export async function generateCareerPlanPdf({
     doc.setLineWidth(0.3);
     doc.roundedRect(marginX, currentY, contentWidth, cardHeight, 2.5, 2.5, "FD");
 
-    // Left colored accent indicator
+    // Left coloured accent indicator
     doc.setFillColor(...catColor);
     doc.roundedRect(marginX, currentY, 3, cardHeight, 1.5, 1.5, "F");
 

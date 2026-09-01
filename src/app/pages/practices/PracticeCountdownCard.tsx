@@ -14,7 +14,7 @@ interface PracticeCountdownCardProps {
   customTargetDate?: Date;
 }
 
-export function PracticeCountdownCard({ customTargetDate }: PracticeCountdownCardProps) {
+export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCountdownCardProps>) {
   const {
     days,
     hours,
@@ -44,8 +44,8 @@ export function PracticeCountdownCard({ customTargetDate }: PracticeCountdownCar
       <div className="relative rounded-3xl bg-white border border-stone-200/90 p-6 sm:p-8 lg:p-10 shadow-xl overflow-hidden">
         {/* Signature 5-Color Accent Palette Bar */}
         <div className="absolute top-0 left-0 right-0 h-2 flex">
-          {[BERRY, ORANGE, PINK, GREEN, BLUE].map((color, idx) => (
-            <div key={idx} className="flex-1" style={{ backgroundColor: color }} />
+          {[BERRY, ORANGE, PINK, GREEN, BLUE].map((color) => (
+            <div key={color} className="flex-1" style={{ backgroundColor: color }} />
           ))}
         </div>
 
@@ -156,24 +156,36 @@ export function PracticeCountdownCard({ customTargetDate }: PracticeCountdownCar
             )}
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md justify-center lg:justify-end">
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full max-w-lg justify-center lg:justify-end flex-wrap">
               <Link
                 to="/events"
                 onClick={handleRsvpClick}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-5 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <HiBell className="w-4 h-4" />
-                <span>RSVP & Get Workshop Link</span>
+                <span>RSVP & Link</span>
               </Link>
+
+              <a
+                href="https://luma.com/sheleadstechpractice"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-5 py-3 rounded-full bg-pink-50 hover:bg-pink-100/80 border border-brand-pink/60 text-brand-berry font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+              >
+                <HiCalendarDays className="w-4 h-4 text-brand-coral" />
+                <span>Subscribe on Luma</span>
+                <HiArrowTopRightOnSquare className="w-3.5 h-3.5 text-brand-coral/70" />
+              </a>
 
               <a
                 href={googleCalendarUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={handleCalendarClick}
-                className="w-full sm:w-auto px-5 py-3.5 rounded-full bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-800 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full sm:w-auto px-4 py-3 rounded-full bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-700 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                title="Add single next session to Google Calendar"
               >
-                <span>Add to Google Cal</span>
+                <span>Google Cal</span>
                 <HiArrowTopRightOnSquare className="w-3.5 h-3.5 text-stone-500" />
               </a>
             </div>

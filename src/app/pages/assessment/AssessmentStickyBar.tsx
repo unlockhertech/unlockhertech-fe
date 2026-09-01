@@ -13,7 +13,7 @@ export function AssessmentStickyBar({
   totalAnswered,
   progressPercent,
   onScrollToResults,
-}: AssessmentStickyBarProps) {
+}: Readonly<AssessmentStickyBarProps>) {
   if (!show) return null;
 
   const isComplete = totalAnswered === TOTAL_QUESTIONS_COUNT;

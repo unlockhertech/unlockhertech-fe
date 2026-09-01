@@ -52,11 +52,11 @@ export function getNextPracticeSession(currentTime: number = Date.now()): Practi
 
   const targetDate = new Date(targetTime);
   const sessionIndex = Math.max(
-    0,
+    4,
     Math.floor((targetTime - PRACTICE_ANCHOR_UTC) / FOURTEEN_DAYS_MS)
   );
   const sessionNumber = sessionIndex + 1;
-  const topic = PRACTICE_TOPICS[sessionIndex % PRACTICE_TOPICS.length];
+  const topic = PRACTICE_TOPICS[sessionIndex % PRACTICE_TOPICS.length] ?? PRACTICE_TOPICS[0];
 
   const formattedDate = targetDate.toLocaleDateString("en-GB", {
     weekday: "long",

@@ -13,7 +13,7 @@ interface BlogPostHeaderProps {
   post: BlogPost;
 }
 
-export function BlogPostHeader({ post }: BlogPostHeaderProps) {
+export function BlogPostHeader({ post }: Readonly<BlogPostHeaderProps>) {
   const shareUrl = globalThis.window === undefined ? "" : globalThis.location.href;
   const shareTitle = post.title || "";
   const postTags = post.tags ?? [];

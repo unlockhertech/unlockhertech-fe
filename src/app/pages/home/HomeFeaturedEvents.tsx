@@ -8,7 +8,42 @@ interface HomeFeaturedEventsProps {
   events: ExternalEvent[];
 }
 
-export function HomeFeaturedEvents({ events }: HomeFeaturedEventsProps) {
+function getFeaturedEventCtaLabel(event: ExternalEvent): string {
+  if (event.ctaLabel) return event.ctaLabel;
+  if (event.discountCode) return "Get Tickets (20% Off)";
+  return "View Event";
+}
+
+function renderFeaturedEventActionButton(event: ExternalEvent, externalUrl: string) {
+  if (event.platform === "Luma") {
+    return (
+      <LumaCheckoutButton
+        urlOrId={event.urlOrId}
+        className="w-full px-5 py-2.5 rounded-full bg-brand-coral text-white text-xs font-bold hover:opacity-90 transition-opacity text-center cursor-pointer"
+      >
+        {event.ctaLabel || "Reserve Spot"}
+      </LumaCheckoutButton>
+    );
+  }
+
+  const isHighlighted = event.isPartner || event.discountCode;
+  const styleClasses = isHighlighted
+    ? "bg-brand-coral text-white hover:opacity-90 shadow-xs"
+    : "border border-gray-200 text-gray-700 hover:bg-stone-50";
+
+  return (
+    <a
+      href={externalUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`w-full inline-flex items-center justify-center px-5 py-2.5 rounded-full text-xs font-bold transition-colors ${styleClasses}`}
+    >
+      {getFeaturedEventCtaLabel(event)}
+    </a>
+  );
+}
+
+export function HomeFeaturedEvents({ events }: Readonly<HomeFeaturedEventsProps>) {
   if (events.length === 0) return null;
 
   return (
@@ -39,32 +74,27 @@ export function HomeFeaturedEvents({ events }: HomeFeaturedEventsProps) {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[0.7rem] uppercase tracking-wider text-brand-coral font-extrabold px-2.5 py-0.5 rounded-full bg-pink-50">
-                      {event.platform}
+                      {event.isPartner || event.platform === "Conference" ? "🤝 Partner Event" : event.platform}
                     </span>
+                    {event.discountPercentage && (
+                      <span className="text-[0.65rem] font-bold text-brand-berry bg-pink-100/70 px-2 py-0.5 rounded-full">
+                        {event.discountPercentage} Off
+                      </span>
+                    )}
                   </div>
                   <h3 className="text-lg font-extrabold text-gray-900 mb-2">{event.title}</h3>
-                  <p className="text-xs text-gray-500 mb-6">
+                  <p className="text-xs text-gray-500 mb-4">
                     {new Date(event.date).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}
                   </p>
+                  {event.discountCode && (
+                    <div className="mb-4 py-1 px-2.5 rounded-lg bg-stone-50 border border-brand-pink/30 flex items-center justify-between text-xs">
+                      <span className="text-[0.65rem] uppercase font-bold text-brand-berry">Code:</span>
+                      <code className="font-mono font-bold text-[0.75rem] text-gray-800">{event.discountCode}</code>
+                    </div>
+                  )}
                 </div>
 
-                {event.platform === "Luma" ? (
-                  <LumaCheckoutButton
-                    urlOrId={event.urlOrId}
-                    className="w-full px-5 py-2.5 rounded-full bg-brand-coral text-white text-xs font-bold hover:opacity-90 transition-opacity text-center"
-                  >
-                    Reserve Spot
-                  </LumaCheckoutButton>
-                ) : (
-                  <a
-                    href={externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-gray-200 text-gray-700 text-xs font-bold hover:bg-stone-50 transition-colors"
-                  >
-                    View Event
-                  </a>
-                )}
+                {renderFeaturedEventActionButton(event, externalUrl)}
               </article>
             );
           })}

@@ -16,6 +16,12 @@ function setMetaTag(nameOrProperty: "name" | "property", key: string, content: s
   element.setAttribute("content", content);
 }
 
+function toAbsoluteImageUrl(imagePath: string): string {
+  if (imagePath.startsWith("http")) return imagePath;
+  const prefix = imagePath.startsWith("/") ? "" : "/";
+  return `https://unlockhertech.com${prefix}${imagePath}`;
+}
+
 export function useMetaData(
   title: string,
   description?: string,
@@ -59,9 +65,7 @@ export function useMetaData(
 
     // OpenGraph & Twitter Image
     if (optionImage) {
-      const absoluteImage = optionImage.startsWith("http")
-        ? optionImage
-        : `https://unlockhertech.com${optionImage.startsWith("/") ? "" : "/"}${optionImage}`;
+      const absoluteImage = toAbsoluteImageUrl(optionImage);
       setMetaTag("property", "og:image", absoluteImage);
       setMetaTag("name", "twitter:image", absoluteImage);
     }

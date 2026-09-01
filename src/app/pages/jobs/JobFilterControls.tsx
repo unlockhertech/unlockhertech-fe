@@ -56,15 +56,19 @@ export function JobFilterControls({
   filteredCount,
   hasActiveFilters,
   onResetFilters,
-}: JobFilterControlsProps) {
+}: Readonly<JobFilterControlsProps>) {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-md space-y-6">
         {/* Main Search Input + Saved Tab Toggle */}
         <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
           <div className="relative flex-1">
+            <label htmlFor="jobs-search-input" className="sr-only">
+              Search roles
+            </label>
             <HiMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
+              id="jobs-search-input"
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
@@ -219,8 +223,11 @@ export function JobFilterControls({
 
           {/* Sort Options */}
           <div className="flex items-center gap-2">
-            <span className="text-gray-500 font-medium">Sort by:</span>
+            <label htmlFor="jobs-sort-by" className="text-gray-500 font-medium">
+              Sort by:
+            </label>
             <select
+              id="jobs-sort-by"
               aria-label="Sort jobs by"
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value as JobSortOption)}

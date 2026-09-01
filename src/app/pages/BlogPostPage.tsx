@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { useMetaData } from "../hooks/useMetaData";
 import { IMG_AUDIO_EQ } from "../data";
+import { BrandPatternOverlay } from "../components/BrandPatternBackground";
 import { useBlogPost } from "./blogPost/useBlogPost";
 import { BlogPostHeader } from "./blogPost/BlogPostHeader";
 import { BlogPostContent } from "./blogPost/BlogPostContent";
@@ -76,17 +77,20 @@ export function BlogPostPage() {
   }
 
   return (
-    <div className="bg-stone-50 min-h-screen">
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* ── 1. Header (Breadcrumb, Image, Title, Meta & Share) ─────────── */}
-        <BlogPostHeader post={post} />
+    <div className="bg-stone-50 min-h-screen relative overflow-hidden">
+      <div className="relative">
+        <BrandPatternOverlay variant="watermark" />
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+          {/* ── 1. Header (Breadcrumb, Image, Title, Meta & Share) ─────────── */}
+          <BlogPostHeader post={post} />
 
-        {/* ── 2. Content Body ────────────────────────────────────────────── */}
-        <BlogPostContent post={post} />
+          {/* ── 2. Content Body ────────────────────────────────────────────── */}
+          <BlogPostContent post={post} />
 
-        {/* ── 3. Post Navigation (Prev / Next) ───────────────────────────── */}
-        <BlogPostNav prevPost={prevPost} nextPost={nextPost} />
-      </article>
+          {/* ── 3. Post Navigation (Prev / Next) ───────────────────────────── */}
+          <BlogPostNav prevPost={prevPost} nextPost={nextPost} />
+        </article>
+      </div>
 
       {/* ── 4. Subscribe CTA ──────────────────────────────────────────────── */}
       <SubscribeCTA

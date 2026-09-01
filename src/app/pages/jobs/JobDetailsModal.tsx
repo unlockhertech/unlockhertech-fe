@@ -23,15 +23,20 @@ export function JobDetailsModal({
   isSaved,
   onToggleSave,
   onReport,
-}: JobDetailsModalProps) {
+}: Readonly<JobDetailsModalProps>) {
   if (!job) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
-      <div
-        className="fixed inset-0"
+    <dialog
+      className="fixed inset-0 z-50 overflow-y-auto bg-transparent border-none w-full h-full flex items-center justify-center p-4 sm:p-6"
+      open
+      aria-labelledby="job-details-title"
+    >
+      <button
+        type="button"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs cursor-pointer border-none"
         onClick={onClose}
-        aria-label="Close modal background"
+        aria-label="Close job details modal backdrop"
       />
 
       <div className="relative bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 shadow-2xl border border-gray-200 z-10 space-y-6">
@@ -49,7 +54,7 @@ export function JobDetailsModal({
                 {job.experienceLevel}
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900">{job.title}</h2>
+            <h2 id="job-details-title" className="text-2xl sm:text-3xl font-black text-gray-900">{job.title}</h2>
             <p className="text-sm font-bold text-gray-600 mt-1">
               {job.company} • {job.location}
             </p>
@@ -89,13 +94,13 @@ export function JobDetailsModal({
         </div>
 
         {/* Culture Signals Chips */}
-        {job.inclusiveHighlights && job.inclusiveHighlights.length > 0 && (
+        {(job.inclusiveHighlights?.length ?? 0) > 0 && (
           <div>
             <h3 className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-2">
               Verified Inclusivity Signals
             </h3>
             <div className="flex flex-wrap gap-2">
-              {job.inclusiveHighlights.map((badge) => (
+              {job.inclusiveHighlights?.map((badge) => (
                 <span
                   key={badge}
                   className="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-brand-blue border border-blue-100"
@@ -108,7 +113,7 @@ export function JobDetailsModal({
         )}
 
         {/* Tech Stack */}
-        {job.techStack && job.techStack.length > 0 && (
+        {(job.techStack?.length ?? 0) > 0 && (
           <div>
             <h3 className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-2">
               Key Technologies & Skills
@@ -184,6 +189,6 @@ export function JobDetailsModal({
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }

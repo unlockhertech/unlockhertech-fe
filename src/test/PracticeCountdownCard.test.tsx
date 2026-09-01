@@ -40,8 +40,12 @@ describe("PracticeCountdownCard & usePracticeCountdown", () => {
     expect(screen.getByText(/Hours/i)).toBeInTheDocument();
     expect(screen.getByText(/Mins/i)).toBeInTheDocument();
     expect(screen.getByText(/Secs/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /RSVP & Get Workshop Link/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Add to Google Cal/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /RSVP & Link/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Subscribe on Luma/i })).toHaveAttribute(
+      "href",
+      "https://luma.com/sheleadstechpractice"
+    );
+    expect(screen.getByRole("link", { name: /Google Cal/i })).toBeInTheDocument();
   });
 
   it("displays live state when session is currently active", () => {

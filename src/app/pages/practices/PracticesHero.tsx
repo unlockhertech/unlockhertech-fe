@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { HiCodeBracket, HiCalendarDays } from "react-icons/hi2";
+import { HiCodeBracket, HiCalendarDays, HiBell, HiArrowTopRightOnSquare } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 import { imgSheLeadsTech } from "../../data";
 
@@ -28,18 +28,28 @@ export function PracticesHero() {
               Fortnightly live LeetCode and problem-solving workshops designed to build coding confidence, master algorithmic patterns, and ace technical interviews together.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 flex-wrap">
               <Link
                 to="/events"
-                className="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2"
               >
                 <HiCalendarDays className="w-5 h-5 text-brand-coral" />
                 View Upcoming Sessions
               </Link>
+              <a
+                href="https://luma.com/sheleadstechpractice"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/30 font-bold transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 shadow-md cursor-pointer"
+              >
+                <HiBell className="w-5 h-5 text-brand-yellow" />
+                <span>Subscribe on Luma</span>
+                <HiArrowTopRightOnSquare className="w-4 h-4 opacity-80" />
+              </a>
               {import.meta.env.VITE_ENABLE_GET_INVOLVED === "true" && (
                 <Link
                   to="/get-involved"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/30 font-bold transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold transition-all flex items-center justify-center gap-2"
                 >
                   Lead a Session / Mentor
                 </Link>

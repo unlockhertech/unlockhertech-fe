@@ -3,7 +3,7 @@ interface LinksProfileHeaderProps {
   onHandleClick: () => void;
 }
 
-export function LinksProfileHeader({ onHandleClick }: LinksProfileHeaderProps) {
+export function LinksProfileHeader({ onHandleClick }: Readonly<LinksProfileHeaderProps>) {
   return (
     <header className="flex flex-col items-center text-center mb-8">
       <div className="relative mb-4 group">

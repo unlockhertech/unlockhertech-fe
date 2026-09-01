@@ -103,11 +103,11 @@ export function GuidelinesPolicySections() {
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <a
-              href="mailto:info@unlockhertech.com?subject=Code%20of%20Conduct%20Report"
+              href="mailto:conduct@unlockhertech.com?subject=Code%20of%20Conduct%20Report"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-brand-coral text-white text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <HiEnvelope className="w-4 h-4" />
-              Contact info@unlockhertech.com
+              Contact conduct@unlockhertech.com
             </a>
             <span className="text-xs text-gray-500">All reports are handled confidentially by community leadership.</span>
           </div>

@@ -15,7 +15,7 @@ export function GetInvolvedForm({
   formData,
   onChange,
   onSubmit,
-}: GetInvolvedFormProps) {
+}: Readonly<GetInvolvedFormProps>) {
   return (
     <form onSubmit={onSubmit} className="mt-8 space-y-6 pt-6 border-t border-gray-100">
       {activeTab === "job" ? (

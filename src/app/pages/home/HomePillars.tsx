@@ -12,7 +12,7 @@ interface HomePillarsProps {
   enableGetInvolved: boolean;
 }
 
-export function HomePillars({ enableGetInvolved }: HomePillarsProps) {
+export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
   return (
     <section className="py-20 bg-stone-50 relative overflow-hidden">
       <BrandPatternOverlay variant="watermark" />

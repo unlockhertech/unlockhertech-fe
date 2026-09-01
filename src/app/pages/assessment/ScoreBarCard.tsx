@@ -6,7 +6,7 @@ interface ScoreBarCardProps {
   color: string;
 }
 
-export function ScoreBarCard({ title, score, color }: ScoreBarCardProps) {
+export function ScoreBarCard({ title, score, color }: Readonly<ScoreBarCardProps>) {
   const pct = Math.round((score / MAX_CATEGORY_SCORE) * 100);
   return (
     <div className="bg-stone-50/80 rounded-2xl p-5 border border-stone-200/70">

@@ -44,16 +44,11 @@ export function useBlogPost() {
 
         setPost(postData);
         if (currentIndex !== -1) {
-          setNextPost(
-            currentIndex > 0
-              ? { slug: postList[currentIndex - 1].slug, title: postList[currentIndex - 1].title }
-              : null
-          );
-          setPrevPost(
-            currentIndex < postList.length - 1
-              ? { slug: postList[currentIndex + 1].slug, title: postList[currentIndex + 1].title }
-              : null
-          );
+          const prevItem = currentIndex > 0 ? postList[currentIndex - 1] : undefined;
+          const nextItem = currentIndex >= 0 && currentIndex < postList.length - 1 ? postList[currentIndex + 1] : undefined;
+
+          setNextPost(prevItem ? { slug: prevItem.slug, title: prevItem.title } : null);
+          setPrevPost(nextItem ? { slug: nextItem.slug, title: nextItem.title } : null);
         }
       } catch (error) {
         console.error("Failed to fetch blog post:", error);

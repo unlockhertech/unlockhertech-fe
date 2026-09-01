@@ -3,33 +3,47 @@ import { useState, type ImgHTMLAttributes } from 'react';
 const ERROR_IMG_SRC =
   'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODgiIGhlaWdodD0iODgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBvcGFjaXR5PSIuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzLjciPjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNiIvPjxwYXRoIGQ9Im0xNiA1OCAxNi0xOCAzMiAzMiIvPjxjaXJjbGUgY3g9IjUzIiBjeT0iMzUiIHI9IjciLz48L3N2Zz4KCg==';
 
-function getOptimizedSrc(src?: string, targetWidth?: number | string): string {
-  if (!src) return "";
-  if (src.startsWith("/") || src.startsWith("data:") || src.endsWith(".svg") || src.startsWith("blob:") || src.includes("wsrv.nl")) {
+function isLocalOrSvg(src: string): boolean {
+  return (
+    src.startsWith("/") ||
+    src.startsWith("data:") ||
+    src.endsWith(".svg") ||
+    src.startsWith("blob:") ||
+    src.includes("wsrv.nl")
+  );
+}
+
+function optimizeUnsplash(src: string, targetWidth?: number | string): string {
+  try {
+    const url = new URL(src);
+    url.searchParams.set("auto", "format");
+    url.searchParams.set("fit", "crop");
+    url.searchParams.set("q", "80");
+    if (targetWidth) url.searchParams.set("w", String(targetWidth));
+    return url.toString();
+  } catch (err) {
+    console.debug("Unsplash URL optimization error, using raw src:", err);
     return src;
   }
-  if (src.includes("images.unsplash.com")) {
-    try {
-      const url = new URL(src);
-      url.searchParams.set("auto", "format");
-      url.searchParams.set("fit", "crop");
-      url.searchParams.set("q", "80");
-      if (targetWidth) url.searchParams.set("w", String(targetWidth));
-      return url.toString();
-    } catch {
-      return src;
-    }
+}
+
+function optimizeSanity(src: string, targetWidth?: number | string): string {
+  try {
+    const url = new URL(src);
+    url.searchParams.set("auto", "format");
+    if (targetWidth) url.searchParams.set("w", String(targetWidth));
+    return url.toString();
+  } catch (err) {
+    console.debug("Sanity URL optimization error, using raw src:", err);
+    return src;
   }
-  if (src.includes("cdn.sanity.io")) {
-    try {
-      const url = new URL(src);
-      url.searchParams.set("auto", "format");
-      if (targetWidth) url.searchParams.set("w", String(targetWidth));
-      return url.toString();
-    } catch {
-      return src;
-    }
-  }
+}
+
+function getOptimizedSrc(src?: string, targetWidth?: number | string): string {
+  if (!src) return "";
+  if (isLocalOrSvg(src)) return src;
+  if (src.includes("images.unsplash.com")) return optimizeUnsplash(src, targetWidth);
+  if (src.includes("cdn.sanity.io")) return optimizeSanity(src, targetWidth);
   if (src.startsWith("http://") || src.startsWith("https://")) {
     const w = targetWidth ? Number(targetWidth) : 640;
     return `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=${w}&q=80&output=webp`;

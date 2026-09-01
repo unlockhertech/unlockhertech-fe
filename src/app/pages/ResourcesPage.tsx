@@ -106,8 +106,8 @@ export function ResourcesPage() {
         {isLoading ? (
           /* Loading Skeletons */
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200 animate-pulse space-y-4">
+            {["skeleton-card-1", "skeleton-card-2", "skeleton-card-3"].map((slotId) => (
+              <div key={slotId} className="bg-white rounded-3xl p-6 shadow-sm border border-stone-200 animate-pulse space-y-4">
                 <div className="w-full aspect-4/3 bg-stone-200 rounded-2xl" />
                 <div className="h-6 bg-stone-200 rounded w-3/4" />
                 <div className="h-4 bg-stone-200 rounded w-full" />
@@ -140,8 +140,8 @@ export function ResourcesPage() {
 
       {/* Signature Footer Dots */}
       <div className="flex justify-center gap-2 mt-16 mb-16">
-        {BRAND_DOTS.map((c, i) => (
-          <div key={i} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ backgroundColor: c }} />
+        {BRAND_DOTS.map((c) => (
+          <div key={c} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ backgroundColor: c }} />
         ))}
       </div>
 

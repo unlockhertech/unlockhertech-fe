@@ -107,6 +107,24 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   }
 }
 
+import imgAiBuildersLockup from "../../assets/conference-lockup-dark.svg";
+
+export const DEFAULT_FALLBACK_EVENTS: ExternalEvent[] = [
+  {
+    title: "AI Builders Global Conference 2026",
+    slug: "ai-builders-global-conference-2026",
+    date: "2026-10-14T13:00:00.000Z",
+    platform: "Conference",
+    urlOrId: "https://aibuildersnetwork.org/conference/tickets",
+    image: imgAiBuildersLockup,
+    description: "The #1 Virtual AI Conference for Builders, Tech Leaders, and Operators. 200+ sessions across AI Strategy, Startups, and AI Engineering.",
+    discountCode: "UNLOCKHERTECH20-F056D5212AE7",
+    discountPercentage: "20%",
+    ctaLabel: "Get tickets (20% off)",
+    isPartner: true,
+  },
+];
+
 /**
  * Fetches external events, sorted by date ascending.
  * Automatically filters out past events unless `includePast` is set to true.
@@ -114,7 +132,13 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 export async function getAllExternalEvents(includePast = false): Promise<ExternalEvent[]> {
   try {
     if (!env.VITE_SANITY_PROJECT_ID) {
-      return [];
+      return includePast
+        ? DEFAULT_FALLBACK_EVENTS
+        : DEFAULT_FALLBACK_EVENTS.filter((event) => {
+            const eventTime = new Date(event.date).getTime();
+            if (Number.isNaN(eventTime)) return true;
+            return eventTime + 3 * 60 * 60 * 1000 >= Date.now();
+          });
     }
 
     const query = `*[_type == "event"] | order(date asc) {
@@ -122,11 +146,21 @@ export async function getAllExternalEvents(includePast = false): Promise<Externa
       date,
       platform,
       urlOrId,
+      discountCode,
+      description,
+      ctaLabel,
+      isPartner,
       "slug": slug.current,
       "image": image.asset->url
     }`;
 
-    const events: ExternalEvent[] = await sanityClient.fetch(query);
+    const sanityEvents: ExternalEvent[] = await sanityClient.fetch(query);
+    const sanitySlugs = new Set(sanityEvents.map((e) => e.slug).filter(Boolean));
+    const missingFallbacks = DEFAULT_FALLBACK_EVENTS.filter((e) => !sanitySlugs.has(e.slug));
+    const events: ExternalEvent[] = [...sanityEvents, ...missingFallbacks].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
     if (includePast) return events;
 
     const now = Date.now();
@@ -138,8 +172,8 @@ export async function getAllExternalEvents(includePast = false): Promise<Externa
       return eventTime + THREE_HOURS_MS >= now;
     });
   } catch (error) {
-    console.warn("Could not fetch external events from Sanity:", error);
-    return [];
+    console.warn("Could not fetch external events from Sanity, using fallback:", error);
+    return DEFAULT_FALLBACK_EVENTS;
   }
 }
 

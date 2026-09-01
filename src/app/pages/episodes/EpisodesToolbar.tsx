@@ -26,7 +26,7 @@ export function EpisodesToolbar({
   onViewChange,
   activeTag,
   onTagChange,
-}: EpisodesToolbarProps) {
+}: Readonly<EpisodesToolbarProps>) {
   return (
     <div className="bg-stone-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -52,8 +52,12 @@ export function EpisodesToolbar({
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Search */}
           <div className="relative flex-1">
+            <label htmlFor="episodes-search-input" className="sr-only">
+              Search episodes
+            </label>
             <HiOutlineMagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
+              id="episodes-search-input"
               type="text"
               placeholder="Search episodes…"
               value={search}
@@ -64,8 +68,12 @@ export function EpisodesToolbar({
 
           {/* Sort */}
           <div className="relative">
+            <label htmlFor="episodes-sort-select" className="sr-only">
+              Sort episodes
+            </label>
             <HiOutlineAdjustmentsHorizontal className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             <select
+              id="episodes-sort-select"
               value={sort}
               onChange={(e) => onSortChange(e.target.value as SortOrder)}
               className="pl-9 pr-8 py-3 rounded-xl bg-white text-sm text-gray-700 outline-none appearance-none cursor-pointer border border-black/10 focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral"

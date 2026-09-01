@@ -1,6 +1,7 @@
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { useMetaData } from "../hooks/useMetaData";
 import { IMG_AUDIO_EQ } from "../data";
+import { BrandPatternOverlay } from "../components/BrandPatternBackground";
 import { useBlogIndex } from "./blog/useBlogIndex";
 import { BlogHeroHeader } from "./blog/BlogHeroHeader";
 import { BlogToolbar } from "./blog/BlogToolbar";
@@ -53,11 +54,13 @@ export function BlogIndexPage() {
   }
 
   return (
-    <div className="bg-stone-50 min-h-screen">
+    <div className="bg-stone-50 min-h-screen relative overflow-hidden">
       {/* ── 1. Page Header ────────────────────────────────────────────────── */}
       <BlogHeroHeader totalArticles={posts.length} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="relative">
+        <BrandPatternOverlay variant="watermark" />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         {/* ── 2. Filter & Search Toolbar ───────────────────────────────────── */}
         <BlogToolbar
           searchQuery={searchQuery}
@@ -80,6 +83,7 @@ export function BlogIndexPage() {
         {/* ── 4. Posts Grid ────────────────────────────────────────────────── */}
         <BlogGrid posts={filteredPosts} onResetFilters={handleResetFilters} />
       </main>
+      </div>
 
       {/* ── 5. Subscribe CTA ──────────────────────────────────────────────── */}
       <SubscribeCTA

@@ -10,7 +10,7 @@ import type { Episode } from "../data";
 import { Ctx } from "./AudioPlayerCtx";
 
 // ── Provider ───────────────────────────────────────────────────────────────────
-export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
+export const AudioPlayerProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [currentEpisode, setCurrentEpisode] = useState<Episode | null>(null);

@@ -13,7 +13,7 @@ export interface ReadinessRadarChartProps {
   scores: AssessmentScores;
 }
 
-export function ReadinessRadarChart({ scores }: ReadinessRadarChartProps) {
+export function ReadinessRadarChart({ scores }: Readonly<ReadinessRadarChartProps>) {
   const cx = 240;
   const cy = 200;
   const radius = 115;
@@ -124,8 +124,8 @@ export function ReadinessRadarChart({ scores }: ReadinessRadarChartProps) {
           />
 
           {/* Data points at vertices */}
-          {vertexCoords.map((pt, i) => (
-            <g key={i} className="transition-all duration-700">
+          {vertexCoords.map((pt) => (
+            <g key={pt.dim.key} className="transition-all duration-700">
               <circle
                 cx={pt.x}
                 cy={pt.y}

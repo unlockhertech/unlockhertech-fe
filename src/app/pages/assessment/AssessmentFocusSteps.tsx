@@ -23,11 +23,11 @@ export function AssessmentFocusSteps({
   onSelectCategory,
   onSelectScore,
   onScrollToResults,
-}: AssessmentFocusStepsProps) {
-  const currentCat = CATEGORIES[activeCategoryIndex];
+}: Readonly<AssessmentFocusStepsProps>) {
+  const currentCat = CATEGORIES[activeCategoryIndex] ?? CATEGORIES[0];
   const currentCatQuestions = QUESTIONS.filter((q) => q.catKey === currentCat.key);
   const answeredCount = currentCatQuestions.filter((q) => answers[q.id]).length;
-  const catScore = scores[currentCat.key];
+  const catScore = scores[currentCat.key] || 0;
 
   return (
     <div className="space-y-6 print:hidden">

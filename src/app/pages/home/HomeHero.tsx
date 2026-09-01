@@ -8,10 +8,127 @@ import { formatTime } from "../../utils/format";
 import { IMG_HERO, platforms } from "../../data";
 import type { Episode } from "../../types";
 
-const WAVE_HEIGHTS = [20, 40, 60, 80, 55, 70, 35, 90, 50, 65, 45, 75, 30, 85, 55, 40, 70, 50, 60, 35];
+const WAVE_BARS = [
+  { id: "wave-bar-1", height: 20, isAccent: true, delay: 0 },
+  { id: "wave-bar-2", height: 40, isAccent: true, delay: 0.05 },
+  { id: "wave-bar-3", height: 60, isAccent: true, delay: 0.1 },
+  { id: "wave-bar-4", height: 80, isAccent: true, delay: 0.15 },
+  { id: "wave-bar-5", height: 55, isAccent: true, delay: 0.2 },
+  { id: "wave-bar-6", height: 70, isAccent: true, delay: 0.25 },
+  { id: "wave-bar-7", height: 35, isAccent: false, delay: 0.3 },
+  { id: "wave-bar-8", height: 90, isAccent: false, delay: 0.35 },
+  { id: "wave-bar-9", height: 50, isAccent: false, delay: 0.4 },
+  { id: "wave-bar-10", height: 65, isAccent: false, delay: 0.45 },
+  { id: "wave-bar-11", height: 45, isAccent: false, delay: 0.5 },
+  { id: "wave-bar-12", height: 75, isAccent: false, delay: 0.55 },
+  { id: "wave-bar-13", height: 30, isAccent: false, delay: 0.6 },
+  { id: "wave-bar-14", height: 85, isAccent: false, delay: 0.65 },
+  { id: "wave-bar-15", height: 55, isAccent: false, delay: 0.7 },
+  { id: "wave-bar-16", height: 40, isAccent: false, delay: 0.75 },
+];
 
-interface HomeHeroProps {
-  latestEpisode?: Episode;
+interface HeroEpisodePlayerBodyProps {
+  latestEpisode: Episode;
+  playing: boolean;
+  latestIsActive: boolean;
+  currentTime: number;
+  duration: number;
+  progress: number;
+  onPlayToggle: (episode: Episode) => void;
+  onProgressChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+function HeroEpisodePlayerBody({
+  latestEpisode,
+  playing,
+  latestIsActive,
+  currentTime,
+  duration,
+  progress,
+  onPlayToggle,
+  onProgressChange,
+}: Readonly<HeroEpisodePlayerBodyProps>) {
+  const playPauseLabel = playing
+    ? `Pause episode ${latestEpisode.episodeNumber}`
+    : `Play episode ${latestEpisode.episodeNumber}`;
+
+  const formattedCurrentTime = latestIsActive ? formatTime(currentTime) : "0:00";
+  const formattedDuration = latestIsActive && duration > 0 ? formatTime(duration) : latestEpisode.duration;
+
+  return (
+    <>
+      <p className="text-sm sm:text-base font-extrabold line-clamp-1 mb-0.5 text-white">
+        {latestEpisode.title}
+      </p>
+      <p className="text-[11px] sm:text-xs text-pink-200/70 mb-3">
+        {latestEpisode.date} · {latestEpisode.duration}
+      </p>
+
+      <div className="flex items-center gap-3.5 mb-3">
+        <button
+          type="button"
+          onClick={() => onPlayToggle(latestEpisode)}
+          aria-label={playPauseLabel}
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center bg-brand-coral hover:bg-brand-coral/90 text-white hover:scale-105 transition-transform shadow-md cursor-pointer shrink-0"
+        >
+          {playing ? <FaPause className="w-3.5 h-3.5" /> : <FaPlay className="w-3.5 h-3.5 ml-0.5" />}
+        </button>
+
+        {/* Waveform Visualisation */}
+        <div className="flex-1 flex items-end gap-1 h-7 sm:h-8">
+          {WAVE_BARS.map((bar) => (
+            <div
+              key={bar.id}
+              className="flex-1 rounded-full transition-all"
+              style={{
+                height: `${bar.height}%`,
+                backgroundColor: bar.isAccent ? "var(--podcast-yellow)" : "rgba(255,255,255,0.25)",
+                animation: playing ? `waveBar 0.8s ease-in-out ${bar.delay}s infinite alternate` : "none",
+                transformOrigin: "bottom",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Seekable scrub bar */}
+      <div className="relative h-1.5 w-full bg-white/15 rounded-full overflow-hidden mb-1.5">
+        <div
+          className="absolute top-0 left-0 h-full rounded-full bg-linear-to-r from-brand-yellow to-brand-coral pointer-events-none"
+          style={{ width: `${progress}%` }}
+        />
+        <input
+          id="hero-episode-seek-slider"
+          type="range"
+          min="0"
+          max={duration || 100}
+          value={latestIsActive ? currentTime : 0}
+          onChange={onProgressChange}
+          disabled={!latestIsActive || !duration}
+          className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+          aria-label="Seek track"
+        />
+      </div>
+
+      <div className="flex justify-between text-[10px] sm:text-[11px] text-pink-200/80 font-mono">
+        <span>{formattedCurrentTime}</span>
+        <span>{formattedDuration}</span>
+      </div>
+    </>
+  );
+}
+
+function HeroEpisodeSkeleton() {
+  return (
+    <div className="space-y-2.5 animate-pulse">
+      <div className="h-3.5 w-3/4 rounded-full bg-white/20" />
+      <div className="h-3 w-1/2 rounded-full bg-white/10" />
+    </div>
+  );
+}
+
+export interface HomeHeroProps {
+  latestEpisode: Episode | null;
   loading: boolean;
   playing: boolean;
   latestIsActive: boolean;
@@ -147,73 +264,24 @@ export function HomeHero({
                 </div>
 
                 {/* Player Controls Body */}
-                <div className="p-4 sm:p-5">
-                  {loading || !latestEpisode ? (
-                    <div className="space-y-2.5 animate-pulse">
-                      <div className="h-3.5 w-3/4 rounded-full bg-white/20" />
-                      <div className="h-3 w-1/2 rounded-full bg-white/10" />
-                    </div>
-                  ) : (
-                    <>
-                      <p className="text-sm sm:text-base font-extrabold line-clamp-1 mb-0.5 text-white">
-                        {latestEpisode.title}
-                      </p>
-                      <p className="text-[11px] sm:text-xs text-pink-200/70 mb-3">
-                        {latestEpisode.date} · {latestEpisode.duration}
-                      </p>
-
-                      <div className="flex items-center gap-3.5 mb-3">
-                        <button
-                          type="button"
-                          onClick={() => onPlayToggle(latestEpisode)}
-                          aria-label={playing ? `Pause episode ${latestEpisode.episodeNumber}` : `Play episode ${latestEpisode.episodeNumber}`}
-                          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center bg-brand-coral hover:bg-brand-coral/90 text-white hover:scale-105 transition-transform shadow-md cursor-pointer shrink-0"
-                        >
-                          {playing ? <FaPause className="w-3.5 h-3.5" /> : <FaPlay className="w-3.5 h-3.5 ml-0.5" />}
-                        </button>
-
-                        {/* Waveform Visualization */}
-                        <div className="flex-1 flex items-end gap-1 h-7 sm:h-8">
-                          {WAVE_HEIGHTS.slice(0, 16).map((h, i) => (
-                            <div
-                              key={`wave-${i}`}
-                              className="flex-1 rounded-full transition-all"
-                              style={{
-                                height: `${h}%`,
-                                backgroundColor: i < 6 ? "var(--podcast-yellow)" : "rgba(255,255,255,0.25)",
-                                animation: playing ? `waveBar 0.8s ease-in-out ${i * 0.05}s infinite alternate` : "none",
-                                transformOrigin: "bottom",
-                              }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Seekable scrub bar */}
-                      <div className="relative h-1.5 w-full bg-white/15 rounded-full overflow-hidden mb-1.5">
-                        <div
-                          className="absolute top-0 left-0 h-full rounded-full bg-linear-to-r from-brand-yellow to-brand-coral pointer-events-none"
-                          style={{ width: `${progress}%` }}
-                        />
-                        <input
-                          type="range"
-                          min="0"
-                          max={duration || 100}
-                          value={latestIsActive ? currentTime : 0}
-                          onChange={handleProgressChange}
-                          disabled={!latestIsActive || !duration}
-                          className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                          aria-label="Seek track"
-                        />
-                      </div>
-
-                      <div className="flex justify-between text-[10px] sm:text-[11px] text-pink-200/80 font-mono">
-                        <span>{latestIsActive ? formatTime(currentTime) : "0:00"}</span>
-                        <span>{latestIsActive && duration ? formatTime(duration) : latestEpisode.duration}</span>
-                      </div>
-                    </>
-                  )}
-                </div>
+                {loading || !latestEpisode ? (
+                  <div className="p-4 sm:p-5">
+                    <HeroEpisodeSkeleton />
+                  </div>
+                ) : (
+                  <div className="p-4 sm:p-5">
+                    <HeroEpisodePlayerBody
+                      latestEpisode={latestEpisode}
+                      playing={playing}
+                      latestIsActive={latestIsActive}
+                      currentTime={currentTime}
+                      duration={duration}
+                      progress={progress}
+                      onPlayToggle={onPlayToggle}
+                      onProgressChange={handleProgressChange}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

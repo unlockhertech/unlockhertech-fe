@@ -120,8 +120,8 @@ export function AssessmentPage() {
 
         {/* Signature Dots Footer Accent */}
         <div className="flex justify-center gap-2 mt-12 mb-16 print:hidden">
-          {BRAND_DOT_COLORS.map((c, i) => (
-            <div key={i} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ backgroundColor: c }} />
+          {BRAND_DOT_COLORS.map((c) => (
+            <div key={c} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ backgroundColor: c }} />
           ))}
         </div>
       </main>

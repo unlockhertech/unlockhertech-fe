@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { HiCheckCircle, HiArrowRight } from "react-icons/hi2";
+import { HiCheckCircle, HiArrowRight, HiCalendarDays } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 import { REQUIREMENTS } from "./practicesData";
 
@@ -72,14 +72,23 @@ export function PracticeRequirementsSection() {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-white/20">
+                <div className="mt-8 pt-6 border-t border-white/20 flex flex-col sm:flex-row gap-3">
                   <Link
                     to="/events"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-brand-coral font-bold text-sm hover:bg-white/90 transition-all shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white text-brand-coral font-bold text-sm hover:bg-white/90 transition-all shadow-sm"
                   >
                     <span>Find Next Session Date</span>
                     <HiArrowRight className="w-4 h-4" />
                   </Link>
+                  <a
+                    href="https://luma.com/sheleadstechpractice"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/30 font-bold text-sm transition-all"
+                  >
+                    <HiCalendarDays className="w-4 h-4 text-brand-yellow" />
+                    <span>Subscribe on Luma</span>
+                  </a>
                 </div>
               </div>
             </div>

@@ -42,7 +42,7 @@ A hands-on, live technical problem-solving series held every two weeks. The prac
   6. Dynamic Programming, Memoization & Recurrence Relations
   7. Binary Search & Monotonic Condition Optimization
   8. Stacks, Queues & Monotonic Frameworks
-- Practice Details & Google Calendar Sync: https://unlockhertech.com/practices
+- Practice Details & Google Calendar Sync: https://unlockhertech.com/practice
 
 ---
 

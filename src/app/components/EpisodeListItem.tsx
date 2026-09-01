@@ -84,8 +84,9 @@ export function EpisodeListItem({ episode }: Readonly<EpisodeListItemProps>) {
 
       {/* Play / Pause button */}
       <button
+        type="button"
         onClick={() => toggle(episode)}
-        className="shrink-0 rounded-full p-2.5 transition-all hover:scale-110"
+        className="shrink-0 rounded-full p-2.5 transition-all hover:scale-110 cursor-pointer"
         style={{ backgroundColor: `${coverColor}18`, color: coverColor }}
         aria-label={playing ? `Pause episode ${episodeNumber}` : `Play episode ${episodeNumber}`}
       >

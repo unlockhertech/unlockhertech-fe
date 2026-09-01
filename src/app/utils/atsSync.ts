@@ -23,7 +23,7 @@ export interface AtsSyncOptions {
 }
 
 /**
- * Utility to detect and fix double-encoded UTF-8 / Windows-1252 mojibake artifacts
+ * Utility to detect and fix double-encoded UTF-8 / Windows-1252 mojibake artefacts
  * (e.g. â€™ -> ’, â€” -> —, â€¦ -> …, â€¢ -> •, Â§ -> §)
  */
 export function cleanMojibake(input: string): string {
@@ -34,49 +34,49 @@ export function cleanMojibake(input: string): string {
   // 1. Direct character-level mojibake replacements (UTF-8 bytes misdecoded as Latin1)
   str = str
     // Dashes & Hyphens first (to prevent prefix collisions)
-    .replace(/\u00E2\u0080\u0094|â\u0080\u0094|â€”/g, "—")
-    .replace(/\u00E2\u0080\u0093|â\u0080\u0093|â€“/g, "–")
+    .replace(/\u00E2\u0080\u0094|â€”/g, "—")
+    .replace(/\u00E2\u0080\u0093|â€“/g, "–")
     // Punctuation & Symbols
-    .replace(/\u00E2\u0080\u00A6|â\u0080\u00A6|â\u0080¦|â€¦/g, "…")
-    .replace(/\u00E2\u0080\u00A2|â\u0080\u00A2|â€¢/g, "•")
-    .replace(/\u00E2\u0084\u00A2|â\u0084\u00A2|â„¢/g, "™")
+    .replace(/\u00E2\u0080\u00A6|â€¦/g, "…")
+    .replace(/\u00E2\u0080\u00A2|â€¢/g, "•")
+    .replace(/\u00E2\u0084\u00A2|â„¢/g, "™")
     // Quotation marks & apostrophes
-    .replace(/\u00E2\u0080\u0099|â\u0080\u0099|â€™/g, "’")
-    .replace(/\u00E2\u0080\u0098|â\u0080\u0098|â€˜/g, "‘")
-    .replace(/\u00E2\u0080\u009C|â\u0080\u009C|â€œ/g, "“")
-    .replace(/\u00E2\u0080\u009D|â\u0080\u009D|â€\u009D|â€(?![—–…•™\u0080-\u00BF])/g, "”")
+    .replace(/\u00E2\u0080\u0099|â€™/g, "’")
+    .replace(/\u00E2\u0080\u0098|â€˜/g, "‘")
+    .replace(/\u00E2\u0080\u009C|â€œ/g, "“")
+    .replace(/\u00E2\u0080\u009D|â€\u009D|â€(?![—–…•™\u0080-\u00BF])/g, "”")
     // Latin-1 symbol prefixes
-    .replace(/\u00C2\u00A9|Â©/g, "©")
-    .replace(/\u00C2\u00AE|Â®/g, "®")
-    .replace(/\u00C2\u00A7|Â§/g, "§")
-    .replace(/\u00C2\u00B7|Â·/g, "·")
-    .replace(/\u00C2\u00B0|Â°/g, "°")
-    .replace(/\u00C2\u00B1|Â±/g, "±")
-    .replace(/\u00C2\u00A3|Â£/g, "£")
-    .replace(/\u00C2\u00A5|Â¥/g, "¥")
+    .replaceAll("\u00C2\u00A9", "©")
+    .replaceAll("\u00C2\u00AE", "®")
+    .replaceAll("\u00C2\u00A7", "§")
+    .replaceAll("\u00C2\u00B7", "·")
+    .replaceAll("\u00C2\u00B0", "°")
+    .replaceAll("\u00C2\u00B1", "±")
+    .replaceAll("\u00C2\u00A3", "£")
+    .replaceAll("\u00C2\u00A5", "¥")
     .replace(/\u00C2\u0080|Â€/g, "€")
     .replace(/\u00C2\u00A0|Â /g, " ")
-    .replace(/\u00C2/g, "")
+    .replaceAll("\u00C2", "")
     // Accented characters
-    .replace(/\u00C3\u00A9|Ã©/g, "é")
-    .replace(/\u00C3\u00A8|Ã¨/g, "è")
-    .replace(/\u00C3\u00A1|Ã¡/g, "á")
-    .replace(/\u00C3\u00A0|Ã /g, "à")
-    .replace(/\u00C3\u00B3|Ã³/g, "ó")
-    .replace(/\u00C3\u00B2|Ã²/g, "ò")
-    .replace(/\u00C3\u00BA|Ãº/g, "ú")
-    .replace(/\u00C3\u00B9|Ã¹/g, "ù")
-    .replace(/\u00C3\u00AD|Ã­/g, "í")
-    .replace(/\u00C3\u00AC|Ã¬/g, "ì")
-    .replace(/\u00C3\u00B1|Ã±/g, "ñ")
-    .replace(/\u00C3\u00A7|Ã§/g, "ç")
-    .replace(/\u00C3\u00A3|Ã£/g, "ã")
-    .replace(/\u00C3\u00AA|Ãª/g, "ê")
-    .replace(/\u00C3\u00BC|Ã¼/g, "ü")
-    .replace(/\u00C3\u00B6|Ã¶/g, "ö")
-    .replace(/\u00C3\u00A4|Ã¤/g, "ä")
-    .replace(/\u00C3\u0081|Ã\x81/g, "Á")
-    .replace(/\u00F0\u009F\u008D\u0094|ð\x9F\x8D\x94/g, "🍔");
+    .replaceAll("\u00C3\u00A9", "é")
+    .replaceAll("\u00C3\u00A8", "è")
+    .replaceAll("\u00C3\u00A1", "á")
+    .replaceAll("\u00C3\u00A0", "à")
+    .replaceAll("\u00C3\u00B3", "ó")
+    .replaceAll("\u00C3\u00B2", "ò")
+    .replaceAll("\u00C3\u00BA", "ú")
+    .replaceAll("\u00C3\u00B9", "ù")
+    .replaceAll("\u00C3\u00AD", "í")
+    .replaceAll("\u00C3\u00AC", "ì")
+    .replaceAll("\u00C3\u00B1", "ñ")
+    .replaceAll("\u00C3\u00A7", "ç")
+    .replaceAll("\u00C3\u00A3", "ã")
+    .replaceAll("\u00C3\u00AA", "ê")
+    .replaceAll("\u00C3\u00BC", "ü")
+    .replaceAll("\u00C3\u00B6", "ö")
+    .replaceAll("\u00C3\u00A4", "ä")
+    .replaceAll("\u00C3\u0081", "Á")
+    .replaceAll("\u00F0\u009F\u008D\u0094", "🍔");
 
   // 2. Remove unprintable control characters in C1 control code range (U+0080 to U+009F except \t, \n, \r) and replacement chars
   str = str.replace(/[\u0080-\u009F\uFFFD\uFEFF]/g, "");
@@ -97,11 +97,11 @@ export function decodeHtmlEntities(raw: string): string {
     text = text
       .replace(/&#(\d+);/g, (_, dec) => {
         const code = Number.parseInt(dec, 10);
-        return !Number.isNaN(code) && code > 0 ? String.fromCharCode(code) : "";
+        return !Number.isNaN(code) && code > 0 ? String.fromCodePoint(code) : "";
       })
       .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => {
         const code = Number.parseInt(hex, 16);
-        return !Number.isNaN(code) && code > 0 ? String.fromCharCode(code) : "";
+        return !Number.isNaN(code) && code > 0 ? String.fromCodePoint(code) : "";
       })
       .replaceAll("&lt;", "<")
       .replaceAll("&gt;", ">")
@@ -154,21 +154,21 @@ export function cleanJobText(text: string): string {
 export function cleanHtmlDescription(rawHtml: string): string {
   if (!rawHtml) return "";
   
-  // 1. First pass entity decoding and mojibake cleanup
+  // 1. First pass entity decoding and mojibake clean-up
   let text = decodeHtmlEntities(rawHtml);
 
-  // 2. Remove script and style elements completely
+  // 2. Remove script and style elements completely using linear unrolled character classes
   text = text
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
 
   // 3. Format list items and break tags
   text = text
-    .replace(/<li[^>]*>/gi, "\n• ")
+    .replace(/<li\b[^>]*>/gi, "\n• ")
     .replace(/<\/li>/gi, "\n")
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/(p|div|section|article|header|aside|tr|table|h[1-6])>/gi, "\n\n")
-    .replace(/<(p|div|section|article|header|aside|tr|table|h[1-6])[^>]*>/gi, "\n");
+    .replace(/<br\b[^>]*>/gi, "\n")
+    .replace(/<\/(?:p|div|section|article|header|aside|tr|table|h[1-6])>/gi, "\n\n")
+    .replace(/<(?:p|div|section|article|header|aside|tr|table|h[1-6])\b[^>]*>/gi, "\n");
 
   // 4. Strip any other HTML tags
   text = text.replace(/<[^>]+>/g, " ");
@@ -176,8 +176,8 @@ export function cleanHtmlDescription(rawHtml: string): string {
   // 5. Final entity decoding pass
   text = decodeHtmlEntities(text);
 
-  // 6. Normalize newlines, collapse excessive empty lines and spaces
-  text = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  // 6. Normalise newlines, collapse excessive empty lines and spaces
+  text = text.replaceAll('\r\n', "\n").replaceAll('\r', "\n");
   const lines = text.split("\n");
   const cleanedLines: string[] = [];
   let prevLineEmpty = false;
@@ -284,127 +284,108 @@ export const VETTED_ATS_PARTNERS: AtsPartnerConfig[] = [
   },
 ];
 
+const CONTRACT_KEYWORDS = ["contract", "freelance"] as const;
+const DATA_RESEARCH_KEYWORDS = [
+  "data",
+  "analytics",
+  "machine learning",
+  "scientist",
+  "bi developer",
+  "ai ",
+  "ai-",
+] as const;
+const ENGINEERING_KEYWORDS = [
+  "frontend",
+  "backend",
+  "full stack",
+  "software",
+  "engineer",
+  "developer",
+  "devops",
+  "cloud",
+  "qa",
+  "platform",
+  "architect",
+] as const;
+const PRODUCT_DESIGN_KEYWORDS = [
+  "designer",
+  "product manager",
+  "ux",
+  "ui",
+  "design",
+  "product owner",
+] as const;
+
+function matchesKeyword(text: string, keywords: readonly string[]): boolean {
+  return keywords.some((k) => text.includes(k));
+}
+
 /**
  * Infer job category from title and department names.
  */
 export function inferJobCategory(title: string, department: string = ""): JobCategory {
   const t = title.toLowerCase();
   const combined = `${title} ${department}`.toLowerCase();
-  
-  if (t.includes("contract") || t.includes("freelance")) {
-    return "Freelance & Contract";
-  }
 
-  if (
-    t.includes("data") ||
-    t.includes("analytics") ||
-    t.includes("machine learning") ||
-    t.includes("scientist") ||
-    t.includes("bi developer") ||
-    t.includes("ai ") ||
-    t.includes("ai-")
-  ) {
-    return "Data & Research";
-  }
-
-  if (
-    t.includes("frontend") ||
-    t.includes("backend") ||
-    t.includes("full stack") ||
-    t.includes("software") ||
-    t.includes("engineer") ||
-    t.includes("developer") ||
-    t.includes("devops") ||
-    t.includes("cloud") ||
-    t.includes("qa") ||
-    t.includes("platform") ||
-    t.includes("architect")
-  ) {
-    return "Engineering & Dev";
-  }
-
-  if (
-    combined.includes("designer") ||
-    combined.includes("product manager") ||
-    combined.includes("ux") ||
-    combined.includes("ui") ||
-    combined.includes("design") ||
-    combined.includes("product owner")
-  ) {
-    return "Product & Design";
-  }
-
-  if (
-    combined.includes("data") ||
-    combined.includes("analytics") ||
-    combined.includes("scientist")
-  ) {
-    return "Data & Research";
-  }
-
-  if (
-    combined.includes("engineer") ||
-    combined.includes("developer")
-  ) {
-    return "Engineering & Dev";
-  }
+  if (matchesKeyword(t, CONTRACT_KEYWORDS)) return "Freelance & Contract";
+  if (matchesKeyword(t, DATA_RESEARCH_KEYWORDS)) return "Data & Research";
+  if (matchesKeyword(t, ENGINEERING_KEYWORDS)) return "Engineering & Dev";
+  if (matchesKeyword(combined, PRODUCT_DESIGN_KEYWORDS)) return "Product & Design";
+  if (matchesKeyword(combined, DATA_RESEARCH_KEYWORDS)) return "Data & Research";
+  if (matchesKeyword(combined, ENGINEERING_KEYWORDS)) return "Engineering & Dev";
 
   return "Non-Technical Tech";
 }
 
+const GLOBAL_REMOTE_KEYWORDS = ["global", "anywhere", "worldwide"] as const;
+const UK_EUROPE_KEYWORDS = ["uk", "europe", "london", "emea"] as const;
+const US_AMERICAS_KEYWORDS = [
+  "us",
+  "usa",
+  "united states",
+  "canada",
+  "americas",
+  "san francisco",
+  "new york",
+] as const;
+
 /**
- * Infer workplace remote model from location string.
+ * Infer a workplace remote model from a location string.
  */
 export function inferRemoteStatus(locationName: string = ""): JobRemoteStatus {
   const loc = locationName.toLowerCase();
 
-  if (loc.includes("hybrid")) {
-    return "Hybrid";
-  }
-  if (loc.includes("on-site") || loc.includes("onsite")) {
-    return "On-site";
-  }
-  if (loc.includes("global") || loc.includes("anywhere") || loc.includes("worldwide")) {
-    return "Remote (Global)";
-  }
-  if (loc.includes("uk") || loc.includes("europe") || loc.includes("london") || loc.includes("emea")) {
-    return "Remote (UK/Europe)";
-  }
-  if (
-    loc.includes("us") ||
-    loc.includes("usa") ||
-    loc.includes("united states") ||
-    loc.includes("canada") ||
-    loc.includes("americas") ||
-    loc.includes("san francisco") ||
-    loc.includes("new york")
-  ) {
-    return "Remote (US/Americas)";
-  }
-  if (loc.includes("remote")) {
-    return "Remote (Global)";
-  }
+  if (loc.includes("hybrid")) return "Hybrid";
+  if (loc.includes("on-site") || loc.includes("onsite")) return "On-site";
+  if (matchesKeyword(loc, GLOBAL_REMOTE_KEYWORDS)) return "Remote (Global)";
+  if (matchesKeyword(loc, UK_EUROPE_KEYWORDS)) return "Remote (UK/Europe)";
+  if (matchesKeyword(loc, US_AMERICAS_KEYWORDS)) return "Remote (US/Americas)";
+  if (loc.includes("remote")) return "Remote (Global)";
+
   return "Hybrid";
 }
 
+const JUNIOR_KEYWORDS = ["junior", "associate", "entry", "graduate", "intern"] as const;
+const LEAD_KEYWORDS = ["staff", "principal", "lead", "head"] as const;
+const EXECUTIVE_KEYWORDS = ["director", "vp", "executive", "chief"] as const;
+const SENIOR_KEYWORDS = ["senior", "sr", "sr."] as const;
+
 /**
- * Infer experience level from title.
+ * Infer experience level from the title.
  */
 export function inferExperienceLevel(title: string): JobExperienceLevel {
   const t = title.toLowerCase();
-  if (t.includes("junior") || t.includes("associate") || t.includes("entry") || t.includes("graduate") || t.includes("intern")) {
-    return "Junior";
-  }
-  if (t.includes("staff") || t.includes("principal") || t.includes("lead") || t.includes("head")) {
-    return "Lead / Staff";
-  }
-  if (t.includes("director") || t.includes("vp") || t.includes("executive") || t.includes("chief")) {
-    return "Executive";
-  }
-  if (t.includes("senior") || t.includes("sr") || t.includes("sr.")) {
-    return "Senior";
-  }
+  if (matchesKeyword(t, JUNIOR_KEYWORDS)) return "Junior";
+  if (matchesKeyword(t, LEAD_KEYWORDS)) return "Lead / Staff";
+  if (matchesKeyword(t, EXECUTIVE_KEYWORDS)) return "Executive";
+  if (matchesKeyword(t, SENIOR_KEYWORDS)) return "Senior";
   return "Mid-Level";
+}
+
+function getCurrencyFromSymbol(symbol: string): string {
+  if (symbol === "£") return "GBP";
+  if (symbol === "€") return "EUR";
+  return "USD";
 }
 
 /**
@@ -415,34 +396,34 @@ export function extractSalaryRange(
   defaultCurrency = "USD"
 ): { salaryRange: string; minSalary: number; currency: string } {
   // Regex matches $120k-$150k or $120,000 - $150,000 or £80,000 - £100,000 or €90,000
-  const salaryRegex = /(?:(\$|£|€)\s*(\d{2,3}k|\d{2,3}(?:,\d{3})*)\s*(?:-|–|to)\s*(?:\$|£|€)?\s*(\d{2,3}k|\d{2,3}(?:,\d{3})*))/i;
-  const match = text.match(salaryRegex);
+  const salaryRegex = /([$£€])\s*(\d{1,3}(?:,\d{3})*(?:\.\d+)?k?)\s*(?:-|–|to)\s*[$£€]?\s*(\d{1,3}(?:,\d{3})*(?:\.\d+)?k?)/i;
+  const match = salaryRegex.exec(text);
 
-  if (match) {
+  if (match?.[0] && match[1] && match[2]) {
     const symbol = match[1];
-    const currency = symbol === "£" ? "GBP" : symbol === "€" ? "EUR" : "USD";
-    const rawMin = match[2].toLowerCase().replace(/,/g, "");
-    const minVal = rawMin.endsWith("k") ? parseFloat(rawMin) * 1000 : parseFloat(rawMin);
+    const currency = getCurrencyFromSymbol(symbol);
+    const rawMin = match[2].toLowerCase().replaceAll(',', "");
+    const minVal = rawMin.endsWith("k") ? Number.parseFloat(rawMin) * 1000 : Number.parseFloat(rawMin);
     
     return {
       salaryRange: match[0].trim(),
-      minSalary: Math.round(minVal),
+      minSalary: Math.round(minVal) || 0,
       currency,
     };
   }
 
   // Single figure fallback
-  const singleRegex = /(?:(\$|£|€)\s*(\d{2,3}k|\d{2,3}(?:,\d{3})*))/i;
-  const singleMatch = text.match(singleRegex);
-  if (singleMatch) {
+  const singleRegex = /([$£€])\s*(\d{1,3}(?:,\d{3})*(?:\.\d+)?k?)/i;
+  const singleMatch = singleRegex.exec(text);
+  if (singleMatch?.[0] && singleMatch[1] && singleMatch[2]) {
     const symbol = singleMatch[1];
-    const currency = symbol === "£" ? "GBP" : symbol === "€" ? "EUR" : "USD";
-    const rawMin = singleMatch[2].toLowerCase().replace(/,/g, "");
-    const minVal = rawMin.endsWith("k") ? parseFloat(rawMin) * 1000 : parseFloat(rawMin);
+    const currency = getCurrencyFromSymbol(symbol);
+    const rawMin = singleMatch[2].toLowerCase().replaceAll(',', "");
+    const minVal = rawMin.endsWith("k") ? Number.parseFloat(rawMin) * 1000 : Number.parseFloat(rawMin);
 
     return {
       salaryRange: `${singleMatch[0].trim()}+ ${currency}`,
-      minSalary: Math.round(minVal),
+      minSalary: Math.round(minVal) || 0,
       currency,
     };
   }
@@ -466,6 +447,25 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+function filterRawJobs<T>(
+  rawList: T[],
+  getTitle: (item: T) => string,
+  options: AtsSyncOptions
+): T[] {
+  let filtered = rawList;
+  if ((options.filterKeywords?.length ?? 0) > 0) {
+    const keywords = options.filterKeywords?.map((k) => k.toLowerCase()) ?? [];
+    filtered = filtered.filter((item) => {
+      const title = getTitle(item).toLowerCase();
+      return keywords.some((k) => title.includes(k));
+    });
+  }
+  if ((options.maxJobsPerCompany ?? 0) > 0) {
+    filtered = filtered.slice(0, options.maxJobsPerCompany);
+  }
+  return filtered;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. Greenhouse Public Board API Ingest
 // ─────────────────────────────────────────────────────────────────────────────
@@ -479,6 +479,43 @@ interface GreenhouseJobRaw {
   departments?: Array<{ id: number; name: string }>;
   content?: string;
   metadata?: Array<{ name: string; value: string | number | boolean }>;
+}
+
+function mapGreenhouseJob(j: GreenhouseJobRaw, partner: AtsPartnerConfig): Job {
+  const locationName = cleanJobText(j.location?.name || "Remote (Global)");
+  const departmentName = cleanJobText(j.departments?.[0]?.name || "");
+  const contentText = j.content || "";
+  const salaryInfo = extractSalaryRange(contentText);
+  const cleanTitle = cleanJobText(j.title);
+  const cleanCompany = cleanJobText(partner.company);
+  const cleanDesc = cleanHtmlDescription(contentText).slice(0, 4000);
+
+  return {
+    id: `gh-${partner.boardId}-${j.id}`,
+    title: cleanTitle,
+    slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
+    company: cleanCompany,
+    companyLogoUrl: partner.companyLogoUrl,
+    category: partner.defaultCategory || inferJobCategory(cleanTitle, departmentName),
+    location: locationName,
+    remoteStatus: inferRemoteStatus(locationName),
+    employmentType: "Full-time" as JobEmploymentType,
+    experienceLevel: inferExperienceLevel(cleanTitle),
+    salaryRange: salaryInfo.salaryRange,
+    minSalary: salaryInfo.minSalary,
+    currency: salaryInfo.currency,
+    techStack: [],
+    whyApply: cleanJobText(partner.whyApplyDefault || "Verified inclusive company with transparent compensation bands, flexible workflows, and supportive team culture."),
+    description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available on the official ATS.`,
+    inclusiveHighlights: partner.inclusiveHighlightsDefault || ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
+    applyUrl: appendUtmParameters(j.absolute_url),
+    source: `${cleanCompany} Greenhouse ATS`,
+    status: "active",
+    isArchived: false,
+    featured: false,
+    verifiedInclusive: true,
+    publishedAt: j.updated_at ? new Date(j.updated_at).toISOString() : new Date().toISOString(),
+  };
 }
 
 export async function fetchGreenhouseJobs(
@@ -496,52 +533,8 @@ export async function fetchGreenhouseJobs(
     const data: { jobs: GreenhouseJobRaw[] } = await res.json();
     if (!data.jobs || !Array.isArray(data.jobs)) return [];
 
-    let rawList = data.jobs;
-    if (options.filterKeywords && options.filterKeywords.length > 0) {
-      rawList = rawList.filter((j) =>
-        options.filterKeywords?.some((k) => j.title.toLowerCase().includes(k.toLowerCase()))
-      );
-    }
-    if (options.maxJobsPerCompany && options.maxJobsPerCompany > 0) {
-      rawList = rawList.slice(0, options.maxJobsPerCompany);
-    }
-
-    return rawList.map((j) => {
-      const locationName = cleanJobText(j.location?.name || "Remote (Global)");
-      const departmentName = cleanJobText(j.departments?.[0]?.name || "");
-      const contentText = j.content || "";
-      const salaryInfo = extractSalaryRange(contentText);
-      const cleanTitle = cleanJobText(j.title);
-      const cleanCompany = cleanJobText(partner.company);
-      const cleanDesc = cleanHtmlDescription(contentText).slice(0, 4000);
-
-      return {
-        id: `gh-${partner.boardId}-${j.id}`,
-        title: cleanTitle,
-        slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
-        company: cleanCompany,
-        companyLogoUrl: partner.companyLogoUrl,
-        category: partner.defaultCategory || inferJobCategory(cleanTitle, departmentName),
-        location: locationName,
-        remoteStatus: inferRemoteStatus(locationName),
-        employmentType: "Full-time" as JobEmploymentType,
-        experienceLevel: inferExperienceLevel(cleanTitle),
-        salaryRange: salaryInfo.salaryRange,
-        minSalary: salaryInfo.minSalary,
-        currency: salaryInfo.currency,
-        techStack: [],
-        whyApply: cleanJobText(partner.whyApplyDefault || "Verified inclusive company with transparent compensation bands, flexible workflows, and supportive team culture."),
-        description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available on the official ATS.`,
-        inclusiveHighlights: partner.inclusiveHighlightsDefault || ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
-        applyUrl: appendUtmParameters(j.absolute_url),
-        source: `${cleanCompany} Greenhouse ATS`,
-        status: "active",
-        isArchived: false,
-        featured: false,
-        verifiedInclusive: true,
-        publishedAt: j.updated_at ? new Date(j.updated_at).toISOString() : new Date().toISOString(),
-      };
-    });
+    const filtered = filterRawJobs(data.jobs, (j) => j.title, options);
+    return filtered.map((j) => mapGreenhouseJob(j, partner));
   } catch (err) {
     console.error(`[ATS Sync] Error syncing Greenhouse jobs for ${partner.company}:`, err);
     return [];
@@ -568,6 +561,43 @@ interface LeverPostingRaw {
   salaryDescription?: string;
 }
 
+function mapLeverJob(j: LeverPostingRaw, partner: AtsPartnerConfig): Job {
+  const locationName = cleanJobText(j.categories?.location || "Remote (Global)");
+  const departmentName = cleanJobText(j.categories?.department || j.categories?.team || "");
+  const textToSearch = `${j.salaryDescription || ""} ${j.descriptionPlain || ""}`;
+  const salaryInfo = extractSalaryRange(textToSearch);
+  const cleanTitle = cleanJobText(j.text);
+  const cleanCompany = cleanJobText(partner.company);
+  const cleanDesc = cleanHtmlDescription(j.descriptionPlain || "").slice(0, 4000);
+
+  return {
+    id: `lever-${partner.boardId}-${j.id}`,
+    title: cleanTitle,
+    slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
+    company: cleanCompany,
+    companyLogoUrl: partner.companyLogoUrl,
+    category: partner.defaultCategory || inferJobCategory(cleanTitle, departmentName),
+    location: locationName,
+    remoteStatus: inferRemoteStatus(locationName),
+    employmentType: "Full-time" as JobEmploymentType,
+    experienceLevel: inferExperienceLevel(cleanTitle),
+    salaryRange: salaryInfo.salaryRange,
+    minSalary: salaryInfo.minSalary,
+    currency: salaryInfo.currency,
+    techStack: [],
+    whyApply: cleanJobText(partner.whyApplyDefault || "Verified inclusive company with transparent compensation bands, flexible workflows, and supportive team culture."),
+    description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available on the official ATS.`,
+    inclusiveHighlights: partner.inclusiveHighlightsDefault || ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
+    applyUrl: appendUtmParameters(j.hostedUrl || j.applyUrl),
+    source: `${cleanCompany} Lever ATS`,
+    status: "active",
+    isArchived: false,
+    featured: false,
+    verifiedInclusive: true,
+    publishedAt: j.createdAt ? new Date(j.createdAt).toISOString() : new Date().toISOString(),
+  };
+}
+
 export async function fetchLeverJobs(
   partner: AtsPartnerConfig,
   options: AtsSyncOptions = {}
@@ -583,52 +613,8 @@ export async function fetchLeverJobs(
     const data: LeverPostingRaw[] = await res.json();
     if (!Array.isArray(data)) return [];
 
-    let rawList = data;
-    if (options.filterKeywords && options.filterKeywords.length > 0) {
-      rawList = rawList.filter((j) =>
-        options.filterKeywords?.some((k) => j.text.toLowerCase().includes(k.toLowerCase()))
-      );
-    }
-    if (options.maxJobsPerCompany && options.maxJobsPerCompany > 0) {
-      rawList = rawList.slice(0, options.maxJobsPerCompany);
-    }
-
-    return rawList.map((j) => {
-      const locationName = cleanJobText(j.categories?.location || "Remote (Global)");
-      const departmentName = cleanJobText(j.categories?.department || j.categories?.team || "");
-      const textToSearch = `${j.salaryDescription || ""} ${j.descriptionPlain || ""}`;
-      const salaryInfo = extractSalaryRange(textToSearch);
-      const cleanTitle = cleanJobText(j.text);
-      const cleanCompany = cleanJobText(partner.company);
-      const cleanDesc = cleanHtmlDescription(j.descriptionPlain || "").slice(0, 4000);
-
-      return {
-        id: `lever-${partner.boardId}-${j.id}`,
-        title: cleanTitle,
-        slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
-        company: cleanCompany,
-        companyLogoUrl: partner.companyLogoUrl,
-        category: partner.defaultCategory || inferJobCategory(cleanTitle, departmentName),
-        location: locationName,
-        remoteStatus: inferRemoteStatus(locationName),
-        employmentType: "Full-time" as JobEmploymentType,
-        experienceLevel: inferExperienceLevel(cleanTitle),
-        salaryRange: salaryInfo.salaryRange,
-        minSalary: salaryInfo.minSalary,
-        currency: salaryInfo.currency,
-        techStack: [],
-        whyApply: cleanJobText(partner.whyApplyDefault || "Verified inclusive company with transparent compensation bands, flexible workflows, and supportive team culture."),
-        description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available on the official ATS.`,
-        inclusiveHighlights: partner.inclusiveHighlightsDefault || ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
-        applyUrl: appendUtmParameters(j.hostedUrl || j.applyUrl),
-        source: `${cleanCompany} Lever ATS`,
-        status: "active",
-        isArchived: false,
-        featured: false,
-        verifiedInclusive: true,
-        publishedAt: j.createdAt ? new Date(j.createdAt).toISOString() : new Date().toISOString(),
-      };
-    });
+    const filtered = filterRawJobs(data, (j) => j.text, options);
+    return filtered.map((j) => mapLeverJob(j, partner));
   } catch (err) {
     console.error(`[ATS Sync] Error syncing Lever jobs for ${partner.company}:`, err);
     return [];
@@ -668,9 +654,52 @@ export function appendUtmParameters(
       parsed.searchParams.set("utm_campaign", utmCampaign);
     }
     return parsed.toString();
-  } catch {
+  } catch (err) {
+    console.debug("Failed to append UTM parameters to invalid URL, using raw url:", err);
     return url;
   }
+}
+
+function mapAshbyJob(
+  j: AshbyJobRaw & { jobUrl?: string; applyUrl?: string },
+  partner: AtsPartnerConfig
+): Job {
+  const locationName = cleanJobText(j.locationName || "Remote (Global)");
+  const departmentName = cleanJobText(j.departmentName || "");
+  const compText = `${j.compensation?.summary || ""} ${j.compensation?.compensationTierSummary || ""}`;
+  const salaryInfo = extractSalaryRange(compText);
+  const cleanTitle = cleanJobText(j.title);
+  const cleanCompany = cleanJobText(partner.company);
+  const desc = cleanHtmlDescription(j.descriptionPlain || j.descriptionHtml || "").slice(0, 4000);
+
+  return {
+    id: `ashby-${partner.boardId}-${j.id}`,
+    title: cleanTitle,
+    slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
+    company: cleanCompany,
+    companyLogoUrl: partner.companyLogoUrl,
+    category: partner.defaultCategory || inferJobCategory(cleanTitle, departmentName),
+    location: locationName,
+    remoteStatus: inferRemoteStatus(locationName),
+    employmentType: "Full-time" as JobEmploymentType,
+    experienceLevel: inferExperienceLevel(cleanTitle),
+    salaryRange: salaryInfo.salaryRange,
+    minSalary: salaryInfo.minSalary,
+    currency: salaryInfo.currency,
+    techStack: [],
+    whyApply: cleanJobText(partner.whyApplyDefault || "Verified inclusive company with transparent compensation bands, flexible workflows, and supportive team culture."),
+    description: desc || `${cleanTitle} opportunity at ${cleanCompany}. Apply directly through Ashby ATS.`,
+    inclusiveHighlights: partner.inclusiveHighlightsDefault || ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
+    applyUrl: appendUtmParameters(
+      j.applyUrl || j.jobUrl || j.jobPostingUrl || `https://jobs.ashbyhq.com/${partner.boardId}/${j.id}`
+    ),
+    source: `${cleanCompany} Ashby ATS`,
+    status: "active",
+    isArchived: false,
+    featured: false,
+    verifiedInclusive: true,
+    publishedAt: j.publishedAt ? new Date(j.publishedAt).toISOString() : new Date().toISOString(),
+  };
 }
 
 export async function fetchAshbyJobs(
@@ -688,54 +717,8 @@ export async function fetchAshbyJobs(
     const data: { jobs: Array<AshbyJobRaw & { jobUrl?: string; applyUrl?: string }> } = await res.json();
     if (!data.jobs || !Array.isArray(data.jobs)) return [];
 
-    let rawList = data.jobs;
-    if (options.filterKeywords && options.filterKeywords.length > 0) {
-      rawList = rawList.filter((j) =>
-        options.filterKeywords?.some((k) => j.title.toLowerCase().includes(k.toLowerCase()))
-      );
-    }
-    if (options.maxJobsPerCompany && options.maxJobsPerCompany > 0) {
-      rawList = rawList.slice(0, options.maxJobsPerCompany);
-    }
-
-    return rawList.map((j) => {
-      const locationName = cleanJobText(j.locationName || "Remote (Global)");
-      const departmentName = cleanJobText(j.departmentName || "");
-      const compText = `${j.compensation?.summary || ""} ${j.compensation?.compensationTierSummary || ""}`;
-      const salaryInfo = extractSalaryRange(compText);
-      const cleanTitle = cleanJobText(j.title);
-      const cleanCompany = cleanJobText(partner.company);
-      const desc = cleanHtmlDescription(j.descriptionPlain || j.descriptionHtml || "").slice(0, 4000);
-
-      return {
-        id: `ashby-${partner.boardId}-${j.id}`,
-        title: cleanTitle,
-        slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
-        company: cleanCompany,
-        companyLogoUrl: partner.companyLogoUrl,
-        category: partner.defaultCategory || inferJobCategory(cleanTitle, departmentName),
-        location: locationName,
-        remoteStatus: inferRemoteStatus(locationName),
-        employmentType: "Full-time" as JobEmploymentType,
-        experienceLevel: inferExperienceLevel(cleanTitle),
-        salaryRange: salaryInfo.salaryRange,
-        minSalary: salaryInfo.minSalary,
-        currency: salaryInfo.currency,
-        techStack: [],
-        whyApply: cleanJobText(partner.whyApplyDefault || "Verified inclusive company with transparent compensation bands, flexible workflows, and supportive team culture."),
-        description: desc || `${cleanTitle} opportunity at ${cleanCompany}. Apply directly through Ashby ATS.`,
-        inclusiveHighlights: partner.inclusiveHighlightsDefault || ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
-        applyUrl: appendUtmParameters(
-          j.applyUrl || j.jobUrl || j.jobPostingUrl || `https://jobs.ashbyhq.com/${partner.boardId}/${j.id}`
-        ),
-        source: `${cleanCompany} Ashby ATS`,
-        status: "active",
-        isArchived: false,
-        featured: false,
-        verifiedInclusive: true,
-        publishedAt: j.publishedAt ? new Date(j.publishedAt).toISOString() : new Date().toISOString(),
-      };
-    });
+    const filtered = filterRawJobs(data.jobs, (j) => j.title, options);
+    return filtered.map((j) => mapAshbyJob(j, partner));
   } catch (err) {
     console.error(`[ATS Sync] Error syncing Ashby jobs for ${partner.company}:`, err);
     return [];
@@ -746,6 +729,73 @@ export async function fetchAshbyJobs(
 // 4. RemoteOK Public API Ingest
 // ─────────────────────────────────────────────────────────────────────────────
 
+interface RemoteOkJobRaw {
+  id?: string;
+  slug?: string;
+  company?: string;
+  company_logo?: string;
+  position?: string;
+  tags?: string[];
+  description?: string;
+  location?: string;
+  apply_url?: string;
+  url?: string;
+  salary_min?: number;
+  salary_max?: number;
+  date?: string;
+}
+
+function getRemoteOkSalary(j: RemoteOkJobRaw, cleanDesc: string): { salaryRange: string; minSalary: number } {
+  if (j.salary_min && j.salary_min > 0) {
+    const maxStr = j.salary_max ? ` – $${j.salary_max.toLocaleString()}` : "";
+    return {
+      salaryRange: `$${j.salary_min.toLocaleString()}${maxStr} USD`,
+      minSalary: j.salary_min,
+    };
+  }
+  const extracted = extractSalaryRange(cleanDesc);
+  return {
+    salaryRange: extracted.salaryRange,
+    minSalary: extracted.minSalary,
+  };
+}
+
+function mapRemoteOkJob(j: RemoteOkJobRaw): Job {
+  const cleanDesc = cleanHtmlDescription(j.description || "").slice(0, 4000);
+  const cleanTitle = cleanJobText(j.position || "Remote Specialist");
+  const cleanCompany = cleanJobText(j.company || "Remote Co");
+  const locationName = cleanJobText(j.location || "Remote (Global)");
+  const salary = getRemoteOkSalary(j, cleanDesc);
+  const targetUrl = j.apply_url || j.url || `https://remoteok.com/remote-jobs/${j.slug || ""}`;
+
+  return {
+    id: `remoteok-${j.id || j.slug || crypto.randomUUID()}`,
+    title: cleanTitle,
+    slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id || slugify(j.slug || "")}`,
+    company: cleanCompany,
+    companyLogoUrl: j.company_logo,
+    category: inferJobCategory(cleanTitle, (j.tags || []).join(" ")),
+    location: locationName,
+    remoteStatus: inferRemoteStatus(locationName),
+    employmentType: "Full-time" as JobEmploymentType,
+    experienceLevel: inferExperienceLevel(cleanTitle),
+    salaryRange: salary.salaryRange,
+    minSalary: salary.minSalary,
+    currency: "USD",
+    techStack: j.tags?.slice(0, 6) || [],
+    whyApply: "100% flexible remote organization with transparent compensation bands, asynchronous workflows, and distributed team practices.",
+    description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available.`,
+    inclusiveHighlights: ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
+    applyUrl: appendUtmParameters(targetUrl),
+    source: "RemoteOK API",
+    status: "active",
+    isArchived: false,
+    featured: false,
+    verifiedInclusive: true,
+    publishedAt: j.date || new Date().toISOString(),
+  };
+}
+
 export async function fetchRemoteOkJobs(options: AtsSyncOptions = {}): Promise<Job[]> {
   try {
     const res = await fetch("https://remoteok.com/api", {
@@ -753,67 +803,14 @@ export async function fetchRemoteOkJobs(options: AtsSyncOptions = {}): Promise<J
     });
     if (!res.ok) return [];
 
-    const data: Array<{
-      id?: string;
-      slug?: string;
-      company?: string;
-      company_logo?: string;
-      position?: string;
-      tags?: string[];
-      description?: string;
-      location?: string;
-      apply_url?: string;
-      url?: string;
-      salary_min?: number;
-      salary_max?: number;
-      date?: string;
-    }> = await res.json();
-
+    const data: RemoteOkJobRaw[] = await res.json();
     if (!Array.isArray(data)) return [];
 
     const validJobs = data.filter((j) => j.position && (j.apply_url || j.url));
+    const filtered = filterRawJobs(validJobs, (j) => j.position || "", options);
     const limit = options.maxJobsPerCompany || 15;
 
-    return validJobs.slice(0, limit).map((j) => {
-      const cleanDesc = cleanHtmlDescription(j.description || "").slice(0, 4000);
-      const cleanTitle = cleanJobText(j.position || "Remote Specialist");
-      const cleanCompany = cleanJobText(j.company || "Remote Co");
-      const locationName = cleanJobText(j.location || "Remote (Global)");
-      const hasSalary = (j.salary_min && j.salary_min > 0) || (j.salary_max && j.salary_max > 0);
-      const salaryRange = hasSalary
-        ? `$${j.salary_min?.toLocaleString()} – $${j.salary_max?.toLocaleString()} USD`
-        : extractSalaryRange(cleanDesc).salaryRange;
-
-      const minSalary = j.salary_min || extractSalaryRange(cleanDesc).minSalary;
-      const targetUrl = j.apply_url || j.url || `https://remoteok.com/remote-jobs/${j.slug}`;
-
-      return {
-        id: `remoteok-${j.id || j.slug || Math.random().toString(36).slice(2)}`,
-        title: cleanTitle,
-        slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id || slugify(j.slug || "")}`,
-        company: cleanCompany,
-        companyLogoUrl: j.company_logo,
-        category: inferJobCategory(cleanTitle, (j.tags || []).join(" ")),
-        location: locationName,
-        remoteStatus: inferRemoteStatus(locationName),
-        employmentType: "Full-time" as JobEmploymentType,
-        experienceLevel: inferExperienceLevel(cleanTitle),
-        salaryRange,
-        minSalary,
-        currency: "USD",
-        techStack: j.tags?.slice(0, 6) || [],
-        whyApply: "100% flexible remote organization with transparent compensation bands, asynchronous workflows, and distributed team practices.",
-        description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available.`,
-        inclusiveHighlights: ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
-        applyUrl: appendUtmParameters(targetUrl),
-        source: "RemoteOK API",
-        status: "active",
-        isArchived: false,
-        featured: false,
-        verifiedInclusive: true,
-        publishedAt: j.date || new Date().toISOString(),
-      };
-    });
+    return filtered.slice(0, limit).map(mapRemoteOkJob);
   } catch (err) {
     console.error("[ATS Sync] Error syncing RemoteOK jobs:", err);
     return [];
@@ -839,6 +836,41 @@ interface RemotiveJobRaw {
   description?: string;
 }
 
+function mapRemotiveJob(j: RemotiveJobRaw): Job {
+  const cleanDesc = cleanHtmlDescription(j.description || "").slice(0, 4000);
+  const cleanTitle = cleanJobText(j.title);
+  const cleanCompany = cleanJobText(j.company_name);
+  const locationName = cleanJobText(j.candidate_required_location || "Remote (Global)");
+  const salaryInfo = extractSalaryRange(`${j.salary || ""} ${cleanDesc}`);
+
+  return {
+    id: `remotive-${j.id}`,
+    title: cleanTitle,
+    slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
+    company: cleanCompany,
+    companyLogoUrl: j.company_logo,
+    category: inferJobCategory(cleanTitle, j.category || (j.tags || []).join(" ")),
+    location: locationName,
+    remoteStatus: inferRemoteStatus(locationName),
+    employmentType: (j.job_type === "contract" ? "Contract" : "Full-time") as JobEmploymentType,
+    experienceLevel: inferExperienceLevel(cleanTitle),
+    salaryRange: salaryInfo.salaryRange,
+    minSalary: salaryInfo.minSalary,
+    currency: salaryInfo.currency,
+    techStack: j.tags?.slice(0, 6) || [],
+    whyApply: "Remote-first role with verified compensation transparency, flexible working hours, and distributed team culture.",
+    description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Apply directly through the listing.`,
+    inclusiveHighlights: ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
+    applyUrl: appendUtmParameters(j.url),
+    source: "Remotive Public API",
+    status: "active",
+    isArchived: false,
+    featured: false,
+    verifiedInclusive: true,
+    publishedAt: j.publication_date ? new Date(j.publication_date).toISOString() : new Date().toISOString(),
+  };
+}
+
 export async function fetchRemotiveJobs(options: AtsSyncOptions = {}): Promise<Job[]> {
   try {
     const res = await fetch("https://remotive.com/api/remote-jobs?limit=25");
@@ -850,49 +882,9 @@ export async function fetchRemotiveJobs(options: AtsSyncOptions = {}): Promise<J
     const data: { jobs?: RemotiveJobRaw[] } = await res.json();
     if (!data.jobs || !Array.isArray(data.jobs)) return [];
 
-    let rawList = data.jobs;
-    if (options.filterKeywords && options.filterKeywords.length > 0) {
-      rawList = rawList.filter((j) =>
-        options.filterKeywords?.some((k) => j.title.toLowerCase().includes(k.toLowerCase()))
-      );
-    }
+    const filtered = filterRawJobs(data.jobs, (j) => j.title, options);
     const limit = options.maxJobsPerCompany || 15;
-    rawList = rawList.slice(0, limit);
-
-    return rawList.map((j) => {
-      const cleanDesc = cleanHtmlDescription(j.description || "").slice(0, 4000);
-      const cleanTitle = cleanJobText(j.title);
-      const cleanCompany = cleanJobText(j.company_name);
-      const locationName = cleanJobText(j.candidate_required_location || "Remote (Global)");
-      const salaryInfo = extractSalaryRange(`${j.salary || ""} ${cleanDesc}`);
-
-      return {
-        id: `remotive-${j.id}`,
-        title: cleanTitle,
-        slug: `${slugify(cleanCompany)}-${slugify(cleanTitle)}-${j.id}`,
-        company: cleanCompany,
-        companyLogoUrl: j.company_logo,
-        category: inferJobCategory(cleanTitle, j.category || (j.tags || []).join(" ")),
-        location: locationName,
-        remoteStatus: inferRemoteStatus(locationName),
-        employmentType: (j.job_type === "contract" ? "Contract" : "Full-time") as JobEmploymentType,
-        experienceLevel: inferExperienceLevel(cleanTitle),
-        salaryRange: salaryInfo.salaryRange,
-        minSalary: salaryInfo.minSalary,
-        currency: salaryInfo.currency,
-        techStack: j.tags?.slice(0, 6) || [],
-        whyApply: "Remote-first role with verified compensation transparency, flexible working hours, and distributed team culture.",
-        description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Apply directly through the listing.`,
-        inclusiveHighlights: ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
-        applyUrl: appendUtmParameters(j.url),
-        source: "Remotive Public API",
-        status: "active",
-        isArchived: false,
-        featured: false,
-        verifiedInclusive: true,
-        publishedAt: j.publication_date ? new Date(j.publication_date).toISOString() : new Date().toISOString(),
-      };
-    });
+    return filtered.slice(0, limit).map(mapRemotiveJob);
   } catch (err) {
     console.error("[ATS Sync] Error syncing Remotive jobs:", err);
     return [];
@@ -916,6 +908,49 @@ interface ArbeitnowJobRaw {
   created_at?: number;
 }
 
+function getArbeitnowLocation(j: ArbeitnowJobRaw): string {
+  if (j.remote) {
+    return j.location ? `${j.location} (Remote)` : "Remote (Global)";
+  }
+  return j.location || "Hybrid";
+}
+
+function mapArbeitnowJob(j: ArbeitnowJobRaw): Job {
+  const cleanDesc = cleanHtmlDescription(j.description || "").slice(0, 4000);
+  const cleanTitle = cleanJobText(j.title);
+  const cleanCompany = cleanJobText(j.company_name);
+  const locationRaw = getArbeitnowLocation(j);
+  const locationName = cleanJobText(locationRaw);
+  const salaryInfo = extractSalaryRange(cleanDesc);
+
+  return {
+    id: `arbeitnow-${j.slug}`,
+    title: cleanTitle,
+    slug: `arbeitnow-${slugify(cleanCompany)}-${j.slug}`,
+    company: cleanCompany,
+    companyLogoUrl: undefined,
+    category: inferJobCategory(cleanTitle, (j.tags || []).join(" ")),
+    location: locationName,
+    remoteStatus: j.remote ? "Remote (Global)" : inferRemoteStatus(locationName),
+    employmentType: "Full-time" as JobEmploymentType,
+    experienceLevel: inferExperienceLevel(cleanTitle),
+    salaryRange: salaryInfo.salaryRange,
+    minSalary: salaryInfo.minSalary,
+    currency: salaryInfo.currency,
+    techStack: j.tags?.slice(0, 6) || [],
+    whyApply: "Inclusive European and remote tech team offering flexible workflows and transparent communication.",
+    description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available.`,
+    inclusiveHighlights: ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
+    applyUrl: appendUtmParameters(j.url),
+    source: "Arbeitnow API",
+    status: "active",
+    isArchived: false,
+    featured: false,
+    verifiedInclusive: true,
+    publishedAt: j.created_at ? new Date(j.created_at * 1000).toISOString() : new Date().toISOString(),
+  };
+}
+
 export async function fetchArbeitnowJobs(options: AtsSyncOptions = {}): Promise<Job[]> {
   try {
     const res = await fetch("https://www.arbeitnow.com/api/job-board-api");
@@ -927,50 +962,9 @@ export async function fetchArbeitnowJobs(options: AtsSyncOptions = {}): Promise<
     const data: { data?: ArbeitnowJobRaw[] } = await res.json();
     if (!data.data || !Array.isArray(data.data)) return [];
 
-    let rawList = data.data;
-    if (options.filterKeywords && options.filterKeywords.length > 0) {
-      rawList = rawList.filter((j) =>
-        options.filterKeywords?.some((k) => j.title.toLowerCase().includes(k.toLowerCase()))
-      );
-    }
+    const filtered = filterRawJobs(data.data, (j) => j.title, options);
     const limit = options.maxJobsPerCompany || 15;
-    rawList = rawList.slice(0, limit);
-
-    return rawList.map((j) => {
-      const cleanDesc = cleanHtmlDescription(j.description || "").slice(0, 4000);
-      const cleanTitle = cleanJobText(j.title);
-      const cleanCompany = cleanJobText(j.company_name);
-      const locationRaw = j.remote ? (j.location ? `${j.location} (Remote)` : "Remote (Global)") : j.location || "Hybrid";
-      const locationName = cleanJobText(locationRaw);
-      const salaryInfo = extractSalaryRange(cleanDesc);
-
-      return {
-        id: `arbeitnow-${j.slug}`,
-        title: cleanTitle,
-        slug: `arbeitnow-${slugify(cleanCompany)}-${j.slug}`,
-        company: cleanCompany,
-        companyLogoUrl: undefined,
-        category: inferJobCategory(cleanTitle, (j.tags || []).join(" ")),
-        location: locationName,
-        remoteStatus: j.remote ? "Remote (Global)" : inferRemoteStatus(locationName),
-        employmentType: "Full-time" as JobEmploymentType,
-        experienceLevel: inferExperienceLevel(cleanTitle),
-        salaryRange: salaryInfo.salaryRange,
-        minSalary: salaryInfo.minSalary,
-        currency: salaryInfo.currency,
-        techStack: j.tags?.slice(0, 6) || [],
-        whyApply: "Inclusive European and remote tech team offering flexible workflows and transparent communication.",
-        description: cleanDesc || `${cleanTitle} opportunity at ${cleanCompany}. Direct application available.`,
-        inclusiveHighlights: ["Verified Inclusive", "Salary Transparent", "Flexible Hours"],
-        applyUrl: appendUtmParameters(j.url),
-        source: "Arbeitnow API",
-        status: "active",
-        isArchived: false,
-        featured: false,
-        verifiedInclusive: true,
-        publishedAt: j.created_at ? new Date(j.created_at * 1000).toISOString() : new Date().toISOString(),
-      };
-    });
+    return filtered.slice(0, limit).map(mapArbeitnowJob);
   } catch (err) {
     console.error("[ATS Sync] Error syncing Arbeitnow jobs:", err);
     return [];

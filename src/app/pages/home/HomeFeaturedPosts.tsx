@@ -7,7 +7,7 @@ interface HomeFeaturedPostsProps {
   posts: BlogPost[];
 }
 
-export function HomeFeaturedPosts({ posts }: HomeFeaturedPostsProps) {
+export function HomeFeaturedPosts({ posts }: Readonly<HomeFeaturedPostsProps>) {
   if (posts.length === 0) return null;
 
   return (

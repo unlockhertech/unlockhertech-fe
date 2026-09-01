@@ -15,7 +15,8 @@ export function getLumaEventId(urlOrId: string): string | null {
     const pathParts = parsed.pathname.split("/").filter(Boolean);
     const idFromPath = pathParts.find((part) => part.startsWith("evt-"));
     return idFromPath ?? null;
-  } catch {
+  } catch (err) {
+    console.debug("Failed to extract Luma event ID from URL string:", err);
     return null;
   }
 }

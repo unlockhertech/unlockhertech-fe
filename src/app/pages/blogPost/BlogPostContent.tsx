@@ -6,7 +6,7 @@ interface BlogPostContentProps {
   post: BlogPost;
 }
 
-export function BlogPostContent({ post }: BlogPostContentProps) {
+export function BlogPostContent({ post }: Readonly<BlogPostContentProps>) {
   return (
     <div className="prose prose-lg prose-rose max-w-none mb-16 blog-content bg-white p-8 sm:p-12 rounded-3xl border border-gray-200/80 shadow-xs">
       {post.body && Array.isArray(post.body) && post.body.length > 0 ? (

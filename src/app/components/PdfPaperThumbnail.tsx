@@ -24,6 +24,23 @@ interface PdfPaperThumbnailProps {
   isReleased?: boolean;
 }
 
+function getThumbnailStatusIcon(
+  isReleased: boolean,
+  requiresLogin: boolean,
+  isUnlocked: boolean
+) {
+  if (!isReleased) {
+    return <HiCalendar className="w-3 h-3 shrink-0" />;
+  }
+  if (requiresLogin && !isUnlocked) {
+    return <HiLockClosed className="w-3 h-3 shrink-0" />;
+  }
+  if (isUnlocked) {
+    return <HiCheckCircle className="w-3 h-3 shrink-0" />;
+  }
+  return <HiDocumentText className="w-3 h-3 shrink-0" />;
+}
+
 export function PdfPaperThumbnail({
   colorIndex = 0,
   customColor,
@@ -35,8 +52,11 @@ export function PdfPaperThumbnail({
   requiresLogin = false,
   isUnlocked = false,
   isReleased = false,
-}: PdfPaperThumbnailProps) {
-  const accentColor = customColor || RESOURCE_HEX_ROTATION[colorIndex % RESOURCE_HEX_ROTATION.length];
+}: Readonly<PdfPaperThumbnailProps>) {
+  const accentColor =
+    customColor ||
+    (RESOURCE_HEX_ROTATION[Math.abs(colorIndex) % RESOURCE_HEX_ROTATION.length] ??
+      RESOURCE_HEX_ROTATION[0]);
 
   if (isPlaceholder) {
     return (
@@ -135,15 +155,7 @@ export function PdfPaperThumbnail({
           className="text-white text-[8.5px] font-extrabold py-1 px-1 rounded text-center truncate shadow-xs flex items-center justify-center gap-1"
           style={{ backgroundColor: badgeBgColor }}
         >
-          {!isReleased ? (
-            <HiCalendar className="w-3 h-3 shrink-0" />
-          ) : requiresLogin && !isUnlocked ? (
-            <HiLockClosed className="w-3 h-3 shrink-0" />
-          ) : isUnlocked ? (
-            <HiCheckCircle className="w-3 h-3 shrink-0" />
-          ) : (
-            <HiDocumentText className="w-3 h-3 shrink-0" />
-          )}
+          {getThumbnailStatusIcon(isReleased, requiresLogin, isUnlocked)}
           <span className="truncate">{statusBadgeText}</span>
         </div>
       </div>

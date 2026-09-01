@@ -12,7 +12,7 @@ interface ResourcesHeroHeaderProps {
   onClearEmail: () => void;
 }
 
-export function ResourcesHeroHeader({ userEmail, onClearEmail }: ResourcesHeroHeaderProps) {
+export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<ResourcesHeroHeaderProps>) {
   return (
     <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white mb-12">
       <BrandPatternOverlay />

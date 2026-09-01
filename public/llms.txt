@@ -13,7 +13,7 @@
 
 - [Home](https://unlockhertech.com/): Official platform overview, latest episode player, and mission pillars.
 - [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.
-- [Live Coding Practices](https://unlockhertech.com/practices): Fortnightly She Leads Tech algorithmic workshop schedule, problem sets, and Google Calendar sync.
+- [Live Coding Practices](https://unlockhertech.com/practice): Fortnightly She Leads Tech algorithmic workshop schedule, problem sets, and Google Calendar sync.
 - [Events Calendar](https://unlockhertech.com/events): Upcoming workshops, community meetups, and live Q&A sessions.
 - [Blog & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.
 - [About Us & Mission](https://unlockhertech.com/about): Our founding story, mission, and community values.

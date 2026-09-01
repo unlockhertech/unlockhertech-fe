@@ -6,7 +6,7 @@ interface GetInvolvedSuccessBannerProps {
   onReset: () => void;
 }
 
-export function GetInvolvedSuccessBanner({ activeTab, onReset }: GetInvolvedSuccessBannerProps) {
+export function GetInvolvedSuccessBanner({ activeTab, onReset }: Readonly<GetInvolvedSuccessBannerProps>) {
   return (
     <div className="mt-8 p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-center">
       <HiCheckCircle className="w-12 h-12 text-emerald-600 mx-auto mb-3" />

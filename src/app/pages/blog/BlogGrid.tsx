@@ -6,7 +6,7 @@ interface BlogGridProps {
   onResetFilters: () => void;
 }
 
-export function BlogGrid({ posts, onResetFilters }: BlogGridProps) {
+export function BlogGrid({ posts, onResetFilters }: Readonly<BlogGridProps>) {
   if (posts.length === 0) {
     return (
       <div className="py-20 text-center bg-white rounded-3xl border border-gray-200 shadow-xs">

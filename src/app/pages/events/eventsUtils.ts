@@ -62,7 +62,7 @@ export function buildEventsJsonLd(upcomingEvents: ExternalEvent[]) {
           "url": getEventExternalUrl(e.urlOrId),
         },
         "image": e.image || "https://unlockhertech.com/logo.png",
-        "description": `${e.title} hosted by Unlock Her Tech`,
+        "description": e.description || `${e.title} hosted by Unlock Her Tech`,
         "organizer": {
           "@type": "Organization",
           "name": "Unlock Her Tech",

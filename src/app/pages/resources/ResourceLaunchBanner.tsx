@@ -6,7 +6,7 @@ interface ResourceLaunchBannerProps {
   onNotifyClick: () => void;
 }
 
-export function ResourceLaunchBanner({ onNotifyClick }: ResourceLaunchBannerProps) {
+export function ResourceLaunchBanner({ onNotifyClick }: Readonly<ResourceLaunchBannerProps>) {
   const { days, hours, minutes, seconds, isLaunched, formattedTargetDate } = usePlaybookCountdown();
 
   return (
@@ -14,8 +14,8 @@ export function ResourceLaunchBanner({ onNotifyClick }: ResourceLaunchBannerProp
       <div className="relative rounded-3xl bg-linear-to-br from-[#8a1f55] via-[#b42970] to-[#e8563a] p-6 sm:p-8 lg:p-10 text-white overflow-hidden shadow-xl border border-white/20">
         {/* Signature 5-Color Accent Palette Bar */}
         <div className="absolute top-0 left-0 right-0 h-2 flex">
-          {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c, i) => (
-            <div key={i} className="flex-1" style={{ backgroundColor: c }} />
+          {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
+            <div key={c} className="flex-1" style={{ backgroundColor: c }} />
           ))}
         </div>
 

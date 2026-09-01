@@ -174,7 +174,7 @@ export function useAssessment() {
     };
   }, [totalAnswered, grandTotal]);
 
-  const activeCategory = CATEGORIES[activeCategoryIndex];
+  const activeCategory = CATEGORIES[activeCategoryIndex] ?? CATEGORIES[0];
   const activeCategoryQuestions = useMemo(
     () => QUESTIONS.filter((q) => q.catKey === activeCategory.key),
     [activeCategory]

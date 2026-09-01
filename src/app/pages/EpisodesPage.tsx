@@ -47,7 +47,7 @@ export function EpisodesPage() {
     "hasPart": episodes.slice(0, 15).map((ep) => ({
       "@type": "PodcastEpisode",
       "name": ep.title,
-      "description": ep.description?.replace(/<[^>]*>?/gm, "").substring(0, 200),
+      "description": ep.description?.replace(/<[^>]+>/g, "").substring(0, 200),
       "datePublished": ep.date,
       "episodeNumber": ep.episodeNumber,
       "duration": ep.duration,

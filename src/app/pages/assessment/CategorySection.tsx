@@ -18,7 +18,7 @@ export function CategorySection({
   questions,
   answers,
   onSelectScore,
-}: CategorySectionProps) {
+}: Readonly<CategorySectionProps>) {
   return (
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs">
       <div className="flex items-center gap-3.5 border-b border-stone-100 pb-4 mb-5">

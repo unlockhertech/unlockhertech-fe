@@ -11,7 +11,7 @@ interface AssessmentHeaderProps {
   onReset: () => void;
 }
 
-export function AssessmentHeader({ totalAnswered, onReset }: AssessmentHeaderProps) {
+export function AssessmentHeader({ totalAnswered, onReset }: Readonly<AssessmentHeaderProps>) {
   return (
     <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white print:hidden">
       <BrandPatternOverlay />
@@ -44,6 +44,7 @@ export function AssessmentHeader({ totalAnswered, onReset }: AssessmentHeaderPro
 
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={() => window.print()}
               className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-brand-coral font-extrabold text-xs sm:text-sm hover:bg-white/90 transition-all shadow-md cursor-pointer"
             >
@@ -52,6 +53,7 @@ export function AssessmentHeader({ totalAnswered, onReset }: AssessmentHeaderPro
             </button>
             {totalAnswered > 0 && (
               <button
+                type="button"
                 onClick={onReset}
                 className="inline-flex items-center gap-1.5 px-4 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-colors border border-white/20 cursor-pointer"
                 title="Reset quiz"

@@ -16,7 +16,7 @@ describe('Job Curation & Inclusivity Vetting Engine', () => {
     const { passed, issues, evaluatedJob } = evaluateJobListing(validJob);
 
     expect(passed).toBe(true);
-    expect(issues.length).toBe(0);
+    expect(issues).toHaveLength(0);
     expect(evaluatedJob.verifiedInclusive).toBe(true);
     expect(evaluatedJob.inclusiveHighlights).toContain('Salary Transparent');
     expect(evaluatedJob.inclusiveHighlights).toContain('Parental Leave');

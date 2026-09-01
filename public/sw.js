@@ -11,71 +11,76 @@ const PRECACHE_URLS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
-      .then(() => self.skipWaiting())
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.addAll(PRECACHE_URLS);
+      await self.skipWaiting();
+    })()
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
         keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
+      );
+      await self.clients.claim();
+    })()
   );
 });
+
+function shouldBypassRequest(url) {
+  const isDevHost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+  const isDevInternal = url.pathname.startsWith('/@') || url.pathname.includes('node_modules');
+  const isCrossOrigin = url.origin !== self.location.origin;
+
+  return isDevHost || isDevInternal || isCrossOrigin;
+}
+
+async function handleNavigationRequest(request) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse?.status === 200) {
+      const copy = networkResponse.clone();
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, copy);
+    }
+    return networkResponse;
+  } catch (err) {
+    console.debug('[SW] Navigation fetch failed, serving cached fallback:', err);
+    const cached = await caches.match(request);
+    return cached || (await caches.match('/'));
+  }
+}
+
+async function handleAssetRequest(request) {
+  const cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  const networkResponse = await fetch(request);
+  if (networkResponse?.status === 200 && networkResponse.type === 'basic') {
+    const copy = networkResponse.clone();
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, copy);
+  }
+  return networkResponse;
+}
 
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
+  if (shouldBypassRequest(url)) return;
 
-  // Never intercept localhost development or Vite dev server internals
-  if (
-    url.hostname === 'localhost' ||
-    url.hostname === '127.0.0.1' ||
-    url.pathname.startsWith('/@') ||
-    url.pathname.includes('node_modules')
-  ) {
-    return;
-  }
-
-  // Only handle same-origin requests
-  if (url.origin !== self.location.origin) return;
-
-  // HTML page navigations -> Network-first with cache fallback
   if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            const copy = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          }
-          return networkResponse;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('/')))
-    );
+    event.respondWith(handleNavigationRequest(request));
     return;
   }
 
-  // Static hashed assets -> Cache-first with network fallback
-  event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(request).then((networkResponse) => {
-        if (networkResponse?.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
-        }
-        const copy = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        return networkResponse;
-      });
-    })
-  );
+  event.respondWith(handleAssetRequest(request));
 });

@@ -19,7 +19,7 @@ export function SheLeadsTechSpotlight() {
               <div className="relative bg-white rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden border border-white/20 aspect-square flex items-center justify-center">
                 <img
                   src={imgSheLeadsTech}
-                  alt="She Leads Tech Practices Logo"
+                  alt="She Leads Tech Practice Logo"
                   width={260}
                   height={260}
                   loading="lazy"
@@ -38,7 +38,7 @@ export function SheLeadsTechSpotlight() {
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-4 text-white">
-              She Leads Tech <span className="text-brand-pink">Practices</span>
+              She Leads Tech <span className="text-brand-pink">Practice</span>
             </h2>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
@@ -61,10 +61,10 @@ export function SheLeadsTechSpotlight() {
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Link
-                to="/practices"
+                to="/practice"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg flex items-center justify-center gap-2"
               >
-                Join She Leads Tech Practices <HiArrowRight className="w-4 h-4 text-brand-coral" />
+                Join She Leads Tech Practice <HiArrowRight className="w-4 h-4 text-brand-coral" />
               </Link>
               <Link
                 to="/events"

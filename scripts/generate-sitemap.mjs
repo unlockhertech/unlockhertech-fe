@@ -5,23 +5,33 @@ import { createClient } from "@sanity/client";
 const BASE_URL = "https://unlockhertech.com";
 const TODAY = new Date().toISOString().split("T")[0];
 
-function getFeatureFlags() {
+function parseEnvLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed || trimmed.startsWith("#")) return null;
+  const eqIdx = trimmed.indexOf("=");
+  if (eqIdx === -1) return null;
+  const key = trimmed.slice(0, eqIdx).trim();
+  let val = trimmed.slice(eqIdx + 1).trim();
+  if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+    val = val.slice(1, -1);
+  }
+  return { key, val };
+}
+
+function loadEnvFile() {
   const envPath = path.join(process.cwd(), ".env");
-  if (fs.existsSync(envPath)) {
-    const lines = fs.readFileSync(envPath, "utf-8").split("\n");
-    for (const line of lines) {
-      const match = line.match(/^\s*([\w_]+)\s*=\s*(.*)?\s*$/);
-      if (match) {
-        const key = match[1];
-        let val = (match[2] || "").trim();
-        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
-        if (val.startsWith("'") && val.endsWith("'")) val = val.slice(1, -1);
-        if (!process.env[key]) {
-          process.env[key] = val;
-        }
-      }
+  if (!fs.existsSync(envPath)) return;
+  const lines = fs.readFileSync(envPath, "utf-8").split("\n");
+  for (const line of lines) {
+    const parsed = parseEnvLine(line);
+    if (parsed && !process.env[parsed.key]) {
+      process.env[parsed.key] = parsed.val;
     }
   }
+}
+
+function getFeatureFlags() {
+  loadEnvFile();
 
   return {
     enableBlog: process.env.VITE_ENABLE_BLOG === "true",
@@ -36,7 +46,7 @@ function getFeatureFlags() {
 function getStaticRoutes(flags) {
   const routes = [
     { path: "/", priority: "1.0", changefreq: "weekly", lastmod: TODAY },
-    { path: "/practices", priority: "0.95", changefreq: "weekly", lastmod: TODAY },
+    { path: "/practice", priority: "0.95", changefreq: "weekly", lastmod: TODAY },
     { path: "/episodes", priority: "0.90", changefreq: "weekly", lastmod: TODAY },
     { path: "/about", priority: "0.75", changefreq: "monthly", lastmod: TODAY },
     { path: "/team", priority: "0.70", changefreq: "monthly", lastmod: TODAY },
@@ -84,60 +94,56 @@ function getStaticRoutes(flags) {
   return routes;
 }
 
+async function fetchSanityPosts(projectId, dataset) {
+  try {
+    const client = createClient({
+      projectId,
+      dataset,
+      apiVersion: "2024-03-01",
+      useCdn: true,
+    });
+
+    const posts = await client.fetch(
+      `*[_type == "post" && defined(slug.current)] { "slug": slug.current, date, _updatedAt }`
+    );
+
+    console.log(`[Sitemap] Fetched ${posts.length} blog post slugs from Sanity.`);
+    return posts.map((post) => ({
+      path: `/blog/${post.slug}`,
+      priority: "0.80",
+      changefreq: "monthly",
+      lastmod: post.date ? new Date(post.date).toISOString().split("T")[0] : TODAY,
+    }));
+  } catch (err) {
+    console.warn("[Sitemap] Could not fetch remote Sanity routes, checking local fallbacks:", err.message);
+    return [];
+  }
+}
+
+function getLocalBlogRoutes() {
+  const blogDir = path.join(process.cwd(), "src/content/blog");
+  if (!fs.existsSync(blogDir)) return [];
+
+  const files = fs.readdirSync(blogDir).filter((f) => f.endsWith(".md") && f !== "TEMPLATE.md");
+  console.log(`[Sitemap] Added ${files.length} blog post slugs from local markdown files.`);
+  return files.map((file) => ({
+    path: `/blog/${file.replaceAll(".md", "")}`,
+    priority: "0.80",
+    changefreq: "monthly",
+    lastmod: TODAY,
+  }));
+}
+
 async function fetchDynamicSanityRoutes(flags) {
   if (!flags.enableBlog) return [];
 
-  const dynamicRoutes = [];
   const projectId = process.env.VITE_SANITY_PROJECT_ID || "pikesbla";
   const dataset = process.env.VITE_SANITY_DATASET || "production";
 
-  if (projectId) {
-    try {
-      const client = createClient({
-        projectId,
-        dataset,
-        apiVersion: "2024-03-01",
-        useCdn: true,
-      });
+  const sanityRoutes = projectId ? await fetchSanityPosts(projectId, dataset) : [];
+  if (sanityRoutes.length > 0) return sanityRoutes;
 
-      const posts = await client.fetch(
-        `*[_type == "post" && defined(slug.current)] { "slug": slug.current, date, _updatedAt }`
-      );
-
-      for (const post of posts) {
-        const lastmod = post.date ? new Date(post.date).toISOString().split("T")[0] : TODAY;
-        dynamicRoutes.push({
-          path: `/blog/${post.slug}`,
-          priority: "0.80",
-          changefreq: "monthly",
-          lastmod,
-        });
-      }
-
-      console.log(`[Sitemap] Fetched ${posts.length} blog post slugs from Sanity.`);
-    } catch (err) {
-      console.warn("[Sitemap] Could not fetch remote Sanity routes, checking local fallbacks:", err.message);
-    }
-  }
-
-  if (dynamicRoutes.length === 0) {
-    const blogDir = path.join(process.cwd(), "src/content/blog");
-    if (fs.existsSync(blogDir)) {
-      const files = fs.readdirSync(blogDir).filter((f) => f.endsWith(".md") && f !== "TEMPLATE.md");
-      for (const file of files) {
-        const slug = file.replace(".md", "");
-        dynamicRoutes.push({
-          path: `/blog/${slug}`,
-          priority: "0.80",
-          changefreq: "monthly",
-          lastmod: TODAY,
-        });
-      }
-      console.log(`[Sitemap] Added ${files.length} blog post slugs from local markdown files.`);
-    }
-  }
-
-  return dynamicRoutes;
+  return getLocalBlogRoutes();
 }
 
 function generateXml(routes) {
@@ -185,7 +191,7 @@ function generateLlmsTxt(flags) {
   const urls = [
     "- [Home](https://unlockhertech.com/): Official platform overview, latest episode player, and mission pillars.",
     "- [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.",
-    "- [Live Coding Practices](https://unlockhertech.com/practices): Fortnightly She Leads Tech algorithmic workshop schedule, problem sets, and Google Calendar sync.",
+    "- [Live Coding Practices](https://unlockhertech.com/practice): Fortnightly She Leads Tech algorithmic workshop schedule, problem sets, and Google Calendar sync.",
   ];
 
   if (flags.enableEvents) {
@@ -287,7 +293,7 @@ A hands-on, live technical problem-solving series held every two weeks. The prac
   6. Dynamic Programming, Memoization & Recurrence Relations
   7. Binary Search & Monotonic Condition Optimization
   8. Stacks, Queues & Monotonic Frameworks
-- Practice Details & Google Calendar Sync: https://unlockhertech.com/practices
+- Practice Details & Google Calendar Sync: https://unlockhertech.com/practice
 `;
 
   if (flags.enableAssessment) {
@@ -337,7 +343,7 @@ Weekly downloadable guides covering tech career roadmaps, portfolio building, te
 
 ## 6. Community Involvement & Mentorship
 
-- Mentor With Us: Guide breakout rooms in live algorithmic problem-solving practices.
+- Mentor With Us: Guide breakout rooms in live algorithmic problem-solving practice.
 - Request to be a Guest: Share your tech career journey and lessons learned on the podcast.
 - Partner With Us: Collaborate with engineering teams and sponsors on inclusive hiring.
 - URL: https://unlockhertech.com/get-involved
@@ -397,7 +403,9 @@ async function run() {
   }
 }
 
-run().catch((err) => {
+try {
+  await run();
+} catch (err) {
   console.error("[Sitemap] Failed to generate sitemap & LLM files:", err);
   process.exit(1);
-});
+}

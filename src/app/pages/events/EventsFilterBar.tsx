@@ -20,7 +20,7 @@ export function EventsFilterBar({
   pastCount,
   showPast,
   onToggleShowPast,
-}: EventsFilterBarProps) {
+}: Readonly<EventsFilterBarProps>) {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-3xl border border-gray-200 shadow-xs">
       <div className="flex flex-wrap gap-2 items-center">

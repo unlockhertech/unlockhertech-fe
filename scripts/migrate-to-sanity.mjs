@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import matter from "gray-matter";
 import { createClient } from "@sanity/client";
 
@@ -36,7 +36,7 @@ async function migrateBlogPosts() {
     const filePath = path.join(dir, file);
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const { data, content } = matter(fileContent);
-    const slug = file.replace(".md", "");
+    const slug = file.replaceAll(".md", "");
 
     const doc = {
       _type: "post",
@@ -71,7 +71,7 @@ async function migrateEvents() {
     const filePath = path.join(dir, file);
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const { data } = matter(fileContent);
-    const slug = file.replace(".md", "");
+    const slug = file.replaceAll(".md", "");
 
     const doc = {
       _type: "event",
@@ -81,6 +81,10 @@ async function migrateEvents() {
       date: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
       platform: data.platform || "Luma",
       urlOrId: data.urlOrId || "",
+      discountCode: data.discountCode || undefined,
+      description: data.description || undefined,
+      ctaLabel: data.ctaLabel || undefined,
+      isPartner: Boolean(data.isPartner),
     };
 
     await client.createOrReplace(doc);
@@ -95,7 +99,9 @@ async function run() {
   console.log("Migration completed successfully!");
 }
 
-run().catch((err) => {
+try {
+  await run();
+} catch (err) {
   console.error("Migration failed:", err);
   process.exit(1);
-});
+}

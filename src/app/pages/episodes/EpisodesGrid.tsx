@@ -21,7 +21,7 @@ export function EpisodesGrid({
   onClearFilters,
   onLoadMore,
   onShowLess,
-}: EpisodesGridProps) {
+}: Readonly<EpisodesGridProps>) {
   if (filteredCount === 0) {
     return (
       <div className="text-center py-24">

@@ -41,7 +41,7 @@ export interface BlogPost {
   imageUrl?: string;
 }
 
-export type EventPlatform = "Luma" | "Eventbrite";
+export type EventPlatform = "Luma" | "Eventbrite" | "Conference" | "Website" | "External";
 
 export interface ExternalEvent {
   title: string;
@@ -50,6 +50,11 @@ export interface ExternalEvent {
   urlOrId: string;
   slug: string;
   image?: string;
+  description?: string;
+  discountCode?: string;
+  discountPercentage?: string;
+  ctaLabel?: string;
+  isPartner?: boolean;
 }
 
 export interface Resource {

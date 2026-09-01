@@ -20,6 +20,110 @@ interface EmailResultsCardProps {
   totalAnswered: number;
 }
 
+interface EmailResultsSuccessProps {
+  email: string;
+  onReset: () => void;
+}
+
+function EmailResultsSuccess({ email, onReset }: Readonly<EmailResultsSuccessProps>) {
+  return (
+    <div
+      data-testid="email-results-success"
+      className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in duration-300"
+    >
+      <div className="flex items-center gap-3">
+        <HiCheckCircle className="w-6 h-6 text-brand-green shrink-0" />
+        <div>
+          <h4 className="font-extrabold text-sm text-emerald-900">
+            Summary Prepared for {email}!
+          </h4>
+          <p className="text-xs text-emerald-800 mt-0.5">
+            Your full breakdown and resource links have been generated. Check your inbox or email client.
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={onReset}
+        className="text-xs font-bold text-emerald-800 hover:text-emerald-900 underline cursor-pointer shrink-0"
+      >
+        Send to another email
+      </button>
+    </div>
+  );
+}
+
+interface EmailResultsFormProps {
+  email: string;
+  isSending: boolean;
+  error: string;
+  onEmailChange: (value: string) => void;
+  onSubmit: (e: SyntheticEvent) => void;
+}
+
+function EmailResultsForm({
+  email,
+  isSending,
+  error,
+  onEmailChange,
+  onSubmit,
+}: Readonly<EmailResultsFormProps>) {
+  return (
+    <form noValidate onSubmit={onSubmit} className="space-y-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div className="relative flex-1">
+          <label htmlFor="assessment-email-input" className="sr-only">
+            Your Email Address
+          </label>
+          <input
+            id="assessment-email-input"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => onEmailChange(e.target.value)}
+            placeholder="Enter your email address (e.g. name@example.com)"
+            className="w-full px-4 py-3.5 rounded-2xl bg-white border border-stone-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/30 text-sm text-stone-900 shadow-xs"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={isSending}
+          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-brand-blue hover:bg-brand-blue/90 text-white font-extrabold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-75 shrink-0"
+        >
+          {isSending ? (
+            <>
+              <HiArrowPath className="w-4 h-4 animate-spin" />
+              <span>Preparing...</span>
+            </>
+          ) : (
+            <>
+              <HiPaperAirplane className="w-4 h-4" />
+              <span>Email My Results</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {error && (
+        <p className="flex items-center gap-1.5 text-xs font-bold text-red-600">
+          <HiExclamationCircle className="w-4 h-4 shrink-0" />
+          <span>{error}</span>
+        </p>
+      )}
+
+      <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-stone-400 font-medium pt-1 gap-2">
+        <span>✓ 100% Free • Direct Inbox Delivery • Zero Spam</span>
+        <span className="text-[11px] text-stone-500">
+          Your scores remain confidential. View our{" "}
+          <Link to="/privacy-policy" className="text-brand-blue underline hover:text-brand-blue/80 font-semibold">
+            Privacy Policy
+          </Link>.
+        </span>
+      </div>
+    </form>
+  );
+}
+
 export function EmailResultsCard({
   grandTotal,
   scores,
@@ -27,11 +131,12 @@ export function EmailResultsCard({
   recommendation,
   reflectionNotes = "",
   totalAnswered,
-}: EmailResultsCardProps) {
+}: Readonly<EmailResultsCardProps>) {
   const [email, setEmail] = useState(() => {
     try {
       return localStorage.getItem("uht_user_email") || "";
-    } catch {
+    } catch (err) {
+      console.warn("Failed to read user email from localStorage:", err);
       return "";
     }
   });
@@ -39,7 +144,7 @@ export function EmailResultsCard({
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSend = (e: SyntheticEvent) => {
+  const handleSend = async (e: SyntheticEvent) => {
     e.preventDefault();
     setError("");
 
@@ -114,12 +219,10 @@ export function EmailResultsCard({
       formData.append("recommendationTitle", recommendation.title);
       formData.append("notes", reflectionNotes);
 
-      fetch("/", {
+      await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
-      }).catch((err) => {
-        console.warn("Form capture note:", err);
       });
     } catch (err) {
       console.warn("Form submission exception:", err);
@@ -165,85 +268,18 @@ export function EmailResultsCard({
       </div>
 
       {isSent ? (
-        <div
-          data-testid="email-results-success"
-          className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in duration-300"
-        >
-          <div className="flex items-center gap-3">
-            <HiCheckCircle className="w-6 h-6 text-brand-green shrink-0" />
-            <div>
-              <h4 className="font-extrabold text-sm text-emerald-900">
-                Summary Prepared for {email}!
-              </h4>
-              <p className="text-xs text-emerald-800 mt-0.5">
-                Your full breakdown and resource links have been generated. Check your inbox or email client.
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="text-xs font-bold text-emerald-800 hover:text-emerald-900 underline cursor-pointer shrink-0"
-          >
-            Send to another email
-          </button>
-        </div>
+        <EmailResultsSuccess email={email} onReset={handleReset} />
       ) : (
-        <form noValidate onSubmit={handleSend} className="space-y-4">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="relative flex-1">
-              <label htmlFor="assessment-email-input" className="sr-only">
-                Your Email Address
-              </label>
-              <input
-                id="assessment-email-input"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (error) setError("");
-                }}
-                placeholder="Enter your email address (e.g. name@example.com)"
-                className="w-full px-4 py-3.5 rounded-2xl bg-white border border-stone-300 focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue text-sm text-stone-900 placeholder:text-stone-400 shadow-xs"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isSending}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-brand-blue hover:bg-brand-blue/90 text-white font-extrabold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed shrink-0"
-            >
-              {isSending ? (
-                <>
-                  <HiArrowPath className="w-4 h-4 animate-spin" />
-                  <span>Preparing...</span>
-                </>
-              ) : (
-                <>
-                  <HiPaperAirplane className="w-4 h-4" />
-                  <span>Email My Results</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {error && (
-            <p className="flex items-center gap-1.5 text-xs font-bold text-red-600">
-              <HiExclamationCircle className="w-4 h-4 shrink-0" />
-              <span>{error}</span>
-            </p>
-          )}
-
-          <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-stone-400 font-medium pt-1 gap-2">
-            <span>✓ 100% Free • Direct Inbox Delivery • Zero Spam</span>
-            <span className="text-[11px] text-stone-500">
-              Your scores remain confidential. View our{" "}
-              <Link to="/privacy-policy" className="text-brand-blue underline hover:text-brand-blue/80 font-semibold">
-                Privacy Policy
-              </Link>.
-            </span>
-          </div>
-        </form>
+        <EmailResultsForm
+          email={email}
+          isSending={isSending}
+          error={error}
+          onEmailChange={(val) => {
+            setEmail(val);
+            if (error) setError("");
+          }}
+          onSubmit={handleSend}
+        />
       )}
     </div>
   );

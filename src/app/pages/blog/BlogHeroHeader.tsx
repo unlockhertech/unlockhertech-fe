@@ -6,7 +6,7 @@ interface BlogHeroHeaderProps {
   totalArticles: number;
 }
 
-export function BlogHeroHeader({ totalArticles }: BlogHeroHeaderProps) {
+export function BlogHeroHeader({ totalArticles }: Readonly<BlogHeroHeaderProps>) {
   return (
     <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white">
       <BrandPatternOverlay />
