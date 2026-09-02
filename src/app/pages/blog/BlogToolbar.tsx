@@ -34,7 +34,7 @@ export function BlogToolbar({
             placeholder="Search articles by title, topic, or author…"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-stone-50 text-gray-800 text-sm outline-hidden transition-all border border-gray-200 focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral"
+            className="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-stone-50 text-gray-800 text-sm outline-hidden transition-all border border-gray-200 focus:ring-2 focus:ring-brand-coral/20"
           />
         </div>
 

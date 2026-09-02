@@ -73,7 +73,7 @@ export function JobFilterControls({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search by role title, company, skills (e.g. React, Python), or keywords…"
-              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-stone-50 border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral transition-all"
+              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-stone-50 border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 transition-all"
             />
             {searchQuery && (
               <button
@@ -135,7 +135,7 @@ export function JobFilterControls({
               id="workplace-filter"
               value={selectedRemote}
               onChange={(e) => onSelectRemote(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral cursor-pointer"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 cursor-pointer"
             >
               {WORKPLACE_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -154,7 +154,7 @@ export function JobFilterControls({
               id="experience-filter"
               value={selectedExperience}
               onChange={(e) => onSelectExperience(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral cursor-pointer"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 cursor-pointer"
             >
               {EXPERIENCE_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -173,7 +173,7 @@ export function JobFilterControls({
               id="salary-filter"
               value={selectedMinSalary}
               onChange={(e) => onSelectMinSalary(Number(e.target.value))}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral cursor-pointer"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 cursor-pointer"
             >
               {SALARY_THRESHOLDS.map((opt) => (
                 <option key={String(opt.value)} value={opt.value}>
@@ -192,7 +192,7 @@ export function JobFilterControls({
               id="highlights-filter"
               value={selectedHighlight}
               onChange={(e) => onSelectHighlight(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral cursor-pointer"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 border border-gray-200 text-xs font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-coral/20 cursor-pointer"
             >
               {INCLUSIVE_HIGHLIGHTS.map((opt) => (
                 <option key={opt.value} value={opt.value}>

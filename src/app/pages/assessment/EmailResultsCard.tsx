@@ -1,15 +1,9 @@
-import { useState, type SyntheticEvent } from "react";
-import { Link } from "react-router";
-import {
-  HiEnvelope,
-  HiPaperAirplane,
-  HiCheckCircle,
-  HiArrowPath,
-  HiExclamationCircle,
-} from "react-icons/hi2";
-import type { AssessmentScores, CategoryRecommendation } from "./assessmentData";
-import type { ReadinessBadgeInfo } from "./useAssessment";
-import { trackEvent } from "../../utils/analytics";
+import {type SyntheticEvent, useState} from "react";
+import {Link} from "react-router";
+import {HiArrowPath, HiCheckCircle, HiEnvelope, HiExclamationCircle, HiPaperAirplane,} from "react-icons/hi2";
+import type {AssessmentScores, CategoryRecommendation} from "./assessmentData";
+import type {ReadinessBadgeInfo} from "./useAssessment";
+import {trackEvent} from "../../utils/analytics";
 
 interface EmailResultsCardProps {
   grandTotal: number;
@@ -205,7 +199,7 @@ export function EmailResultsCard({
       `— Unlock Her Tech Team (unlockhertech.com)`,
     ].join("\n");
 
-    // 1. Submit lead capture form asynchronously
+    // 1. Submit a lead capture form asynchronously
     try {
       const formData = new FormData();
       formData.append("form-name", "assessment-results-email");
@@ -229,11 +223,9 @@ export function EmailResultsCard({
     }
 
     // 2. Open client mailto
-    const mailtoUrl = `mailto:${encodeURIComponent(trimmedEmail)}?subject=${encodeURIComponent(
-      emailSubject
+    window.location.href = `mailto:${encodeURIComponent(trimmedEmail)}?subject=${encodeURIComponent(
+        emailSubject
     )}&body=${encodeURIComponent(emailBody)}`;
-
-    window.location.href = mailtoUrl;
 
     trackEvent("email_assessment_results", "Assessment", readinessBadge.text, grandTotal);
 

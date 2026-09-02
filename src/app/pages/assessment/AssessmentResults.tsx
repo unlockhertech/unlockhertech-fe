@@ -101,7 +101,7 @@ export function AssessmentResults({
               type="button"
               onClick={handleDownloadPdf}
               disabled={isGeneratingPdf}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed"
               aria-label="Download My Career Plan (PDF)"
             >
               {isGeneratingPdf ? (
@@ -136,8 +136,8 @@ export function AssessmentResults({
         <h2 className="text-3xl font-extrabold text-stone-900">Your Transition Score Summary</h2>
         <p className="text-stone-500 text-sm mt-1">Based on your ratings across all 4 core dimensions.</p>
 
-        {/* Overall Score Card */}
-        <div className="mt-6 inline-flex flex-col items-center justify-center p-6 bg-linear-to-br from-pink-50/70 via-white to-amber-50/70 rounded-3xl border border-brand-coral/20 min-w-[240px] shadow-sm">
+        {/* Overall Scorecard */}
+        <div className="mt-6 inline-flex flex-col items-center justify-center p-6 bg-linear-to-br from-pink-50/70 via-white to-amber-50/70 rounded-3xl border border-brand-coral/20 min-w-60 shadow-sm">
           <span className="text-xs font-extrabold text-stone-500 uppercase tracking-wider">Overall Score</span>
           <span className="text-5xl font-extrabold text-brand-coral mt-1">
             {grandTotal} <span className="text-2xl text-stone-400 font-bold">/ {MAX_TOTAL_SCORE}</span>
@@ -153,7 +153,7 @@ export function AssessmentResults({
             type="button"
             onClick={handleDownloadPdf}
             disabled={isGeneratingPdf}
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-75"
             aria-label="Download My Career Plan (PDF)"
           >
             {isGeneratingPdf ? (
@@ -261,7 +261,7 @@ export function AssessmentResults({
           value={reflectionNotes}
           onChange={(e) => onNotesChange(e.target.value)}
           placeholder="Example: 1. Update my LinkedIn headline to feature my target tech role. 2. Build my first original React project without relying entirely on video tutorials."
-          className="w-full p-4 border border-stone-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral bg-stone-50/60 text-stone-900 leading-relaxed"
+          className="w-full p-4 border border-stone-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-coral/20 bg-stone-50/60 text-stone-900 leading-relaxed"
         />
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 print:hidden">
           <span className="text-xs text-stone-400">

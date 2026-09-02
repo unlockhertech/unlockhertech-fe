@@ -62,7 +62,7 @@ export function EpisodesToolbar({
               placeholder="Search episodes…"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white text-gray-800 text-sm outline-none transition-all border border-black/10 focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral"
+              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white text-gray-800 text-sm outline-none transition-all border border-black/10 focus:ring-2 focus:ring-brand-coral/20"
             />
           </div>
 
@@ -76,7 +76,7 @@ export function EpisodesToolbar({
               id="episodes-sort-select"
               value={sort}
               onChange={(e) => onSortChange(e.target.value as SortOrder)}
-              className="pl-9 pr-8 py-3 rounded-xl bg-white text-sm text-gray-700 outline-none appearance-none cursor-pointer border border-black/10 focus:ring-2 focus:ring-brand-coral/20 focus:border-brand-coral"
+              className="pl-9 pr-8 py-3 rounded-xl bg-white text-sm text-gray-700 outline-none appearance-none cursor-pointer border border-black/10 focus:ring-2 focus:ring-brand-coral/20"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>

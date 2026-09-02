@@ -11,7 +11,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
   return (
     <section className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 mb-10">
       <div className="relative rounded-3xl bg-white border border-stone-200/90 p-6 sm:p-8 lg:p-10 shadow-xl overflow-hidden">
-        {/* Signature 5-Color Accent Palette Bar */}
+        {/* Signature 5-Colour Accent Palette Bar */}
         <div className="absolute top-0 left-0 right-0 h-2 flex">
           {[BERRY, ORANGE, PINK, GREEN, BLUE].map((color) => (
             <div key={color} className="flex-1" style={{ backgroundColor: color }} />
@@ -57,7 +57,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
 
           {/* Right Column: Visual Graphic & Action CTAs */}
           <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center space-y-4">
-            <div className="relative group max-w-[180px] sm:max-w-[200px] w-full">
+            <div className="relative group max-w-45 sm:masm:max-w-50ll">
               <div className="absolute -inset-1 bg-linear-to-r from-brand-pink via-brand-yellow to-brand-blue rounded-2xl blur-sm opacity-80" />
               <div className="relative bg-white rounded-2xl p-4 border border-stone-200 shadow-md aspect-square flex items-center justify-center">
                 <img

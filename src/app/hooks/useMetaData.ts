@@ -87,7 +87,7 @@ export function useMetaData(
     }
 
     return () => {
-      // Clean up page-specific JSON-LD on unmount
+      // Clean up page-specific JSON-LD on unmounting
       const existingScript = document.getElementById(scriptId);
       if (existingScript) {
         existingScript.remove();

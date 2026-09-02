@@ -41,7 +41,7 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
       className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 mb-14"
     >
       <div className="relative rounded-3xl bg-white border border-stone-200/90 p-6 sm:p-8 lg:p-10 shadow-xl overflow-hidden">
-        {/* Signature 5-Color Accent Palette Bar */}
+        {/* Signature 5-Colour Accent Palette Bar */}
         <div className="absolute top-0 left-0 right-0 h-2 flex">
           {[BERRY, ORANGE, PINK, GREEN, BLUE].map((color) => (
             <div key={color} className="flex-1" style={{ backgroundColor: color }} />

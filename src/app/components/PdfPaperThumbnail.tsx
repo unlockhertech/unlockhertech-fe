@@ -60,8 +60,8 @@ export function PdfPaperThumbnail({
 
   if (isPlaceholder) {
     return (
-      <div className="relative w-full aspect-[4/3] rounded-2xl bg-gradient-to-br from-stone-100 to-stone-200/80 p-5 flex flex-col items-center justify-center border-2 border-dashed border-stone-300 group-hover:border-brand-coral/50 transition-all overflow-hidden shadow-inner">
-        <div className="absolute inset-0 bg-gradient-to-tr from-brand-coral/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative w-full aspect-4/3 rounded-2xl bgbg-linear-to-brrom-stone-100 to-stone-200/80 p-5 flex flex-col items-center justify-center border-2 border-dashed border-stone-300 group-hover:border-brand-coral/50 transition-all overflow-hidden shadow-inner">
+        <div className="absolute inset-0 bg-linear-to-tr from-brand-coral/5 via-transparent to-transparent pointer-events-none" />
         
         <div className="relative w-32 h-40 bg-white/70 backdrop-blur-xs rounded-xl shadow-md border border-stone-300/60 flex flex-col justify-between p-3.5 transform group-hover:scale-105 transition-transform duration-300">
           <div className="border-b border-stone-200 pb-2">
@@ -87,7 +87,7 @@ export function PdfPaperThumbnail({
     );
   }
 
-  // Determine bottom thumbnail badge text & color
+  // Determine bottom thumbnail badge text & colour
   let statusBadgeText = `PDF ${weekNumber} • Drops ${releaseDate}`;
   let badgeBgColor = accentColor;
 
@@ -108,7 +108,7 @@ export function PdfPaperThumbnail({
 
   return (
     <div
-      className="relative w-full aspect-[4/3] rounded-2xl p-5 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1"
+      className="relative w-full aspect-4/3 rounded-2xl p-5 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1"
       style={{
         background: `linear-gradient(135deg, ${accentColor}18 0%, ${accentColor}38 100%)`,
       }}

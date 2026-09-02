@@ -66,6 +66,15 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/api/podcast-rss': {
+        target: 'https://anchor.fm',
+        changeOrigin: true,
+        rewrite: () => '/s/e6cb6024/podcast/rss',
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

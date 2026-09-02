@@ -52,7 +52,7 @@ export function EpisodeModal({ episode, onClose }: Readonly<EpisodeModalProps>) 
       {/* Modal card */}
       <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
         {/* Hero cover */}
-        <div className="relative h-52 flex-shrink-0 overflow-hidden">
+        <div className="relative h-52 shrink-0 overflow-hidden">
           {imageUrl ? (
             <>
               <ImageWithFallback src={imageUrl} alt={title} className="w-full h-full object-cover" />

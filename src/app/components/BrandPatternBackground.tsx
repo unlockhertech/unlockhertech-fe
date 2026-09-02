@@ -10,7 +10,7 @@ export interface BrandPatternProps {
 
 /**
  * High-performance vector brand pattern background matching Unlock Her Tech's
- * geometric visual language and 5-color brand identity (Berry, Blue, Pink, Yellow, Green).
+ * geometric visual language and 5-colour brand identity (Berry, Blue, Pink, Yellow, Green).
  */
 export function BrandPatternBackground({
   className = "",
@@ -163,7 +163,7 @@ export function BrandPatternOverlay({
           strokeOpacity="0.5"
         />
 
-        {/* Diagonal Capsule Pill 1 (Top-Center) */}
+        {/* Diagonal Capsule Pill 1 (Top-Centre) */}
         <rect
           x="620"
           y="40"
@@ -187,7 +187,7 @@ export function BrandPatternOverlay({
           transform="rotate(-40 1180 417)"
         />
 
-        {/* Bottom-Right: Thick Blue Torus / Donut Ring */}
+        {/* Bottom-Right: Thick Blue Torus / Doughnut Ring */}
         <circle
           cx="720"
           cy="580"
@@ -212,7 +212,7 @@ export function BrandPatternOverlay({
     );
   }
 
-  // Default "brand" / "coral" variant with rich authentic brand colors (Berry #b42970 base)
+  // Default "brand" / "coral" variant with rich authentic brand colours (Berry #b42970 base)
   return (
     <svg
       className={`absolute inset-0 w-full h-full pointer-events-none select-none ${className}`}
@@ -222,7 +222,7 @@ export function BrandPatternOverlay({
       aria-hidden="true"
     >
       <defs>
-        {/* Harmonized Brand Gradient (Berry #b42970 → Deep Berry #8a1f55) */}
+        {/* Harmonised Brand Gradient (Berry #b42970 → Deep Berry #8a1f55) */}
         <linearGradient id="brandRichBerryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#c2327c" />
           <stop offset="45%" stopColor="#b42970" />
@@ -295,7 +295,7 @@ export function BrandPatternOverlay({
         transform="rotate(-40 1050 130)"
       />
 
-      {/* Bottom-Right: Signature Electric Blue Torus / Donut Ring */}
+      {/* Bottom-Right: Signature Electric Blue Torus / Doughnut Ring */}
       <circle
         cx="720"
         cy="580"

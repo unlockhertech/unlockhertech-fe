@@ -209,7 +209,7 @@ export const LOW_SCORE_THRESHOLD_PERCENT = 60; // 60% (12/20)
 export const LOW_SCORE_THRESHOLD_POINTS = 12;
 
 /**
- * Returns auto-matched resources for categories where score is under 60% (< 12/20).
+ * Returns auto-matched resources for categories where the score is under 60% (< 12/20).
  * If no category is under 60%, returns the lowest-scoring category to ensure the user always has tailored next steps.
  */
 export function getAutoMatchedResources(

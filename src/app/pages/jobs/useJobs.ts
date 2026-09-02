@@ -14,7 +14,7 @@ export function useJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States initialized from URL params if present
+  // Filter States initialised from URL params if present
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") || "");
   const [selectedCategory, setSelectedCategory] = useState(() => searchParams.get("category") || "all");
   const [selectedRemote, setSelectedRemote] = useState(() => searchParams.get("remote") || "all");

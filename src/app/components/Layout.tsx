@@ -606,7 +606,7 @@ function LayoutInner() {
                 </NavLink>
               )}
 
-              {/* Subscribe Dropdown CTA */}
+              {/* Subscribe to Dropdown CTA */}
               <DesktopPlatformsDropdown
                 showPlatforms={showPlatforms}
                 onToggle={() => setShowPlatforms(!showPlatforms)}

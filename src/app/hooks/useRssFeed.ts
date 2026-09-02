@@ -3,6 +3,14 @@ import { episodes as mockEpisodes } from "../data";
 import type { Episode } from "../types";
 
 export const RSS_FEED_URL = "https://anchor.fm/s/e6cb6024/podcast/rss";
+export const PROXY_FEED_URL = "/api/podcast-rss";
+
+const CANDIDATE_ENDPOINTS = [
+  PROXY_FEED_URL,
+  RSS_FEED_URL,
+  `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_FEED_URL)}`,
+];
+
 const CACHE_KEY = "uht_rss_episodes_cache";
 
 // Cover colours cycle for RSS-sourced episodes (they have no custom colours)
@@ -161,6 +169,27 @@ function getInitialRssState(): { episodes: Episode[]; isLive: boolean } {
   return { episodes: mockEpisodes, isLive: false };
 }
 
+async function fetchRssFeedText(endpoints: string[]): Promise<string> {
+  let lastError: unknown = null;
+
+  for (const endpoint of endpoints) {
+    try {
+      const res = await fetch(endpoint);
+      if (res.ok) {
+        const text = await res.text();
+        if (text.includes("<rss") || text.includes("<channel")) {
+          return text;
+        }
+      }
+    } catch (err: unknown) {
+      lastError = err;
+      console.debug(`[RSS] Candidate fetch failed for ${endpoint}:`, err);
+    }
+  }
+
+  throw lastError ?? new Error("All RSS endpoints failed to load.");
+}
+
 export function useRssFeed(): UseRssFeedResult {
   const [initial] = useState(getInitialRssState);
   const [episodes, setEpisodes] = useState<Episode[]>(initial.episodes);
@@ -177,11 +206,7 @@ export function useRssFeed(): UseRssFeedResult {
 
     async function fetchLiveFeed() {
       try {
-        const res = await fetch(RSS_FEED_URL);
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status} — ${res.statusText}`);
-        }
-        const text = await res.text();
+        const text = await fetchRssFeedText(CANDIDATE_ENDPOINTS);
         if (!isMounted) return;
 
         const xml = new DOMParser().parseFromString(text, "text/xml");
@@ -201,7 +226,7 @@ export function useRssFeed(): UseRssFeedResult {
             CACHE_KEY,
             JSON.stringify({ timestamp: Date.now(), data: parsed })
           );
-        } catch (e) {
+        } catch (e: unknown) {
           console.warn("[RSS Cache] Write error:", e);
         }
       } catch (err: unknown) {

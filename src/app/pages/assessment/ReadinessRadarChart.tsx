@@ -63,7 +63,7 @@ export function ReadinessRadarChart({ scores }: Readonly<ReadinessRadarChartProp
         </span>
       </div>
 
-      <div className="w-full max-w-[440px] aspect-4/3 flex items-center justify-center my-1">
+      <div className="w-full max-w-110 aspect-4/3 flex items-center justify-center my-1">
         <svg
           viewBox="0 0 480 400"
           className="w-full h-full overflow-visible"

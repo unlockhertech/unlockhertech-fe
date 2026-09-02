@@ -12,7 +12,7 @@ export function ResourceLaunchBanner({ onNotifyClick }: Readonly<ResourceLaunchB
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
       <div className="relative rounded-3xl bg-linear-to-br from-[#8a1f55] via-[#b42970] to-[#e8563a] p-6 sm:p-8 lg:p-10 text-white overflow-hidden shadow-xl border border-white/20">
-        {/* Signature 5-Color Accent Palette Bar */}
+        {/* Signature 5-Colour Accent Palette Bar */}
         <div className="absolute top-0 left-0 right-0 h-2 flex">
           {[BERRY, ORANGE, PINK, GREEN, BLUE].map((c) => (
             <div key={c} className="flex-1" style={{ backgroundColor: c }} />

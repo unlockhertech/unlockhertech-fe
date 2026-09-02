@@ -241,7 +241,7 @@ export function HomeHero({
 
               <div className="relative rounded-3xl overflow-hidden shadow-xl bg-linear-to-b from-[#2E0B20] via-[#1C0714] to-[#12040D] border border-brand-pink/20 text-white">
                 {/* Image cover header */}
-                <div className="relative aspect-16/9 w-full overflow-hidden bg-[#2E0B20]">
+                <div className="relative aspect-video w-full overflow-hidden bg-[#2E0B20]">
                   {!loading && (
                     <ImageWithFallback
                       src={latestEpisode?.imageUrl || IMG_HERO}

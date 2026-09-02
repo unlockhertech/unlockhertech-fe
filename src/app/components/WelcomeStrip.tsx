@@ -32,10 +32,10 @@ export function WelcomeStrip() {
           </Link>
           {/* Two illustrations side by side on mobile */}
           <div className="flex items-end justify-center gap-4 w-full mt-4">
-            <div className="w-32 flex-shrink-0">
+            <div className="w-32 shrink-0">
               <Lady1Welcome className="w-full h-auto" />
             </div>
-            <div className="w-32 flex-shrink-0">
+            <div className="w-32 shrink-0">
               <Lady2Welcome className="w-full h-auto" />
             </div>
           </div>
@@ -43,7 +43,7 @@ export function WelcomeStrip() {
 
         {/* Desktop layout: original side-by-side */}
         <div className="hidden sm:flex items-end justify-between gap-4">
-          <div className="flex-shrink-0 w-52 -mb-2">
+          <div className="shrink-0 w-52 -mb-2">
             <Lady1Welcome className="w-full h-auto" />
           </div>
 
@@ -82,7 +82,7 @@ export function WelcomeStrip() {
             </Link>
           </div>
 
-          <div className="flex-shrink-0 w-52 -mb-2">
+          <div className="shrink-0 w-52 -mb-2">
             <Lady2Welcome className="w-full h-auto" />
           </div>
         </div>

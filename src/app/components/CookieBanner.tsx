@@ -27,7 +27,7 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col justify-end pointer-events-none">
+    <div className="fixed inset-0 z-100 flex flex-col justify-end pointer-events-none">
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-xs pointer-events-auto" />
       

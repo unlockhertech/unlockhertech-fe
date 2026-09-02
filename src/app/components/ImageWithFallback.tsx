@@ -70,7 +70,7 @@ export function ImageWithFallback(props: Readonly<ImgHTMLAttributes<HTMLImageEle
   }
 
   const handleError = () => {
-    // If the optimized proxy failed, fallback to raw original src before failing completely
+    // If the optimised proxy failed, fallback to raw original src before failing completely
     if (src && currentSrc !== src) {
       setCurrentSrc(src);
       setIsLoading(true);
