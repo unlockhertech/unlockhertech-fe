@@ -107,7 +107,7 @@ export function JobCard({
           {/* Tech Stack Chips */}
           {(job.techStack?.length ?? 0) > 0 && (
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              {job.techStack.map((tech) => (
+              {job.techStack?.map((tech) => (
                 <span
                   key={tech}
                   className="px-2.5 py-1 rounded-lg text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200/60"

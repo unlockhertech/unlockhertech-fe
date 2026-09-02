@@ -7,7 +7,7 @@ interface EventsFeaturedBannerProps {
   event?: ExternalEvent;
 }
 
-export function EventsFeaturedBanner({ event: _event }: Readonly<EventsFeaturedBannerProps> = {}) {
+export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps> = {}) {
   return (
     <section className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 mb-10">
       <div className="relative rounded-3xl bg-white border border-stone-200/90 p-6 sm:p-8 lg:p-10 shadow-xl overflow-hidden">

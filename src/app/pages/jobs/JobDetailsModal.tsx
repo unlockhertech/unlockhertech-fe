@@ -119,7 +119,7 @@ export function JobDetailsModal({
               Key Technologies & Skills
             </h3>
             <div className="flex flex-wrap gap-1.5">
-              {job.techStack.map((tech) => (
+              {job.techStack?.map((tech) => (
                 <span
                   key={tech}
                   className="px-3 py-1 rounded-lg text-xs font-semibold bg-stone-100 text-gray-700 border border-stone-200"

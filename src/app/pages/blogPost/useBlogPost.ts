@@ -1,17 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
-// Base languages
-import "prismjs/components/prism-markup";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-typescript";
-// Extended languages
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-tsx";
-import "prismjs/components/prism-markdown";
-import "prismjs/components/prism-css";
-import "prismjs/components/prism-json";
+import { highlightCodeUnder } from "../../utils/prism";
 import type { BlogPost } from "../../types";
 import { getAllBlogPosts, getBlogPostBySlug } from "../../utils/sanity";
 
@@ -61,12 +50,19 @@ export function useBlogPost() {
   }, [slug]);
 
   useEffect(() => {
-    if (!loading && post) {
-      const container = document.querySelector(".blog-content");
-      if (container) {
-        Prism.highlightAllUnder(container);
+    async function highlight() {
+      if (!loading && post) {
+        const container = document.querySelector(".blog-content");
+        if (container) {
+          try {
+            await highlightCodeUnder(container);
+          } catch (err) {
+            console.warn("Error highlighting code in blog post:", err);
+          }
+        }
       }
     }
+    highlight();
   }, [loading, post]);
 
   return {

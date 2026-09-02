@@ -35,9 +35,14 @@ export default defineConfig({
               return 'vendor-react';
             }
 
-            // Sanity CMS Studio (isolated from public routes)
-            if (id.includes('sanity') || id.includes('@sanity')) {
-              return 'vendor-sanity';
+            // Lightweight Sanity client for public queries
+            if (id.includes('@sanity/client') || id.includes('@sanity/image-url')) {
+              return 'vendor-sanity-client';
+            }
+
+            // Heavy Sanity Studio (isolated for /admin routes)
+            if (id.includes('sanity') || id.includes('@sanity') || id.includes('styled-components')) {
+              return 'vendor-sanity-studio';
             }
 
             // PDF generation library (isolated for assessment page)
@@ -48,16 +53,6 @@ export default defineConfig({
             // Icons
             if (id.includes('react-icons')) {
               return 'vendor-icons';
-            }
-
-            // Markdown & code highlighting
-            if (
-              id.includes('prismjs') ||
-              id.includes('react-markdown') ||
-              id.includes('@portabletext') ||
-              id.includes('gray-matter')
-            ) {
-              return 'vendor-markdown';
             }
           }
         },
