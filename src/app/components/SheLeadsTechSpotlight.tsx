@@ -42,7 +42,7 @@ export function SheLeadsTechSpotlight() {
             </h2>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
-              LeetCode & Problem Solving Series designed to help developers strengthen coding, problem-solving, and technical interview skills through live interactive sessions every two weeks.
+              Fortnightly interactive workshops designed to help underrepresented technologists master algorithms, tackle technical interview patterns, and build code confidence together.
             </p>
 
             {/* Quick feature pills */}
@@ -61,10 +61,11 @@ export function SheLeadsTechSpotlight() {
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Link
-                to="/practice"
+                to="/practices"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg flex items-center justify-center gap-2"
               >
-                Join She Leads Tech Practice <HiArrowRight className="w-4 h-4 text-brand-coral" />
+                <span>Join She Leads Tech Practice</span>{" "}
+                <HiArrowRight className="w-4 h-4 text-brand-coral" />
               </Link>
               <Link
                 to="/events"

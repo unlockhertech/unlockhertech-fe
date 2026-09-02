@@ -12,7 +12,7 @@ import { PracticeRequirementsSection } from "./practices/PracticeRequirementsSec
 const PRACTICES_META_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Course",
-  "name": "She Leads Tech Practices: LeetCode & Problem Solving Series",
+  "name": "She Leads Tech Practice: LeetCode & Problem Solving Series",
   "description": "Fortnightly interactive workshops designed to help developers strengthen coding skills, master algorithmic patterns (Two Pointers, Sliding Window, Graphs, Dynamic Programming), and ace technical interviews in a supportive peer environment.",
   "provider": {
     "@type": "Organization",
@@ -31,7 +31,7 @@ const PRACTICES_META_JSON_LD = {
 
 export function PracticesPage() {
   useMetaData(
-    "She Leads Tech Practices | LeetCode & Problem Solving Series",
+    "She Leads Tech Practice | LeetCode & Problem Solving Series",
     "Join live, interactive LeetCode and problem-solving sessions every two weeks. Build coding confidence, pair program, and master algorithmic interview techniques in an inclusive community.",
     undefined,
     {

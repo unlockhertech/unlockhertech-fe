@@ -37,14 +37,14 @@ function renderSubmitButtonContent(isSubmitting: boolean, isCommunityGuide: bool
     return (
       <>
         <HiShieldCheck className="w-5 h-5 text-brand-yellow" />
-        <span>Join Community & Unlock Guides 4+</span>
+        <span>Join Community & Unlock Guides</span>
       </>
     );
   }
   return (
     <>
       <HiBell className="w-5 h-5" />
-      <span>Get Notified on September 7</span>
+      <span>Download Free PDF Guide</span>
     </>
   );
 }
@@ -67,8 +67,8 @@ function DownloadLeadForm({
   onSubmit,
 }: Readonly<DownloadLeadFormProps>) {
   const pillText = isCommunityGuide
-    ? "✨ Community Exclusive • WhatsApp & Discord Access"
-    : "🚀 Launching September 7, 2026";
+    ? "✨ Free Community Access · Unlock Instant PDF Download"
+    : "🚀 Free Career Guide Download";
 
   return (
     <>
@@ -86,11 +86,11 @@ function DownloadLeadForm({
       <p className="text-sm text-stone-600 leading-relaxed mb-6">
         {isCommunityGuide ? (
           <>
-            Guides 4+ are exclusively reserved for our <strong>community members</strong>. Join our WhatsApp & Discord community circle below to unlock all advanced guides immediately for free!
+            Unlock our complete library of career guides for free by joining our WhatsApp & Discord community circles. Get direct access to playbooks, workshop alerts, and peer support.
           </>
         ) : (
           <>
-            Our weekly PDF resource library officially launches on <strong>September 7, 2026</strong> with <em>"10 Things to Know When Transitioning into Tech"</em>! Enter your email below to be the first to receive the direct download link as soon as it drops.
+            Download your free copy of <em>"{resourceTitle}"</em>. Enter your email below to receive the direct printable PDF download immediately.
           </>
         )}
       </p>
@@ -222,11 +222,11 @@ function DownloadSuccessState({ isCommunityGuide, email, onClose }: Readonly<Dow
       <p className="text-stone-600 text-sm leading-relaxed max-w-xs mx-auto">
         {isCommunityGuide ? (
           <>
-            Thank you! We've registered <strong>{email}</strong> as a community member. Guides 4+ are now unlocked on your device, and we'll send your WhatsApp & Discord community invitations directly to your inbox.
+            Thank you! We've registered <strong>{email}</strong> as a community member. Guides are now unlocked on your device, and we'll send your WhatsApp & Discord community invitations directly to your inbox.
           </>
         ) : (
           <>
-            Thank you! We've registered <strong>{email}</strong>. We will email you the direct download link the moment <em>"10 Things to Know When Transitioning into Tech"</em> drops on <strong>September 7, 2026</strong>!
+            Thank you! We've registered <strong>{email}</strong>. Your download is ready and we have also sent a copy directly to your inbox.
           </>
         )}
       </p>

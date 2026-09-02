@@ -76,9 +76,9 @@ export function getNextPracticeSession(currentTime: number = Date.now()): Practi
   const endDate = new Date(targetDate.getTime() + SESSION_DURATION_MS);
   const endTimeUtc = endDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
 
-  const calTitle = encodeURIComponent(`She Leads Tech Practice: ${topic}`);
+  const calTitle = encodeURIComponent("She Leads Tech Practice: Live Problem Solving");
   const calDetails = encodeURIComponent(
-    `Join our fortnightly interactive live problem-solving session for women & non-binary developers.\n\nTopic: ${topic}\nLocation: Live Online\nWebsite: https://unlockhertech.com/practices`
+    `Join our fortnightly interactive live problem-solving session for women, non-binary technologists, and allies.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/practices`
   );
   const calLocation = encodeURIComponent("Online (Live Coding Workshop)");
   const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${startTimeUtc}/${endTimeUtc}&details=${calDetails}&location=${calLocation}`;

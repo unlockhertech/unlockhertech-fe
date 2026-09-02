@@ -21,7 +21,7 @@ export function HomeSheLeadsTechBanner() {
               <div className="relative bg-white rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden border border-white/20 aspect-square flex items-center justify-center">
                 <img
                   src={imgSheLeadsTech}
-                  alt="She Leads Tech Practices Banner"
+                  alt="She Leads Tech Practice Banner"
                   className="w-full h-full max-h-64 object-contain"
                 />
               </div>
@@ -36,11 +36,11 @@ export function HomeSheLeadsTechBanner() {
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-4 text-white">
               Master Algorithms in a <br className="hidden sm:inline" />
-              <span className="text-brand-pink">Supportive Environment</span>
+              <span className="text-brand-pink">Supportive, Zero-Ego Space</span>
             </h2>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
-              No judgment, no competitive stress. Just friendly pair programming, algorithm deconstructions, and structured practice every two weeks.
+              No judgment, no competitive stress. Just collaborative pair programming, algorithmic pattern deconstructions, and structured practice every two weeks.
             </p>
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8 text-xs font-semibold text-white">

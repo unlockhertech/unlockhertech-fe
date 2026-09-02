@@ -8,10 +8,10 @@ export function TeamMissionCTA() {
         <div className="rounded-3xl p-10 text-center bg-linear-to-br from-[#fdf0f7] to-[#f0f6fd] border-2 border-brand-pink">
           <p className="text-xs uppercase tracking-widest mb-3 text-brand-coral font-bold">Be part of the story</p>
           <h2 className="mb-4 text-neutral-900 font-extrabold" style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}>
-            Want to Hear From Them?
+            Hear Their Stories on the Podcast
           </h2>
           <p className="text-gray-500 mb-8 max-w-105 mx-auto leading-[1.75]">
-            Tune in to our latest episode and hear the team in action — or subscribe so you never miss what we create next.
+            Tune into our latest episodes to hear unfiltered journeys from engineers, founders, and leaders — or join our next live practice session.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

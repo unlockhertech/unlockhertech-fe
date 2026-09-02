@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router";
 import type { ExternalEvent } from "../../types";
 import { getAllExternalEvents } from "../../utils/sanity";
 import {
@@ -8,11 +9,80 @@ import {
   buildEventsJsonLd,
 } from "./eventsUtils";
 
+function resolveCategoryParam(paramValue: string | null): EventCategory {
+  if (!paramValue) return "all";
+  const normalized = paramValue.toLowerCase().trim();
+  if (
+    normalized === "practical" ||
+    normalized === "coding" ||
+    normalized === "practice" ||
+    normalized === "practices" ||
+    normalized === "workshops"
+  ) {
+    return "practical";
+  }
+  if (
+    normalized === "community" ||
+    normalized === "talks" ||
+    normalized === "panels" ||
+    normalized === "socials"
+  ) {
+    return "community";
+  }
+  return "all";
+}
+
 export function useEvents() {
   const [allEvents, setAllEvents] = useState<ExternalEvent[]>([]);
-  const [showPast, setShowPast] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<EventCategory>("all");
   const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // URL-driven state
+  const tagParam = searchParams.get("tag") ?? searchParams.get("category");
+  const selectedCategory: EventCategory = useMemo(
+    () => resolveCategoryParam(tagParam),
+    [tagParam]
+  );
+
+  const showPast = searchParams.get("past") === "true";
+
+  const setSelectedCategory = useCallback(
+    (cat: EventCategory) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (cat === "all") {
+            next.delete("tag");
+            next.delete("category");
+          } else {
+            next.set("tag", cat);
+            next.delete("category");
+          }
+          return next;
+        },
+        { replace: false }
+      );
+    },
+    [setSearchParams]
+  );
+
+  const setShowPast = useCallback(
+    (pastVal: boolean) => {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (pastVal) {
+            next.set("past", "true");
+          } else {
+            next.delete("past");
+          }
+          return next;
+        },
+        { replace: false }
+      );
+    },
+    [setSearchParams]
+  );
 
   useEffect(() => {
     async function fetchEvents() {

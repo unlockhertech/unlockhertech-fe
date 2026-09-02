@@ -35,7 +35,7 @@ describe("PracticeCountdownCard & usePracticeCountdown", () => {
 
     expect(screen.getByTestId("practice-countdown-section")).toBeInTheDocument();
     expect(screen.getByTestId("countdown-digits-grid")).toBeInTheDocument();
-    expect(screen.getByText(/Next Topic Spotlight/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/She Leads Tech Practice/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Days/i)).toBeInTheDocument();
     expect(screen.getByText(/Hours/i)).toBeInTheDocument();
     expect(screen.getByText(/Mins/i)).toBeInTheDocument();

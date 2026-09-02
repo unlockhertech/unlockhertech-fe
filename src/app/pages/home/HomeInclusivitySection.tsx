@@ -23,7 +23,7 @@ export function HomeInclusivitySection() {
           A Safe, Inspiring Space for Everyone in Tech
         </h2>
         <p className="text-gray-500 text-sm max-w-xl mx-auto mb-8 leading-relaxed">
-          Whether you are writing your first line of code, stepping into engineering management, or transitioning into tech — you belong here.
+          Whether you are writing your first line of code, preparing for technical interviews, or stepping into engineering leadership — you belong here.
         </p>
 
         <div className="flex flex-wrap justify-center gap-2.5 max-w-2xl mx-auto mb-8">

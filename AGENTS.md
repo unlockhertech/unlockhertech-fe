@@ -59,5 +59,8 @@
 19. **Unambiguous Inline JSX Spacing (`typescript:S6772`):**
     - Ensure whitespace adjacent to inline JSX elements (`<span>`, `<strong>`, `<em>`, `<a>`) is explicit using `{" "}` or template literals.
 
-20. **Skill Reference:**
+20. **Synchronized Prop Interfaces & Contracts (`typescript:S2322`):**
+    - Always ensure component prop interfaces (`interface ComponentProps`) strictly declare all properties being passed at the call site. Support naming aliases and optional payloads (`prop?: type`) with fallback resolution (`a ?? b ?? default`).
+
+21. **Skill Reference:**
     - Refer to `.agents/skills/frontend-code-quality/SKILL.md` for complete code examples, patterns, and validation checklists.

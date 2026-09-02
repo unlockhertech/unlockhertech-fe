@@ -418,7 +418,7 @@ export async function generateCareerPlanPdf({
       }))
     : [
         {
-          title: "She Leads Tech Practices",
+          title: "She Leads Tech Practice",
           desc: "Fortnightly live problem-solving and coding workshops. Master interview patterns together in a supportive environment.",
           link: "unlockhertech.com/practices",
         },

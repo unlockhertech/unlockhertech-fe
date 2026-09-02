@@ -90,38 +90,38 @@ function twoSumSorted(numbers: number[], target: number): number[] {
 export const SESSION_PILLARS: SessionPillar[] = [
   {
     icon: HiCodeBracket,
-    title: "Solve LeetCode-Style Problems",
-    description: "Hands-on practice tackling curated algorithmic challenges in real time.",
+    title: "Solve Curated LeetCode Problems",
+    description: "Hands-on practice tackling targeted algorithmic challenges collaboratively in real time.",
     color: "bg-pink-50 text-brand-coral border-pink-100",
   },
   {
     icon: HiUsers,
     title: "Collaborate & Discuss Approaches",
-    description: "Work together as a whole group to share ideas, clean code, and edge cases in real time.",
+    description: "Work together to analyze trade-offs, test edge cases, and write clean, maintainable code.",
     color: "bg-blue-50 text-brand-blue border-blue-100",
   },
   {
     icon: HiAcademicCap,
-    title: "Master Interview Patterns",
-    description: "Recognize patterns like Two Pointers, Sliding Window, Trees & Graphs quickly.",
+    title: "Master Key Interview Patterns",
+    description: "Recognize essential patterns like Two Pointers, Sliding Window, Trees, Graphs, and DP with speed and clarity.",
     color: "bg-amber-50 text-brand-coral border-amber-100",
   },
   {
     icon: HiChatBubbleLeftRight,
     title: "Ask Questions Freely",
-    description: "Safe, supportive space where no question is too basic and curiosity is celebrated.",
+    description: "Safe, supportive space where no question is too basic and curious problem-solving is celebrated.",
     color: "bg-emerald-50 text-brand-green border-emerald-100",
   },
   {
     icon: HiRocketLaunch,
     title: "Build Interview Confidence",
-    description: "Overcome interview anxiety with regular, structured practice among peers.",
+    description: "Overcome technical interview anxiety with regular, structured practice alongside supportive peers.",
     color: "bg-pink-50 text-[#b42970] border-pink-100",
   },
 ];
 
 export const REQUIREMENTS: Requirement[] = [
-  { text: "A free LeetCode account", detail: "For attempting problems during live sessions." },
-  { text: "Basic JavaScript or TypeScript", detail: "Familiarity with loops, functions, and arrays." },
-  { text: "Curiosity & Collaboration", detail: "Willingness to learn together and support peers." },
+  { text: "A free LeetCode account", detail: "For tackling curated coding challenges during live sessions." },
+  { text: "Working programming knowledge", detail: "Familiarity with loops, functions, and arrays in any modern language (JavaScript, TypeScript, Python, etc.)." },
+  { text: "Curiosity & Collaboration", detail: "Willingness to learn in public, ask questions, and support peers." },
 ];

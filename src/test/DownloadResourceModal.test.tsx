@@ -34,10 +34,10 @@ describe("DownloadResourceModal", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/Community Exclusive • WhatsApp & Discord Access/i)).toBeInTheDocument();
+    expect(screen.getByText(/Free Community Access · Unlock Instant PDF Download/i)).toBeInTheDocument();
     expect(screen.getByText(/Unlock 10 Non-Coding Roles in Tech to Explore: Join Our Community/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/e\.g\. \+44 7123\.\.\. or @alex_dev/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Join Community & Unlock Guides 4\+/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Join Community & Unlock Guides/i })).toBeInTheDocument();
     expect(screen.getByText(/Privacy Policy/i)).toBeInTheDocument();
   });
 
@@ -57,7 +57,7 @@ describe("DownloadResourceModal", () => {
 
     const emailInput = screen.getByPlaceholderText(/you@example.com/i);
     const channelInput = screen.getByPlaceholderText(/e\.g\. \+44 7123\.\.\. or @alex_dev/i);
-    const submitBtn = screen.getByRole("button", { name: /Join Community & Unlock Guides 4\+/i });
+    const submitBtn = screen.getByRole("button", { name: /Join Community & Unlock Guides/i });
 
     fireEvent.change(emailInput, { target: { value: "member@example.com" } });
     fireEvent.change(channelInput, { target: { value: "+447123456789" } });

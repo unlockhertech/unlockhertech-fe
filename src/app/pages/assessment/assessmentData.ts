@@ -109,19 +109,19 @@ export const QUESTIONS: Question[] = [
 export const RECOMMENDATIONS: Record<CategoryKey, CategoryRecommendation> = {
   m1: {
     title: "Mindset & Resilience Focus",
-    text: "Your primary growth opportunity is Mindset & Resilience. Focus on establishing a consistent daily study routine (45-60 mins/day) and reframing imposter syndrome as proof of active learning.",
+    text: "Your primary growth opportunity is Mindset & Resilience. Reframe self-doubt as a natural byproduct of growth. Focus on establishing a consistent daily routine (45–60 mins) and treat technical roadblocks as puzzles to solve rather than a reflection of your capability.",
   },
   m2: {
     title: "Transferable Skills Translation Focus",
-    text: "Your primary growth opportunity is Transferable Skills Translation. Reframe your past non-tech work into quantifiable achievements using tech terminology and domain expertise.",
+    text: "Your primary growth opportunity is Transferable Skills Translation. Transform your non-tech background into your competitive advantage by quantifying achievements, highlighting cross-functional leadership, and using tech-aligned vocabulary on your resume.",
   },
   m3: {
     title: "Technical Literacy & Portfolio Focus",
-    text: "Your primary growth opportunity is Technical Literacy & Portfolio. Shift from passive tutorial watching to building 2-3 original projects and practicing STAR framework walkthroughs out loud.",
+    text: "Your primary growth opportunity is Technical Proof of Work. Shift from passive tutorial watching to building 2–3 original, deployed projects with comprehensive READMEs, and practice explaining your technical decisions out loud using the STAR method.",
   },
   m4: {
     title: "Networking & Execution Strategy Focus",
-    text: "Your primary growth opportunity is Networking & Execution Strategy. Optimize your LinkedIn headline and prioritize 15-minute informational chats over cold job board applications.",
+    text: "Your primary growth opportunity is Strategic Networking & Execution. Replace cold job-board applications with proactive relationship building: optimize your LinkedIn headline for your target stack, participate in tech communities, and prioritize 15-minute informational chats.",
   },
 };
 

@@ -47,7 +47,7 @@ export function JobVettingStandards() {
             </div>
             <h3 className="font-extrabold text-gray-900 text-base mb-2">Gender-Neutral & Open Language</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
-              Descriptions must avoid aggressive, exclusionary jargon (&quot;rockstar&quot;, &quot;ninja&quot;) and emphasize collaborative,
+              Descriptions must avoid aggressive, exclusionary jargon (&quot;rockstar&quot;, &quot;ninja&quot;, unrealistic credential inflation) and emphasize collaborative,
               growth-minded team environments.
             </p>
           </div>
@@ -58,7 +58,7 @@ export function JobVettingStandards() {
             </div>
             <h3 className="font-extrabold text-gray-900 text-base mb-2">Centered on Women & Open to Allies</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
-              While centered on uplifting women in tech, all supportive genders and allies are welcome. Inclusion
+              While centered on uplifting women and underrepresented technologists, all supportive genders and allies are welcome. Inclusion
               strengthens teams across the entire ecosystem.
             </p>
           </div>

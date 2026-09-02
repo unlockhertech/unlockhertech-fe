@@ -3,10 +3,16 @@ import { HiCalendarDays, HiArrowTopRightOnSquare } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 
 interface EventsHeroHeaderProps {
-  upcomingCount: number;
+  upcomingCount?: number;
+  totalCount?: number;
 }
 
-export function EventsHeroHeader({ upcomingCount }: Readonly<EventsHeroHeaderProps>) {
+export function EventsHeroHeader({
+  upcomingCount,
+  totalCount,
+}: Readonly<EventsHeroHeaderProps>) {
+  const displayCount = upcomingCount ?? totalCount ?? 0;
+
   return (
     <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white">
       <BrandPatternOverlay />
@@ -30,10 +36,10 @@ export function EventsHeroHeader({ upcomingCount }: Readonly<EventsHeroHeaderPro
         </p>
         <div className="flex flex-wrap items-center gap-3 mt-6">
           <span className="px-3.5 py-1 rounded-full text-white text-xs font-bold bg-white/20 border border-white/20 backdrop-blur-xs">
-            {upcomingCount} Upcoming
+            {displayCount} Upcoming
           </span>
           <span className="px-3.5 py-1 rounded-full text-stone-950 text-xs font-black bg-brand-yellow shadow-xs">
-            Fortnightly Practices
+            Fortnightly Practice
           </span>
           <a
             href="https://luma.com/sheleadstechpractice"

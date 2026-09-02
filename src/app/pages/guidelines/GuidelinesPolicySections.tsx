@@ -83,9 +83,9 @@ export function GuidelinesPolicySections() {
             <h2 className="text-2xl font-extrabold text-gray-900">Guidelines for Live Technical Practices</h2>
           </div>
           <div className="space-y-3 text-gray-600 text-sm sm:text-base leading-relaxed">
-            <p>During our <em>She Leads Tech Practices</em>, LeetCode meetups, and workshops:</p>
+            <p>During our <em>She Leads Tech Practice</em>, LeetCode meetups, and workshops:</p>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong className="text-gray-900">Comfort-first participation:</strong> Cameras are welcome but optional. You are free to engage through voice, chat, or by observing if you are not ready to code live.</li>
+              <li><strong className="text-gray-900">Low-pressure participation:</strong> Cameras are always optional. You are free to engage through voice, chat, or by observing if you are not ready to code live.</li>
               <li><strong className="text-gray-900">Pair programming etiquette:</strong> When pairing, allow your partner time to think through problems and share their approach before jumping in with the solution.</li>
               <li><strong className="text-gray-900">Supportive code review:</strong> Frame feedback around patterns, trade-offs, and optimization rather than criticism.</li>
             </ul>
@@ -121,7 +121,7 @@ export function GuidelinesPolicySections() {
           <span>Last reviewed: August 2026</span>
           <div className="flex gap-4">
             <Link to="/about" className="text-brand-coral hover:underline">About Our Mission</Link>
-            <Link to="/practices" className="text-brand-coral hover:underline">She Leads Tech Practices</Link>
+            <Link to="/practices" className="text-brand-coral hover:underline">She Leads Tech Practice</Link>
           </div>
         </div>
       </div>

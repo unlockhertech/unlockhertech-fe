@@ -35,9 +35,9 @@ export function CookieBanner() {
       <div className="relative z-10 w-full bg-white border-t border-gray-100 p-6 md:p-8 pointer-events-auto shadow-2xl">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex-1 text-center md:text-left">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">We value your privacy</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Your Privacy Matters</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We use essential and analytics cookies to enhance your browsing experience and improve our platform.{" "}
+              We use essential and anonymized analytics cookies to enhance your browsing experience and improve our platform.{" "}
               <Link 
                 to="/cookie-policy"
                 className="underline hover:text-gray-900 transition-colors font-semibold"

@@ -29,8 +29,8 @@ describe('PracticesPage', () => {
     renderPracticesPage();
     expect(screen.getByText(/How a Typical 70-Minute Practice Runs/i)).toBeInTheDocument();
     expect(screen.getByText(/Problem Deconstruction/i)).toBeInTheDocument();
-    expect(screen.getByText(/Live Group Coding/i)).toBeInTheDocument();
-    expect(screen.getByText(/Debrief & Tips/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Collaborative Live Coding/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Debrief & Optimization/i)).toBeInTheDocument();
   });
 
   it('renders RSVP / practice registration CTAs', () => {
@@ -42,7 +42,7 @@ describe('PracticesPage', () => {
   it('renders live fortnightly practice countdown clock section', () => {
     renderPracticesPage();
     expect(screen.getByTestId('practice-countdown-section')).toBeInTheDocument();
-    expect(screen.getByText(/Next Topic Spotlight/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/She Leads Tech Practice/i).length).toBeGreaterThan(0);
     expect(screen.getByTestId('countdown-digits-grid')).toBeInTheDocument();
   });
 });

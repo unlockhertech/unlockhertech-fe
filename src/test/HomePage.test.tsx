@@ -17,8 +17,8 @@ describe('HomePage', () => {
 
   it('renders primary CTAs with correct text', () => {
     renderHomePage();
-    expect(screen.getByText(/Explore She Leads Tech Practices/i)).toBeInTheDocument();
-    expect(screen.getByText(/Listen to Episodes/i)).toBeInTheDocument();
+    expect(screen.getByText(/Explore Live Practice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Listen to Podcast/i)).toBeInTheDocument();
     expect(screen.getByText(/Never Miss an Episode/i)).toBeInTheDocument();
   });
 

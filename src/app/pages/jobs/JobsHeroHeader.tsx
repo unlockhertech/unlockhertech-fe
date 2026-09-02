@@ -29,12 +29,12 @@ export function JobsHeroHeader() {
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight leading-[1.15]">
-              Tech Jobs with <span className="text-brand-yellow">Inclusive Cultures</span>
+              Curated Tech Jobs with <span className="text-brand-yellow">100% Salary Transparency</span>
             </h1>
 
             <p className="text-base sm:text-lg text-white/90 leading-relaxed max-w-2xl font-normal">
-              Curated technical and product opportunities centered on women in tech and supportive allies. Every role
-              is vetted for mandatory salary transparency, flexible work, and culture integrity.
+              Curated technical and product opportunities centered on women, non-binary technologists, and supportive allies. Every role
+              is vetted for mandatory salary transparency, flexible work models, and inclusive culture integrity.
             </p>
 
             {/* Quality Standards Highlights */}
@@ -61,13 +61,13 @@ export function JobsHeroHeader() {
             </p>
             <h2 className="text-lg font-bold text-white mb-2">Feature a Vetted Role</h2>
             <p className="text-xs text-white/80 leading-relaxed mb-4">
-              Reach thousands of qualified female engineers, designers, and allies actively building their tech careers.
+              Reach thousands of qualified female and non-binary engineers, designers, and allies actively building their tech careers.
             </p>
             <Link
               to="/collaborate?tab=job"
               className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-full bg-white text-brand-coral font-bold text-xs hover:bg-stone-100 transition-colors shadow-sm"
             >
-              <span>Submit a Transparent Role</span>
+              <span>Post a Transparent Role</span>
               <HiArrowTopRightOnSquare className="w-3.5 h-3.5" />
             </Link>
           </div>

@@ -34,7 +34,7 @@ export function AboutPillarsSection() {
               <span className="text-[0.7rem] font-extrabold uppercase tracking-wider text-brand-blue bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                 Hands-On Engineering
               </span>
-              <h3 className="text-2xl font-black text-gray-900 mt-4 mb-3">She Leads Tech Practices</h3>
+              <h3 className="text-2xl font-black text-gray-900 mt-4 mb-3">She Leads Tech Practice</h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
                 Fortnightly live LeetCode and problem-solving workshops. We code solutions together live, deconstruct algorithmic patterns (Two Pointers, Sliding Window, Graphs), and build technical interview fluency in a psychologically safe environment.
               </p>

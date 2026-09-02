@@ -28,7 +28,7 @@ describe('AboutPage', () => {
   it('renders the two pillars section', () => {
     renderWithRouter();
     expect(screen.getByText(/Two Pillars, Unified Purpose/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/She Leads Tech Practices/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/She Leads Tech Practice/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/The Unlock Her Tech Podcast/i).length).toBeGreaterThan(0);
   });
 
@@ -43,8 +43,8 @@ describe('AboutPage', () => {
 
   it('renders the call to action buttons', () => {
     renderWithRouter();
-    const explorePractices = screen.getAllByRole('link', { name: /Explore Practices/i });
-    expect(explorePractices.length).toBeGreaterThan(0);
+    const explorePractice = screen.getAllByRole('link', { name: /Explore Practice/i });
+    expect(explorePractice.length).toBeGreaterThan(0);
     
     const listenPodcast = screen.getAllByRole('link', { name: /Listen to Podcast/i });
     expect(listenPodcast.length).toBeGreaterThan(0);

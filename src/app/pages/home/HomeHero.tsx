@@ -170,7 +170,7 @@ export function HomeHero({
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 bg-pink-50 text-brand-coral border border-pink-100">
               <span className="w-2 h-2 rounded-full animate-pulse bg-brand-coral" />
               <span className="text-xs font-extrabold uppercase tracking-wider">
-                Community · Podcast · Live Practices
+                Podcast · Live Practices · Community
               </span>
             </div>
 
@@ -179,26 +179,26 @@ export function HomeHero({
               {" "}Skills That <span className="text-brand-blue">Empower</span>.
             </h1>
 
-            <p className="text-gray-600 mb-8 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
-              A hands-on tech community and storytelling podcast for women, non-binary people, and allies. We pair honest conversations with fortnightly LeetCode problem-solving practices and mentorship.
+            <p className="text-base sm:text-lg lg:text-xl text-stone-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+              The community where authentic tech journeys meet live algorithmic problem-solving. We empower women, non-binary technologists, and allies through fortnightly LeetCode sessions, mentorship, and in-depth podcast dialogues.
             </p>
 
             {/* Primary Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8">
               <Link
+                to="/practices"
+                className="w-full sm:w-auto px-8 py-4 rounded-full text-white flex items-center justify-center gap-2.5 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 bg-brand-coral font-bold text-sm"
+              >
+                <HiCodeBracket className="w-5 h-5 text-brand-yellow" />
+                <span>Explore Live Practice</span>
+              </Link>
+
+              <Link
                 to="/episodes"
                 className="w-full sm:w-auto px-8 py-4 rounded-full flex items-center justify-center gap-2 border-2 border-gray-200 bg-white hover:bg-stone-50 text-gray-800 font-bold text-sm transition-all shadow-xs"
               >
                 <FaPlay className="w-3.5 h-3.5 text-brand-coral" />
-                Listen to Episodes
-              </Link>
-
-              <Link
-                  to="/practices"
-                  className="w-full sm:w-auto px-8 py-4 rounded-full text-white flex items-center justify-center gap-2.5 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 bg-brand-coral font-bold text-sm"
-              >
-                <HiCodeBracket className="w-5 h-5 text-brand-yellow" />
-                Explore She Leads Tech Practices
+                <span>Listen to Podcast</span>
               </Link>
             </div>
 

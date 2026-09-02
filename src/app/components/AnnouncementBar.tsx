@@ -16,17 +16,18 @@ export function AnnouncementBar() {
             <HiBolt className="w-3 h-3 text-brand-coral" /> NEW INITIATIVE
           </span>
           <p className="truncate font-medium text-white">
-            <span className="font-bold text-pink-200">She Leads Tech Practices:</span> Fortnightly LeetCode & Problem Solving Series for developers!
+            <span className="font-bold text-pink-200">She Leads Tech Practice:</span> Live fortnightly LeetCode & problem-solving workshops for developers!
           </p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
           <Link
-            to="/practice"
-            aria-label="Learn more about She Leads Tech Practices"
+            to="/practices"
+            aria-label="Learn more about She Leads Tech Practice"
             className="hidden sm:inline-flex items-center gap-1 px-3.5 py-1 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition-colors border border-white/30"
           >
-            Learn About Practices <HiArrowRight className="w-3 h-3" />
+            <span>Explore Practice</span>{" "}
+            <HiArrowRight className="w-3 h-3" />
           </Link>
 
           <button

@@ -48,7 +48,7 @@ export function getLinkItems(): LinkItem[] {
   return [
     {
       id: "practices",
-      title: "She Leads Tech Practices",
+      title: "She Leads Tech Practice",
       subtitle: "Fortnightly live LeetCode & coding problem solving",
       url: "/practices",
       isExternal: false,

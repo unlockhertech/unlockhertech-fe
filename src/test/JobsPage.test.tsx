@@ -71,10 +71,10 @@ describe('JobsPage', () => {
   it('renders page header, hero text, and vetting badges', async () => {
     renderJobsPage();
     await waitFor(() => {
-      expect(screen.getByRole('heading', { level: 1, name: /Tech Jobs with Inclusive Cultures/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: /Curated Tech Jobs with 100% Salary Transparency/i })).toBeInTheDocument();
       expect(screen.getByText(/100% Salary Transparent/i)).toBeInTheDocument();
       expect(screen.getByText(/Curated technical and product opportunities/i)).toBeInTheDocument();
-      const submitRoleBtn = screen.getByRole('link', { name: /Submit a Transparent Role/i });
+      const submitRoleBtn = screen.getByRole('link', { name: /Post a Transparent Role/i });
       expect(submitRoleBtn).toBeInTheDocument();
       expect(submitRoleBtn).toHaveAttribute('href', '/collaborate?tab=job');
     });

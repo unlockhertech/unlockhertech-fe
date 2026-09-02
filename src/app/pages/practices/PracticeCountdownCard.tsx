@@ -4,7 +4,6 @@ import {
   HiCodeBracket,
   HiArrowTopRightOnSquare,
   HiBell,
-  HiSparkles,
 } from "react-icons/hi2";
 import { usePracticeCountdown } from "./usePracticeCountdown";
 import { trackEvent } from "../../utils/analytics";
@@ -54,7 +53,7 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
         <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-50/50 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 grid lg:grid-cols-12 gap-8 items-center pt-2">
-          {/* Left Column: Context & Topic Spotlight */}
+          {/* Left Column: Context & Series Details */}
           <div className="lg:col-span-6 space-y-3.5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-brand-coral border border-pink-200 text-xs font-black uppercase tracking-wider">
@@ -67,12 +66,8 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
             </div>
 
             <div>
-              <span className="text-xs font-extrabold uppercase tracking-wider text-brand-coral flex items-center gap-1">
-                <HiSparkles className="w-3.5 h-3.5" />
-                Next Topic Spotlight
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-stone-900 mt-1 leading-snug">
-                {topic}
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-stone-900 mt-1 leading-snug">
+                She Leads Tech Practice
               </h2>
             </div>
 
@@ -82,7 +77,7 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
             </div>
 
             <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-              Interactive collaborative live coding session. We break down the algorithmic pattern, code the solution together step-by-step, and practice mock technical interview discussions in a supportive peer space.
+              Interactive collaborative live coding session. We break down core algorithmic patterns, solve LeetCode-style challenges together step-by-step, and build technical interview confidence in a supportive, zero-ego space.
             </p>
           </div>
 
@@ -96,7 +91,7 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
                   <span>Workshop is Live in Progress!</span>
                 </div>
                 <h3 className="text-lg sm:text-xl font-black text-stone-900 mb-3">
-                  We are coding {topic} right now!
+                  Live Workshop in Progress!
                 </h3>
                 <Link
                   to="/events"

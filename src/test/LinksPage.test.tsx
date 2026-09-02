@@ -21,7 +21,7 @@ describe('LinksPage', () => {
 
   it('renders core link buttons', () => {
     renderLinksPage();
-    expect(screen.getByText(/She Leads Tech Practices/i)).toBeInTheDocument();
+    expect(screen.getByText(/She Leads Tech Practice/i)).toBeInTheDocument();
     expect(screen.getByText(/Listen to the Podcast/i)).toBeInTheDocument();
     expect(screen.getByText(/Follow On LinkedIn/i)).toBeInTheDocument();
   });

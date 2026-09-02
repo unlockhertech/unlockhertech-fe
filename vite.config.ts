@@ -34,6 +34,31 @@ export default defineConfig({
             ) {
               return 'vendor-react';
             }
+
+            // Sanity CMS Studio (isolated from public routes)
+            if (id.includes('sanity') || id.includes('@sanity')) {
+              return 'vendor-sanity';
+            }
+
+            // PDF generation library (isolated for assessment page)
+            if (id.includes('jspdf') || id.includes('html2canvas')) {
+              return 'vendor-pdf';
+            }
+
+            // Icons
+            if (id.includes('react-icons')) {
+              return 'vendor-icons';
+            }
+
+            // Markdown & code highlighting
+            if (
+              id.includes('prismjs') ||
+              id.includes('react-markdown') ||
+              id.includes('@portabletext') ||
+              id.includes('gray-matter')
+            ) {
+              return 'vendor-markdown';
+            }
           }
         },
       },

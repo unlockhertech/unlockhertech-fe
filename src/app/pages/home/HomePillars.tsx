@@ -30,7 +30,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Pillar 1: She Leads Tech Practices */}
+          {/* Pillar 1: She Leads Tech Practice */}
           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
               <div className="w-14 h-14 rounded-2xl bg-pink-50 text-brand-coral border border-pink-100 flex items-center justify-center mb-6">
@@ -40,10 +40,10 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
                 <HiCalendarDays className="w-3.5 h-3.5" /> Fortnightly Live
               </div>
               <h3 className="text-xl font-extrabold text-gray-900 mb-3">
-                She Leads Tech Practices
+                She Leads Tech Practice
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                Interactive problem-solving workshops and live group coding sessions. Build algorithmic confidence and solve technical problems together in a welcoming, low-pressure environment.
+                Interactive problem-solving workshops and live group coding sessions. Master algorithms, tackle interview patterns, and build code confidence in a supportive, zero-ego space.
               </p>
             </div>
 
@@ -51,7 +51,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
               to="/practices"
               className="inline-flex items-center gap-2 text-sm font-bold text-brand-coral hover:gap-3 transition-all pt-4 border-t border-gray-100"
             >
-              <span>Learn about practices</span>
+              <span>Explore practice sessions</span>
               <HiArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -63,7 +63,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
                 <HiOutlineMusicalNote className="w-7 h-7" />
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
-                Monthly Drops
+                Regular Episodes
               </div>
               <h3 className="text-xl font-extrabold text-gray-900 mb-3">
                 The Podcast
@@ -96,8 +96,8 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
                 {enableGetInvolved
-                  ? "Share knowledge as a practice lead, guest speaker, or community partner. We foster genuine connections that open doors across the industry."
-                  : "Connect with like-minded peers, mentors, and allies. We foster genuine connections that open doors and empower everyone across the industry."}
+                  ? "Share knowledge as a practice lead, guest speaker, or community partner. We foster genuine connections, code reviews, and opportunities that accelerate your tech journey."
+                  : "Connect with like-minded peers, mentors, and allies. We foster genuine connections, code reviews, and opportunities that empower everyone across the industry."}
               </p>
             </div>
 

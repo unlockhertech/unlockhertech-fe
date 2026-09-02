@@ -31,7 +31,7 @@ export function TeamHeroHeader() {
           </h1>
         </div>
         <p className="text-white/80 max-w-140 leading-[1.8] text-base">
-          The passionate minds united by one mission — amplifying women and non-binary people in tech and building technical confidence together.
+          The passionate minds united by one mission — amplifying women, non-binary technologists, and allies in tech, and building technical confidence together.
         </p>
 
         {/* Colour dots */}

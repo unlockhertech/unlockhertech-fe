@@ -196,7 +196,7 @@ function DesktopPlatformsDropdown({
         onClick={onToggle}
         className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all hover:opacity-95 bg-white text-brand-coral shadow-xs cursor-pointer"
       >
-        <span>Listen to Podcast On</span>
+        <span>Listen to Podcast</span>
         <HiChevronDown
           className={`w-3.5 h-3.5 transition-transform ${showPlatforms ? "rotate-180" : ""}`}
         />
@@ -253,7 +253,7 @@ function MobileNavigationMenu({
     <div className="md:hidden border-t border-white/20 bg-brand-coral">
       <div className="px-4 py-4 space-y-1">
         <NavLink
-          to="/practice"
+          to="/practices"
           onClick={onClose}
           className={({ isActive }) =>
             `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
@@ -263,7 +263,7 @@ function MobileNavigationMenu({
             }`
           }
         >
-          Practice
+          Practices
         </NavLink>
 
         <NavLink
@@ -507,9 +507,9 @@ function LayoutInner() {
                 Episodes
               </NavLink>
 
-              {/* 2. Practice */}
+              {/* 2. Practices */}
               <NavLink
-                to="/practice"
+                to="/practices"
                 className={({ isActive }) =>
                   `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
                     isActive
@@ -518,7 +518,7 @@ function LayoutInner() {
                   }`
                 }
               >
-                Practice
+                Practices
               </NavLink>
 
               {/* 3. Jobs (if enabled) */}
@@ -663,7 +663,7 @@ function LayoutInner() {
                 decoding="async"
                 className="h-9 w-auto object-contain mb-4"
               />
-              <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">Conversations and technical practices that inspire change and action.</p>
+              <p className="text-stone-300 text-xs sm:text-sm leading-relaxed">Empowering women, non-binary technologists, and allies through authentic conversations and live technical practices.</p>
               <div className="flex gap-1.5 mt-5">
                 {[
                   { id: "dot-berry", c: BERRY },
@@ -679,10 +679,10 @@ function LayoutInner() {
 
             <div>
               <p className="text-white text-sm mb-4 font-bold">Content</p>
-              <ul className="space-y-1 text-gray-400 text-xs sm:text-sm">
+              <ul className="space-y-1 text-stone-300 text-xs sm:text-sm">
                 <li><Link to="/episodes" className="inline-block py-1 hover:text-white transition-colors">Latest Episode</Link></li>
                 <li><Link to="/episodes" className="inline-block py-1 hover:text-white transition-colors">All Episodes</Link></li>
-                <li><Link to="/practice" className="inline-block py-1 hover:text-white transition-colors">Practice</Link></li>
+                <li><Link to="/practices" className="inline-block py-1 hover:text-white transition-colors">Practices</Link></li>
                 {enableJobs && (
                     <li><Link to="/jobs" className="inline-block py-1 hover:text-white transition-colors">Inclusive Job Board</Link></li>
                 )}
@@ -699,7 +699,7 @@ function LayoutInner() {
 
             <div>
               <p className="text-white text-sm mb-4 font-bold">About & Team</p>
-              <ul className="space-y-1 text-gray-400 text-xs sm:text-sm">
+              <ul className="space-y-1 text-stone-300 text-xs sm:text-sm">
                 <li><Link to="/about" className="inline-block py-1 hover:text-white transition-colors">Our Mission & Story</Link></li>
                 <li><Link to="/team" className="inline-block py-1 hover:text-white transition-colors">Meet the Team</Link></li>
               </ul>
@@ -708,7 +708,7 @@ function LayoutInner() {
             {enableGetInvolved && (
               <div>
                 <p className="text-white text-sm mb-4 font-bold">Get Involved</p>
-                <ul className="space-y-1 text-gray-400 text-xs sm:text-sm">
+                <ul className="space-y-1 text-stone-300 text-xs sm:text-sm">
                   <li><Link to="/get-involved" className="inline-block py-1 hover:text-white transition-colors">Mentor With Us</Link></li>
                   <li><Link to="/get-involved" className="inline-block py-1 hover:text-white transition-colors">Request to be a Guest</Link></li>
                   <li><Link to="/get-involved" className="inline-block py-1 hover:text-white transition-colors">Partner With Us</Link></li>
@@ -718,7 +718,7 @@ function LayoutInner() {
 
             <div>
               <p className="text-white text-sm mb-4 font-bold">Trust & Legal</p>
-              <ul className="space-y-1 text-gray-400 text-xs sm:text-sm mb-4">
+              <ul className="space-y-1 text-stone-300 text-xs sm:text-sm mb-4">
                 <li><Link to="/privacy-policy" className="inline-block py-1 hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/community-guidelines" className="inline-block py-1 hover:text-white transition-colors">Community Guidelines</Link></li>
                 <li><Link to="/code-of-conduct" className="inline-block py-1 hover:text-white transition-colors">Code of Conduct</Link></li>
@@ -743,7 +743,7 @@ function LayoutInner() {
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
-            <p className="text-gray-400 text-sm">&copy; 2026 Unlock Her Tech. All rights reserved.</p>
+            <p className="text-stone-300 text-sm">&copy; 2026 Unlock Her Tech. All rights reserved.</p>
             <div className="flex gap-1.5">
               {[
                 { id: "bar-berry", c: BERRY },

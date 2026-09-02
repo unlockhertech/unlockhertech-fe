@@ -35,17 +35,17 @@ export function AboutStorySection() {
               <span>Our Evolution</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-6 leading-tight">
-              From a Storytelling Microphone to a <span className="text-brand-coral">Hands-On Technical Community</span>
+              From a Storytelling Podcast to a <span className="text-brand-coral">Hands-On Technical Community</span>
             </h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
               <p>
-                Unlock Her Tech began with a microphone and a clear conviction: to dismantle the isolation often felt by women and non-binary people in technology through authentic, unfiltered conversations.
+                Unlock Her Tech began with a microphone and a clear conviction: to dismantle the isolation often felt by women, non-binary technologists, and underrepresented groups in technology through authentic, unfiltered conversations.
               </p>
               <p>
                 As our community grew, we saw that inspiration alone was only half the equation. Technologists wanted <strong>practical, career-defining skills</strong> — a supportive space to practice algorithmic problem solving, pair program, and master technical interview patterns without judgment.
               </p>
               <p className="text-gray-900 font-semibold">
-                Today, we operate on dual pillars: inspiring podcast dialogues with tech trailblazers, paired with fortnightly <strong className="text-brand-coral">She Leads Tech Practices</strong>.
+                Today, we operate on dual pillars: inspiring podcast dialogues with tech trailblazers, paired with fortnightly <strong className="text-brand-coral">She Leads Tech Practice</strong>.
               </p>
             </div>
 
@@ -55,7 +55,7 @@ export function AboutStorySection() {
                 to="/practices"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white text-sm font-bold shadow-md hover:shadow-lg transition-all bg-brand-coral"
               >
-                <span>Explore Practices</span>
+                <span>Explore Practice</span>
                 <HiOutlineArrowRight className="w-4 h-4" />
               </Link>
               <Link

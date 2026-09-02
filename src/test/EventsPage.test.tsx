@@ -47,21 +47,17 @@ describe('EventsPage', () => {
     }, { timeout: 5000 });
   });
 
-  it('renders partner conference card and opens claim discount modal', async () => {
+  it('filters events based on URL tag search parameter', async () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/events?tag=practical"]}>
         <EventsPage />
       </MemoryRouter>
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/AI Builders Global Conference 2026/i)).toBeInTheDocument();
-      expect(screen.getByText(/20% Partner Discount/i)).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Claim 20% Off/i })).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: /Tickets/i })).toHaveAttribute(
-        'href',
-        'https://aibuildersnetwork.org/conference/tickets'
-      );
+      expect(screen.getByText(/Live LeetCode Two Pointers Workshop/i)).toBeInTheDocument();
+      // Since tag=practical is active, community conference shouldn't be in the filtered list
+      expect(screen.queryByText(/AI Builders Global Conference 2026/i)).not.toBeInTheDocument();
     }, { timeout: 5000 });
   });
 });

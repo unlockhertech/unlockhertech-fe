@@ -3,7 +3,8 @@ import type { EventCategory } from "./eventsUtils";
 interface EventsFilterBarProps {
   selectedCategory: EventCategory;
   onSelectCategory: (cat: EventCategory) => void;
-  totalTimelineCount: number;
+  countAll?: number;
+  totalTimelineCount?: number;
   countPractical: number;
   countCommunity: number;
   pastCount: number;
@@ -14,6 +15,7 @@ interface EventsFilterBarProps {
 export function EventsFilterBar({
   selectedCategory,
   onSelectCategory,
+  countAll,
   totalTimelineCount,
   countPractical,
   countCommunity,
@@ -21,6 +23,8 @@ export function EventsFilterBar({
   showPast,
   onToggleShowPast,
 }: Readonly<EventsFilterBarProps>) {
+  const displayTotal = countAll ?? totalTimelineCount ?? 0;
+
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-3xl border border-gray-200 shadow-xs">
       <div className="flex flex-wrap gap-2 items-center">
@@ -33,7 +37,7 @@ export function EventsFilterBar({
               : "bg-stone-100 text-gray-700 hover:bg-stone-200"
           }`}
         >
-          All Events ({totalTimelineCount})
+          All Events ({displayTotal})
         </button>
 
         <button

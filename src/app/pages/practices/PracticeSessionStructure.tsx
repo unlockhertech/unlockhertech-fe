@@ -23,7 +23,7 @@ export function PracticeSessionStructure() {
             <h3 className="text-xl font-bold text-gray-900 mb-2">Problem Deconstruction</h3>
             <p className="text-xs uppercase font-bold text-brand-coral tracking-wider mb-3">15 Minutes</p>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We review the problem statement together, clarify edge cases, identify input constraints, and brainstorm brute-force approaches.
+              We break down the problem statement, clarify edge cases, identify input constraints, and map out brute-force vs optimal algorithmic patterns together.
             </p>
           </div>
 
@@ -31,10 +31,10 @@ export function PracticeSessionStructure() {
             <div className="w-10 h-10 rounded-2xl bg-brand-blue text-white font-extrabold flex items-center justify-center mb-6 text-base">
               2
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Live Group Coding</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Collaborative Live Coding</h3>
             <p className="text-xs uppercase font-bold text-brand-blue tracking-wider mb-3">35 Minutes</p>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We work through the problem and build the solution together as a group in real time, testing edge cases and refining logic collaboratively.
+              We write clean, commented code together in real time, testing edge cases, debugging solutions, and discussing trade-offs as a group.
             </p>
           </div>
 
@@ -42,10 +42,10 @@ export function PracticeSessionStructure() {
             <div className="w-10 h-10 rounded-2xl bg-brand-green text-white font-extrabold flex items-center justify-center mb-6 text-base">
               3
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Debrief & Tips</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Debrief & Optimization</h3>
             <p className="text-xs uppercase font-bold text-brand-green tracking-wider mb-3">20 Minutes</p>
             <p className="text-gray-600 text-sm leading-relaxed">
-              We review clean code patterns, discuss time/space complexity optimizations, and share real interview tips.
+              We analyze time/space complexity, explore alternative optimizations, and share practical technical interview takeaways.
             </p>
           </div>
         </div>
