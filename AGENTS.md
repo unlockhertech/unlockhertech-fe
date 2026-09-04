@@ -62,5 +62,11 @@
 20. **Synchronized Prop Interfaces & Contracts (`typescript:S2322`):**
     - Always ensure component prop interfaces (`interface ComponentProps`) strictly declare all properties being passed at the call site. Support naming aliases and optional payloads (`prop?: type`) with fallback resolution (`a ?? b ?? default`).
 
-21. **Skill Reference:**
+21. **HTML5 `noValidate` for Custom React Form Validation:**
+    - Always declare `noValidate` on `<form noValidate onSubmit={handleSubmit}>` when using custom JavaScript error state to prevent native browser constraint popups from suppressing React submission handlers and headless test environments (JSDOM).
+
+22. **Serverless Lead Pipelines & Graceful Degradation:**
+    - Always route high-volume lead capture and promotional forms through serverless functions (`/api/*`) connected to dedicated CRM providers rather than static hosting forms to bypass submission ceilings and protect API write secrets. Always catch exceptions to preserve on-screen rewards.
+
+23. **Skill Reference:**
     - Refer to `.agents/skills/frontend-code-quality/SKILL.md` for complete code examples, patterns, and validation checklists.

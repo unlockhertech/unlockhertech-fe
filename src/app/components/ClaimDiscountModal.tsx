@@ -20,7 +20,6 @@ interface ClaimDiscountModalProps {
 interface ClaimDiscountFormProps {
   event: ExternalEvent;
   discountPercentage: string;
-  discountCode: string;
   fullName: string;
   email: string;
   error: string;
@@ -33,7 +32,6 @@ interface ClaimDiscountFormProps {
 function ClaimDiscountForm({
   event,
   discountPercentage,
-  discountCode,
   fullName,
   email,
   error,
@@ -61,15 +59,10 @@ function ClaimDiscountForm({
       </p>
 
       <form
-        name="partner-event-discount"
-        method="POST"
-        data-netlify="true"
         onSubmit={onSubmit}
+        noValidate
         className="space-y-4"
       >
-        <input type="hidden" name="form-name" value="partner-event-discount" />
-        <input type="hidden" name="eventTitle" value={event.title} />
-        <input type="hidden" name="discountCode" value={discountCode} />
 
         <div>
           <label htmlFor="discount-fullName" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
@@ -295,20 +288,20 @@ export function ClaimDiscountModal({
       localStorage.setItem("uht_user_email", email.trim());
       localStorage.setItem("uht_partner_discount_unlocked", "true");
 
-      const formData = new FormData();
-      formData.append("form-name", "partner-event-discount");
-      formData.append("email", email);
-      formData.append("fullName", fullName);
-      formData.append("eventTitle", event.title);
-      formData.append("discountCode", discountCode);
-
-      await fetch("/", {
+      await fetch("/api/claim-discount", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          fullName: fullName.trim(),
+          eventTitle: event.title,
+          discountCode,
+          discountPercentage,
+          ticketUrl: externalUrl,
+        }),
       });
     } catch (err) {
-      console.warn("Form payload error:", err);
+      console.warn("Discount claim API error:", err);
     }
 
     setTimeout(() => {
@@ -363,7 +356,6 @@ export function ClaimDiscountModal({
             <ClaimDiscountForm
               event={event}
               discountPercentage={discountPercentage}
-              discountCode={discountCode}
               fullName={fullName}
               email={email}
               error={error}

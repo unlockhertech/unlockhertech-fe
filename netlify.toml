@@ -5,9 +5,18 @@
   [build.environment]
     NODE_OPTIONS = "--max-old-space-size=4096"
 
+[functions]
+  directory = "netlify/functions"
+
 [[redirects]]
   from = "/api/podcast-rss"
   to = "https://anchor.fm/s/e6cb6024/podcast/rss"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/claim-discount"
+  to = "/.netlify/functions/claim-discount"
   status = 200
   force = true
 
