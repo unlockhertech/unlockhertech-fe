@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/HomePage";
 import { RouteErrorFallback } from "./components/RouteErrorFallback";
+import { PageLoadingFallback } from "./components/PageLoadingFallback";
 
 const enableBlog = import.meta.env.VITE_ENABLE_BLOG === 'true';
 const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === 'true';
@@ -112,6 +113,7 @@ export const router = createBrowserRouter([
       const { AdminPage } = await import("./pages/AdminPage");
       return { Component: AdminPage };
     },
+    HydrateFallback: PageLoadingFallback,
   },
   {
     path: "/links",
@@ -119,6 +121,7 @@ export const router = createBrowserRouter([
       const { LinksPage } = await import("./pages/LinksPage");
       return { Component: LinksPage };
     },
+    HydrateFallback: PageLoadingFallback,
     ErrorBoundary: RouteErrorFallback,
   },
   {
@@ -127,6 +130,7 @@ export const router = createBrowserRouter([
       const { LinksPage } = await import("./pages/LinksPage");
       return { Component: LinksPage };
     },
+    HydrateFallback: PageLoadingFallback,
     ErrorBoundary: RouteErrorFallback,
   },
   {
@@ -135,11 +139,13 @@ export const router = createBrowserRouter([
       const { LinksPage } = await import("./pages/LinksPage");
       return { Component: LinksPage };
     },
+    HydrateFallback: PageLoadingFallback,
     ErrorBoundary: RouteErrorFallback,
   },
   {
     path: "/",
     Component: Layout,
+    HydrateFallback: PageLoadingFallback,
     ErrorBoundary: RouteErrorFallback,
     children: [
       {

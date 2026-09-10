@@ -35,8 +35,9 @@ function shouldBypassRequest(url) {
   const isDevHost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
   const isDevInternal = url.pathname.startsWith('/@') || url.pathname.includes('node_modules');
   const isCrossOrigin = url.origin !== self.location.origin;
+  const isAdminOrApi = url.pathname.startsWith('/admin') || url.pathname.startsWith('/api');
 
-  return isDevHost || isDevInternal || isCrossOrigin;
+  return isDevHost || isDevInternal || isCrossOrigin || isAdminOrApi;
 }
 
 async function handleNavigationRequest(request) {
@@ -51,23 +52,34 @@ async function handleNavigationRequest(request) {
   } catch (err) {
     console.debug('[SW] Navigation fetch failed, serving cached fallback:', err);
     const cached = await caches.match(request);
-    return cached || (await caches.match('/'));
+    return cached || (await caches.match('/index.html')) || (await caches.match('/'));
   }
 }
 
 async function handleAssetRequest(request) {
-  const cachedResponse = await caches.match(request);
-  if (cachedResponse) {
-    return cachedResponse;
-  }
+  try {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
 
-  const networkResponse = await fetch(request);
-  if (networkResponse?.status === 200 && networkResponse.type === 'basic') {
-    const copy = networkResponse.clone();
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(request, copy);
+    const networkResponse = await fetch(request);
+    if (networkResponse?.status === 200 && networkResponse.type === 'basic') {
+      const copy = networkResponse.clone();
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, copy);
+    }
+    return networkResponse;
+  } catch (err) {
+    console.debug('[SW] Asset fetch failed, attempting cached fallback:', err);
+    if (request.headers.get('accept')?.includes('text/html')) {
+      const htmlFallback = (await caches.match('/index.html')) || (await caches.match('/'));
+      if (htmlFallback) return htmlFallback;
+    }
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    return new Response('', { status: 408, statusText: 'Request Offline' });
   }
-  return networkResponse;
 }
 
 self.addEventListener('fetch', (event) => {
