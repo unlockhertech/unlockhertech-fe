@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
+import {
+  HiOutlineArrowTopRightOnSquare,
+  HiUserGroup,
+  HiCodeBracket,
+  HiMicrophone,
+  HiTicket,
+} from "react-icons/hi2";
 import type { ExternalEvent } from "../../types";
 import { getEventExternalUrl } from "../../utils/luma";
 import { LumaCheckoutButton } from "../../components/LumaCheckoutButton";
@@ -10,10 +16,10 @@ interface EventCardProps {
   event: ExternalEvent;
 }
 
-function getEventEmoji(isPartner: boolean, category: string): string {
-  if (isPartner) return "🤝";
-  if (category === "practical") return "💻";
-  return "🎙️";
+function getEventIcon(isPartner: boolean, category: string) {
+  if (isPartner) return <HiUserGroup className="w-8 h-8 text-purple-600" />;
+  if (category === "practical") return <HiCodeBracket className="w-8 h-8 text-brand-blue" />;
+  return <HiMicrophone className="w-8 h-8 text-brand-coral" />;
 }
 
 function getCategoryBadgeClasses(isPartner: boolean, category: string): string {
@@ -23,9 +29,9 @@ function getCategoryBadgeClasses(isPartner: boolean, category: string): string {
 }
 
 function getCategoryBadgeLabel(isPartner: boolean, category: string): string {
-  if (isPartner) return "🤝 Partner Conference";
-  if (category === "practical") return "💻 Practical / Coding";
-  return "🎙️ Talk / Social";
+  if (isPartner) return "Partner Conference";
+  if (category === "practical") return "Practical / Coding";
+  return "Talk / Social";
 }
 
 interface EventImageHeaderProps {
@@ -39,7 +45,7 @@ function EventImageHeader({ image, title, isConferenceOrPartner, category }: Rea
   if (image) {
     const isSpecialVisual = image.includes(".svg") || image.includes("lockup") || isConferenceOrPartner;
     const containerClasses = isSpecialVisual
-      ? "bg-linear-to-r from-slate-950 via-slate-900 to-slate-950 p-6 border-b border-slate-800"
+      ? "bg-stone-950 p-6 border-b border-stone-850"
       : "bg-gray-100";
     const imageClasses = isSpecialVisual
       ? "h-auto max-h-full object-contain drop-shadow-md transition-transform duration-300 hover:scale-105"
@@ -60,9 +66,9 @@ function EventImageHeader({ image, title, isConferenceOrPartner, category }: Rea
   const partnerLabel = isConferenceOrPartner ? "Community Partner Event" : "Unlock Her Tech Event";
 
   return (
-    <div className="h-44 bg-linear-to-br from-brand-coral/10 via-brand-pink/15 to-brand-berry/10 flex flex-col items-center justify-center text-center p-6">
-      <span className="text-2xl mb-1">
-        {getEventEmoji(isConferenceOrPartner, category)}
+    <div className="h-44 bg-stone-50 border-b border-stone-100 flex flex-col items-center justify-center text-center p-6">
+      <span className="mb-2">
+        {getEventIcon(isConferenceOrPartner, category)}
       </span>
       <span className="text-brand-coral font-bold text-sm tracking-wide uppercase">
         {partnerLabel}
@@ -184,8 +190,9 @@ export function EventCard({ event }: Readonly<EventCardProps>) {
           {event.discountCode && (
             <div className="mb-5 p-3.5 rounded-2xl bg-pink-50/80 border border-brand-pink/50 flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <span className="text-[0.68rem] font-bold uppercase tracking-wider text-brand-berry block">
-                  🎟️ {event.discountPercentage || "20%"} Partner Discount
+                <span className="text-[0.68rem] font-bold uppercase tracking-wider text-brand-berry flex items-center gap-1">
+                  <HiTicket className="w-3.5 h-3.5 text-brand-coral" />
+                  <span>{event.discountPercentage || "20%"} Partner Discount</span>
                 </span>
                 <span className="text-xs text-stone-600 font-medium block mt-0.5">
                   Exclusive promo code for community

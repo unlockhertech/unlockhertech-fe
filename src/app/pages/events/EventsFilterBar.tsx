@@ -1,3 +1,4 @@
+import { HiCodeBracket, HiMicrophone } from "react-icons/hi2";
 import type { EventCategory } from "./eventsUtils";
 
 interface EventsFilterBarProps {
@@ -49,7 +50,8 @@ export function EventsFilterBar({
               : "bg-stone-100 text-gray-700 hover:bg-stone-200"
           }`}
         >
-          <span>💻 Practical & Coding</span>
+          <HiCodeBracket className="w-4 h-4" />
+          <span>Practical & Coding</span>
           <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-white/30">{countPractical}</span>
         </button>
 
@@ -62,7 +64,8 @@ export function EventsFilterBar({
               : "bg-stone-100 text-gray-700 hover:bg-stone-200"
           }`}
         >
-          <span>🎙️ Talks, Panels & Socials</span>
+          <HiMicrophone className="w-4 h-4" />
+          <span>Talks, Panels & Socials</span>
           <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-white/30">{countCommunity}</span>
         </button>
       </div>

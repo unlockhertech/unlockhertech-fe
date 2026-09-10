@@ -13,7 +13,7 @@ import { LinksSocialNav } from "./links/LinksSocialNav";
 export function LinksPage() {
   useMetaData(
     "Links & Socials | Unlock Her Tech",
-    "Connect with Unlock Her Tech: Listen to our podcast, join She Leads Tech problem-solving practices, read articles, and explore our community.",
+    "Connect with Unlock Her Tech: Listen to our podcast, join She Leads Tech workshops, read articles, and explore our community.",
     "https://unlockhertech.com/links",
     {
       image: "/logo.png",

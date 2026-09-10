@@ -158,18 +158,18 @@ export function useAssessment() {
     }
     if (grandTotal >= 65) {
       return {
-        text: "🚀 High Job Search Readiness",
+        text: "High Job Search Readiness",
         className: "bg-emerald-100 text-emerald-800 border-emerald-200",
       };
     }
     if (grandTotal >= 45) {
       return {
-        text: "⚡ Developing Transitioner",
+        text: "Developing Transitioner",
         className: "bg-amber-100 text-amber-800 border-amber-200",
       };
     }
     return {
-      text: "🌱 Foundations Stage",
+      text: "Foundations Stage",
       className: "bg-pink-100 text-brand-coral border-pink-200",
     };
   }, [totalAnswered, grandTotal]);

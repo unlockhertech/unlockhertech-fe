@@ -48,27 +48,27 @@ export function PracticeRequirementsSection() {
               <BrandPatternOverlay />
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-neutral-950 font-black text-xs uppercase tracking-wider mb-4 shadow-sm">
-                  <span>🌱 Fortnightly Progression</span>
+                  <span>🌱 Continuous Engineering Growth</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">
-                  Progressive Skill Growth
+                <h2 className="text-2xl sm:text-3xl font-black mb-4">
+                  The Learning Progression
                 </h2>
                 <p className="text-white/90 text-sm leading-relaxed mb-6">
-                  This is an ongoing series held <strong className="text-white">every two weeks</strong>. We start with Easy and Medium problems, gradually progressing to harder challenges as we build our skills together.
+                  This is an ongoing series held <strong className="text-white">live every two weeks</strong>. Each concept cycles through three learning stages to ensure you truly understand and can apply what you learn.
                 </p>
 
                 <div className="space-y-4 text-sm">
                   <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
-                    <span className="px-3 py-1 rounded-full bg-brand-green text-white font-bold text-xs">Phase 1</span>
-                    <span>Easy & Foundational Algorithmic Warmups</span>
+                    <span className="px-3 py-1 rounded-full bg-brand-coral text-white font-bold text-xs shrink-0">Stage 1: Theory</span>
+                    <span>Instructor-led teaching, architecture breakdown, & practical examples</span>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
-                    <span className="px-3 py-1 rounded-full bg-brand-blue text-white font-bold text-xs">Phase 2</span>
-                    <span>Medium Level Core Interview Patterns</span>
+                    <span className="px-3 py-1 rounded-full bg-brand-blue text-white font-bold text-xs shrink-0">Stage 2: Practice</span>
+                    <span>Hands-on problem solving, collaborative coding, & trade-off analysis</span>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
-                    <span className="px-3 py-1 rounded-full bg-brand-yellow text-neutral-900 font-bold text-xs">Phase 3</span>
-                    <span>Advanced Problem-Solving & Mock Discussions</span>
+                    <span className="px-3 py-1 rounded-full bg-brand-green text-white font-bold text-xs shrink-0">Stage 3: Review</span>
+                    <span>Repetition, clarifying misconceptions, & reinforcing long-term mastery</span>
                   </div>
                 </div>
 

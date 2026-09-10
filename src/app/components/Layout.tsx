@@ -1,13 +1,26 @@
-import { useState, type ReactNode } from "react";
-import { Outlet, NavLink, Link, ScrollRestoration } from "react-router";
+import { useState, useEffect, type ReactNode } from "react";
+import { Outlet, NavLink, Link, ScrollRestoration, useLocation } from "react-router";
 import { HiBars3, HiXMark, HiChevronDown } from "react-icons/hi2";
 import logoImage from "../../assets/logo-header.webp";
 import { MiniPlayer } from "./MiniPlayer";
 import { CookieBanner } from "./CookieBanner";
 import { AnnouncementBar } from "./AnnouncementBar";
+import { BackToTopButton } from "./BackToTopButton";
 import { AudioPlayerProvider } from "../context/AudioPlayerContext";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
 import { BERRY, ORANGE, BLUE, PINK, GREEN, platforms } from "../data";
+
+function scrollToPageTop(smooth: boolean | React.MouseEvent = false) {
+  try {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: smooth === true ? "smooth" : "instant",
+    });
+  } catch {
+    window.scrollTo(0, 0);
+  }
+}
 
 export function Layout() {
   return (
@@ -41,6 +54,8 @@ function DesktopResourcesDropdown({
         <button
           type="button"
           onClick={onToggle}
+          aria-label="Resources menu"
+          aria-expanded={showResources}
           className="text-sm font-semibold text-white/80 hover:text-white transition-all inline-flex items-center gap-1 pb-0.5 cursor-pointer"
         >
           <span>Resources</span>
@@ -60,7 +75,10 @@ function DesktopResourcesDropdown({
             <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10 p-2">
               <Link
                 to="/resources"
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  scrollToPageTop();
+                }}
                 className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
               >
                 <span className="text-gray-900 font-bold text-sm">Career Playbooks</span>
@@ -68,7 +86,10 @@ function DesktopResourcesDropdown({
               </Link>
               <Link
                 to="/assessment"
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  scrollToPageTop();
+                }}
                 className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
               >
                 <span className="text-gray-900 font-bold text-sm">Career Fit Assessment</span>
@@ -85,6 +106,7 @@ function DesktopResourcesDropdown({
     return (
       <NavLink
         to="/resources"
+        onClick={scrollToPageTop}
         className={({ isActive }) =>
           `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
             isActive ? "text-white border-b-2 border-white" : "text-white/80 hover:text-white"
@@ -100,6 +122,7 @@ function DesktopResourcesDropdown({
     return (
       <NavLink
         to="/assessment"
+        onClick={scrollToPageTop}
         className={({ isActive }) =>
           `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
             isActive ? "text-white border-b-2 border-white" : "text-white/80 hover:text-white"
@@ -130,6 +153,8 @@ function DesktopAboutDropdown({
       <button
         type="button"
         onClick={onToggle}
+        aria-label="About menu"
+        aria-expanded={showAbout}
         className="text-sm font-semibold text-white/80 hover:text-white transition-all inline-flex items-center gap-1 pb-0.5 cursor-pointer"
       >
         <span>About</span>
@@ -149,7 +174,10 @@ function DesktopAboutDropdown({
           <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-black/10 p-2">
             <Link
               to="/about"
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                scrollToPageTop();
+              }}
               className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
             >
               <span className="text-gray-900 font-bold text-sm">Our Mission & Story</span>
@@ -157,7 +185,10 @@ function DesktopAboutDropdown({
             </Link>
             <Link
               to="/team"
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                scrollToPageTop();
+              }}
               className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
             >
               <span className="text-gray-900 font-bold text-sm">Meet the Team</span>
@@ -165,7 +196,10 @@ function DesktopAboutDropdown({
             </Link>
             <Link
               to="/community-guidelines"
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                scrollToPageTop();
+              }}
               className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
             >
               <span className="text-gray-900 font-bold text-sm">Community Guidelines</span>
@@ -249,12 +283,17 @@ function MobileNavigationMenu({
   enableGetInvolved,
   onClose,
 }: Readonly<MobileNavigationMenuProps>) {
+  const handleNavClick = () => {
+    onClose();
+    scrollToPageTop();
+  };
+
   return (
     <div className="md:hidden border-t border-white/20 bg-brand-coral">
       <div className="px-4 py-4 space-y-1">
         <NavLink
           to="/practices"
-          onClick={onClose}
+          onClick={handleNavClick}
           className={({ isActive }) =>
             `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
               isActive
@@ -263,12 +302,12 @@ function MobileNavigationMenu({
             }`
           }
         >
-          Practices
+          She Leads Tech
         </NavLink>
 
         <NavLink
           to="/episodes"
-          onClick={onClose}
+          onClick={handleNavClick}
           className={({ isActive }) =>
             `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
               isActive
@@ -283,7 +322,7 @@ function MobileNavigationMenu({
         {enableJobs && (
           <NavLink
             to="/jobs"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
                 isActive
@@ -299,7 +338,7 @@ function MobileNavigationMenu({
         {enableEvents && (
           <NavLink
             to="/events"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
                 isActive
@@ -315,7 +354,7 @@ function MobileNavigationMenu({
         {enableResources && (
           <NavLink
             to="/resources"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
                 isActive
@@ -331,7 +370,7 @@ function MobileNavigationMenu({
         {enableAssessment && (
           <NavLink
             to="/assessment"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
                 isActive
@@ -347,7 +386,7 @@ function MobileNavigationMenu({
         {enableBlog && (
           <NavLink
             to="/blog"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
                 isActive
@@ -366,7 +405,7 @@ function MobileNavigationMenu({
           </p>
           <NavLink
             to="/about"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${
                 isActive
@@ -379,7 +418,7 @@ function MobileNavigationMenu({
           </NavLink>
           <NavLink
             to="/team"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${
                 isActive
@@ -392,7 +431,7 @@ function MobileNavigationMenu({
           </NavLink>
           <NavLink
             to="/community-guidelines"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all ${
                 isActive
@@ -408,7 +447,7 @@ function MobileNavigationMenu({
         {enableGetInvolved && (
           <NavLink
             to="/get-involved"
-            onClick={onClose}
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                 isActive ? "bg-white text-brand-coral" : "bg-white/15 text-white hover:bg-white/25"
@@ -445,6 +484,25 @@ function LayoutInner() {
   const [showPlatforms, setShowPlatforms] = useState(false);
   const [showResources, setShowResources] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      try {
+        window.history.scrollRestoration = "manual";
+      } catch {
+        // Fallback gracefully in restricted environments
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    scrollToPageTop(false);
+    const frameId = requestAnimationFrame(() => {
+      scrollToPageTop(false);
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [location.pathname]);
 
   const enableBlog = import.meta.env.VITE_ENABLE_BLOG === "true";
   const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === "true";
@@ -457,7 +515,7 @@ function LayoutInner() {
 
   return (
     <div className="min-h-screen flex flex-col bg-stone-50">
-      <ScrollRestoration />
+      <ScrollRestoration getKey={() => "top"} />
 
       {/* ── Accessible Skip to Main Content Link ─────────────────────────────────── */}
       <a
@@ -476,7 +534,10 @@ function LayoutInner() {
           <div className="flex justify-between items-center h-16">
             <Link
               to="/"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => {
+                setMobileOpen(false);
+                scrollToPageTop();
+              }}
               className="flex items-center gap-2.5 sm:gap-3"
             >
               <img
@@ -496,6 +557,7 @@ function LayoutInner() {
               {/* 1. Episodes */}
               <NavLink
                 to="/episodes"
+                onClick={scrollToPageTop}
                 className={({ isActive }) =>
                   `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
                     isActive
@@ -507,9 +569,10 @@ function LayoutInner() {
                 Episodes
               </NavLink>
 
-              {/* 2. Practices */}
+              {/* 2. She Leads Tech */}
               <NavLink
                 to="/practices"
+                onClick={scrollToPageTop}
                 className={({ isActive }) =>
                   `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
                     isActive
@@ -518,13 +581,14 @@ function LayoutInner() {
                   }`
                 }
               >
-                Practices
+                She Leads Tech
               </NavLink>
 
               {/* 3. Jobs (if enabled) */}
               {enableJobs && (
                 <NavLink
                   to="/jobs"
+                  onClick={scrollToPageTop}
                   className={({ isActive }) =>
                     `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
                       isActive
@@ -541,6 +605,7 @@ function LayoutInner() {
               {enableEvents && (
                 <NavLink
                   to="/events"
+                  onClick={scrollToPageTop}
                   className={({ isActive }) =>
                     `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
                       isActive
@@ -567,6 +632,7 @@ function LayoutInner() {
               {enableBlog && (
                 <NavLink
                   to="/blog"
+                  onClick={scrollToPageTop}
                   className={({ isActive }) =>
                     `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
                       isActive
@@ -594,6 +660,7 @@ function LayoutInner() {
               {enableGetInvolved && (
                 <NavLink
                   to="/get-involved"
+                  onClick={scrollToPageTop}
                   className={({ isActive }) =>
                     `text-sm font-semibold transition-all px-3 py-1 rounded-full ${
                       isActive
@@ -761,6 +828,9 @@ function LayoutInner() {
 
       {/* ── Persistent mini player ──────────────────────────────────────────── */}
       <MiniPlayer />
+
+      {/* ── Global Floating Back-to-Top Button ─────────────────────────────── */}
+      <BackToTopButton />
     </div>
   );
 }

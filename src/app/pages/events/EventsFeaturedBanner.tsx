@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { HiBolt, HiArrowRight, HiCalendarDays, HiArrowTopRightOnSquare } from "react-icons/hi2";
+import { HiBolt, HiArrowRight, HiCalendarDays, HiArrowTopRightOnSquare, HiSparkles } from "react-icons/hi2";
 import type { ExternalEvent } from "../../types";
 import { imgSheLeadsTech, BERRY, ORANGE, PINK, GREEN, BLUE } from "../../data";
 
@@ -37,21 +37,22 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
 
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-stone-900 mt-1 leading-snug">
-                She Leads Tech Practice: LeetCode & Problem Solving Series
+                She Leads Tech: Theory, Practice & Review Series
               </h2>
             </div>
 
             <div className="flex items-center gap-2 text-xs sm:text-sm text-stone-600 font-medium">
               <HiCalendarDays className="w-4 h-4 text-brand-coral shrink-0" />
-              <span>Held Every 2 Weeks Live • 70-Minute Hands-On Workshops</span>
+              <span>Held Every 2 Weeks Live • Active Format: Theory (Synced with Luma)</span>
             </div>
 
             <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-              Interactive collaborative live coding session. We break down core algorithmic patterns, solve LeetCode-style challenges together step-by-step, and build technical interview confidence in a supportive, zero-ego space.
+              Interactive technical engineering workshops. Learn concepts via instructor-led <strong>Theory</strong>, apply knowledge through hands-on <strong>Practice</strong>, and solidify mastery in <strong>Review</strong> sessions. Live sessions currently follow the Theory format.
             </p>
 
-            <p className="text-[11px] text-stone-500 pt-1">
-              ✨ Free, safe & inclusive environment. Beginner to intermediate friendly.
+            <p className="text-[11px] text-stone-500 pt-1 flex items-center gap-1.5">
+              <HiSparkles className="w-3.5 h-3.5 text-brand-coral shrink-0" />
+              <span>Free, safe & inclusive environment. Beginner to intermediate friendly.</span>
             </p>
           </div>
 
@@ -62,7 +63,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
               <div className="relative bg-white rounded-2xl p-4 border border-stone-200 shadow-md aspect-square flex items-center justify-center">
                 <img
                   src={imgSheLeadsTech}
-                  alt="She Leads Tech Practice Logo"
+                  alt="She Leads Tech Logo"
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -73,7 +74,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
                 to="/practices"
                 className="w-full sm:w-auto px-5 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Explore Practice</span>
+                <span>Explore She Leads Tech</span>
                 <HiArrowRight className="w-4 h-4" />
               </Link>
 

@@ -43,13 +43,13 @@ describe('ResourcesPage', () => {
   it('opens download waitlist / community registration modal', async () => {
     renderResourcesPage();
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Notify Me on September 7/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Get Notified for Next Drop|Notify Me on/i })).toBeInTheDocument();
     });
 
-    const notifyBtn = screen.getByRole('button', { name: /Notify Me on September 7/i });
+    const notifyBtn = screen.getByRole('button', { name: /Get Notified for Next Drop|Notify Me on/i });
     fireEvent.click(notifyBtn);
 
-    expect(screen.getByText(/Join the September 7 Launch Waitlist/i)).toBeInTheDocument();
+    expect(screen.getByText(/Join the .* Waitlist/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
   });
 });

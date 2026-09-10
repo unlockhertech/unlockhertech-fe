@@ -22,7 +22,7 @@ function EventsEmptyState({ onClearFilter }: Readonly<EventsEmptyStateProps>) {
       </div>
       <h2 className="text-2xl font-bold text-gray-900 mb-2">No events match this filter</h2>
       <p className="text-gray-600 max-w-md mx-auto">
-        Check back soon for new sessions or explore our ongoing fortnightly She Leads Tech Practice!
+        Check back soon for new sessions or explore our ongoing fortnightly She Leads Tech series!
       </p>
       <div className="mt-6 flex justify-center gap-3">
         <button
@@ -36,7 +36,7 @@ function EventsEmptyState({ onClearFilter }: Readonly<EventsEmptyStateProps>) {
           to="/practices"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-brand-coral text-white font-bold text-sm hover:opacity-90 transition-opacity"
         >
-          <span>Explore Practice</span>
+          <span>Explore She Leads Tech</span>
           <HiArrowRight className="w-4 h-4" />
         </Link>
       </div>

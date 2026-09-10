@@ -26,7 +26,7 @@ const ABOUT_META_JSON_LD = {
 export function AboutPage() {
   useMetaData(
     "About Us | Unlock Her Tech",
-    "Learn about our mission to amplify women, non-binary people, and allies in tech through LeetCode practices, career mentorship, and authentic podcast conversations.",
+    "Learn about our mission to amplify women, non-binary people, and allies in tech through She Leads Tech workshops, career mentorship, and authentic podcast conversations.",
     "https://unlockhertech.com/about",
     {
       image: coFoundersPhoto,

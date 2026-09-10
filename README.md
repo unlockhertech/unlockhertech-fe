@@ -31,9 +31,11 @@ Unlock Her Tech is a production-grade web application offering:
 1. **Podcast Hub & Interactive Audio Player**:
    - Live RSS feed integration (Anchor.fm / Spotify).
    - Global persistent audio player context with custom waveform visualizer and background playback.
-2. **She Leads Tech Practice Sessions**:
-   - Fortnightly live algorithmic problem-solving and LeetCode workshops.
-   - Real-time countdown timer, curriculum topics spotlight, and 1-click Google Calendar integration.
+2. **She Leads Tech (Theory, Practice, Review)**:
+   - Fortnightly interactive technical engineering workshops.
+   - Three learning formats: Theory (instructor-led learning), Practice (hands-on problem solving), and Review (strengthening retention).
+   - Covers DSA, System Design, Frontend, Backend, Cloud & AWS, and software engineering concepts.
+   - Real-time countdown timer, curriculum spotlight, and 1-click Google Calendar / Luma integration.
 3. **Inclusive Tech Job Board**:
    - Vetted listings with mandatory salary transparency and verified workplace flexibility.
    - Automated ATS ingestion (Greenhouse, Ashby), UTM link attribution, and bookmarking.
@@ -228,7 +230,7 @@ unlockhertech-fe/
 │   │   │   ├── home/        # Homepage hero, pillars, banner & waveform player
 │   │   │   ├── jobs/        # Job board filter controls, detail modal & cards
 │   │   │   ├── links/       # Linktree bio profile & video spotlight
-│   │   │   ├── practice/   # She Leads Tech practice countdown & curriculum
+│   │   │   ├── practices/   # She Leads Tech (Theory, Practice, Review) countdown & formats
 │   │   │   ├── resources/   # Playbook downloads & modal triggers
 │   │   │   └── team/        # Core team members & mission details
 │   │   ├── routes.ts        # Declarative React Router v7 routes

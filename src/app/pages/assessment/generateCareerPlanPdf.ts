@@ -49,7 +49,7 @@ const CATEGORY_ACTION_ITEMS: Record<string, string[]> = {
   m3: [
     "Move from tutorial consumption to building 2 original, end-to-end portfolio projects.",
     "Practice articulating your architecture decisions out loud using the STAR method.",
-    "Join live coding practice sessions (like She Leads Tech) to get comfortable thinking aloud.",
+    "Join live technical sessions (like She Leads Tech) to get comfortable thinking aloud.",
   ],
   m4: [
     "Optimize your LinkedIn headline to clearly state your target role, stack, and domain focus.",
@@ -418,8 +418,8 @@ export async function generateCareerPlanPdf({
       }))
     : [
         {
-          title: "She Leads Tech Practice",
-          desc: "Fortnightly live problem-solving and coding workshops. Master interview patterns together in a supportive environment.",
+          title: "She Leads Tech",
+          desc: "Fortnightly interactive workshops (Theory, Practice, Review). Master engineering and interview concepts together in a supportive environment.",
           link: "unlockhertech.com/practices",
         },
         {

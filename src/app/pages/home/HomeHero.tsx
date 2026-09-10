@@ -183,8 +183,8 @@ export function HomeHero({
               The community where authentic tech journeys meet live algorithmic problem-solving. We empower women, non-binary technologists, and allies through fortnightly LeetCode sessions, mentorship, and in-depth podcast dialogues.
             </p>
 
-            {/* Primary Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8">
+            {/* Primary Action Buttons & Quick Jump Affordances */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-6">
               <Link
                 to="/practices"
                 className="w-full sm:w-auto px-8 py-4 rounded-full text-white flex items-center justify-center gap-2.5 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 bg-brand-coral font-bold text-sm"
@@ -200,6 +200,33 @@ export function HomeHero({
                 <FaPlay className="w-3.5 h-3.5 text-brand-coral" />
                 <span>Listen to Podcast</span>
               </Link>
+            </div>
+
+            {/* In-Hero Quick-Jump Anchors */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-stone-500 mr-1">
+                Jump To:
+              </span>
+              <a
+                href="#what-we-do"
+                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
+              >
+                Core Pillars
+              </a>
+              <a
+                href="#she-leads-tech"
+                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-pink-50 hover:bg-pink-100 text-brand-coral transition-colors"
+              >
+                She Leads Tech
+              </a>
+              {enableGetInvolved && (
+                <a
+                  href="#community-roles"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
+                >
+                  Community
+                </a>
+              )}
             </div>
 
             {/* Podcast Platform Badges & Trust Signals */}

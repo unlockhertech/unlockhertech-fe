@@ -66,14 +66,14 @@ export const CATEGORY_RESOURCE_MAP: Record<
       {
         id: "m1-practice",
         type: "practice",
-        title: "She Leads Tech Problem-Solving Workshops",
-        badge: "Live Practice",
+        title: "She Leads Tech Engineering Workshops",
+        badge: "Live Workshops",
         badgeColor: "bg-emerald-100 text-brand-green border-emerald-200",
         description:
-          "Fortnightly live coding in a psychologically safe environment where no question is too basic.",
+          "Fortnightly technical sessions (Theory, Practice, Review) in a psychologically safe environment where no question is too basic.",
         url: "/practices",
         isExternal: false,
-        ctaText: "Join Next Practice",
+        ctaText: "Join She Leads Tech",
       },
     ],
   },
@@ -126,14 +126,14 @@ export const CATEGORY_RESOURCE_MAP: Record<
       {
         id: "m3-practice",
         type: "practice",
-        title: "She Leads Tech Fortnightly Live Practice",
-        badge: "Live Coding Practice",
+        title: "She Leads Tech Fortnightly Workshops",
+        badge: "Theory, Practice & Review",
         badgeColor: "bg-blue-100 text-brand-blue border-blue-200",
         description:
-          "Live interactive workshops deconstructing core patterns (Two Pointers, Sliding Window, Trees) and practicing out loud.",
+          "Live interactive workshops covering Theory, Practice, and Review across DSA, system design, and software engineering.",
         url: "/practices",
         isExternal: false,
-        ctaText: "Explore Practices",
+        ctaText: "Explore She Leads Tech",
       },
       {
         id: "m3-guide-2",

@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { HiCheckCircle, HiArrowLeft, HiArrowRight, HiArrowDown } from "react-icons/hi2";
 import {
   CATEGORIES,
@@ -24,13 +25,21 @@ export function AssessmentFocusSteps({
   onSelectScore,
   onScrollToResults,
 }: Readonly<AssessmentFocusStepsProps>) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const currentCat = CATEGORIES[activeCategoryIndex] ?? CATEGORIES[0];
   const currentCatQuestions = QUESTIONS.filter((q) => q.catKey === currentCat.key);
   const answeredCount = currentCatQuestions.filter((q) => answers[q.id]).length;
   const catScore = scores[currentCat.key] || 0;
 
+  const handleCategorySwitch = (index: number) => {
+    onSelectCategory(index);
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <div className="space-y-6 print:hidden">
+    <div ref={containerRef} className="space-y-6 print:hidden scroll-mt-24">
       {/* Step Navigation Pill Indicator */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         {CATEGORIES.map((cat, idx) => {
@@ -43,7 +52,7 @@ export function AssessmentFocusSteps({
             <button
               key={cat.key}
               type="button"
-              onClick={() => onSelectCategory(idx)}
+              onClick={() => handleCategorySwitch(idx)}
               aria-label={`Step ${cat.number}: ${cat.shortTitle}`}
               className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
                 isActive
@@ -99,7 +108,7 @@ export function AssessmentFocusSteps({
             {activeCategoryIndex > 0 && (
               <button
                 type="button"
-                onClick={() => onSelectCategory(activeCategoryIndex - 1)}
+                onClick={() => handleCategorySwitch(activeCategoryIndex - 1)}
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs sm:text-sm font-bold transition-all cursor-pointer"
               >
                 <HiArrowLeft className="w-4 h-4" />
@@ -110,7 +119,7 @@ export function AssessmentFocusSteps({
             {activeCategoryIndex < CATEGORIES.length - 1 ? (
               <button
                 type="button"
-                onClick={() => onSelectCategory(activeCategoryIndex + 1)}
+                onClick={() => handleCategorySwitch(activeCategoryIndex + 1)}
                 className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl bg-brand-coral hover:bg-brand-coral/90 text-white text-xs sm:text-sm font-extrabold shadow-sm transition-all cursor-pointer"
               >
                 <span>Next: Step {activeCategoryIndex + 2}</span>

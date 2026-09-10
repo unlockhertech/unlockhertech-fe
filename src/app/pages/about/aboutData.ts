@@ -19,7 +19,7 @@ export const ABOUT_VALUES: AboutValue[] = [
   {
     icon: HiOutlineCodeBracket,
     title: "Technical Depth & Growth",
-    desc: "We are a hands-on community built by engineers. We run live LeetCode practices, technical workshops, and real-world algorithm deconstructions.",
+    desc: "We are a hands-on community built by engineers. We run live She Leads Tech workshops (Theory, Practice, Review) and real-world engineering deconstructions.",
     badge: "Engineering Focus",
     color: "bg-blue-50 text-brand-blue border-blue-200",
     iconBg: "bg-brand-blue text-white",

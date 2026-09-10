@@ -19,7 +19,7 @@ export function SheLeadsTechSpotlight() {
               <div className="relative bg-white rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden border border-white/20 aspect-square flex items-center justify-center">
                 <img
                   src={imgSheLeadsTech}
-                  alt="She Leads Tech Practice Logo"
+                  alt="She Leads Tech Logo"
                   width={260}
                   height={260}
                   loading="lazy"
@@ -37,24 +37,27 @@ export function SheLeadsTechSpotlight() {
               <span>New Initiative by Unlock Her Tech</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-4 text-white">
-              She Leads Tech <span className="text-brand-pink">Practice</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-2 text-white">
+              She Leads Tech
             </h2>
+            <p className="text-brand-pink font-extrabold text-lg sm:text-xl mb-4">
+              Theory • Practice • Review
+            </p>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
-              Fortnightly interactive workshops designed to help underrepresented technologists master algorithms, tackle technical interview patterns, and build code confidence together.
+              Fortnightly interactive workshops designed to help technologists master algorithms, system design, and software engineering concepts through instructor-led Theory, hands-on Practice, and reinforcement Review.
             </p>
 
             {/* Quick feature pills */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8 text-xs font-semibold text-white">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCodeBracket className="w-4 h-4 text-brand-yellow" /> LeetCode & Algorithmic Patterns
+                <HiCodeBracket className="w-4 h-4 text-brand-yellow" /> Theory: Instructor-Led
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiUsers className="w-4 h-4 text-brand-blue" /> Live Pair Programming
+                <HiUsers className="w-4 h-4 text-brand-blue" /> Practice: Hands-On
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCalendarDays className="w-4 h-4 text-brand-green" /> Every 2 Weeks
+                <HiCalendarDays className="w-4 h-4 text-brand-green" /> Review: Reinforce & Retain
               </span>
             </div>
 
@@ -64,7 +67,7 @@ export function SheLeadsTechSpotlight() {
                 to="/practices"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg flex items-center justify-center gap-2"
               >
-                <span>Join She Leads Tech Practice</span>{" "}
+                <span>Explore She Leads Tech</span>{" "}
                 <HiArrowRight className="w-4 h-4 text-brand-coral" />
               </Link>
               <Link

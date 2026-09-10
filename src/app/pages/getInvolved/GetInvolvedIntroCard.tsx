@@ -5,6 +5,9 @@ import {
   HiBuildingOffice2,
   HiCurrencyDollar,
   HiShieldCheck,
+  HiChatBubbleLeftRight,
+  HiMegaphone,
+  HiCodeBracket,
 } from "react-icons/hi2";
 import type { InvolvementType } from "./getInvolvedTypes";
 
@@ -74,9 +77,18 @@ export function GetInvolvedIntroCard({ activeTab }: Readonly<GetInvolvedIntroCar
           Have a compelling tech journey, leadership insight, or lessons from navigating the industry? We love platforming authentic voices and honest stories that inspire action and change.
         </p>
         <div className="flex flex-wrap gap-2 text-xs font-semibold text-gray-700">
-          <span className="px-3 py-1 rounded-full bg-stone-100">🎙️ Featured Podcast Episode</span>
-          <span className="px-3 py-1 rounded-full bg-stone-100">☕ Virtual Coffee Chat Guest</span>
-          <span className="px-3 py-1 rounded-full bg-stone-100">🎤 Live Panel Speaker</span>
+          <span className="px-3 py-1 rounded-full bg-stone-100 flex items-center gap-1.5">
+            <HiMicrophone className="w-3.5 h-3.5 text-brand-coral" />
+            <span>Featured Podcast Episode</span>
+          </span>
+          <span className="px-3 py-1 rounded-full bg-stone-100 flex items-center gap-1.5">
+            <HiChatBubbleLeftRight className="w-3.5 h-3.5 text-brand-blue" />
+            <span>Virtual Coffee Chat Guest</span>
+          </span>
+          <span className="px-3 py-1 rounded-full bg-stone-100 flex items-center gap-1.5">
+            <HiMegaphone className="w-3.5 h-3.5 text-brand-yellow" />
+            <span>Live Panel Speaker</span>
+          </span>
         </div>
       </div>
     );
@@ -94,9 +106,18 @@ export function GetInvolvedIntroCard({ activeTab }: Readonly<GetInvolvedIntroCar
         Collaborate with Unlock Her Tech to champion diversity in technology, sponsor workshops and practice series, or connect your team with our growing talent network.
       </p>
       <div className="flex flex-wrap gap-2 text-xs font-semibold text-gray-700">
-        <span className="px-3 py-1 rounded-full bg-stone-100">🤝 Practice Series Sponsorship</span>
-        <span className="px-3 py-1 rounded-full bg-stone-100">📢 Episode Sponsorship</span>
-        <span className="px-3 py-1 rounded-full bg-stone-100">🚀 Co-hosted Technical Events</span>
+        <span className="px-3 py-1 rounded-full bg-stone-100 flex items-center gap-1.5">
+          <HiUserGroup className="w-3.5 h-3.5 text-brand-coral" />
+          <span>Practice Series Sponsorship</span>
+        </span>
+        <span className="px-3 py-1 rounded-full bg-stone-100 flex items-center gap-1.5">
+          <HiMegaphone className="w-3.5 h-3.5 text-brand-yellow" />
+          <span>Episode Sponsorship</span>
+        </span>
+        <span className="px-3 py-1 rounded-full bg-stone-100 flex items-center gap-1.5">
+          <HiCodeBracket className="w-3.5 h-3.5 text-brand-blue" />
+          <span>Co-hosted Technical Events</span>
+        </span>
       </div>
     </div>
   );

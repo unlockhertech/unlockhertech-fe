@@ -14,19 +14,27 @@ export function PracticesHero() {
           <div className="lg:col-span-7 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/20 text-sm font-semibold mb-6">
               <HiCodeBracket className="w-4 h-4 text-brand-yellow" />
-              <span>Hands-On Engineering Community</span>
+              <span>Technical Excellence Pillar · She Leads Tech</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 text-white">
-              She Leads Tech <br />
-              <span className="text-brand-pink">
-                Practice
-              </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-3 text-white">
+              She Leads Tech
             </h1>
-
-            <p className="text-lg sm:text-xl text-white/90 font-medium mb-8 leading-relaxed max-w-2xl">
-              Fortnightly live LeetCode and problem-solving workshops designed to build coding confidence, master algorithmic patterns, and ace technical interviews together.
+            <p className="text-xl sm:text-2xl font-black text-brand-pink tracking-wide mb-6">
+              Theory • Practice • Review
             </p>
+
+            <p className="text-lg sm:text-xl text-white/90 font-medium mb-6 leading-relaxed max-w-2xl">
+              Interactive technical workshops designed to build deep engineering understanding and coding confidence. Learn concepts through instructor-led <strong>Theory</strong>, apply what you know in hands-on <strong>Practice</strong>, and solidify mastery in <strong>Review</strong> sessions.
+            </p>
+
+            {/* Live Session Notice */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-md text-white border border-white/25 text-xs sm:text-sm font-semibold mb-8">
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse shrink-0" />
+              <span>
+                <strong>Live on Luma:</strong> Current sessions are <em>Theoretical (Theory)</em> with live walkthroughs!
+              </span>
+            </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 flex-wrap">
               <Link
@@ -58,12 +66,12 @@ export function PracticesHero() {
 
             <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-white/80 font-medium">
               <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse"/>Held every 2 weeks live
+                <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse"/>Held live fortnightly
               </span>
               <span>•</span>
-              <span>Beginner to Intermediate Friendly</span>
+              <span>DSA, System Design & Full-Stack</span>
               <span>•</span>
-              <span>Collaborative Live Coding</span>
+              <span>Safe, Zero-Ego Space</span>
             </div>
           </div>
 
@@ -75,7 +83,7 @@ export function PracticesHero() {
                 <div className="w-full aspect-square max-w-65 mx-auto flex items-center justify-center p-3 rounded-2xl mb-4">
                   <img
                     src={imgSheLeadsTech}
-                    alt="She Leads Tech Practice Logo"
+                    alt="She Leads Tech Logo"
                     width={260}
                     height={260}
                     decoding="async"
@@ -84,10 +92,13 @@ export function PracticesHero() {
                 </div>
                 <div className="text-center">
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-coral bg-brand-pink/20 px-3 py-1 rounded-full">
-                    Live Problem-Solving Series
+                    Three Learning Formats
                   </span>
                   <p className="text-lg font-bold text-gray-900 mt-2.5">
-                    Build your problem-solving habit together
+                    Theory • Practice • Review
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Current live sessions: Theoretical
                   </p>
                 </div>
               </div>

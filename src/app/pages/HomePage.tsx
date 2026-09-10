@@ -19,7 +19,7 @@ const enableGetInvolved = import.meta.env.VITE_ENABLE_GET_INVOLVED === "true";
 export function HomePage() {
   useMetaData(
     "Unlock Her Tech | Where Skills Grow And Voices Are Heard",
-    "Join Unlock Her Tech: A vibrant community for women, non-binary people, and allies in tech. Featuring fortnightly LeetCode problem-solving practices, mentorship, and inspiring podcast episodes.",
+    "Join Unlock Her Tech: A vibrant community for women, non-binary people, and allies in tech. Featuring fortnightly She Leads Tech engineering workshops, mentorship, and inspiring podcast episodes.",
     undefined,
     {
       image: "/logo.png",

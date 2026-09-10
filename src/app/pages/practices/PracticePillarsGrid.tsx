@@ -11,8 +11,8 @@ export function PracticePillarsGrid() {
           <span className="text-xs uppercase tracking-widest font-extrabold text-brand-coral mb-2 block">
             Core Principles
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6">
-            Why Engineers Love Practicing With Us
+          <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-6">
+            Why Engineers Love Learning With She Leads Tech
           </h2>
         </div>
 

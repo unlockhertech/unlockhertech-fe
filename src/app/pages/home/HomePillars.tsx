@@ -14,7 +14,7 @@ interface HomePillarsProps {
 
 export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
   return (
-    <section className="py-20 bg-stone-50 relative overflow-hidden">
+    <section id="what-we-do" className="py-20 bg-stone-50 relative overflow-hidden">
       <BrandPatternOverlay variant="watermark" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
@@ -30,7 +30,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Pillar 1: She Leads Tech Practice */}
+          {/* Pillar 1: She Leads Tech */}
           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
             <div>
               <div className="w-14 h-14 rounded-2xl bg-pink-50 text-brand-coral border border-pink-100 flex items-center justify-center mb-6">
@@ -39,11 +39,11 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-brand-coral text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
                 <HiCalendarDays className="w-3.5 h-3.5" /> Fortnightly Live
               </div>
-              <h3 className="text-xl font-extrabold text-gray-900 mb-3">
-                She Leads Tech Practice
+              <h3 className="text-xl font-black text-gray-900 mb-3">
+                She Leads Tech
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                Interactive problem-solving workshops and live group coding sessions. Master algorithms, tackle interview patterns, and build code confidence in a supportive, zero-ego space.
+                Interactive engineering workshops across three complementary formats: Theory, Practice, and Review. Master algorithms, system design, cloud, and engineering concepts in a supportive, zero-ego space.
               </p>
             </div>
 
@@ -51,7 +51,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
               to="/practices"
               className="inline-flex items-center gap-2 text-sm font-bold text-brand-coral hover:gap-3 transition-all pt-4 border-t border-gray-100"
             >
-              <span>Explore practice sessions</span>
+              <span>Explore She Leads Tech</span>
               <HiArrowRight className="w-4 h-4" />
             </Link>
           </div>

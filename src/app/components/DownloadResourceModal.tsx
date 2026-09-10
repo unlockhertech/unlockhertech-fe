@@ -67,8 +67,8 @@ function DownloadLeadForm({
   onSubmit,
 }: Readonly<DownloadLeadFormProps>) {
   const pillText = isCommunityGuide
-    ? "✨ Free Community Access · Unlock Instant PDF Download"
-    : "🚀 Free Career Guide Download";
+    ? "Free Community Access · Unlock Instant PDF Download"
+    : "Free Career Guide Download";
 
   return (
     <>

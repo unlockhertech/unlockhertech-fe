@@ -4,6 +4,8 @@ import {
   HiCodeBracket,
   HiArrowTopRightOnSquare,
   HiBell,
+  HiLightBulb,
+  HiSparkles,
 } from "react-icons/hi2";
 import { usePracticeCountdown } from "./usePracticeCountdown";
 import { trackEvent } from "../../utils/analytics";
@@ -67,8 +69,11 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
 
             <div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-stone-900 mt-1 leading-snug">
-                She Leads Tech Practice
+                She Leads Tech
               </h2>
+              <p className="text-xs sm:text-sm font-bold text-brand-coral uppercase tracking-wider mt-0.5">
+                Theory Session • Instructor-Led Learning
+              </p>
             </div>
 
             <div className="flex items-center gap-2 text-xs sm:text-sm text-stone-600 font-medium">
@@ -76,8 +81,15 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
               <span>{formattedDate} • {formattedTime}</span>
             </div>
 
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-              Interactive collaborative live coding session. We break down core algorithmic patterns, solve LeetCode-style challenges together step-by-step, and build technical interview confidence in a supportive, zero-ego space.
+            <p className="text-xs sm:text-sm font-semibold text-stone-800 leading-relaxed">
+              Topic: {topic}
+            </p>
+
+            <p className="text-xs text-stone-600 leading-relaxed bg-pink-50/50 border border-brand-pink/30 rounded-xl p-3 flex items-start gap-2">
+              <HiLightBulb className="w-4 h-4 text-brand-coral shrink-0 mt-0.5" />
+              <span>
+                <strong>Format Spotlight:</strong> Current live sessions follow our <strong>Theory</strong> format — instructor-led concept deconstruction with real-world examples and step-by-step problem walkthroughs. Full registration details are synced with Luma.
+              </span>
             </p>
           </div>
 
@@ -186,11 +198,14 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
             </div>
 
             {/* Safe Space & Code of Conduct Notice */}
-            <p className="text-[11px] text-stone-500 text-center lg:text-right">
-              ✨ Free, safe & inclusive environment. Guided by our{" "}
-              <Link to="/community-guidelines" className="text-brand-coral font-bold hover:underline">
-                Code of Conduct
-              </Link>.
+            <p className="text-[11px] text-stone-500 text-center lg:text-right flex items-center justify-center lg:justify-end gap-1.5">
+              <HiSparkles className="w-3.5 h-3.5 text-brand-coral shrink-0" />
+              <span>
+                Free, safe & inclusive environment. Guided by our{" "}
+                <Link to="/community-guidelines" className="text-brand-coral font-bold hover:underline">
+                  Code of Conduct
+                </Link>.
+              </span>
             </p>
           </div>
         </div>

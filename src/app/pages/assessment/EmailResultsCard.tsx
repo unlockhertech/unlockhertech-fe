@@ -186,7 +186,7 @@ export function EmailResultsCard({
       `═══════════════════════════════════════`,
       `YOUR NEXT-STEP RESOURCES`,
       `═══════════════════════════════════════`,
-      `1. Join Live She Leads Tech Practice Sessions:`,
+      `1. Join Live She Leads Tech Sessions (Theory, Practice, Review):`,
       `   https://unlockhertech.com/practices`,
       ``,
       `2. Listen to the Unlock Her Tech Podcast:`,

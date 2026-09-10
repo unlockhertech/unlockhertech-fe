@@ -169,7 +169,7 @@ ${urlsXml}
 function generateLlmsTxt(flags) {
   const offerings = [
     "- **Podcast Episodes**: Honest, insightful conversations with women engineers, leaders, and founders breaking barriers in tech. Available on Apple Podcasts, Spotify, YouTube, and Amazon Music.",
-    "- **She Leads Tech Practices**: Fortnightly interactive live problem-solving and coding practice sessions covering LeetCode data structures, algorithmic patterns, and technical interview frameworks.",
+    "- **She Leads Tech**: Fortnightly interactive engineering workshops structured across Theory (instructor-led learning), Practice (hands-on problem solving), and Review (strengthening retention). Covering DSA, system design, cloud, and software engineering.",
   ];
 
   if (flags.enableJobs) {
@@ -191,7 +191,7 @@ function generateLlmsTxt(flags) {
   const urls = [
     "- [Home](https://unlockhertech.com/): Official platform overview, latest episode player, and mission pillars.",
     "- [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.",
-    "- [Live Coding Practices](https://unlockhertech.com/practice): Fortnightly She Leads Tech algorithmic workshop schedule, problem sets, and Google Calendar sync.",
+    "- [She Leads Tech](https://unlockhertech.com/practices): Fortnightly technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.",
   ];
 
   if (flags.enableEvents) {
@@ -274,16 +274,16 @@ The podcast amplifies the authentic stories, career pivots, leadership triumphs,
 
 ---
 
-## 2. She Leads Tech: Fortnightly Algorithmic Practices
+## 2. She Leads Tech: Theory, Practice & Review Engineering Series
 
-A hands-on, live technical problem-solving series held every two weeks. The practice creates a high-trust, safe space where participants can practice coding, dissect data structures, and discuss interview strategies without judgment.
+An interactive technical learning series held live every two weeks. She Leads Tech features three complementary learning formats:
+- **She Leads Tech Theory**: Instructor-led teaching and practical examples (Learn it → Understand it → See it applied). Live sessions currently follow the Theory format.
+- **She Leads Tech Practice**: Hands-on problem solving, live coding, and trade-off analysis (Try it → Solve it → Discuss it → Improve it).
+- **She Leads Tech Review**: Returning to past concepts to reinforce and solidify mastery (Remember it → Practise it again → Understand it better → Make it stick).
+- Topics include: Data Structures & Algorithms, System Design, Frontend, Backend, Cloud & AWS, APIs, Databases, Testing, DevOps, Architecture, and Mobile Development.
 
 - Cadence: Fortnightly on Sundays at 18:30 BST (17:30 UTC).
-- Next Anchor Session: Sunday, August 30, 2026.
-- Three-Phase Learning Arc:
-  - Phase 1: Foundational warmups and algorithmic intuition.
-  - Phase 2: Medium-level core interview patterns (Two Pointers, Sliding Window, DFS/BFS, Dynamic Programming).
-  - Phase 3: Advanced problem-solving, trade-off analysis, and mock interviews.
+- Active Sessions: Theoretical (Theory) sessions with live walkthroughs, synced with Luma (https://luma.com/sheleadstechpractice).
 - Curriculum Topics:
   1. Two Pointers & In-Place Array Transformations
   2. Sliding Window & Substring Optimization

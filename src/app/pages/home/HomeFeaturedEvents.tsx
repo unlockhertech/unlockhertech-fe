@@ -74,7 +74,7 @@ export function HomeFeaturedEvents({ events }: Readonly<HomeFeaturedEventsProps>
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[0.7rem] uppercase tracking-wider text-brand-coral font-extrabold px-2.5 py-0.5 rounded-full bg-pink-50">
-                      {event.isPartner || event.platform === "Conference" ? "🤝 Partner Event" : event.platform}
+                      {event.isPartner || event.platform === "Conference" ? "Partner Event" : event.platform}
                     </span>
                     {event.discountPercentage && (
                       <span className="text-[0.65rem] font-bold text-brand-berry bg-pink-100/70 px-2 py-0.5 rounded-full">

@@ -6,7 +6,7 @@ import { GuidelinesPolicySections } from "./guidelines/GuidelinesPolicySections"
 export function CommunityGuidelinesPage() {
   useMetaData(
     "Community Guidelines & Code of Conduct | Unlock Her Tech",
-    "Our commitment to creating an inclusive, safe, and empowering environment for women, non-binary people, and allies across our podcast, LeetCode practices, and events.",
+    "Our commitment to creating an inclusive, safe, and empowering environment for women, non-binary people, and allies across our podcast, She Leads Tech workshops, and events.",
     "https://unlockhertech.com/community-guidelines",
     {
       image: "/logo.png",

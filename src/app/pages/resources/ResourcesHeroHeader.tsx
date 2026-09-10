@@ -47,7 +47,7 @@ export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<Resour
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs sm:text-sm font-semibold text-white/90">
             <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
               <HiCalendar className="w-4 h-4 text-brand-yellow" />
-              <span>🚀 Launches Sep 7, 2026</span>
+              <span>Launches Sep 7, 2026</span>
             </div>
             <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
               <HiGift className="w-4 h-4 text-brand-green" />

@@ -168,6 +168,13 @@ export const router = createBrowserRouter([
         },
       },
       {
+        path: "she-leads-tech",
+        lazy: async () => {
+          const { PracticesPage } = await import("./pages/PracticesPage");
+          return { Component: PracticesPage };
+        },
+      },
+      {
         path: "about",
         lazy: async () => {
           const { AboutPage } = await import("./pages/AboutPage");

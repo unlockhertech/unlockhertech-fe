@@ -3,17 +3,15 @@ import { useMetaData } from "../hooks/useMetaData";
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { PracticesHero } from "./practices/PracticesHero";
 import { PracticeCountdownCard } from "./practices/PracticeCountdownCard";
-import { PracticeCodePreview } from "./practices/PracticeCodePreview";
+import { SheLeadsTechStagesNavigator } from "./practices/SheLeadsTechStagesNavigator";
 import { PracticePatternsGrid } from "./practices/PracticePatternsGrid";
-import { PracticeSessionStructure } from "./practices/PracticeSessionStructure";
-import { PracticePillarsGrid } from "./practices/PracticePillarsGrid";
 import { PracticeRequirementsSection } from "./practices/PracticeRequirementsSection";
 
 const PRACTICES_META_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Course",
-  "name": "She Leads Tech Practice: LeetCode & Problem Solving Series",
-  "description": "Fortnightly interactive workshops designed to help developers strengthen coding skills, master algorithmic patterns (Two Pointers, Sliding Window, Graphs, Dynamic Programming), and ace technical interviews in a supportive peer environment.",
+  "name": "She Leads Tech: Theory, Practice & Review Workshop Series",
+  "description": "Fortnightly interactive engineering workshops designed to help developers master technical concepts through instructor-led Theory, hands-on Practice, and reinforcement Review. Covering DSA, system design, cloud, architecture, and full-stack engineering.",
   "provider": {
     "@type": "Organization",
     "name": "Unlock Her Tech",
@@ -31,8 +29,8 @@ const PRACTICES_META_JSON_LD = {
 
 export function PracticesPage() {
   useMetaData(
-    "She Leads Tech Practice | LeetCode & Problem Solving Series",
-    "Join live, interactive LeetCode and problem-solving sessions every two weeks. Build coding confidence, pair program, and master algorithmic interview techniques in an inclusive community.",
+    "She Leads Tech | Theory, Practice & Review Workshop Series",
+    "Join live, interactive She Leads Tech engineering workshops every two weeks. Master concepts through instructor-led Theory, hands-on collaborative Practice, and reinforcement Review sessions.",
     undefined,
     {
       image: imgSheLeadsTech,
@@ -46,25 +44,19 @@ export function PracticesPage() {
       {/* ── 1. Hero Section ─────────────────────────────────────────────── */}
       <PracticesHero />
 
-      {/* ── 1b. Live Fortnightly Practice Countdown Clock ───────────────── */}
+      {/* ── 2. Live Fortnightly Practice Countdown Clock ───────────────── */}
       <PracticeCountdownCard />
 
-      {/* ── 2. Algorithmic Code Preview Spotlight ───────────────────────── */}
-      <PracticeCodePreview />
+      {/* ── 3. Three Stages Navigator (Theory, Practice, Review) ─────────── */}
+      <SheLeadsTechStagesNavigator />
 
-      {/* ── 3. Key Patterns Grid ────────────────────────────────────────── */}
+      {/* ── 4. Engineering Topics & Domains Grid ─────────────────────────── */}
       <PracticePatternsGrid />
 
-      {/* ── 4. Session Roadmap (1-2-3 Flow) ─────────────────────────────── */}
-      <PracticeSessionStructure />
-
-      {/* ── 5. Core Principles & Pillars ────────────────────────────────── */}
-      <PracticePillarsGrid />
-
-      {/* ── 6. Requirements & Schedule ──────────────────────────────────── */}
+      {/* ── 5. Prerequisites & Guidelines ─────────────────────────────────── */}
       <PracticeRequirementsSection />
 
-      {/* ── 7. Subscribe CTA ─────────────────────────────────────────────── */}
+      {/* ── 6. Subscribe CTA ─────────────────────────────────────────────── */}
       <SubscribeCTA />
     </div>
   );

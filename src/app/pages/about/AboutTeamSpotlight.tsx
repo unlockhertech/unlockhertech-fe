@@ -1,86 +1,54 @@
 import { Link } from "react-router";
-import { FaLinkedin } from "react-icons/fa6";
-import { HiOutlineArrowRight } from "react-icons/hi2";
+import { HiOutlineArrowRight, HiUsers } from "react-icons/hi2";
 import { teamMembers } from "../../data";
 
 export function AboutTeamSpotlight() {
   return (
-    <section className="py-20 bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-          <div>
-            <span className="text-xs uppercase tracking-widest font-extrabold text-brand-coral mb-2 block">
-              Behind the Movement
-            </span>
-            <h2 className="text-3xl font-black text-gray-900">Meet the Team</h2>
-          </div>
-          <Link
-            to="/team"
-            className="inline-flex items-center gap-2 text-sm font-bold text-brand-coral hover:underline"
-          >
-            <span>View Full Team & Bios</span>
-            <HiOutlineArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+    <section className="py-16 bg-white border-b border-gray-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-stone-50 rounded-3xl p-8 sm:p-10 border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs">
+          <div className="flex-1 text-center md:text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-brand-coral text-xs font-bold uppercase tracking-wider mb-3">
+              <HiUsers className="w-3.5 h-3.5" />
+              <span>Behind the Movement</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
+              Meet the Leadership & Core Team
+            </h2>
+            <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-xl">
+              Unlock Her Tech is powered by engineers, community builders, and mentors dedicated to creating an inclusive, high-impact space for women and non-binary people in tech.
+            </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {teamMembers.slice(0, 3).map((m) => (
-            <div
-              key={`about-team-${m.name}`}
-              className="bg-stone-50 rounded-3xl p-6 border border-gray-200 flex flex-col justify-between hover:shadow-md transition-shadow"
-            >
-              <div>
-                <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center justify-center md:justify-start gap-3 mt-6">
+              <div className="flex -space-x-3 overflow-hidden">
+                {teamMembers.slice(0, 4).map((m) => (
                   <img
+                    key={`about-spotlight-avatar-${m.name}`}
                     src={m.photoUrl}
                     alt={m.name}
-                    width={64}
-                    height={64}
+                    width={44}
+                    height={44}
                     loading="lazy"
                     decoding="async"
-                    className="w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-xs"
+                    className="inline-block h-11 w-11 rounded-full ring-2 ring-white object-cover"
                   />
-                  <div>
-                    <h3 className="font-extrabold text-gray-900 text-lg leading-tight">{m.name}</h3>
-                    <p className="text-xs font-bold text-brand-coral uppercase tracking-wider mt-0.5">{m.role}</p>
-                  </div>
-                </div>
-                {m.tagline && (
-                  <p className="text-xs italic text-gray-600 mb-3 bg-white p-2.5 rounded-xl border border-black/5">
-                    &ldquo;{m.tagline}&rdquo;
-                  </p>
-                )}
-                <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-                  {m.bio}
-                </p>
+                ))}
               </div>
-
-              {m.linkedinUrl && (
-                <div className="mt-4 pt-3 border-t border-gray-200">
-                  <a
-                    href={m.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`View ${m.name}'s LinkedIn profile`}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0a66c2] hover:underline"
-                  >
-                    <FaLinkedin className="w-3.5 h-3.5" />
-                    <span>LinkedIn Profile</span>
-                  </a>
-                </div>
-              )}
+              <span className="text-xs font-bold text-stone-600 pl-1">
+                +{teamMembers.length} contributors & mentors
+              </span>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="mt-10 text-center">
-          <Link
-            to="/team"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-brand-coral text-brand-coral font-bold text-sm hover:bg-pink-50 transition-colors shadow-xs"
-          >
-            <span>Meet all team members</span>
-            <HiOutlineArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="shrink-0">
+            <Link
+              to="/team"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all"
+            >
+              <span>Explore Team & Bios</span>
+              <HiOutlineArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

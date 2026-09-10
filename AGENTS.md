@@ -68,5 +68,8 @@
 22. **Serverless Lead Pipelines & Graceful Degradation:**
     - Always route high-volume lead capture and promotional forms through serverless functions (`/api/*`) connected to dedicated CRM providers rather than static hosting forms to bypass submission ceilings and protect API write secrets. Always catch exceptions to preserve on-screen rewards.
 
-23. **Skill Reference:**
+23. **Progressive Disclosure & Anti-Scroll-Fatigue Architecture:**
+    - Never dump endless vertical lists or monolithic multi-card sections on the user. Always employ progressive disclosure: tabbed switchers for stages/pathways, two-tier active vs roadmap catalog grids, focused step-by-step quiz wizards, controlled pagination (`PAGE_SIZE = 6` to `9`), collapsible accordions for reference content, and sticky jump/progress bars.
+
+24. **Skill Reference:**
     - Refer to `.agents/skills/frontend-code-quality/SKILL.md` for complete code examples, patterns, and validation checklists.

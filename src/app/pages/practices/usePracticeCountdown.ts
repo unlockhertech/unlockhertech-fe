@@ -18,16 +18,16 @@ export interface PracticeCountdownState extends PracticeSessionInfo {
   totalRemainingSeconds: number;
 }
 
-// Fortnightly topics curriculum loop
+// Fortnightly topics curriculum loop (currently live sessions are Theoretical)
 export const PRACTICE_TOPICS = [
-  "Two Pointers & In-Place Array Transformations",
-  "Sliding Window & Substring Optimization",
-  "Trees: DFS, BFS Level Order Traversal & Validation",
-  "Hash Maps, Frequency Counters & Fast Lookups",
-  "Graphs, Island Counts & Matrix Traversals",
-  "Dynamic Programming, Memoization & Recurrence Relations",
-  "Binary Search & Monotonic Condition Optimization",
-  "Stacks, Queues & Monotonic Frameworks",
+  "She Leads Tech Theory: Sliding Window & Substring Patterns",
+  "She Leads Tech Theory: Scalable System Design & Microservices",
+  "She Leads Tech Theory: Trees, DFS & BFS Level-Order Traversals",
+  "She Leads Tech Theory: API Architecture & Resilient Backend Design",
+  "She Leads Tech Theory: Hash Maps, Fast Lookups & Caching Strategies",
+  "She Leads Tech Theory: Cloud & AWS Fundamentals for Engineers",
+  "She Leads Tech Theory: Dynamic Programming & Memoization",
+  "She Leads Tech Theory: Database Indexing & Query Optimization",
 ];
 
 // Anchor epoch: Sunday, Aug 30, 2026 at 18:30 BST (17:30 UTC)
@@ -76,9 +76,9 @@ export function getNextPracticeSession(currentTime: number = Date.now()): Practi
   const endDate = new Date(targetDate.getTime() + SESSION_DURATION_MS);
   const endTimeUtc = endDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
 
-  const calTitle = encodeURIComponent("She Leads Tech Practice: Live Problem Solving");
+  const calTitle = encodeURIComponent("She Leads Tech: Theory & Technical Workshop");
   const calDetails = encodeURIComponent(
-    `Join our fortnightly interactive live problem-solving session for women, non-binary technologists, and allies.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/practices`
+    `Join our fortnightly interactive She Leads Tech session. Currently featuring instructor-led Theory workshops with step-by-step practical examples, architecture breakdowns, and Q&A.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/practices\nLuma: https://luma.com/sheleadstechpractice`
   );
   const calLocation = encodeURIComponent("Online (Live Coding Workshop)");
   const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${startTimeUtc}/${endTimeUtc}&details=${calDetails}&location=${calLocation}`;
@@ -119,7 +119,7 @@ export function usePracticeCountdown(customTargetDate?: Date): PracticeCountdown
       });
       return {
         targetDate: customTargetDate,
-        topic: "Algorithmic Pattern Live Practice",
+        topic: "She Leads Tech Theory: Live Workshop",
         sessionNumber: 1,
         formattedDate,
         formattedTime,

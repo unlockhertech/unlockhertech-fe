@@ -1,3 +1,4 @@
+import { HiMicrophone } from "react-icons/hi2";
 import { EpisodeCard } from "../../components/EpisodeCard";
 import { EpisodeListItem } from "../../components/EpisodeListItem";
 import type { Episode } from "../../types";
@@ -25,7 +26,9 @@ export function EpisodesGrid({
   if (filteredCount === 0) {
     return (
       <div className="text-center py-24">
-        <div className="text-5xl mb-4">🎙️</div>
+        <div className="w-16 h-16 rounded-2xl bg-pink-50 text-brand-coral flex items-center justify-center mx-auto mb-4">
+          <HiMicrophone className="w-8 h-8" />
+        </div>
         <p className="text-gray-500 text-lg mb-2">No episodes found</p>
         <p className="text-gray-400 text-sm">Try adjusting your search or filters</p>
         <button
