@@ -31,22 +31,25 @@
       // Defensively trap third-party tracker errors (e.g. Metricool web-vitals reportAllChanges 'startTime' bug)
       // to prevent third-party exceptions from interrupting React hydration or component rendering.
       if (typeof window !== 'undefined') {
-        window.addEventListener('error', function(event) {
+        // Note: window.onerror (assignment form) is required here rather than
+        // addEventListener('error', ...) because only the onerror-return-true
+        // form can suppress the browser's default "Uncaught ..." console output.
+        let previousOnError = window.onerror;
+        window.onerror = function(message, source, lineno, colno, error) {
           try {
-            let msg = event && event.message ? String(event.message) : '';
-            let filename = event && event.filename ? String(event.filename) : '';
-            if (
-              (msg.includes('startTime') || msg.includes('reportAllChanges')) &&
-              (filename.includes('metricool') || filename.includes('be.js') || !filename)
-            ) {
+            let msg = message ? String(message) : '';
+            if (msg.includes('startTime') || msg.includes('reportAllChanges')) {
               console.warn('[Analytics] Suppressed non-critical third-party tracker error:', msg);
-              event.preventDefault();
               return true;
             }
           } catch (e) {
-            // No-op
+            console.debug('[Analytics] Error while filtering tracker error:', e);
           }
-        }, true);
+          if (typeof previousOnError === 'function') {
+            return previousOnError(message, source, lineno, colno, error);
+          }
+          return false;
+        };
 
         window.addEventListener('unhandledrejection', function(event) {
           try {
@@ -56,7 +59,7 @@
               event.preventDefault();
             }
           } catch (e) {
-            // No-op
+            console.debug('[Analytics] Error while filtering unhandled rejection:', e);
           }
         });
       }
