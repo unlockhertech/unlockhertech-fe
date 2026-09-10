@@ -30,8 +30,6 @@
     <script>
       // Defensively trap third-party tracker errors (e.g. Metricool web-vitals reportAllChanges 'startTime' bug)
       // to prevent third-party exceptions from interrupting React hydration or component rendering.
-      import * as beTracker from "react-router/dist/production/data-CjO11-hU.d.ts";
-
       if (typeof window !== 'undefined') {
         window.addEventListener('error', function(event) {
           try {
@@ -104,8 +102,8 @@
           c.src = "https://tracker.metricool.com/resources/be.js";
           c.onload = function() {
             try {
-              if (beTracker !== undefined && beTracker && typeof beTracker.t === "function") {
-                beTracker.t({ hash: "138a511079cc333358e98fb9472e9bed" });
+              if (typeof window !== "undefined" && window.beTracker && typeof window.beTracker.t === "function") {
+                window.beTracker.t({ hash: "138a511079cc333358e98fb9472e9bed" });
               }
             } catch (err) {
               console.warn("[Metricool] Tracker initialization error suppressed:", err);
