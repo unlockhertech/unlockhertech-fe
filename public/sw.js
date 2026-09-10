@@ -1,5 +1,5 @@
 // Unlock Her Tech Service Worker
-const CACHE_NAME = 'uht-v1';
+const CACHE_NAME = 'uht-v2';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
@@ -31,13 +31,22 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-function shouldBypassRequest(url) {
+function shouldBypassRequest(url, request) {
   const isDevHost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
   const isDevInternal = url.pathname.startsWith('/@') || url.pathname.includes('node_modules');
   const isCrossOrigin = url.origin !== self.location.origin;
   const isAdminOrApi = url.pathname.startsWith('/admin') || url.pathname.startsWith('/api');
 
-  return isDevHost || isDevInternal || isCrossOrigin || isAdminOrApi;
+  // Let browser native module loader & preload cache handle Vite JS script chunks directly
+  // to avoid Chrome "cross-world service worker resource mismatch" on modulepreload hints.
+  const isScriptOrModule =
+    request.destination === 'script' ||
+    request.destination === 'worker' ||
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.mjs') ||
+    url.pathname.startsWith('/assets/');
+
+  return isDevHost || isDevInternal || isCrossOrigin || isAdminOrApi || isScriptOrModule;
 }
 
 async function handleNavigationRequest(request) {
@@ -87,7 +96,7 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-  if (shouldBypassRequest(url)) return;
+  if (shouldBypassRequest(url, request)) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(handleNavigationRequest(request));

@@ -26,8 +26,41 @@
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#b42970" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#b42970" />
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) & Metricool Tracker -->
     <script>
+      // Defensively trap third-party tracker errors (e.g. Metricool web-vitals reportAllChanges 'startTime' bug)
+      // to prevent third-party exceptions from interrupting React hydration or component rendering.
+      if (typeof window !== 'undefined') {
+        window.addEventListener('error', function(event) {
+          try {
+            var msg = event && event.message ? String(event.message) : '';
+            var filename = event && event.filename ? String(event.filename) : '';
+            if (
+              (msg.indexOf('startTime') !== -1 || msg.indexOf('reportAllChanges') !== -1) &&
+              (filename.indexOf('metricool') !== -1 || filename.indexOf('be.js') !== -1 || !filename)
+            ) {
+              console.warn('[Analytics] Suppressed non-critical third-party tracker error:', msg);
+              event.preventDefault();
+              return true;
+            }
+          } catch (e) {
+            // No-op
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(event) {
+          try {
+            var reason = event && event.reason ? String(event.reason) : '';
+            if (reason.indexOf('startTime') !== -1 || reason.indexOf('metricool') !== -1) {
+              console.warn('[Analytics] Suppressed unhandled tracker promise rejection:', reason);
+              event.preventDefault();
+            }
+          } catch (e) {
+            // No-op
+          }
+        });
+      }
+
       globalThis.dataLayer = globalThis.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       
@@ -68,9 +101,16 @@
           c.async = true;
           c.src = "https://tracker.metricool.com/resources/be.js";
           c.onload = function() {
-            if (typeof beTracker !== "undefined" && beTracker && typeof beTracker.t === "function") {
-              beTracker.t({ hash: "138a511079cc333358e98fb9472e9bed" });
+            try {
+              if (typeof beTracker !== "undefined" && beTracker && typeof beTracker.t === "function") {
+                beTracker.t({ hash: "138a511079cc333358e98fb9472e9bed" });
+              }
+            } catch (err) {
+              console.warn("[Metricool] Tracker initialization error suppressed:", err);
             }
+          };
+          c.onerror = function() {
+            console.debug("[Metricool] Script failed to load or was blocked.");
           };
           b.appendChild(c);
         } catch (err) {
