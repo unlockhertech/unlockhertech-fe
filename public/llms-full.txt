@@ -46,6 +46,14 @@ An interactive technical learning series held live every two weeks. She Leads Te
 
 ---
 
+## 5. Free Career Playbooks & PDF Guides
+
+Downloadable guides covering tech career roadmaps, portfolio building, technical interview prep, and salary negotiation.
+
+- URL: https://unlockhertech.com/resources
+
+---
+
 ## 7. Community Standards & Policies
 
 - Community Guidelines & Code of Conduct: https://unlockhertech.com/community-guidelines

@@ -22,16 +22,16 @@ export function AssessmentStickyBar({
     <aside
       aria-label="Assessment progress and quick jump"
       data-testid="sticky-progress-bar"
-      className="fixed bottom-5 inset-x-0 mx-auto max-w-lg z-40 px-4 pointer-events-none print:hidden transition-all duration-300 transform translate-y-0 animate-in fade-in slide-in-from-bottom-3"
+      className="fixed bottom-5 inset-x-0 mx-auto max-w-lg z-40 px-4 pointer-events-none print:hidden transition-all duration-300 transform translate-y-0 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-3"
     >
       <div className="pointer-events-auto bg-stone-900/95 text-white backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-2xl border border-white/15 flex items-center justify-between gap-4">
         {isComplete ? (
           <button
             type="button"
             onClick={onScrollToResults}
-            className="w-full py-2.5 px-4 rounded-xl bg-linear-to-r from-brand-coral via-pink-600 to-brand-coral hover:opacity-95 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-coral/30 cursor-pointer transition-transform active:scale-98"
+            className="w-full py-2.5 px-4 rounded-xl bg-linear-to-r from-brand-coral via-pink-600 to-brand-coral hover:opacity-95 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-coral/30 cursor-pointer transition-transform motion-safe:active:scale-98"
           >
-            <HiSparkles className="w-5 h-5 text-brand-yellow shrink-0 animate-pulse" />
+            <HiSparkles className="w-5 h-5 text-brand-yellow shrink-0 motion-safe:animate-pulse" />
             <span>16/16 Completed — View Your Results</span>
             <HiArrowDown className="w-4 h-4 shrink-0" />
           </button>
@@ -57,7 +57,7 @@ export function AssessmentStickyBar({
             <button
               type="button"
               onClick={onScrollToResults}
-              className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition-colors cursor-pointer border border-white/10 active:scale-95"
+              className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold transition-colors cursor-pointer border border-white/10 motion-safe:active:scale-95"
             >
               <span>Results</span>
               <HiArrowDown className="w-3.5 h-3.5" />

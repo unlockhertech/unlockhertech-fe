@@ -331,7 +331,7 @@ A community job directory prioritizing roles with verified salary transparency, 
 
 ## 5. Free Career Playbooks & PDF Guides
 
-Weekly downloadable guides covering tech career roadmaps, portfolio building, technical interview prep, and salary negotiation.
+Downloadable guides covering tech career roadmaps, portfolio building, technical interview prep, and salary negotiation.
 
 - URL: https://unlockhertech.com/resources
 `;

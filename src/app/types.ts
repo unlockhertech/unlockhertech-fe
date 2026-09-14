@@ -63,6 +63,7 @@ export interface Resource {
   slug: string;
   description: string;
   category: string;
+  stage?: string;
   pdfUrl?: string;
   fileSize?: string;
   pageCount?: string;

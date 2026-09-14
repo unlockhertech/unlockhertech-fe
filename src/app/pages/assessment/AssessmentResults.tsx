@@ -77,11 +77,11 @@ export function AssessmentResults({
       {isComplete && (
         <div
           data-testid="completion-milestone-banner"
-          className="mb-8 p-6 sm:p-7 rounded-3xl bg-linear-to-r from-pink-50/80 via-amber-50/70 to-emerald-50/80 border-2 border-brand-coral/25 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5 animate-in fade-in slide-in-from-top-4 duration-500"
+          className="mb-8 p-6 sm:p-7 rounded-3xl bg-linear-to-r from-pink-50/80 via-amber-50/70 to-emerald-50/80 border-2 border-brand-coral/25 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-4 duration-500"
         >
           <div className="flex items-center gap-4 text-center sm:text-left">
             <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-brand-coral to-brand-yellow flex items-center justify-center text-white shadow-md shrink-0">
-              <HiTrophy className="w-8 h-8 animate-bounce" />
+              <HiTrophy className="w-8 h-8 motion-safe:animate-bounce" />
             </div>
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-coral/10 text-brand-coral font-extrabold text-xs uppercase tracking-wider mb-1">
@@ -101,7 +101,7 @@ export function AssessmentResults({
               type="button"
               onClick={handleDownloadPdf}
               disabled={isGeneratingPdf}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all motion-safe:hover:scale-105 motion-safe:active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed"
               aria-label="Download My Career Plan (PDF)"
             >
               {isGeneratingPdf ? (
@@ -119,7 +119,7 @@ export function AssessmentResults({
             <button
               type="button"
               onClick={onTriggerConfetti}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white hover:bg-stone-50 text-stone-700 font-extrabold text-xs sm:text-sm border border-stone-200 shadow-xs transition-all hover:scale-105 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white hover:bg-stone-50 text-stone-700 font-extrabold text-xs sm:text-sm border border-stone-200 shadow-xs transition-all motion-safe:hover:scale-105 cursor-pointer"
               aria-label="Celebrate again with confetti"
             >
               <HiSparkles className="w-4 h-4 text-brand-yellow" />
@@ -153,7 +153,7 @@ export function AssessmentResults({
             type="button"
             onClick={handleDownloadPdf}
             disabled={isGeneratingPdf}
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-sm shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-75"
+            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-sm shadow-md transition-all motion-safe:hover:scale-105 motion-safe:active:scale-95 cursor-pointer disabled:opacity-75"
             aria-label="Download My Career Plan (PDF)"
           >
             {isGeneratingPdf ? (
@@ -177,6 +177,11 @@ export function AssessmentResults({
             <span>Print Worksheet</span>
           </button>
         </div>
+
+        <p className="mt-4 text-xs text-stone-500 font-semibold flex items-center justify-center gap-1.5">
+          <HiSparkles className="w-3.5 h-3.5 text-brand-yellow" />
+          <span>Trusted by hundreds of women planning their tech transition.</span>
+        </p>
       </div>
 
       {/* Visual Radar Chart + Category Progress Bars Grid */}
@@ -234,25 +239,44 @@ export function AssessmentResults({
         </div>
       </div>
 
-      {/* Auto-matched weekly PDF guides and podcast episodes */}
-      <AutoMatchedResourcesSection matches={matchedResources} />
+      {/* Auto-matched PDF guides and podcast episodes */}
+      <details className="mt-8 group" open>
+        <summary className="cursor-pointer list-none flex items-center justify-between gap-2 text-lg font-extrabold text-stone-900 [&::-webkit-details-marker]:hidden print:hidden">
+          <span>Recommended Guides & Episodes</span>
+          <HiArrowRight className="w-4 h-4 text-stone-400 transition-transform group-open:rotate-90" />
+        </summary>
+        <div className="mt-4">
+          <AutoMatchedResourcesSection matches={matchedResources} />
+        </div>
+      </details>
 
       {/* Email Results directly to candidate */}
-      <EmailResultsCard
-        grandTotal={grandTotal}
-        scores={scores}
-        readinessBadge={readinessBadge}
-        recommendation={recommendation}
-        reflectionNotes={reflectionNotes}
-        totalAnswered={totalAnswered}
-      />
+      <details className="mt-8 pt-8 border-t border-stone-100 group print:hidden">
+        <summary className="cursor-pointer list-none flex items-center justify-between gap-2 text-lg font-extrabold text-stone-900 [&::-webkit-details-marker]:hidden">
+          <span>Email My Results</span>
+          <HiArrowRight className="w-4 h-4 text-stone-400 transition-transform group-open:rotate-90" />
+        </summary>
+        <div className="mt-4">
+          <EmailResultsCard
+            grandTotal={grandTotal}
+            scores={scores}
+            readinessBadge={readinessBadge}
+            recommendation={recommendation}
+            reflectionNotes={reflectionNotes}
+            totalAnswered={totalAnswered}
+          />
+        </div>
+      </details>
 
       {/* Personal Reflection Notes */}
-      <div className="mt-10 pt-8 border-t border-stone-100">
-        <label htmlFor="reflection-notes" className="block text-lg font-extrabold text-stone-900 mb-2">
-          Personal Reflection & Next Actions
-        </label>
-        <p className="text-xs text-stone-500 mb-4">
+      <details className="mt-8 pt-8 border-t border-stone-100 group" open>
+        <summary className="cursor-pointer list-none flex items-center justify-between gap-2 [&::-webkit-details-marker]:hidden print:hidden">
+          <label htmlFor="reflection-notes" className="block text-lg font-extrabold text-stone-900 cursor-pointer">
+            Personal Reflection & Next Actions
+          </label>
+          <HiArrowRight className="w-4 h-4 text-stone-400 transition-transform group-open:rotate-90" />
+        </summary>
+        <p className="text-xs text-stone-500 mb-4 mt-1">
           Write down 2-3 immediate steps you will take based on your score summary. Saved automatically in your browser.
         </p>
         <textarea
@@ -278,7 +302,7 @@ export function AssessmentResults({
             <span>Download Plan with Notes (PDF)</span>
           </button>
         </div>
-      </div>
+      </details>
 
       {/* Privacy Guarantee Note */}
       <div className="mt-8 pt-6 border-t border-stone-100 flex items-center justify-center text-center">

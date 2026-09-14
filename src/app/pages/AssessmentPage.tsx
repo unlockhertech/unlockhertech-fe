@@ -91,8 +91,8 @@ export function AssessmentPage() {
         ) : null}
 
         {/* Full Worksheet View (always rendered for print or when viewMode === 'worksheet') */}
-        <div className={`space-y-10 ${viewMode === "focus" ? "hidden print:block" : "block"}`}>
-          {CATEGORIES.map((cat) => (
+        <div className={`space-y-6 ${viewMode === "focus" ? "hidden print:block" : "block"}`}>
+          {CATEGORIES.map((cat, idx) => (
             <CategorySection
               key={cat.key}
               number={cat.number}
@@ -102,6 +102,8 @@ export function AssessmentPage() {
               questions={QUESTIONS.filter((q) => q.catKey === cat.key)}
               answers={answers}
               onSelectScore={handleSelectScore}
+              collapsible={viewMode === "worksheet"}
+              defaultOpen={idx === 0}
             />
           ))}
         </div>

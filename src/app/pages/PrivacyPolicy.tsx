@@ -46,7 +46,7 @@ export function PrivacyPolicyContent() {
         <p>We may collect and process the following categories of personal data:</p>
         <ul className="list-disc pl-6 space-y-2 mt-2">
           <li>
-            <strong>Contact & Identity Data:</strong> Your name, email address, and optional WhatsApp phone number or Discord username when you register for weekly PDF playbooks, assessment results, workshop reminders, or community circles.
+            <strong>Contact & Identity Data:</strong> Your name, email address, and optional WhatsApp phone number or Discord username when you register for PDF playbooks, assessment results, workshop reminders, or community circles.
           </li>
           <li>
             <strong>Career Assessment & Preference Data:</strong> Self-assessed competency scores, focus areas, and optional reflection notes. <em>(Note: Your scores and reflection notes are stored locally in your browser's localStorage by default and are only transmitted to our servers if you explicitly choose to email them to yourself or submit an application.)</em>
@@ -95,7 +95,7 @@ export function PrivacyPolicyContent() {
         </h2>
         <p>We use your personal data exclusively to:</p>
         <ul className="list-disc pl-6 space-y-2 mt-2">
-          <li>Deliver requested weekly PDF guides, career roadmaps, and podcast updates.</li>
+          <li>Deliver requested PDF guides, career roadmaps, and podcast updates.</li>
           <li>Send community invitations for our WhatsApp group, Discord server, and live coding sessions.</li>
           <li>Respond to your direct inquiries and mentor/speaker submissions.</li>
           <li>Continuously improve platform usability and content relevance.</li>

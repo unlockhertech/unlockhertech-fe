@@ -8,6 +8,8 @@ export interface CategorySectionProps {
   questions: Question[];
   answers: Record<string, number>;
   onSelectScore: (questionId: string, value: number) => void;
+  collapsible?: boolean;
+  defaultOpen?: boolean;
 }
 
 export function CategorySection({
@@ -18,19 +20,53 @@ export function CategorySection({
   questions,
   answers,
   onSelectScore,
+  collapsible = false,
+  defaultOpen = true,
 }: Readonly<CategorySectionProps>) {
+  const answeredCount = questions.filter((q) => answers[q.id]).length;
+  const heading = (
+    <div className="flex items-center gap-3.5">
+      <div className={`w-9 h-9 rounded-2xl font-extrabold flex items-center justify-center text-sm shadow-xs shrink-0 ${badgeColor}`}>
+        {number}
+      </div>
+      <div className="min-w-0">
+        <h2 className="text-xl font-extrabold text-stone-900">{title}</h2>
+        <p className="text-xs text-stone-500 mt-0.5">{description}</p>
+      </div>
+    </div>
+  );
+
+  if (collapsible) {
+    return (
+      <details className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs group" open={defaultOpen}>
+        <summary className="flex items-center justify-between gap-3 cursor-pointer list-none border-b border-stone-100 pb-4 mb-5 [&::-webkit-details-marker]:hidden">
+          {heading}
+          <span className="shrink-0 text-xs font-bold text-stone-400 group-open:text-brand-coral">
+            {answeredCount}/{questions.length}
+          </span>
+        </summary>
+        <CategoryQuestions questions={questions} answers={answers} onSelectScore={onSelectScore} />
+      </details>
+    );
+  }
+
   return (
     <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs">
-      <div className="flex items-center gap-3.5 border-b border-stone-100 pb-4 mb-5">
-        <div className={`w-9 h-9 rounded-2xl font-extrabold flex items-center justify-center text-sm shadow-xs ${badgeColor}`}>
-          {number}
-        </div>
-        <div>
-          <h2 className="text-xl font-extrabold text-stone-900">{title}</h2>
-          <p className="text-xs text-stone-500 mt-0.5">{description}</p>
-        </div>
-      </div>
+      <div className="border-b border-stone-100 pb-4 mb-5">{heading}</div>
+      <CategoryQuestions questions={questions} answers={answers} onSelectScore={onSelectScore} />
+    </div>
+  );
+}
 
+interface CategoryQuestionsProps {
+  questions: Question[];
+  answers: Record<string, number>;
+  onSelectScore: (questionId: string, value: number) => void;
+}
+
+function CategoryQuestions({ questions, answers, onSelectScore }: Readonly<CategoryQuestionsProps>) {
+  return (
+    <>
       {/* Rating Scale Legend */}
       <div className="mb-6 px-4 py-2.5 rounded-2xl bg-stone-50 border border-stone-200/70 text-[0.72rem] sm:text-xs text-stone-600 flex flex-wrap items-center justify-between gap-y-1 gap-x-3" aria-label="Rating Scale Legend">
         <span className="font-extrabold text-stone-700 uppercase tracking-wider text-[0.68rem] sm:text-xs">
@@ -102,6 +138,6 @@ export function CategorySection({
           );
         })}
       </div>
-    </div>
+    </>
   );
 }

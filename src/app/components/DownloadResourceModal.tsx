@@ -1,4 +1,4 @@
-import { useState, type SyntheticEvent } from "react";
+import { useEffect, useRef, useState, type SyntheticEvent } from "react";
 import { Link } from "react-router";
 import { HiXMark, HiCheckCircle, HiEnvelope, HiShieldCheck, HiBell, HiSparkles } from "react-icons/hi2";
 import type { Resource } from "../types";
@@ -79,7 +79,7 @@ function DownloadLeadForm({
       </div>
 
       {/* Title & Subtitle */}
-      <h3 className="text-xl font-extrabold text-stone-900 leading-snug mb-2">
+      <h3 id="modal-headline" className="text-xl font-extrabold text-stone-900 leading-snug mb-2">
         {modalTitle}
       </h3>
 
@@ -108,12 +108,13 @@ function DownloadLeadForm({
 
         <div>
           <label htmlFor="modal-name-input" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
-            Your Full Name
+            Your Full Name <span className="text-brand-coral">*</span>
           </label>
           <input
             id="modal-name-input"
             type="text"
             name="fullName"
+            required
             value={fullName}
             onChange={(e) => onFullNameChange(e.target.value)}
             placeholder="e.g. Alex Morgan"
@@ -215,7 +216,7 @@ function DownloadSuccessState({ isCommunityGuide, email, onClose }: Readonly<Dow
         <HiCheckCircle className="w-10 h-10" />
       </div>
 
-      <h3 className="text-2xl font-extrabold text-stone-900">
+      <h3 id="modal-headline" className="text-2xl font-extrabold text-stone-900">
         {heading}
       </h3>
 
@@ -263,12 +264,56 @@ export function DownloadResourceModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    previouslyFocusedElementRef.current = document.activeElement as HTMLElement | null;
+
+    const focusTimer = window.setTimeout(() => {
+      const firstField = dialogRef.current?.querySelector<HTMLElement>("input, select, textarea, button");
+      firstField?.focus();
+    }, 0);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !dialogRef.current) return;
+
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedElementRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   const isCommunityGuide = !isEarlyAccessMode && (resource?.requiresLogin || (resource?.weekNumber && resource.weekNumber > 3));
 
-  const fallbackTitle = isCommunityGuide ? "Community Guide 4+ Unlock" : "September 7 Launch Waitlist";
+  const fallbackTitle = isCommunityGuide ? "Community Guide 4+ Unlock" : "Complete 10-Guide Transition Suite";
   const resourceTitle = resource?.title || fallbackTitle;
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -292,7 +337,7 @@ export function DownloadResourceModal({
       formData.append("discordHandle", discordHandle);
       formData.append("roleInterest", roleInterest);
       formData.append("resourceTitle", resourceTitle);
-      formData.append("mode", isCommunityGuide ? "Community Member Access (WhatsApp & Discord)" : "Sep 7 Launch Notification");
+      formData.append("mode", isCommunityGuide ? "Community Member Access (WhatsApp & Discord)" : "Complete 10-Guide Bundle Request");
 
       await fetch("/", {
         method: "POST",
@@ -300,7 +345,23 @@ export function DownloadResourceModal({
         body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
       });
     } catch (err) {
-      console.warn("Form payload error:", err);
+      console.warn("Netlify form submission error:", err);
+    }
+
+    try {
+      await fetch("/.netlify/functions/subscribe-resource", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          fullName,
+          discordHandle,
+          roleInterest,
+          resourceTitle,
+        }),
+      });
+    } catch (err) {
+      console.warn("Brevo subscribe-resource request error:", err);
     }
 
     setTimeout(() => {
@@ -317,13 +378,14 @@ export function DownloadResourceModal({
       return `Unlock ${resource?.title || "Guide 4+"}: Join Our Community`;
     }
     if (resource) {
-      return `Get Notified: ${resource.title}`;
+      return `Unlock: ${resource.title}`;
     }
-    return "Join the September 7 Launch Waitlist";
+    return "Unlock: Complete 10-Guide Transition Suite";
   };
 
   return (
     <dialog
+      ref={dialogRef}
       className="fixed inset-0 z-50 overflow-y-auto bg-transparent border-none w-full h-full flex items-center justify-center p-4 sm:p-6"
       open
       aria-labelledby="modal-headline"
@@ -335,7 +397,7 @@ export function DownloadResourceModal({
         onClick={onClose}
         aria-label="Close download modal backdrop"
       />
-      <div className="relative bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200 z-10">
+      <div className="relative bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-stone-200 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 duration-200 z-10">
         
         {/* Header decoration band */}
         <div className="h-3 bg-linear-to-r from-brand-pink via-brand-coral to-brand-blue" />

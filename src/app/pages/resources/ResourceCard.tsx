@@ -1,8 +1,7 @@
+import { useState } from "react";
 import {
-  HiCalendar,
   HiCheckCircle,
   HiLockClosed,
-  HiBell,
   HiArrowDownTray,
   HiDocumentCheck,
 } from "react-icons/hi2";
@@ -12,46 +11,60 @@ import type { ExtendedResource } from "./resourceData";
 interface ResourceCardProps {
   item: ExtendedResource;
   index: number;
-  now: number;
   userEmail: string | null;
-  onOpenDownload: (item: ExtendedResource, earlyAccess?: boolean) => void;
+  onOpenDownload: (item: ExtendedResource, bundleMode?: boolean) => void;
 }
 
-function getActionButtonClasses(
-  isReleased: boolean,
-  requiresCredentials: boolean,
-  isUnlockedForUser: boolean
-): string {
-  if (!isReleased) {
-    return "bg-brand-coral text-white hover:opacity-90 hover:scale-105";
+const DOWNLOADED_IDS_KEY = "uht_downloaded_resource_ids";
+
+function readDownloadedIds(): string[] {
+  try {
+    const raw = localStorage.getItem(DOWNLOADED_IDS_KEY);
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch (err) {
+    console.warn("Failed to read downloaded resource ids from localStorage:", err);
+    return [];
   }
+}
+
+function markResourceAsDownloaded(id: string) {
+  try {
+    const existing = readDownloadedIds();
+    if (!existing.includes(id)) {
+      localStorage.setItem(DOWNLOADED_IDS_KEY, JSON.stringify([...existing, id]));
+    }
+  } catch (err) {
+    console.warn("Failed to persist downloaded resource id to localStorage:", err);
+  }
+}
+
+function getActionButtonClasses(requiresCredentials: boolean, isUnlockedForUser: boolean): string {
   if (!requiresCredentials || isUnlockedForUser) {
-    return "bg-emerald-600 text-white hover:bg-emerald-700 hover:scale-105";
+    return "bg-emerald-600 text-white motion-safe:hover:scale-105 hover:bg-emerald-700";
   }
-  return "bg-stone-900 text-white hover:bg-brand-coral hover:scale-105";
+  return "bg-stone-900 text-white motion-safe:hover:scale-105 hover:bg-brand-coral";
 }
 
 export function ResourceCard({
   item,
   index,
-  now,
   userEmail,
   onOpenDownload,
 }: Readonly<ResourceCardProps>) {
   const weekNum = item.weekNumber || index + 1;
   const requiresCredentials = item.requiresLogin || weekNum > 3;
-  const releaseTime = item.releaseTimestamp || new Date("2026-08-24T00:00:00Z").getTime();
-  const isReleased = releaseTime <= now;
-  const isUnlockedForUser = Boolean(userEmail) || (!requiresCredentials && isReleased);
+  const isUnlockedForUser = Boolean(userEmail) || !requiresCredentials;
+  const [isDownloaded, setIsDownloaded] = useState(() => readDownloadedIds().includes(item.id));
+
+  const handleCardAction = () => {
+    if (!requiresCredentials || isUnlockedForUser) {
+      markResourceAsDownloaded(item.id);
+      setIsDownloaded(true);
+    }
+    onOpenDownload(item, false);
+  };
 
   const renderStatusPill = () => {
-    if (!isReleased) {
-      return (
-        <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">
-          <HiCalendar className="w-3 h-3" /> Drops {item.releaseDate || "Sep 7"}
-        </span>
-      );
-    }
     if (!requiresCredentials) {
       return (
         <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
@@ -74,11 +87,11 @@ export function ResourceCard({
   };
 
   const renderButtonContent = () => {
-    if (!isReleased) {
+    if (isDownloaded && (!requiresCredentials || isUnlockedForUser)) {
       return (
         <>
-          <HiBell className="w-4 h-4" />
-          <span>Get Notified</span>
+          <HiCheckCircle className="w-4 h-4 text-emerald-300" />
+          <span>Downloaded</span>
         </>
       );
     }
@@ -106,12 +119,12 @@ export function ResourceCard({
     );
   };
 
+  const actionLabel = requiresCredentials && !isUnlockedForUser
+    ? `Unlock ${item.title}`
+    : `Download PDF: ${item.title}`;
+
   return (
-    <div
-      className={`group bg-white rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
-        isReleased ? "border-stone-200/90 shadow-sm" : "border-stone-200/60 bg-stone-50/50 shadow-xs"
-      }`}
-    >
+    <div className="group bg-white rounded-3xl p-6 border border-stone-200/90 shadow-sm transition-all duration-300 flex flex-col justify-between hover:shadow-xl">
       <div>
         {/* Document Visual Header */}
         <PdfPaperThumbnail
@@ -119,12 +132,12 @@ export function ResourceCard({
           category={item.category}
           pageCount={item.pageCount || "3 Pages"}
           weekNumber={weekNum}
-          releaseDate={item.releaseDate || "Sep 7, 2026"}
+          releaseDate={item.releaseDate || "Sep 14, 2026"}
           colorIndex={index}
           customColor={item.accentColor}
           requiresLogin={requiresCredentials}
           isUnlocked={isUnlockedForUser}
-          isReleased={isReleased}
+          isReleased={true}
         />
 
         {/* Copy */}
@@ -134,7 +147,7 @@ export function ResourceCard({
               {item.category}
             </span>
 
-            {/* Access / Launch Status Pill */}
+            {/* Access Status Pill */}
             {renderStatusPill()}
           </div>
 
@@ -150,14 +163,14 @@ export function ResourceCard({
       {/* Footer Action */}
       <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between">
         <span className="text-xs text-stone-400 font-medium">
-          Week {weekNum} • {item.pageCount || "Printable PDF"}
+          PDF {weekNum} • {item.pageCount || "Printable PDF"}
         </span>
 
         <button
           type="button"
-          onClick={() => onOpenDownload(item, false)}
+          onClick={handleCardAction}
+          aria-label={actionLabel}
           className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ${getActionButtonClasses(
-            isReleased,
             requiresCredentials,
             isUnlockedForUser
           )}`}

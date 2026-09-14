@@ -66,7 +66,7 @@ export function PdfPaperThumbnail({
         <div className="relative w-32 h-40 bg-white/70 backdrop-blur-xs rounded-xl shadow-md border border-stone-300/60 flex flex-col justify-between p-3.5 transform group-hover:scale-105 transition-transform duration-300">
           <div className="border-b border-stone-200 pb-2">
             <div className="w-10 h-2 bg-stone-300 rounded mb-1.5" />
-            <div className="text-[10px] font-bold text-stone-400 leading-tight">Next Weekly Drop...</div>
+            <div className="text-[10px] font-bold text-stone-400 leading-tight">Next Drop...</div>
           </div>
 
           <div className="flex flex-col items-center justify-center my-2 py-1">

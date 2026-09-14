@@ -45,7 +45,7 @@ export function AutoMatchedResourcesSection({ matches }: Readonly<AutoMatchedRes
             Tailored Resources for Your Growth Areas
           </h3>
           <p className="text-stone-600 text-sm mt-1 max-w-2xl leading-relaxed">
-            Categories scoring under 60% are automatically paired with specific Unlock Her Tech weekly PDF guides, podcast episodes, and hands-on workshops.
+            Categories scoring under 60% are automatically paired with specific Unlock Her Tech PDF guides, podcast episodes, and hands-on workshops.
           </p>
         </div>
       </div>

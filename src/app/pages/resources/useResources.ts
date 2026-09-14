@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import type { Resource } from "../../types";
 import { getAllResources } from "../../utils/sanity";
-import { DEFAULT_WEEKLY_RESOURCES, type ExtendedResource } from "./resourceData";
+import { DEFAULT_RESOURCES, LAUNCH_DATE, type ExtendedResource } from "./resourceData";
 
 const STORAGE_KEY_USER_EMAIL = "uht_user_email";
 
@@ -17,8 +17,6 @@ export function useResources() {
       return null;
     }
   });
-  const [now] = useState(() => Date.now());
-
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeResource, setActiveResource] = useState<Resource | null>(null);
@@ -40,18 +38,22 @@ export function useResources() {
                   day: "numeric",
                   year: "numeric",
                 })
-              : `Sep 7, 2026`,
+              : new Date(LAUNCH_DATE).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                }),
             releaseTimestamp: item.publishedAt
               ? new Date(item.publishedAt).getTime()
-              : new Date("2026-09-07T00:00:00Z").getTime(),
+              : new Date(`${LAUNCH_DATE}T00:00:00Z`).getTime(),
           }));
           setResources(enriched);
         } else {
-          setResources(DEFAULT_WEEKLY_RESOURCES);
+          setResources(DEFAULT_RESOURCES);
         }
       } catch (err) {
         console.error("Failed to load resources from Sanity, using defaults:", err);
-        setResources(DEFAULT_WEEKLY_RESOURCES);
+        setResources(DEFAULT_RESOURCES);
       } finally {
         setIsLoading(false);
       }
@@ -78,20 +80,9 @@ export function useResources() {
     }
   }, []);
 
-  const handleOpenDownload = useCallback((resource: ExtendedResource | null, earlyAccess = false) => {
-    if (earlyAccess || !resource) {
+  const handleOpenDownload = useCallback((resource: ExtendedResource | null, bundleMode = false) => {
+    if (bundleMode || !resource) {
       setActiveResource(null);
-      setIsEarlyAccessMode(true);
-      setIsModalOpen(true);
-      return;
-    }
-
-    const currentTime = Date.now();
-    const releaseTime = resource.releaseTimestamp || new Date("2026-09-07T00:00:00Z").getTime();
-    const isReleased = releaseTime <= currentTime;
-
-    if (!isReleased) {
-      setActiveResource(resource);
       setIsEarlyAccessMode(true);
       setIsModalOpen(true);
       return;
@@ -136,7 +127,6 @@ export function useResources() {
     selectedCategory,
     setSelectedCategory,
     userEmail,
-    now,
     isModalOpen,
     setIsModalOpen,
     activeResource,

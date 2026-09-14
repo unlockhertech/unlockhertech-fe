@@ -186,18 +186,21 @@ export async function getAllResources(): Promise<Resource[]> {
       return [];
     }
 
-    const query = `*[_type == "resource" && isPublished != false] | order(publishedAt desc) {
+    const query = `*[_type == "resource" && isPublished != false] | order(coalesce(weekNumber, 999) asc, publishedAt asc) {
       "id": _id,
       title,
       "slug": slug.current,
       description,
       category,
+      stage,
       "pdfUrl": coalesce(pdfFile.asset->url, externalPdfUrl, ""),
       fileSize,
       pageCount,
       accentColor,
       isPublished,
-      publishedAt
+      publishedAt,
+      weekNumber,
+      requiresLogin
     }`;
 
     const resources: Resource[] = await sanityClient.fetch(query);

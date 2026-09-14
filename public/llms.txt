@@ -6,6 +6,7 @@
 
 - **Podcast Episodes**: Honest, insightful conversations with women engineers, leaders, and founders breaking barriers in tech. Available on Apple Podcasts, Spotify, YouTube, and Amazon Music.
 - **She Leads Tech**: Fortnightly interactive engineering workshops structured across Theory (instructor-led learning), Practice (hands-on problem solving), and Review (strengthening retention). Covering DSA, system design, cloud, and software engineering.
+- **Career Playbooks & PDF Guides**: Free downloadable career roadmap and technical interview playbooks.
 - **Community Events & Coding Workshops**: Virtual coding workshops, panel discussions, and career Q&A sessions.
 - **Blog & Technical Articles**: Deep dives on engineering practices, career transitions, and industry insights.
 
@@ -16,6 +17,7 @@
 - [She Leads Tech](https://unlockhertech.com/practices): Fortnightly technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.
 - [Events Calendar](https://unlockhertech.com/events): Upcoming workshops, community meetups, and live Q&A sessions.
 - [Blog & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.
+- [Career Resources & Guides](https://unlockhertech.com/resources): Downloadable PDF career guides and interview playbooks.
 - [About Us & Mission](https://unlockhertech.com/about): Our founding story, mission, and community values.
 - [Meet the Team](https://unlockhertech.com/team): Leadership, hosts, and contributors behind Unlock Her Tech.
 - [Community Guidelines & Code of Conduct](https://unlockhertech.com/community-guidelines): Our safe, inclusive, and harassment-free community standards.

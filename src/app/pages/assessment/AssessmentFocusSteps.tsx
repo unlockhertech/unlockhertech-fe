@@ -53,7 +53,8 @@ export function AssessmentFocusSteps({
               key={cat.key}
               type="button"
               onClick={() => handleCategorySwitch(idx)}
-              aria-label={`Step ${cat.number}: ${cat.shortTitle}`}
+              aria-current={isActive ? "step" : undefined}
+              aria-label={`Step ${cat.number}: ${cat.shortTitle}${isCatComplete ? " (completed)" : ` (${catAnsweredCount} of ${catQuestions.length} answered)`}`}
               className={`p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
                 isActive
                   ? "border-brand-coral bg-pink-50/60 ring-2 ring-brand-coral/20 shadow-xs"
@@ -81,7 +82,7 @@ export function AssessmentFocusSteps({
       </div>
 
       {/* Active Step Category Card */}
-      <div className="space-y-6 animate-in fade-in duration-300">
+      <div className="space-y-6 motion-safe:animate-in motion-safe:fade-in duration-300">
         <CategorySection
           number={currentCat.number}
           title={currentCat.title}

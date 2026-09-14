@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import {
-  HiCalendar,
+  HiSparkles,
   HiGift,
   HiLockClosed,
   HiCheckCircle,
@@ -27,8 +27,8 @@ export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<Resour
 
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">
-            <HiCalendar className="w-4 h-4 text-brand-yellow" />
-            <span>Launching September 7, 2026 • 1 New PDF Every Week</span>
+            <HiSparkles className="w-4 h-4 text-brand-yellow" />
+            <span>All 10 Guides Live Now</span>
           </div>
 
           <h1
@@ -40,14 +40,14 @@ export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<Resour
           </h1>
 
           <p className="text-white/85 text-base sm:text-lg leading-relaxed font-normal max-w-2xl">
-            Clean, practical PDF guides created specifically for career changers, non-tech pivoters, and ambitious women in technology. Weekly uploads launch <strong>September 7, 2026</strong>!
+            Clean, practical PDF guides created specifically for career changers, non-tech pivoters, and ambitious women in technology. All 10 guides are <strong>available today</strong> — no waiting required.
           </p>
 
           {/* TRUST BADGES BAR */}
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs sm:text-sm font-semibold text-white/90">
             <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
-              <HiCalendar className="w-4 h-4 text-brand-yellow" />
-              <span>Launches Sep 7, 2026</span>
+              <HiSparkles className="w-4 h-4 text-brand-yellow" />
+              <span>Full Library Available</span>
             </div>
             <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
               <HiGift className="w-4 h-4 text-brand-green" />
@@ -58,6 +58,15 @@ export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<Resour
               <span>PDF 4+ Community Access</span>
             </div>
           </div>
+
+          {/* Cross-link to Self-Assessment */}
+          <p className="pt-1 text-sm text-white/80 font-medium">
+            Not sure where to start?{" "}
+            <Link to="/assessment" className="text-brand-yellow font-bold hover:underline">
+              Take our 2-minute readiness self-assessment
+            </Link>{" "}
+            to get personalized guide recommendations.
+          </p>
 
           {/* User Community Status Badge */}
           {userEmail && (
