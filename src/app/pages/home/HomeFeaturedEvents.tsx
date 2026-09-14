@@ -1,8 +1,11 @@
 import { Link } from "react-router";
+import { useState } from "react";
 import { HiArrowRight } from "react-icons/hi2";
+import { HiTicket } from "react-icons/hi2";
 import { LumaCheckoutButton } from "../../components/LumaCheckoutButton";
 import { getEventExternalUrl } from "../../utils/luma";
 import type { ExternalEvent } from "../../types";
+import { ClaimDiscountModal } from "../../components/ClaimDiscountModal";
 
 interface HomeFeaturedEventsProps {
   events: ExternalEvent[];
@@ -44,6 +47,7 @@ function renderFeaturedEventActionButton(event: ExternalEvent, externalUrl: stri
 }
 
 export function HomeFeaturedEvents({ events }: Readonly<HomeFeaturedEventsProps>) {
+  const [discountEvent, setDiscountEvent] = useState<ExternalEvent | null>(null);
   if (events.length === 0) return null;
 
   return (
@@ -87,9 +91,23 @@ export function HomeFeaturedEvents({ events }: Readonly<HomeFeaturedEventsProps>
                     {new Date(event.date).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}
                   </p>
                   {event.discountCode && (
-                    <div className="mb-4 py-1 px-2.5 rounded-lg bg-stone-50 border border-brand-pink/30 flex items-center justify-between text-xs">
-                      <span className="text-[0.65rem] uppercase font-bold text-brand-berry">Code:</span>
-                      <code className="font-mono font-bold text-[0.75rem] text-gray-800">{event.discountCode}</code>
+                    <div className="mb-5 p-3 rounded-2xl bg-pink-50/80 border border-brand-pink/50 flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <span className="text-[0.68rem] font-bold uppercase tracking-wider text-brand-berry flex items-center gap-1">
+                          <HiTicket className="w-3.5 h-3.5 text-brand-coral" />
+                          <span>{event.discountPercentage || "20%"} Partner Discount</span>
+                        </span>
+                        <span className="text-xs text-stone-600 font-medium block mt-0.5">
+                          Exclusive promo code for community
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setDiscountEvent(event)}
+                        className="shrink-0 px-3 py-1.5 text-xs font-bold rounded-xl bg-brand-coral text-white hover:opacity-90 transition-opacity shadow-xs cursor-pointer"
+                      >
+                        Claim Code
+                      </button>
                     </div>
                   )}
                 </div>
@@ -99,6 +117,13 @@ export function HomeFeaturedEvents({ events }: Readonly<HomeFeaturedEventsProps>
             );
           })}
         </div>
+        {discountEvent && (
+          <ClaimDiscountModal
+            isOpen={Boolean(discountEvent)}
+            onClose={() => setDiscountEvent(null)}
+            event={discountEvent}
+          />
+        )}
       </div>
     </section>
   );
