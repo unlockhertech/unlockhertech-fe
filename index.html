@@ -233,18 +233,52 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function (registrations) {
-          for (const element of registrations) {
-            element.unregister();
-          }
-        }).catch(function () {});
-        if ('caches' in window) {
-          caches.keys().then(function (keys) {
-            keys.forEach(function (k) { caches.delete(k); });
-          }).catch(function () {});
+      // Legacy Service Worker cleanup.
+      // A previously deployed caching service worker can intercept navigations and serve
+      // a stale, cross-route HTML shell from its cache (e.g. showing the "She Leads Tech"
+      // page when a /blog/:slug URL is opened). Unregister every service worker, purge all
+      // caches, and — if this page is still being controlled by a legacy worker — force a
+      // single hard reload so the user immediately receives fresh, un-cached content.
+      (function () {
+        if (!('serviceWorker' in navigator)) return;
+
+        var wasControlled = !!navigator.serviceWorker.controller;
+
+        function purgeCaches() {
+          if (!('caches' in window)) return Promise.resolve();
+          return caches.keys()
+            .then(function (keys) {
+              return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+            })
+            .catch(function (err) {
+              console.debug('[SW cleanup] Cache purge failed:', err);
+            });
         }
-      }
+
+        function unregisterAll() {
+          return navigator.serviceWorker.getRegistrations()
+            .then(function (registrations) {
+              return Promise.all(registrations.map(function (r) { return r.unregister(); }));
+            })
+            .catch(function (err) {
+              console.debug('[SW cleanup] Unregister failed:', err);
+            });
+        }
+
+        Promise.all([unregisterAll(), purgeCaches()]).then(function () {
+          // Only reload when a legacy worker was actively controlling this page,
+          // and guard against reload loops with a one-shot sessionStorage flag.
+          try {
+            if (wasControlled && !sessionStorage.getItem('sw-cleanup-reloaded')) {
+              sessionStorage.setItem('sw-cleanup-reloaded', '1');
+              console.warn('[SW cleanup] Legacy service worker removed — reloading for fresh content.');
+              window.location.reload();
+            }
+          } catch (err) {
+            console.debug('[SW cleanup] Reload guard failed:', err);
+          }
+        });
+      })();
     </script>
   </body>
 

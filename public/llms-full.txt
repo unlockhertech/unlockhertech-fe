@@ -46,6 +46,19 @@ An interactive technical learning series held live every two weeks. She Leads Te
 
 ---
 
+## 3. Career Fit Self-Assessment
+
+An interactive 16-question worksheet evaluating readiness across 4 core dimensions:
+1. Mindset & Confidence (imposter syndrome, psychological readiness, self-advocacy).
+2. Transferable & Leadership Skills (communication, stakeholder alignment, domain translation).
+3. Technical Literacy & Depth (code fluency, system design fundamentals, problem decomposition).
+4. Networking & Job Search Strategy (strategic visibility, outreach, interview preparation).
+
+- Output: Real-time scoring, tailored recommendations, and an instant downloadable PDF Career Plan.
+- URL: https://unlockhertech.com/assessment
+
+---
+
 ## 5. Free Career Playbooks & PDF Guides
 
 Downloadable guides covering tech career roadmaps, portfolio building, technical interview prep, and salary negotiation.

@@ -40,6 +40,29 @@ export default defineConfig({
               return 'vendor-sanity-client';
             }
 
+            // Portable Text renderer used by public blog pages. Must be isolated
+            // BEFORE the broad `sanity` rule below, otherwise it gets hoisted into
+            // the heavy Sanity Studio chunk (and drags Studio's global CSS reset
+            // onto every public page that renders blog content).
+            if (id.includes('@portabletext')) {
+              return 'vendor-portabletext';
+            }
+
+            // Markdown / unified-remark-rehype ecosystem used by `react-markdown`
+            // on public blog pages. Several of its low-level utilities (hast/unist
+            // helpers, property-information, entity parsers) are ALSO pulled in by
+            // Sanity Studio's `react-refractor`. Isolate them here — again BEFORE the
+            // broad `sanity` rule — so these shared modules are NOT hoisted into the
+            // heavy Studio chunk, which would force blog pages to statically import
+            // the entire 6.5 MB Studio bundle and its global CSS reset.
+            if (
+              /[\\/]node_modules[\\/](react-markdown|micromark|mdast|hast|unist|vfile|remark|rehype|refractor|property-information|comma-separated-tokens|space-separated-tokens|character-entities|character-reference-invalid|decode-named-character-reference|parse-entities|is-alphabetical|is-alphanumerical|is-decimal|is-hexadecimal|trim-lines|style-to-object|html-url-attributes|zwitch|longest-streak|ccount|markdown-table|devlop|estree-util|web-namespaces|stringify-entities|bail|is-plain-obj|trough|extend|inline-style-parser)/.test(
+                id
+              )
+            ) {
+              return 'vendor-markdown';
+            }
+
             // Heavy Sanity Studio (isolated for /admin routes)
             if (id.includes('sanity') || id.includes('@sanity') || id.includes('styled-components')) {
               return 'vendor-sanity-studio';
