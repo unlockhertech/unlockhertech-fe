@@ -143,6 +143,15 @@ export const router = createBrowserRouter([
     ErrorBoundary: RouteErrorFallback,
   },
   {
+    path: "/private-booking-portal",
+    lazy: async () => {
+      const { BookingPage } = await import("./pages/BookingPortalPage");
+      return { Component: BookingPage };
+    },
+    HydrateFallback: PageLoadingFallback,
+    ErrorBoundary: RouteErrorFallback,
+  },
+  {
     path: "/",
     Component: Layout,
     HydrateFallback: PageLoadingFallback,

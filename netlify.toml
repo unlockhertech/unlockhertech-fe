@@ -21,6 +21,12 @@
   force = true
 
 [[redirects]]
+from = "/api/booking-portal"
+to = "/.netlify/functions/booking-portal"
+status = 200
+force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
