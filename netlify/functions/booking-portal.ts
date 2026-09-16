@@ -1,7 +1,56 @@
 const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycby9D1NeJFq6gnfANBNecurO4kKukEYiFxt_EzvdWexgQI0HauKpCeP6hK2ujPB9ypTlFA/exec';
 
+async function proxyJson(request: Request): Promise<Response> {
+  const incoming = new URL(request.url);
+  const path = incoming.pathname;
+  const token = process.env.BOOKING_PORTAL_TOKEN ?? '';
+  const base = new URL(APPS_SCRIPT_BASE);
+  base.searchParams.set('token', token);
+
+  // Route mapping: three JSON endpoints
+  if (path.endsWith('/api/public-config')) {
+    base.searchParams.set('action', 'getPublicConfig');
+    const r = await fetch(base.toString(), { redirect: 'follow' });
+    const txt = await r.text();
+    return new Response(txt, { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+  }
+  if (path.endsWith('/api/available-slots')) {
+    base.searchParams.set('action', 'getAvailableSlots');
+    const mk = incoming.searchParams.get('meetingKey') || '';
+    const dt = incoming.searchParams.get('date') || '';
+    base.searchParams.set('meetingKey', mk);
+    base.searchParams.set('date', dt);
+    const r = await fetch(base.toString(), { redirect: 'follow' });
+    const txt = await r.text();
+    return new Response(txt, { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+  }
+  if (path.endsWith('/api/book')) {
+    const u = new URL(APPS_SCRIPT_BASE);
+    u.searchParams.set('token', token);
+    u.searchParams.set('action', 'bookMeeting');
+    const body = await request.text();
+    const r = await fetch(u.toString(), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body,
+      redirect: 'follow',
+    });
+    const txt = await r.text();
+    return new Response(txt, { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+  }
+
+  // Fallback 404 for unknown API route
+  return new Response(JSON.stringify({ ok: false, error: 'Not Found' }), { status: 404, headers: { 'content-type': 'application/json; charset=utf-8' } });
+}
+
 export default async function handler(request: Request): Promise<Response> {
   try {
+    const urlObj = new URL(request.url);
+    // If hitting JSON API under /api/booking-portal/api/*, go through JSON proxy
+    if (/\/api\/booking-portal\/api\//.test(urlObj.pathname)) {
+      return await proxyJson(request);
+    }
+
     // Compose upstream URL with token and forwarded query params
     const url = new URL(APPS_SCRIPT_BASE);
     const incoming = new URL(request.url);

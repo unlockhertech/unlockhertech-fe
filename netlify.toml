@@ -21,10 +21,16 @@
   force = true
 
 [[redirects]]
-from = "/api/booking-portal"
-to = "/.netlify/functions/booking-portal"
-status = 200
-force = true
+  from = "/api/booking-portal"
+  to = "/.netlify/functions/booking-portal"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/booking-portal/*"
+  to = "/.netlify/functions/booking-portal/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
