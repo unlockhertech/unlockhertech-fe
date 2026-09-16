@@ -37,6 +37,22 @@ export function BookingPage() {
     const loadingVersion = useRef(0);
     const requestId = useRef(crypto.randomUUID());
     const [confirmation, setConfirmation] = useState<BookingResponse | null>(null);
+    // Session-scoped client cache for slots keyed by meeting|date
+    const slotsCache = useRef<Map<string, Slot[]>>(new Map());
+
+    const cacheKey = (meetingKey: string, date: string) => `${meetingKey}|${date}`;
+
+    async function prefetchSlots(mKey: string, date: string) {
+        if (!mKey || !date) return;
+        const key = cacheKey(mKey, date);
+        if (slotsCache.current.has(key)) return; // already cached
+        try {
+            const s = await bookingApi.getAvailableSlots(mKey, date);
+            slotsCache.current.set(key, s);
+        } catch {
+            // ignore prefetch errors
+        }
+    }
 
     useEffect(() => {
         (async () => {
@@ -47,6 +63,11 @@ export function BookingPage() {
                 setMeeting(first);
                 const firstMonth = (c.dates?.[0]?.value || '').slice(0, 7) || new Date().toISOString().slice(0, 7);
                 setMonth(firstMonth);
+                // Prefetch the first likely available date for the default meeting
+                if (first && c.dates?.length) {
+                    const firstAvail = c.dates.find(d => first.days.includes(d.weekday))?.value;
+                    if (firstAvail) prefetchSlots(first.key, firstAvail);
+                }
             } catch (e: any) {
                 setError(e?.message || 'Booking is temporarily unavailable');
             }
@@ -63,15 +84,34 @@ export function BookingPage() {
         setSelectedDate(value);
         setSelectedSlot(null);
         setError(null);
+        // Instant populate from client cache if present
+        const k = cacheKey(meeting.key, value);
+        if (slotsCache.current.has(k)) {
+            setSlots(slotsCache.current.get(k)!);
+        }
         const version = ++loadingVersion.current;
         try {
             const s = await bookingApi.getAvailableSlots(meeting.key, value);
             if (version !== loadingVersion.current) return; // stale
+            slotsCache.current.set(k, s);
             setSlots(s);
         } catch (e: any) {
             if (version !== loadingVersion.current) return;
             setError(e?.message || 'Could not load availability');
             setSlots([]);
+        }
+    }
+
+    function handleSelectMeeting(m: MeetingType) {
+        if (booking) return;
+        setMeeting(m);
+        setSelectedDate(null);
+        setSlots([]);
+        setConfirmation(null);
+        // Prefetch the first visible/eligible date for this meeting
+        if (cfg?.dates?.length) {
+            const d = cfg.dates.find(d0 => m.days.includes(d0.weekday))?.value;
+            if (d) prefetchSlots(m.key, d);
         }
     }
 
@@ -117,7 +157,15 @@ export function BookingPage() {
             <div className="topline" aria-hidden="true" />
             <header>
                 <a className="wordmark" href="https://www.unlockhertech.com">
-                    <img className="brand-logo" src="/logo.png" alt="Unlock Her Tech logo" width={68} height={68} />
+                    <img
+                      className="brand-logo"
+                      src="/logo.png"
+                      alt="Unlock Her Tech logo"
+                      width={68}
+                      height={68}
+                      decoding="async"
+                      fetchPriority="high"
+                    />
                     Unlock Her Tech
                 </a>
                 <a href="https://www.unlockhertech.com">Back to our website ↗</a>
@@ -158,7 +206,7 @@ export function BookingPage() {
                                     type="button"
                                     className="meeting"
                                     aria-pressed={String(meeting?.key === m.key)}
-                                    onClick={() => { if (!booking) { setMeeting(m); setSelectedDate(null); setSlots([]); setConfirmation(null); } }}
+                                    onClick={() => handleSelectMeeting(m)}
                                 >
                                     <b>{m.label}</b>
                                     <span>{m.duration} min · {m.hosts.join(' + ')}</span>

@@ -1,5 +1,22 @@
 const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycby9D1NeJFq6gnfANBNecurO4kKukEYiFxt_EzvdWexgQI0HauKpCeP6hK2ujPB9ypTlFA/exec';
 
+// Simple per-instance in-memory cache for small JSON responses.
+// Note: Netlify may spin multiple instances; this is best-effort to shave latency.
+type CacheEntry = { expiresAt: number; payload: string };
+const memoryCache: Map<string, CacheEntry> = new Map();
+const DEFAULT_TTL_MS = 30 * 1000; // 30 seconds for slots
+
+function cacheGet(key: string): string | null {
+  const hit = memoryCache.get(key);
+  if (!hit) return null;
+  if (Date.now() > hit.expiresAt) { memoryCache.delete(key); return null; }
+  return hit.payload;
+}
+
+function cacheSet(key: string, payload: string, ttlMs = DEFAULT_TTL_MS): void {
+  memoryCache.set(key, { expiresAt: Date.now() + ttlMs, payload });
+}
+
 async function proxyJson(request: Request): Promise<Response> {
   const incoming = new URL(request.url);
   const path = incoming.pathname;
@@ -20,9 +37,33 @@ async function proxyJson(request: Request): Promise<Response> {
     const dt = incoming.searchParams.get('date') || '';
     base.searchParams.set('meetingKey', mk);
     base.searchParams.set('date', dt);
+    const cacheKey = `slots:${mk}|${dt}`;
+
+    // Try cache first
+    const cached = cacheGet(cacheKey);
+    if (cached) {
+      return new Response(cached, {
+        status: 200,
+        headers: {
+          'content-type': 'application/json; charset=utf-8',
+          // Public short-lived caching is fine for availability; booking endpoint remains no-store
+          'cache-control': 'public, max-age=30, s-maxage=60',
+        },
+      });
+    }
+
+    // Miss: fetch upstream, store, and return
     const r = await fetch(base.toString(), { redirect: 'follow' });
     const txt = await r.text();
-    return new Response(txt, { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+    // Only cache if upstream looked like OK JSON with ok:true/false; we can still cache briefly either way
+    try { cacheSet(cacheKey, txt, DEFAULT_TTL_MS); } catch (_) {}
+    return new Response(txt, {
+      status: 200,
+      headers: {
+        'content-type': 'application/json; charset=utf-8',
+        'cache-control': 'public, max-age=30, s-maxage=60',
+      },
+    });
   }
   if (path.endsWith('/api/book')) {
     const u = new URL(APPS_SCRIPT_BASE);
