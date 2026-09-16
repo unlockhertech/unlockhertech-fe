@@ -1,4 +1,4 @@
-const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycbybRxjXAMixOJFPQLmHVyMMV3oYUXETzBI3LjtkbjQYi-oaAcVrmtHXCop0n7On8yohwg/exec';
+const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycby9D1NeJFq6gnfANBNecurO4kKukEYiFxt_EzvdWexgQI0HauKpCeP6hK2ujPB9ypTlFA/exec';
 
 export default async function handler(request: Request): Promise<Response> {
   try {
