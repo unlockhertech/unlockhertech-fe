@@ -17,6 +17,43 @@ function cacheSet(key: string, payload: string, ttlMs = DEFAULT_TTL_MS): void {
   memoryCache.set(key, { expiresAt: Date.now() + ttlMs, payload });
 }
 
+// ---- Resilient upstream fetch helpers (timeout + retry + content-type guard) ----
+function delay(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 10000): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, { ...init, signal: controller.signal });
+    return r;
+  } finally {
+    clearTimeout(id);
+  }
+}
+
+async function fetchJsonWithRetry(
+  url: string,
+  init: RequestInit = {},
+  retries = 1,
+  timeoutMs = 10000
+): Promise<{ ok: boolean; text: string; isJson: boolean; status: number }>
+{
+  let lastErr: any = null;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const resp = await fetchWithTimeout(url, init, timeoutMs);
+      const ct = resp.headers.get('content-type') || '';
+      const txt = await resp.text();
+      const isJson = ct.includes('application/json') || (/^\s*\{/.test(txt) && txt.trim().endsWith('}'));
+      return { ok: resp.ok, text: txt, isJson, status: resp.status };
+    } catch (e) {
+      lastErr = e;
+      if (attempt < retries) await delay(250);
+    }
+  }
+  throw lastErr;
+}
+
 async function proxyJson(request: Request): Promise<Response> {
   const incoming = new URL(request.url);
   const path = incoming.pathname;
@@ -27,9 +64,17 @@ async function proxyJson(request: Request): Promise<Response> {
   // Route mapping: three JSON endpoints
   if (path.endsWith('/api/public-config')) {
     base.searchParams.set('action', 'getPublicConfig');
-    const r = await fetch(base.toString(), { redirect: 'follow' });
-    const txt = await r.text();
-    return new Response(txt, { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+    const r = await fetchJsonWithRetry(base.toString(), { redirect: 'follow' }, 1, 10000);
+    if (!r.isJson) {
+      return new Response(JSON.stringify({ ok: false, error: 'Upstream returned non-JSON' }), {
+        status: 502,
+        headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+      });
+    }
+    return new Response(r.text, {
+      status: r.ok ? 200 : 502,
+      headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+    });
   }
   if (path.endsWith('/api/available-slots')) {
     base.searchParams.set('action', 'getAvailableSlots');
@@ -39,45 +84,56 @@ async function proxyJson(request: Request): Promise<Response> {
     base.searchParams.set('date', dt);
     const cacheKey = `slots:${mk}|${dt}`;
 
-    // Try cache first
+    // Try to fetch fresh; on failure, serve stale cache if available
     const cached = cacheGet(cacheKey);
-    if (cached) {
-      return new Response(cached, {
+    try {
+      const r = await fetchJsonWithRetry(base.toString(), { redirect: 'follow' }, 1, 10000);
+      if (!r.isJson) throw new Error('non-json');
+      try { cacheSet(cacheKey, r.text, DEFAULT_TTL_MS); } catch {}
+      return new Response(r.text, {
         status: 200,
         headers: {
           'content-type': 'application/json; charset=utf-8',
-          // Public short-lived caching is fine for availability; booking endpoint remains no-store
           'cache-control': 'public, max-age=30, s-maxage=60',
         },
       });
+    } catch (e) {
+      if (cached) {
+        return new Response(cached, {
+          status: 200,
+          headers: {
+            'content-type': 'application/json; charset=utf-8',
+            'cache-control': 'public, max-age=15, s-maxage=30',
+          },
+        });
+      }
+      return new Response(JSON.stringify({ ok: false, error: 'Availability service temporarily unavailable' }), {
+        status: 502,
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+      });
     }
-
-    // Miss: fetch upstream, store, and return
-    const r = await fetch(base.toString(), { redirect: 'follow' });
-    const txt = await r.text();
-    // Only cache if upstream looked like OK JSON with ok:true/false; we can still cache briefly either way
-    try { cacheSet(cacheKey, txt, DEFAULT_TTL_MS); } catch (_) {}
-    return new Response(txt, {
-      status: 200,
-      headers: {
-        'content-type': 'application/json; charset=utf-8',
-        'cache-control': 'public, max-age=30, s-maxage=60',
-      },
-    });
   }
   if (path.endsWith('/api/book')) {
     const u = new URL(APPS_SCRIPT_BASE);
     u.searchParams.set('token', token);
     u.searchParams.set('action', 'bookMeeting');
     const body = await request.text();
-    const r = await fetch(u.toString(), {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body,
-      redirect: 'follow',
+    const r = await fetchJsonWithRetry(
+      u.toString(),
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body, redirect: 'follow' },
+      1,
+      10000
+    );
+    if (!r.isJson) {
+      return new Response(JSON.stringify({ ok: false, error: 'Booking service returned non-JSON' }), {
+        status: 502,
+        headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+      });
+    }
+    return new Response(r.text, {
+      status: r.ok ? 200 : 502,
+      headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
     });
-    const txt = await r.text();
-    return new Response(txt, { status: 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
   }
 
   // Fallback 404 for unknown API route

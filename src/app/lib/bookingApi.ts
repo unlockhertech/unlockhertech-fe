@@ -19,12 +19,21 @@ export type PublicConfig = {
 const BASE = '/api/booking-portal';
 
 async function unwrap<T>(res: Response): Promise<T> {
-  const json = await res.json().catch(() => ({}));
-  if (!json || json.ok !== true) {
-    const msg = (json && json.error) || `Request failed (${res.status})`;
-    throw new Error(String(msg));
+  const ct = res.headers.get('content-type') || '';
+  try {
+    const json = await res.json();
+    if (!json || json.ok !== true) {
+      const msg = (json && json.error) || `Request failed (${res.status})`;
+      throw new Error(String(msg));
+    }
+    return json.data as T;
+  } catch {
+    // Fall back to reading plain text for clearer diagnostics when upstream returns HTML or bad JSON
+    const txt = await res.text().catch(() => '');
+    const firstLine = (txt || '').split('\n')[0].slice(0, 180);
+    const suffix = firstLine ? `: ${firstLine}` : '';
+    throw new Error(`Request failed (${res.status})${suffix}`);
   }
-  return json.data as T;
 }
 
 export const bookingApi = {
