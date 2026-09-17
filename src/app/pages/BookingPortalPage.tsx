@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { useMetaData } from "@/app/hooks/useMetaData.ts";
 import { bookingApi, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
+import { BookingLoading } from "@/app/components/BookingLoading";
 
 interface BookingResponse { bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }
 
@@ -46,6 +47,7 @@ export function BookingPage() {
         (async () => {
             try {
                 const c = await bookingApi.getPublicConfig();
+                setError(null);
                 setCfg(c);
                 const first = c.meetingTypes.find(m => m.section === section) || c.meetingTypes[0] || null;
                 setMeeting(first);
@@ -134,14 +136,9 @@ export function BookingPage() {
         }
     }
 
-    if (!cfg) {
-        return (
-            <div style={{ padding: 24 }}>
-                <h2>Loading your booking options…</h2>
-                {error && <p role="alert" style={{ color: '#85251e' }}>{error}</p>}
-            </div>
-        );
-    }
+    if (!cfg && !error) return <BookingLoading />;
+
+    if (!cfg) return <BookingLoading failed />;
 
     const meetingsInSection = cfg.meetingTypes.filter(m => m.section === section);
 
