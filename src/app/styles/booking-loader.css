@@ -8,7 +8,7 @@
 .uht-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 17px 0 14px; }
 .uht-heading h2 { margin: 0; font-size: clamp(21px, 4vw, 28px); font-weight: 500; line-height: 1.25; letter-spacing: -.04em; }
 .uht-track { height: 18px; border-radius: 999px; background: color-mix(in srgb, var(--uht-blue) 22%, var(--uht-paper)); overflow: hidden; }
-.uht-fill { height: 100%; width: 0%; border-radius: inherit; background: var(--uht-coral); position: relative; overflow: hidden; }
+.uht-fill { height: 100%; width: 0%; border-radius: inherit; background: linear-gradient(90deg, var(--uht-pink), var(--uht-blue) 50%, var(--uht-green)); position: relative; overflow: hidden; }
 .uht-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 25%, color-mix(in srgb, var(--uht-paper) 40%, transparent) 50%, transparent 75%); transform: translateX(-100%); }
 .uht-leg { transform-box: view-box; transform-origin: 45px 111px; }
 .uht-moving .uht-body { animation: uht-bob .6s ease-in-out infinite alternate; }
@@ -25,7 +25,7 @@
 .uht-moving .uht-walker-0 .uht-body, .uht-moving .uht-walker-0 .uht-leg { animation-delay: -.4s; }
 .uht-moving .uht-walker-1 .uht-body, .uht-moving .uht-walker-1 .uht-leg { animation-delay: -.2s; }
 
-.uht-walker-1 { --uht-skin: #805039; }
+.uht-walker-1 { --uht-skin: #A56B4F; }
 .uht-walker-2 { --uht-skin: #F3CFB5; }
 .uht-page-loader .uht-traveller { left: 0; animation: uht-crossing 9s linear infinite; }
 .uht-page-loader .uht-fill { width: 35%; animation: uht-loading 1.8s ease-in-out infinite alternate; }
