@@ -3,6 +3,7 @@ import { useMetaData } from "@/app/hooks/useMetaData.ts";
 import { bookingApi, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
 import { BookingLoading } from "@/app/components/BookingLoading";
+import { BookingBackground } from "@/app/components/BookingBackground";
 
 interface BookingResponse { bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }
 
@@ -151,6 +152,7 @@ export function BookingPage() {
 
     return (
         <div className="wrap-root">
+            <BookingBackground />
             <div className="topline" aria-hidden="true" />
             <header>
                 <a className="wordmark" href="https://www.unlockhertech.com">

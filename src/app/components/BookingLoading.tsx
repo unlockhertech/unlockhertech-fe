@@ -1,9 +1,11 @@
 import '@/app/styles/booking-loader.css';
+import { BookingBackground } from './BookingBackground';
 
 /** Shared illustration for loading booking options and recovering from a failed load. */
 export function BookingLoading({ failed = false }: Readonly<{ failed?: boolean }>) {
   return (
     <div className="uht-loading-screen">
+      <BookingBackground />
       <div
         className={failed ? 'uht-loader uht-error-state' : 'uht-loader uht-moving uht-page-loader'}
         role={failed ? 'alert' : 'status'}
