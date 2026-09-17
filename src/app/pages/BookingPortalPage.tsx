@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { useMetaData } from "@/app/hooks/useMetaData.ts";
 import { bookingApi, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
@@ -32,27 +32,15 @@ export function BookingPage() {
     const [month, setMonth] = useState<string>(''); // YYYY-MM
     const [selectedDate, setSelectedDate] = useState<string | null>(null); // YYYY-MM-DD
     const [slots, setSlots] = useState<Slot[]>([]);
+    const [slotsStatus, setSlotsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [slotsError, setSlotsError] = useState<string | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
     const [booking, setBooking] = useState(false);
     const loadingVersion = useRef(0);
     const requestId = useRef(crypto.randomUUID());
     const [confirmation, setConfirmation] = useState<BookingResponse | null>(null);
-    // Session-scoped client cache for slots keyed by meeting|date
-    const slotsCache = useRef<Map<string, Slot[]>>(new Map());
-
-    const cacheKey = (meetingKey: string, date: string) => `${meetingKey}|${date}`;
-
-    async function prefetchSlots(mKey: string, date: string) {
-        if (!mKey || !date) return;
-        const key = cacheKey(mKey, date);
-        if (slotsCache.current.has(key)) return; // already cached
-        try {
-            const s = await bookingApi.getAvailableSlots(mKey, date);
-            slotsCache.current.set(key, s);
-        } catch {
-            // ignore prefetch errors
-        }
-    }
+    // Invalidate in-flight availability when leaving the page.
+    useEffect(() => () => { loadingVersion.current++; }, []);
 
     useEffect(() => {
         (async () => {
@@ -63,11 +51,6 @@ export function BookingPage() {
                 setMeeting(first);
                 const firstMonth = (c.dates?.[0]?.value || '').slice(0, 7) || new Date().toISOString().slice(0, 7);
                 setMonth(firstMonth);
-                // Prefetch the first likely available date for the default meeting
-                if (first && c.dates?.length) {
-                    const firstAvail = c.dates.find(d => first.days.includes(d.weekday))?.value;
-                    if (firstAvail) prefetchSlots(first.key, firstAvail);
-                }
             } catch (e: any) {
                 setError(e?.message || 'Booking is temporarily unavailable');
             }
@@ -79,40 +62,50 @@ export function BookingPage() {
         document.documentElement.style.setProperty('--accent', sectionAccent(section));
     }, [cfg, meeting, section]);
 
+    function resetAvailability() {
+        loadingVersion.current++;
+        setSelectedDate(null);
+        setSelectedSlot(null);
+        setSlots([]);
+        setSlotsError(null);
+        setSlotsStatus('idle');
+    }
+
     async function loadDate(value: string) {
-        if (!meeting) return;
+        if (!meeting || booking) return;
+        const version = ++loadingVersion.current;
         setSelectedDate(value);
         setSelectedSlot(null);
-        setError(null);
-        // Instant populate from client cache if present
-        const k = cacheKey(meeting.key, value);
-        if (slotsCache.current.has(k)) {
-            setSlots(slotsCache.current.get(k)!);
-        }
-        const version = ++loadingVersion.current;
+        setSlots([]);
+        setSlotsError(null);
+        setSlotsStatus('loading');
         try {
-            const s = await bookingApi.getAvailableSlots(meeting.key, value);
-            if (version !== loadingVersion.current) return; // stale
-            slotsCache.current.set(k, s);
-            setSlots(s);
-        } catch (e: any) {
+            const available = await bookingApi.getAvailableSlots(meeting.key, value);
             if (version !== loadingVersion.current) return;
-            setError(e?.message || 'Could not load availability');
-            setSlots([]);
+            setSlots(available);
+            setSlotsStatus('success');
+        } catch (error) {
+            if (version !== loadingVersion.current) return;
+            setSlotsError(error instanceof Error ? error.message : 'Could not load availability. Please try again.');
+            setSlotsStatus('error');
         }
     }
 
     function handleSelectMeeting(m: MeetingType) {
         if (booking) return;
+        resetAvailability();
+        setError(null);
         setMeeting(m);
-        setSelectedDate(null);
-        setSlots([]);
         setConfirmation(null);
-        // Prefetch the first visible/eligible date for this meeting
-        if (cfg?.dates?.length) {
-            const d = cfg.dates.find(d0 => m.days.includes(d0.weekday))?.value;
-            if (d) prefetchSlots(m.key, d);
-        }
+    }
+
+    function handleSelectSection(key: MeetingType['section']) {
+        if (booking) return;
+        resetAvailability();
+        setError(null);
+        setSection(key);
+        setMeeting(cfg?.meetingTypes.find(m => m.section === key) || null);
+        setConfirmation(null);
     }
 
     async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -185,8 +178,8 @@ export function BookingPage() {
                             key={key}
                             type="button"
                             className="tab"
-                            aria-pressed={String(key === section)}
-                            onClick={() => { if (!booking) { setSection(key); const first = cfg.meetingTypes.find(m => m.section === key) || null; setMeeting(first); setSelectedDate(null); setSlots([]); setConfirmation(null); } }}
+                            aria-pressed={key === section}
+                            onClick={() => handleSelectSection(key)}
                         >
                             <span className="dot" aria-hidden="true" style={{ ['--tabcolor' as any]: sectionAccent(key) }} />
                             {sectionTitle(key)}
@@ -205,7 +198,7 @@ export function BookingPage() {
                                     key={m.key}
                                     type="button"
                                     className="meeting"
-                                    aria-pressed={String(meeting?.key === m.key)}
+                                    aria-pressed={meeting?.key === m.key}
                                     onClick={() => handleSelectMeeting(m)}
                                 >
                                     <b>{m.label}</b>
@@ -249,15 +242,24 @@ export function BookingPage() {
 
                                     <div>
                                         <div className="time-title" id="timeTitle">{selectedDate ? formatFullDate(selectedDate) : 'Choose a date'}</div>
-                                        <div className="slots" id="slots" aria-live="polite">
-                                            {selectedDate && slots.length === 0 && <div className="empty">No times available on this date. Please choose another highlighted day.</div>}
+                                        <div className="slots" id="slots" aria-live="polite" aria-busy={slotsStatus === 'loading'}>
+                                            {slotsStatus === 'loading' && <div className="empty" role="status">Loading available times…</div>}
+                                            {slotsStatus === 'error' && (
+                                                <div className="empty">
+                                                    <p role="alert">{slotsError}</p>
+                                                    <button type="button" className="tab" onClick={() => { if (selectedDate) void loadDate(selectedDate); }}>
+                                                        Retry available times
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {selectedDate && slotsStatus === 'success' && slots.length === 0 && <div className="empty">No times available on this date. Please choose another highlighted day.</div>}
                                             {!selectedDate && <div className="empty">Select a highlighted date to see available times.</div>}
                                             {slots.map(s => (
                                                 <button
                                                     key={`${s.startMs}-${s.endMs}`}
                                                     type="button"
                                                     className="slot"
-                                                    aria-pressed={String(selectedSlot?.startMs === s.startMs)}
+                                                    aria-pressed={selectedSlot?.startMs === s.startMs}
                                                     aria-label={`${formatTime(s.startMs)} to ${formatTime(s.endMs)}`}
                                                     onClick={() => setSelectedSlot(s)}
                                                 >
@@ -309,7 +311,7 @@ export function BookingPage() {
                                     <p id="pending">Your Google Meet link is being prepared. It will appear in your calendar invitation.</p>
                                 )}
                                 <p id="confirmationContact">Need to make a change? <a href={`mailto:${cfg.contactEmail}`}>{cfg.contactEmail}</a></p>
-                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); setSelectedDate(null); setSelectedSlot(null); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
+                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); resetAvailability(); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
                             </section>
                         )}
                     </main>
@@ -348,8 +350,8 @@ function sectionAccent(s: MeetingType['section']) {
     }
 }
 function renderWeekdayHeaders() {
-    const days = ['M','T','W','T','F','S','S'];
-    return days.map(d => <div key={d} className="weekday">{d}</div>);
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return days.map(d => <div key={d} className="weekday">{d.slice(0, 1)}</div>);
 }
 function renderCalendarDays(allDates: { value: string; weekday: number }[], month: string, allowedDays: number[], sel: string | null, onPick: (d: string) => void) {
     const first = new Date(month + '-01T12:00:00Z');
@@ -370,7 +372,7 @@ function renderCalendarDays(allDates: { value: string; weekday: number }[], mont
                 className="day"
                 disabled={disabled}
                 aria-label={formatFullDate(value)}
-                aria-pressed={String(value === sel)}
+                aria-pressed={value === sel}
                 onClick={() => !disabled && onPick(value)}
             >{d}</button>
         );

@@ -91,6 +91,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      // Vite does not run Netlify functions. Local submissions use the live service.
+      '/api/booking-portal': {
+        target: 'https://www.unlockhertech.com',
+        changeOrigin: true,
+      },
       '/api/podcast-rss': {
         target: 'https://anchor.fm',
         changeOrigin: true,
