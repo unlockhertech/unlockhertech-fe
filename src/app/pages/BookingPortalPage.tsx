@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMetaData } from "@/app/hooks/useMetaData.ts";
 import { bookingApi, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
+import { BookingLoading } from "@/app/components/BookingLoading";
 
 interface BookingResponse { bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }
 
@@ -141,11 +142,13 @@ export function BookingPage() {
         }
     }
 
+    if (!cfg && !error) return <BookingLoading />;
+
     if (!cfg) {
         return (
             <div style={{ padding: 24 }}>
-                <h2>Loading your booking options…</h2>
-                {error && <p role="alert" style={{ color: '#85251e' }}>{error}</p>}
+                <h2>Booking is temporarily unavailable</h2>
+                <p role="alert" style={{ color: '#85251e' }}>{error}</p>
             </div>
         );
     }
