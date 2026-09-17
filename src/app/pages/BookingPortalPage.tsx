@@ -59,6 +59,7 @@ export function BookingPage() {
         (async () => {
             try {
                 const c = await bookingApi.getPublicConfig();
+                setError(null);
                 setCfg(c);
                 const first = c.meetingTypes.find(m => m.section === section) || c.meetingTypes[0] || null;
                 setMeeting(first);
@@ -144,14 +145,7 @@ export function BookingPage() {
 
     if (!cfg && !error) return <BookingLoading />;
 
-    if (!cfg) {
-        return (
-            <div style={{ padding: 24 }}>
-                <h2>Booking is temporarily unavailable</h2>
-                <p role="alert" style={{ color: '#85251e' }}>{error}</p>
-            </div>
-        );
-    }
+    if (!cfg) return <BookingLoading failed />;
 
     const meetingsInSection = cfg.meetingTypes.filter(m => m.section === section);
 

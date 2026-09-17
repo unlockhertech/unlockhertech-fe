@@ -1,10 +1,14 @@
 import '@/app/styles/booking-loader.css';
 
-/** Shown only while the booking configuration request is pending. */
-export function BookingLoading() {
+/** Shared illustration for loading booking options and recovering from a failed load. */
+export function BookingLoading({ failed = false }: Readonly<{ failed?: boolean }>) {
   return (
     <div className="uht-loading-screen">
-      <div className="uht-loader uht-moving uht-page-loader" role="status" aria-live="polite">
+      <div
+        className={failed ? 'uht-loader uht-error-state' : 'uht-loader uht-moving uht-page-loader'}
+        role={failed ? 'alert' : 'status'}
+        aria-live={failed ? 'assertive' : 'polite'}
+      >
     <div className="uht-brand">UNLOCK HER TECH <span>✳</span></div>
     <div className="uht-scene" aria-hidden="true">
       <div className="uht-traveller">
@@ -61,8 +65,18 @@ export function BookingLoading() {
       </div>
 
     </div>
-    <div className="uht-heading"><h2>Unlocking Booking Options</h2></div>
-    <div className="uht-track" aria-hidden="true"><div className="uht-fill"></div></div>
+    <div className="uht-heading"><h2>{failed ? 'Let’s try that again' : 'Unlocking Booking Options'}</h2></div>
+    {failed ? (
+      <div className="uht-recovery">
+        <p>We couldn’t load your booking options. Refresh the page to try again.</p>
+        <button type="button" className="uht-refresh" onClick={() => window.location.reload()}>
+          Refresh booking options
+        </button>
+        <p className="uht-recovery-note">Still having trouble? Please try again in a few minutes.</p>
+      </div>
+    ) : (
+      <div className="uht-track" aria-hidden="true"><div className="uht-fill"></div></div>
+    )}
       </div>
     </div>
   );

@@ -44,3 +44,14 @@
 
 .uht-loading-screen { min-height: 65vh; display: grid; place-items: center; padding: 16px; background: #FFFFFF; }
 .uht-loading-screen > .uht-loader { max-width: 680px; min-width: 0; }
+
+/* A resting group and one recovery action replace the loading animation on failure. */
+.uht-error-state .uht-traveller { left: 50%; }
+.uht-error-state .uht-heading { justify-content: center; text-align: center; }
+.uht-error-state .uht-arm { transform-origin: 61px 69px; transform: rotate(-25deg); }
+.uht-recovery { text-align: center; max-width: 390px; margin: 0 auto; }
+.uht-recovery p { font-size: 15px; line-height: 1.6; margin: 12px 0 22px; }
+.uht-refresh { min-height: 48px; max-width: 100%; padding: 12px 22px; border: 2px solid var(--uht-ink); border-radius: 999px; background: var(--uht-blue); color: var(--uht-ink); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+.uht-refresh:hover { background: var(--uht-green); }
+.uht-refresh:focus-visible { outline: 3px solid var(--uht-ink); outline-offset: 4px; }
+.uht-recovery .uht-recovery-note { font-size: 13px; margin-bottom: 0; }
