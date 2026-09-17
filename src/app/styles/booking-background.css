@@ -17,8 +17,13 @@
   position: relative;
   isolation: isolate;
   min-height: 100svh;
-  background: #fffdfd;
+  background: #FFFFFF;
 }
 .uht-loading-screen > .uht-loader {
   background: transparent;
+}
+
+/* Keep the homepage rings, but use a white base on booking screens. */
+.uht-booking-background rect[fill="url(#brandLightGradient)"] {
+  fill: #FFFFFF;
 }
