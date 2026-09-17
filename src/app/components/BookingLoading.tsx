@@ -21,7 +21,7 @@ export function BookingLoading() {
             <path d="M31 37Q26 19 45 20Q68 17 66 44L62 54L32 51Z" fill="var(--uht-ink)"/>
             <path d="M33 36Q44 38 50 29Q53 38 61 37L61 46Q60 61 47 61Q34 60 33 46Z" fill="var(--uht-skin)"/>
             <path d="M40 44V45M54 44V45M44 53Q48 56 52 52"/>
-            <path d="M29 29L33 34" stroke="var(--uht-yellow)" strokeWidth="5"/>
+            <path d="M29 29L33 34" stroke="var(--uht-blue)" strokeWidth="5"/>
           </g>
         </svg></div>
 <div className="uht-walker uht-walker-2"><svg className="uht-person" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg">
