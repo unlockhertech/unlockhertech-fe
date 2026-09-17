@@ -110,6 +110,18 @@ export function BookingPage() {
         setConfirmation(null);
     }
 
+    // Prefetch the first eligible date's slots whenever the visible month or meeting changes.
+    // This warms the Netlify/GAS caches so when the user clicks a date the response is instant.
+    useEffect(() => {
+        if (!cfg || !meeting || !month) return;
+        const firstEligible = cfg.dates
+            .filter(d => d.value.startsWith(month))
+            .find(d => meeting.days.includes(d.weekday))?.value;
+        if (!firstEligible) return;
+        // Fire-and-forget; ignore errors. This primes the server-side micro-cache.
+        bookingApi.getAvailableSlots(meeting.key, firstEligible).catch(() => {});
+    }, [cfg, meeting, month]);
+
     async function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!meeting || !selectedSlot) return;

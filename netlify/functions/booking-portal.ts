@@ -64,17 +64,35 @@ async function proxyJson(request: Request): Promise<Response> {
   // Route mapping: three JSON endpoints
   if (path.endsWith('/api/public-config')) {
     base.searchParams.set('action', 'getPublicConfig');
-    const r = await fetchJsonWithRetry(base.toString(), { redirect: 'follow' }, 1, 10000);
-    if (!r.isJson) {
-      return new Response(JSON.stringify({ ok: false, error: 'Upstream returned non-JSON' }), {
+    const cacheKey = 'public-config';
+    const cached = cacheGet(cacheKey);
+    try {
+      const r = await fetchJsonWithRetry(base.toString(), { redirect: 'follow' }, 1, 10000);
+      if (!r.isJson) throw new Error('non-json');
+      try { cacheSet(cacheKey, r.text, 60 * 1000); } catch {}
+      return new Response(r.text, {
+        status: r.ok ? 200 : 502,
+        headers: {
+          'content-type': 'application/json; charset=utf-8',
+          // Short CDN cache for fast first-view; allow shared caches longer
+          'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=600',
+        },
+      });
+    } catch (e) {
+      if (cached) {
+        return new Response(cached, {
+          status: 200,
+          headers: {
+            'content-type': 'application/json; charset=utf-8',
+            'cache-control': 'public, max-age=30, s-maxage=120, stale-while-revalidate=300',
+          },
+        });
+      }
+      return new Response(JSON.stringify({ ok: false, error: 'Configuration temporarily unavailable' }), {
         status: 502,
-        headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+        headers: { 'content-type': 'application/json; charset=utf-8' },
       });
     }
-    return new Response(r.text, {
-      status: r.ok ? 200 : 502,
-      headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
-    });
   }
   if (path.endsWith('/api/available-slots')) {
     base.searchParams.set('action', 'getAvailableSlots');
