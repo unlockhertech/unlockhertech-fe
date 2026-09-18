@@ -1,161 +1,80 @@
+import { BookingReadCache } from '../../src/lib/bookingReadCache';
+
 const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycby9D1NeJFq6gnfANBNecurO4kKukEYiFxt_EzvdWexgQI0HauKpCeP6hK2ujPB9ypTlFA/exec';
+const configCache = new BookingReadCache<string>(1);
+const slotsCache = new BookingReadCache<string>();
 
-// Simple per-instance in-memory cache for small JSON responses.
-// Note: Netlify may spin multiple instances; this is best-effort to shave latency.
-type CacheEntry = { expiresAt: number; payload: string };
-const memoryCache: Map<string, CacheEntry> = new Map();
-const DEFAULT_TTL_MS = 30 * 1000; // 30 seconds for slots
-
-function cacheGet(key: string): string | null {
-  const hit = memoryCache.get(key);
-  if (!hit) return null;
-  if (Date.now() > hit.expiresAt) { memoryCache.delete(key); return null; }
-  return hit.payload;
+function jsonResponse(payload: string, status = 200, cacheControl = 'no-store'): Response {
+  return new Response(payload, {
+    status,
+    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': cacheControl },
+  });
 }
 
-function cacheSet(key: string, payload: string, ttlMs = DEFAULT_TTL_MS): void {
-  memoryCache.set(key, { expiresAt: Date.now() + ttlMs, payload });
-}
-
-// ---- Resilient upstream fetch helpers (timeout + retry + content-type guard) ----
-function delay(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 10000): Promise<Response> {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const r = await fetch(url, { ...init, signal: controller.signal });
-    return r;
-  } finally {
-    clearTimeout(id);
-  }
-}
-
-async function fetchJsonWithRetry(
-  url: string,
-  init: RequestInit = {},
-  retries = 1,
-  timeoutMs = 10000
-): Promise<{ ok: boolean; text: string; isJson: boolean; status: number }>
-{
-  let lastErr: any = null;
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      const resp = await fetchWithTimeout(url, init, timeoutMs);
-      const ct = resp.headers.get('content-type') || '';
-      const txt = await resp.text();
-      const isJson = ct.includes('application/json') || (/^\s*\{/.test(txt) && txt.trim().endsWith('}'));
-      return { ok: resp.ok, text: txt, isJson, status: resp.status };
-    } catch (e) {
-      lastErr = e;
-      if (attempt < retries) await delay(250);
-    }
-  }
-  throw lastErr;
+async function fetchJson(url: URL, init: RequestInit = {}): Promise<string> {
+  // The deadline covers redirects AND reading the body. Do not retry writes.
+  const response = await fetch(url, { ...init, redirect: 'follow', signal: AbortSignal.timeout(18000) });
+  const text = await response.text();
+  const result: { ok?: boolean } = JSON.parse(text);
+  if (!response.ok || result?.ok !== true) throw new Error('Booking upstream request failed');
+  return text;
 }
 
 async function proxyJson(request: Request): Promise<Response> {
   const incoming = new URL(request.url);
   const path = incoming.pathname;
-  const token = process.env.BOOKING_PORTAL_TOKEN ?? '';
   const base = new URL(APPS_SCRIPT_BASE);
-  base.searchParams.set('token', token);
+  base.searchParams.set('token', process.env.BOOKING_PORTAL_TOKEN ?? '');
 
-  // Route mapping: three JSON endpoints
-  if (path.endsWith('/api/public-config')) {
+  if (request.method === 'GET' && path.endsWith('/api/public-config')) {
     base.searchParams.set('action', 'getPublicConfig');
-    const cacheKey = 'public-config';
-    const cached = cacheGet(cacheKey);
     try {
-      const r = await fetchJsonWithRetry(base.toString(), { redirect: 'follow' }, 1, 10000);
-      if (!r.isJson) throw new Error('non-json');
-      try { cacheSet(cacheKey, r.text, 60 * 1000); } catch {}
-      return new Response(r.text, {
-        status: r.ok ? 200 : 502,
-        headers: {
-          'content-type': 'application/json; charset=utf-8',
-          // Short CDN cache for fast first-view; allow shared caches longer
-          'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=600',
-        },
-      });
-    } catch (e) {
-      if (cached) {
-        return new Response(cached, {
-          status: 200,
-          headers: {
-            'content-type': 'application/json; charset=utf-8',
-            'cache-control': 'public, max-age=30, s-maxage=120, stale-while-revalidate=300',
-          },
-        });
-      }
-      return new Response(JSON.stringify({ ok: false, error: 'Configuration temporarily unavailable' }), {
-        status: 502,
-        headers: { 'content-type': 'application/json; charset=utf-8' },
-      });
+      const text = await configCache.read('config', 60000, () => fetchJson(base));
+      return jsonResponse(text, 200, 'public, max-age=60, s-maxage=300');
+    } catch (error) {
+      console.warn('Booking configuration unavailable', error);
+      return jsonResponse(JSON.stringify({ ok: false, error: 'Configuration temporarily unavailable. Please try again.' }), 502);
     }
   }
-  if (path.endsWith('/api/available-slots')) {
+  if (request.method === 'GET' && path.endsWith('/api/available-slots')) {
+    const meetingKey = incoming.searchParams.get('meetingKey') || '';
+    const date = incoming.searchParams.get('date') || '';
+    if (!/^[a-z_]{1,80}$/.test(meetingKey) || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return jsonResponse(JSON.stringify({ ok: false, error: 'Invalid meeting or date' }), 400);
+    }
     base.searchParams.set('action', 'getAvailableSlots');
-    const mk = incoming.searchParams.get('meetingKey') || '';
-    const dt = incoming.searchParams.get('date') || '';
-    base.searchParams.set('meetingKey', mk);
-    base.searchParams.set('date', dt);
-    const cacheKey = `slots:${mk}|${dt}`;
-
-    // Try to fetch fresh; on failure, serve stale cache if available
-    const cached = cacheGet(cacheKey);
+    base.searchParams.set('meetingKey', meetingKey);
+    base.searchParams.set('date', date);
     try {
-      const r = await fetchJsonWithRetry(base.toString(), { redirect: 'follow' }, 1, 10000);
-      if (!r.isJson) throw new Error('non-json');
-      try { cacheSet(cacheKey, r.text, DEFAULT_TTL_MS); } catch {}
-      return new Response(r.text, {
-        status: 200,
-        headers: {
-          'content-type': 'application/json; charset=utf-8',
-          'cache-control': 'public, max-age=30, s-maxage=60',
-        },
-      });
-    } catch (e) {
-      if (cached) {
-        return new Response(cached, {
-          status: 200,
-          headers: {
-            'content-type': 'application/json; charset=utf-8',
-            'cache-control': 'public, max-age=15, s-maxage=30',
-          },
-        });
-      }
-      return new Response(JSON.stringify({ ok: false, error: 'Availability service temporarily unavailable' }), {
-        status: 502,
-        headers: { 'content-type': 'application/json; charset=utf-8' },
-      });
+      const text = await slotsCache.read(`${meetingKey}|${date}`, 15000, () => fetchJson(base));
+      // Keep slot caching explicit and bounded; do not add a second CDN/browser TTL.
+      return jsonResponse(text);
+    } catch (error) {
+      console.warn('Booking availability unavailable', error);
+      return jsonResponse(JSON.stringify({ ok: false, error: 'Availability temporarily unavailable. Please try again.' }), 502);
     }
   }
-  if (path.endsWith('/api/book')) {
-    const u = new URL(APPS_SCRIPT_BASE);
-    u.searchParams.set('token', token);
-    u.searchParams.set('action', 'bookMeeting');
-    const body = await request.text();
-    const r = await fetchJsonWithRetry(
-      u.toString(),
-      { method: 'POST', headers: { 'content-type': 'application/json' }, body, redirect: 'follow' },
-      1,
-      10000
-    );
-    if (!r.isJson) {
-      return new Response(JSON.stringify({ ok: false, error: 'Booking service returned non-JSON' }), {
-        status: 502,
-        headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+  if (request.method === 'POST' && path.endsWith('/api/book')) {
+    base.searchParams.set('action', 'bookMeeting');
+    slotsCache.clear();
+    try {
+      // Preserve business errors (e.g. a slot just taken) for the caller.
+      const response = await fetch(base, {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: await request.text(), redirect: 'follow', signal: AbortSignal.timeout(18000),
       });
+      const text = await response.text();
+      JSON.parse(text);
+      return jsonResponse(text, response.ok ? 200 : 502);
+    } catch (error) {
+      console.warn('Booking confirmation unavailable', error);
+      return jsonResponse(JSON.stringify({ ok: false, error: 'Could not confirm the booking. Check your email before trying again.' }), 502);
+    } finally {
+      // Prevent an older in-flight read from repopulating this instance's cache.
+      slotsCache.clear();
     }
-    return new Response(r.text, {
-      status: r.ok ? 200 : 502,
-      headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
-    });
   }
-
-  // Fallback 404 for unknown API route
-  return new Response(JSON.stringify({ ok: false, error: 'Not Found' }), { status: 404, headers: { 'content-type': 'application/json; charset=utf-8' } });
+  return jsonResponse(JSON.stringify({ ok: false, error: 'Not Found' }), 404);
 }
 
 export default async function handler(request: Request): Promise<Response> {

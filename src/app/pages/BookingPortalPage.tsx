@@ -111,15 +111,21 @@ export function BookingPage() {
     }
 
     // Prefetch the first eligible date's slots whenever the visible month or meeting changes.
-    // This warms the Netlify/GAS caches so when the user clicks a date the response is instant.
+    // The API retains the result and shares this request with a click on the same date.
     useEffect(() => {
         if (!cfg || !meeting || !month) return;
         const firstEligible = cfg.dates
             .filter(d => d.value.startsWith(month))
             .find(d => meeting.days.includes(d.weekday))?.value;
         if (!firstEligible) return;
-        // Fire-and-forget; ignore errors. This primes the server-side micro-cache.
-        bookingApi.getAvailableSlots(meeting.key, firstEligible).catch(() => {});
+        const prefetch = async () => {
+            try {
+                await bookingApi.getAvailableSlots(meeting.key, firstEligible);
+            } catch (error) {
+                console.debug('Booking availability prefetch failed', error);
+            }
+        };
+        void prefetch();
     }, [cfg, meeting, month]);
 
     async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -148,11 +154,7 @@ export function BookingPage() {
         }
     }
 
-    if (!cfg && !error) return <BookingLoading />;
-
-    if (!cfg) return <BookingLoading failed />;
-
-    const meetingsInSection = cfg.meetingTypes.filter(m => m.section === section);
+    const meetingsInSection = cfg?.meetingTypes.filter(m => m.section === section) ?? [];
 
     return (
         <div className="wrap-root">
@@ -180,7 +182,8 @@ export function BookingPage() {
                 <div className="rings" aria-hidden="true" />
             </div>
 
-            <div className="wrap">
+            {!cfg && <BookingLoading failed={Boolean(error)} />}
+            {cfg && <div className="wrap">
                 <nav className="tabs" aria-label="Booking categories" id="tabs">
                     {(['partnerships', 'careers', 'podcast', 'mentorship', 'meet'] as const).map(key => (
                         <button
@@ -325,7 +328,7 @@ export function BookingPage() {
                         )}
                     </main>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }
