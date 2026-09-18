@@ -1,3 +1,5 @@
+import { BookingReadCache } from '../../lib/bookingReadCache';
+
 export type Slot = { startMs: number; endMs: number };
 export type MeetingType = {
   key: string;
@@ -18,13 +20,8 @@ export type PublicConfig = {
 
 const BASE = '/api/booking-portal';
 
-class BookingApiError extends Error {
-  readonly retryable: boolean;
-  constructor(message: string, retryable = false) {
-    super(message);
-    this.retryable = retryable;
-  }
-}
+const configCache = new BookingReadCache<PublicConfig>(1);
+const slotsCache = new BookingReadCache<Slot[]>();
 
 async function unwrap<T>(res: Response): Promise<T> {
   const text = await res.text();
@@ -33,44 +30,46 @@ async function unwrap<T>(res: Response): Promise<T> {
     json = JSON.parse(text);
   } catch (error) {
     console.warn('Booking API returned an invalid JSON response', error);
-    throw new BookingApiError('The booking service could not respond. Please try again.', res.status >= 500);
+    throw new Error('The booking service could not respond. Please try again.');
   }
   if (!res.ok || json?.ok !== true) {
-    throw new BookingApiError(json?.error || `Request failed (${res.status})`, res.status >= 500 || res.status === 429);
+    throw new Error(json?.error || `Request failed (${res.status})`);
   }
   return json.data as T;
 }
 
-// Retry reads only: never automatically resubmit a booking.
+// One bounded attempt: nested browser/proxy retries used to keep loading for over a minute.
 async function readBookingData<T>(url: string | URL): Promise<T> {
-  for (let attempt = 0; ; attempt++) {
-    try {
-      const response = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(25000) });
-      return await unwrap<T>(response);
-    } catch (error) {
-      const retryable = !(error instanceof BookingApiError) || error.retryable;
-      if (attempt >= 2 || !retryable) throw error;
-      await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
-    }
-  }
+  const response = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(20000) });
+  return unwrap<T>(response);
 }
 
 export const bookingApi = {
   async getPublicConfig(): Promise<PublicConfig> {
-    return readBookingData<PublicConfig>(`${BASE}/api/public-config`);
+    return configCache.read('config', 60000, async () => {
+      const response = await fetch(`${BASE}/api/public-config`, { signal: AbortSignal.timeout(20000) });
+      return unwrap<PublicConfig>(response);
+    });
   },
   async getAvailableSlots(meetingKey: string, date: string): Promise<Slot[]> {
     const u = new URL(`${BASE}/api/available-slots`, window.location.origin);
     u.searchParams.set('meetingKey', meetingKey);
     u.searchParams.set('date', date);
-    return readBookingData<Slot[]>(u);
+    return slotsCache.read(`${meetingKey}|${date}`, 15000, () => readBookingData<Slot[]>(u));
   },
   async bookMeeting(payload: { meetingKey: string; startMs: number; name: string; email: string; notes?: string; requestId: string; }) {
-    const r = await fetch(`${BASE}/api/book?action=bookMeeting`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    return unwrap<{ bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }>(r);
+    // A failed/ambiguous response may still have created a booking upstream.
+    slotsCache.clear();
+    try {
+      const r = await fetch(`${BASE}/api/book?action=bookMeeting`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(20000),
+      });
+      return await unwrap<{ bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }>(r);
+    } finally {
+      slotsCache.clear();
+    }
   },
 };
