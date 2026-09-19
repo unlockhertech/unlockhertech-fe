@@ -396,7 +396,7 @@ function MobileNavigationMenu({
               }`
             }
           >
-            Blog
+            Blogs
           </NavLink>
         )}
 
@@ -642,7 +642,7 @@ function LayoutInner() {
                     }`
                   }
                 >
-                  Blog
+                  Blogs
                 </NavLink>
               )}
 
@@ -760,7 +760,7 @@ function LayoutInner() {
                 {enableAssessment && (
                     <li><Link to="/assessment" className="inline-block py-1 hover:text-white transition-colors">Career Fit Self-Assessment</Link></li>
                 )}
-                {enableBlog ? <li><Link to="/blog" className="inline-block py-1 hover:text-white transition-colors">Blog</Link></li> : null}
+                {enableBlog ? <li><Link to="/blog" className="inline-block py-1 hover:text-white transition-colors">Blogs</Link></li> : null}
                 {enableEvents ? <li><Link to="/events" className="inline-block py-1 hover:text-white transition-colors">Upcoming Events</Link></li> : null}
               </ul>
             </div>

@@ -24,7 +24,7 @@ export function BlogPostHeader({ post }: Readonly<BlogPostHeaderProps>) {
       <div className="flex items-center gap-2 text-xs font-bold text-gray-500 mb-8 uppercase tracking-wider">
         <Link to="/" className="hover:text-brand-coral transition-colors">Home</Link>
         <span>/</span>
-        <Link to="/blog" className="hover:text-brand-coral transition-colors">Blog</Link>
+        <Link to="/blog" className="hover:text-brand-coral transition-colors">Blogs</Link>
         <span>/</span>
         <span className="text-brand-coral truncate max-w-xs sm:max-w-md">{post.title}</span>
       </div>

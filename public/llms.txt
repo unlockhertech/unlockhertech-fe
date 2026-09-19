@@ -9,7 +9,7 @@
 - **Career Playbooks & PDF Guides**: Free downloadable career roadmap and technical interview playbooks.
 - **Career Readiness Self-Assessment**: Interactive 16-question worksheet evaluating Mindset, Transferable Skills, Technical Literacy, and Networking Strategy with instant PDF export.
 - **Community Events & Coding Workshops**: Virtual coding workshops, panel discussions, and career Q&A sessions.
-- **Blog & Technical Articles**: Deep dives on engineering practices, career transitions, and industry insights.
+- **Blogs & Technical Articles**: Deep dives on engineering practices, career transitions, and industry insights.
 
 ## Key Canonical URLs & Resources
 
@@ -17,7 +17,7 @@
 - [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.
 - [She Leads Tech](https://unlockhertech.com/practices): Fortnightly technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.
 - [Events Calendar](https://unlockhertech.com/events): Upcoming workshops, community meetups, and live Q&A sessions.
-- [Blog & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.
+- [Blogs & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.
 - [Career Resources & Guides](https://unlockhertech.com/resources): Downloadable PDF career guides and interview playbooks.
 - [Career Fit Assessment](https://unlockhertech.com/assessment): 5-minute interactive readiness worksheet with personalized action plan.
 - [About Us & Mission](https://unlockhertech.com/about): Our founding story, mission, and community values.

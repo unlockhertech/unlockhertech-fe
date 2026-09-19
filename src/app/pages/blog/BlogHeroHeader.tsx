@@ -15,7 +15,7 @@ export function BlogHeroHeader({ totalArticles }: Readonly<BlogHeroHeaderProps>)
         <div className="flex items-center gap-2 text-white/90 text-sm mb-4">
           <Link to="/" className="hover:text-white transition-colors">Home</Link>
           <span>/</span>
-          <span className="text-white font-semibold">Blog</span>
+          <span className="text-white font-semibold">Blogs</span>
         </div>
         <div className="flex items-center gap-4 mb-3">
           <div className="p-3 rounded-2xl bg-white/15">

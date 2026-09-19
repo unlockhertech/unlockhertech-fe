@@ -99,7 +99,7 @@ export function getLinkItems(): LinkItem[] {
     },
     {
       id: "blog",
-      title: "Read The Blog",
+      title: "Read The Blogs",
       subtitle: "Interviews, tech deep-dives & career journeys",
       url: "/blog",
       isExternal: false,

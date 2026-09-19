@@ -10,7 +10,7 @@ import { BlogGrid } from "./blog/BlogGrid";
 const BLOG_INDEX_META_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "Unlock Her Tech Blog",
+  "name": "Unlock Her Tech Blogs",
   "description": "Insights and stories from the women and non-binary professionals shaping the future of tech.",
   "url": "https://unlockhertech.com/blog",
   "publisher": {
@@ -35,7 +35,7 @@ export function BlogIndexPage() {
   } = useBlogIndex();
 
   useMetaData(
-    "Blog & Engineering Stories | Unlock Her Tech",
+    "Blogs & Engineering Stories | Unlock Her Tech",
     "Insights, career advice, and deep dives from women, non-binary professionals, and allies across the technology industry.",
     "https://unlockhertech.com/blog",
     {

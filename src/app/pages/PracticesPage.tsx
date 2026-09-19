@@ -4,7 +4,8 @@ import { SubscribeCTA } from "../components/SubscribeCTA";
 import { PracticesHero } from "./practices/PracticesHero";
 import { PracticeCountdownCard } from "./practices/PracticeCountdownCard";
 import { SheLeadsTechStagesNavigator } from "./practices/SheLeadsTechStagesNavigator";
-import { PracticePatternsGrid } from "./practices/PracticePatternsGrid";
+// import { PracticePatternsGrid } from "./practices/PracticePatternsGrid";
+import { LearningPathsSection } from "./practices/LearningPathsSection";
 import { PracticeRequirementsSection } from "./practices/PracticeRequirementsSection";
 
 const PRACTICES_META_JSON_LD = {
@@ -50,8 +51,8 @@ export function PracticesPage() {
       {/* ── 3. Three Stages Navigator (Theory, Practice, Review) ─────────── */}
       <SheLeadsTechStagesNavigator />
 
-      {/* ── 4. Engineering Topics & Domains Grid ─────────────────────────── */}
-      <PracticePatternsGrid />
+      {/* ── 4. Learning Paths Grid ───────────────────────────────────────── */}
+      <LearningPathsSection />
 
       {/* ── 5. Prerequisites & Guidelines ─────────────────────────────────── */}
       <PracticeRequirementsSection />

@@ -40,6 +40,12 @@ function getFeatureFlags() {
     enableAssessment: process.env.VITE_ENABLE_ASSESSMENT === "true",
     enableGetInvolved: process.env.VITE_ENABLE_GET_INVOLVED === "true",
     enableJobs: process.env.VITE_ENABLE_JOBS !== "false",
+    // Learning Paths
+    enablePathsFrontend: process.env.VITE_ENABLE_PATHS_FRONTEND === "true",
+    enablePathsBackend: process.env.VITE_ENABLE_PATHS_BACKEND === "true",
+    enablePathsMobile: process.env.VITE_ENABLE_PATHS_MOBILE === "true",
+    // Interview path is on by default unless explicitly disabled
+    enablePathsInterview: process.env.VITE_ENABLE_PATHS_INTERVIEW !== "false",
   };
 }
 
@@ -89,6 +95,29 @@ function getStaticRoutes(flags) {
       { path: "/become-a-guest", priority: "0.75", changefreq: "monthly", lastmod: TODAY },
       { path: "/mentor", priority: "0.75", changefreq: "monthly", lastmod: TODAY }
     );
+  }
+
+  // Learning Paths (default: only interview enabled)
+  const pathsEnabled = [
+    flags.enablePathsFrontend,
+    flags.enablePathsBackend,
+    flags.enablePathsMobile,
+    flags.enablePathsInterview,
+  ].some(Boolean);
+  if (pathsEnabled) {
+    routes.push({ path: "/paths", priority: "0.80", changefreq: "weekly", lastmod: TODAY });
+  }
+  if (flags.enablePathsInterview) {
+    routes.push({ path: "/paths/interview", priority: "0.80", changefreq: "weekly", lastmod: TODAY });
+  }
+  if (flags.enablePathsFrontend) {
+    routes.push({ path: "/paths/frontend", priority: "0.75", changefreq: "monthly", lastmod: TODAY });
+  }
+  if (flags.enablePathsBackend) {
+    routes.push({ path: "/paths/backend", priority: "0.75", changefreq: "monthly", lastmod: TODAY });
+  }
+  if (flags.enablePathsMobile) {
+    routes.push({ path: "/paths/mobile", priority: "0.75", changefreq: "monthly", lastmod: TODAY });
   }
 
   return routes;
@@ -185,7 +214,7 @@ function generateLlmsTxt(flags) {
     offerings.push("- **Community Events & Coding Workshops**: Virtual coding workshops, panel discussions, and career Q&A sessions.");
   }
   if (flags.enableBlog) {
-    offerings.push("- **Blog & Technical Articles**: Deep dives on engineering practices, career transitions, and industry insights.");
+    offerings.push("- **Blogs & Technical Articles**: Deep dives on engineering practices, career transitions, and industry insights.");
   }
 
   const urls = [
@@ -198,7 +227,7 @@ function generateLlmsTxt(flags) {
     urls.push("- [Events Calendar](https://unlockhertech.com/events): Upcoming workshops, community meetups, and live Q&A sessions.");
   }
   if (flags.enableBlog) {
-    urls.push("- [Blog & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.");
+    urls.push("- [Blogs & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.");
   }
   if (flags.enableResources) {
     urls.push("- [Career Resources & Guides](https://unlockhertech.com/resources): Downloadable PDF career guides and interview playbooks.");
