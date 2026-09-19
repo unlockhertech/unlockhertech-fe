@@ -44,7 +44,7 @@ export function HomeSheLeadsTechBanner() {
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8 text-xs font-semibold text-white">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCodeBracket className="w-4 h-4 text-[#ff6051]" /> <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#72c472]">Review</span>
+                <HiCodeBracket className="w-4 h-4 text-[#ff6051]" /> Theory • Practice • Review
               </span>
             </div>
 
