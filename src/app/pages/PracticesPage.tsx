@@ -12,7 +12,7 @@ const PRACTICES_META_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "She Leads Tech: Theory, Practice & Review Workshop Series",
-  "description": "Fortnightly interactive engineering workshops designed to help developers master technical concepts through instructor-led Theory, hands-on Practice, and reinforcement Review. Covering DSA, system design, cloud, architecture, and full-stack engineering.",
+  "description": "Interactive engineering workshops designed to help developers master technical concepts through instructor-led Theory, hands-on Practice, and reinforcement Review. Covering DSA, system design, cloud, architecture, and full-stack engineering.",
   "provider": {
     "@type": "Organization",
     "name": "Unlock Her Tech",
@@ -31,7 +31,7 @@ const PRACTICES_META_JSON_LD = {
 export function PracticesPage() {
   useMetaData(
     "She Leads Tech | Theory, Practice & Review Workshop Series",
-    "Join live, interactive She Leads Tech engineering workshops every two weeks. Master concepts through instructor-led Theory, hands-on collaborative Practice, and reinforcement Review sessions.",
+    "Join live, interactive She Leads Tech engineering workshops. Master concepts through instructor-led Theory, hands-on collaborative Practice, and reinforcement Review sessions.",
     undefined,
     {
       image: imgSheLeadsTech,
@@ -45,7 +45,7 @@ export function PracticesPage() {
       {/* ── 1. Hero Section ─────────────────────────────────────────────── */}
       <PracticesHero />
 
-      {/* ── 2. Live Fortnightly Practice Countdown Clock ───────────────── */}
+      {/* ── 2. Live Practice Countdown Clock ─────────────────────── */}
       <PracticeCountdownCard />
 
       {/* ── 3. Three Stages Navigator (Theory, Practice, Review) ─────────── */}

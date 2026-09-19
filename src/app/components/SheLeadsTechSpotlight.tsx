@@ -41,23 +41,23 @@ export function SheLeadsTechSpotlight() {
               She Leads Tech
             </h2>
             <p className="text-brand-pink font-extrabold text-lg sm:text-xl mb-4">
-              Theory • Practice • Review
+              <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#72c472]">Review</span>
             </p>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
-              Fortnightly interactive workshops designed to help technologists master algorithms, system design, and software engineering concepts through instructor-led Theory, hands-on Practice, and reinforcement Review.
+              Interactive workshops designed to help technologists master algorithms, system design, and software engineering concepts through instructor-led Theory, hands-on Practice, and reinforcement Review.
             </p>
 
             {/* Quick feature pills */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8 text-xs font-semibold text-white">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCodeBracket className="w-4 h-4 text-brand-yellow" /> Theory: Instructor-Led
+                <HiCodeBracket className="w-4 h-4 text-[#ff6051]" /> Theory: Instructor-Led
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiUsers className="w-4 h-4 text-brand-blue" /> Practice: Hands-On
+                <HiUsers className="w-4 h-4 text-[#b52970]" /> Practice: Hands-On
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCalendarDays className="w-4 h-4 text-brand-green" /> Review: Reinforce & Retain
+                <HiCalendarDays className="w-4 h-4 text-[#72c472]" /> Review: Reinforce & Retain
               </span>
             </div>
 

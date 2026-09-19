@@ -67,6 +67,10 @@ export interface Requirement {
   detail: string;
 }
 
+export const STAGE_THEORY_HEX = "#ff6051";
+export const STAGE_PRACTICE_HEX = "#b52970";
+export const STAGE_REVIEW_HEX = "#72c472";
+
 export const LEARNING_FORMATS: LearningFormat[] = [
   {
     id: "theory",
@@ -74,7 +78,7 @@ export const LEARNING_FORMATS: LearningFormat[] = [
     shortName: "Theory",
     subtitle: "Instructor-Led Teaching & Practical Examples",
     badge: "Live on Luma",
-    badgeColor: "bg-brand-coral text-white",
+    badgeColor: "bg-[#ff6051] text-white",
     mantra: "Learn it → Understand it → See it applied.",
     purpose:
       "Designed to help participants learn and understand a technical concept through instructor-led teaching and practical examples. The aim is not just to explain what something is, but to help participants understand why it is used, when to use it, how it works, and how it appears in real engineering problems.",
@@ -105,7 +109,7 @@ export const LEARNING_FORMATS: LearningFormat[] = [
     shortName: "Practice",
     subtitle: "Hands-On Experience & Problem Solving",
     badge: "Interactive Doing",
-    badgeColor: "bg-brand-blue text-white",
+    badgeColor: "bg-[#b52970] text-white",
     mantra: "Try it → Solve it → Discuss it → Improve it.",
     purpose:
       "Designed to give participants hands-on experience applying what they know. The focus is less on teaching a concept from the beginning and more on giving participants space to think, code, discuss, make mistakes, test ideas, and solve problems together.",
@@ -135,7 +139,7 @@ export const LEARNING_FORMATS: LearningFormat[] = [
     shortName: "Review",
     subtitle: "Repetition & Long-Term Mastery",
     badge: "Reinforce & Solidify",
-    badgeColor: "bg-brand-green text-white",
+    badgeColor: "bg-[#72c472] text-white",
     mantra: "Remember it → Practise it again → Understand it better → Make it stick.",
     purpose:
       "Designed to return to something that has already been covered and strengthen participants' understanding through repetition and further practice. Review sessions give the community another opportunity to revisit the subject, ask questions, practise again, and build confidence.",
@@ -169,8 +173,8 @@ export const KEY_DIFFERENCES: KeyDifferenceItem[] = [
     participantsRole: "Participants are primarily learning",
     coreFocus: "Learn it → Understand it → See it applied",
     mantra: "Learn it → Understand it → See it applied.",
-    color: "border-brand-coral/40 bg-pink-50/50 text-stone-900",
-    badgeColor: "bg-brand-coral text-white",
+    color: "border-[#ff6051]/40 bg-[#ff6051]/10 text-stone-900",
+    badgeColor: "bg-[#ff6051] text-white",
   },
   {
     format: "Practice",
@@ -178,8 +182,8 @@ export const KEY_DIFFERENCES: KeyDifferenceItem[] = [
     participantsRole: "Participants are primarily doing",
     coreFocus: "Try it → Solve it → Discuss it → Improve it",
     mantra: "Try it → Solve it → Discuss it → Improve it.",
-    color: "border-brand-blue/40 bg-blue-50/50 text-stone-900",
-    badgeColor: "bg-brand-blue text-white",
+    color: "border-[#b52970]/40 bg-[#b52970]/10 text-stone-900",
+    badgeColor: "bg-[#b52970] text-white",
   },
   {
     format: "Review",
@@ -187,8 +191,8 @@ export const KEY_DIFFERENCES: KeyDifferenceItem[] = [
     participantsRole: "Participants are primarily reinforcing and strengthening",
     coreFocus: "Remember it → Practise it again → Make it stick",
     mantra: "Remember it → Practise it again → Understand it better → Make it stick.",
-    color: "border-brand-green/40 bg-emerald-50/50 text-stone-900",
-    badgeColor: "bg-brand-green text-white",
+    color: "border-[#72c472]/40 bg-[#72c472]/15 text-stone-900",
+    badgeColor: "bg-[#72c472] text-white",
   },
 ];
 

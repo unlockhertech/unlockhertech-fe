@@ -70,7 +70,7 @@ export const CATEGORY_RESOURCE_MAP: Record<
         badge: "Live Workshops",
         badgeColor: "bg-emerald-100 text-brand-green border-emerald-200",
         description:
-          "Fortnightly technical sessions (Theory, Practice, Review) in a psychologically safe environment where no question is too basic.",
+          "Technical sessions (Theory, Practice, Review) in a psychologically safe environment where no question is too basic.",
         url: "/practices",
         isExternal: false,
         ctaText: "Join She Leads Tech",
@@ -126,7 +126,7 @@ export const CATEGORY_RESOURCE_MAP: Record<
       {
         id: "m3-practice",
         type: "practice",
-        title: "She Leads Tech Fortnightly Workshops",
+        title: "She Leads Tech Workshops",
         badge: "Theory, Practice & Review",
         badgeColor: "bg-blue-100 text-brand-blue border-blue-200",
         description:

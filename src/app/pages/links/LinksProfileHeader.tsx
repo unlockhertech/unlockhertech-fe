@@ -26,7 +26,7 @@ export function LinksProfileHeader({ onHandleClick }: Readonly<LinksProfileHeade
         target="_blank"
         rel="noopener noreferrer"
         onClick={onHandleClick}
-        className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#92d599] text-[#580322] font-black text-xs tracking-wide shadow-xs hover:scale-105 transition-transform mb-3 cursor-pointer"
+        className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#72c472] text-[#580322] font-black text-xs tracking-wide shadow-xs hover:scale-105 transition-transform mb-3 cursor-pointer"
       >
         @unlockhertech
       </a>

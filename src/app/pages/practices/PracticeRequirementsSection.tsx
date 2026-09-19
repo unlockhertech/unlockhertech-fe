@@ -54,20 +54,20 @@ export function PracticeRequirementsSection() {
                   The Learning Progression
                 </h2>
                 <p className="text-white/90 text-sm leading-relaxed mb-6">
-                  This is an ongoing series held <strong className="text-white">live every two weeks</strong>. Each concept cycles through three learning stages to ensure you truly understand and can apply what you learn.
+                  This is an ongoing series held <strong className="text-white">live</strong>. Each concept cycles through three learning stages to ensure you truly understand and can apply what you learn.
                 </p>
 
                 <div className="space-y-4 text-sm">
                   <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
-                    <span className="px-3 py-1 rounded-full bg-brand-coral text-white font-bold text-xs shrink-0">Stage 1: Theory</span>
+                    <span className="px-3 py-1 rounded-full bg-[#ff6051] text-white font-bold text-xs shrink-0">Stage 1: Theory</span>
                     <span>Instructor-led teaching, architecture breakdown, & practical examples</span>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
-                    <span className="px-3 py-1 rounded-full bg-brand-blue text-white font-bold text-xs shrink-0">Stage 2: Practice</span>
+                    <span className="px-3 py-1 rounded-full bg-[#b52970] text-white font-bold text-xs shrink-0">Stage 2: Practice</span>
                     <span>Hands-on problem solving, collaborative coding, & trade-off analysis</span>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 border border-white/20">
-                    <span className="px-3 py-1 rounded-full bg-brand-green text-white font-bold text-xs shrink-0">Stage 3: Review</span>
+                    <span className="px-3 py-1 rounded-full bg-[#72c472] text-white font-bold text-xs shrink-0">Stage 3: Review</span>
                     <span>Repetition, clarifying misconceptions, & reinforcing long-term mastery</span>
                   </div>
                 </div>

@@ -7,6 +7,30 @@ import {
   EPISODE_TAGS,
 } from "./episodesTypes";
 
+function matchesEpisodeTag(ep: { id: number; title: string; description: string; tags?: string[] }, activeTag: string): boolean {
+  if (!activeTag) return true;
+  if ((EPISODE_TAGS[ep.id] ?? []).includes(activeTag)) return true;
+  if ((ep.tags ?? []).includes(activeTag)) return true;
+
+  const content = `${ep.title} ${ep.description}`.toLowerCase();
+  if (activeTag === "engineering") {
+    return content.includes("engineer") || content.includes("code") || content.includes("software") || content.includes("tech") || content.includes("developer") || content.includes("system");
+  }
+  if (activeTag === "leadership") {
+    return content.includes("lead") || content.includes("manage") || content.includes("career") || content.includes("mentor") || content.includes("sponsor");
+  }
+  if (activeTag === "startups") {
+    return content.includes("startup") || content.includes("founder") || content.includes("launch") || content.includes("pivot");
+  }
+  if (activeTag === "inclusion") {
+    return content.includes("inclusi") || content.includes("divers") || content.includes("accessib") || content.includes("women") || content.includes("equity");
+  }
+  if (activeTag === "ai-innovation") {
+    return content.includes("ai") || content.includes("artificial intelligence") || content.includes("innovat") || content.includes("future");
+  }
+  return false;
+}
+
 export function useEpisodes() {
   const { episodes, loading, error, isLive } = useRssFeed();
 
@@ -24,7 +48,7 @@ export function useEpisodes() {
           !q ||
           ep.title.toLowerCase().includes(q) ||
           ep.description.toLowerCase().includes(q);
-        const matchesTag = !activeTag || (EPISODE_TAGS[ep.id] ?? []).includes(activeTag);
+        const matchesTag = matchesEpisodeTag(ep, activeTag);
         return matchesText && matchesTag;
       })
       .sort((a, b) =>

@@ -36,7 +36,7 @@ export function PracticePatternsGrid() {
               </h3>
             </div>
             <p className="text-xs sm:text-sm text-stone-600 sm:max-w-md">
-              Currently running bi-weekly across <strong>Theory</strong> concept breakdowns and practical walkthroughs.
+              Currently running across <strong>Theory</strong> concept breakdowns and practical walkthroughs.
             </p>
           </div>
 
@@ -44,13 +44,13 @@ export function PracticePatternsGrid() {
             {activeTopics.map((topic) => (
               <div
                 key={topic.name}
-                className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-brand-berry/20 shadow-sm hover:border-brand-berry/40 hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#b52970]/20 shadow-sm hover:border-[#b52970]/40 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <div className="flex items-center gap-2">
                       <span className={`w-3.5 h-3.5 rounded-full ${topic.dotColor}`} />
-                      <span className="text-xs font-black uppercase tracking-wider text-brand-berry">
+                      <span className="text-xs font-black uppercase tracking-wider text-[#b52970]">
                         {topic.name}
                       </span>
                     </div>
@@ -84,9 +84,9 @@ export function PracticePatternsGrid() {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between gap-2 text-xs">
-                  <span className="font-bold text-brand-coral flex items-center gap-1.5">
-                    <HiSparkles className="w-4 h-4 text-brand-coral" />
-                    <span>Explored across Theory, Practice & Review</span>
+                  <span className="font-bold flex items-center gap-1.5">
+                    <HiSparkles className="w-4 h-4 text-[#ff6051]" />
+                    <span>Explored across <span className="text-[#ff6051]">Theory</span>, <span className="text-[#b52970]">Practice</span> & <span className="text-[#72c472]">Review</span></span>
                   </span>
                   <span className="text-[11px] font-semibold text-stone-500 flex items-center gap-1">
                     <HiBolt className="w-3.5 h-3.5 text-brand-yellow" />

@@ -41,7 +41,7 @@ const STAGE_TABS: StageTabItem[] = [
     label: "Theory",
     short: "Theory",
     badge: "Live on Luma",
-    badgeColor: "bg-brand-coral text-white",
+    badgeColor: "bg-[#ff6051] text-white",
     icon: HiBookOpen,
   },
   {
@@ -50,7 +50,7 @@ const STAGE_TABS: StageTabItem[] = [
     label: "Practice",
     short: "Practice",
     badge: "Interactive Doing",
-    badgeColor: "bg-brand-blue text-white",
+    badgeColor: "bg-[#b52970] text-white",
     icon: HiWrenchScrewdriver,
   },
   {
@@ -59,7 +59,7 @@ const STAGE_TABS: StageTabItem[] = [
     label: "Review",
     short: "Review",
     badge: "Mastery & Recall",
-    badgeColor: "bg-brand-green text-white",
+    badgeColor: "bg-[#72c472] text-white",
     icon: HiArrowPath,
   },
 ];
@@ -75,21 +75,36 @@ function parseValidTab(rawTab: string | null | undefined): FormatTabId | null {
 
 function getTabButtonClass(tabId: FormatTabId, activeTab: FormatTabId): string {
   if (tabId === activeTab) {
+    if (tabId === "theory") {
+      return "bg-[#ff6051] text-white shadow-md border-[#ff6051] font-bold";
+    }
+    if (tabId === "practice") {
+      return "bg-[#b52970] text-white shadow-md border-[#b52970] font-bold";
+    }
+    if (tabId === "review") {
+      return "bg-[#72c472] text-stone-900 shadow-md border-[#72c472] font-bold";
+    }
     return "bg-brand-coral text-white shadow-md border-brand-coral font-bold";
   }
   return "bg-white text-gray-700 hover:text-gray-900 hover:bg-stone-100 border-gray-200 font-semibold";
 }
 
 function getCardAccentBorder(formatId: "theory" | "practice" | "review"): string {
-  if (formatId === "theory") return "border-brand-coral/30 hover:border-brand-coral";
-  if (formatId === "practice") return "border-brand-blue/30 hover:border-brand-blue";
-  return "border-brand-green/30 hover:border-brand-green";
+  if (formatId === "theory") return "border-[#ff6051]/40 hover:border-[#ff6051]";
+  if (formatId === "practice") return "border-[#b52970]/40 hover:border-[#b52970]";
+  return "border-[#72c472]/50 hover:border-[#72c472]";
 }
 
 function getFormatAccentText(formatId: "theory" | "practice" | "review"): string {
-  if (formatId === "theory") return "text-brand-coral";
-  if (formatId === "practice") return "text-brand-blue";
-  return "text-brand-green";
+  if (formatId === "theory") return "text-[#ff6051]";
+  if (formatId === "practice") return "text-[#b52970]";
+  return "text-[#72c472]";
+}
+
+function getFormatAccentBg(formatId: "theory" | "practice" | "review"): string {
+  if (formatId === "theory") return "bg-[#ff6051]";
+  if (formatId === "practice") return "bg-[#b52970]";
+  return "bg-[#72c472]";
 }
 
 interface FormatDetailViewProps {
@@ -100,6 +115,7 @@ interface FormatDetailViewProps {
 function FormatDetailView({ format, onSelectTab }: Readonly<FormatDetailViewProps>) {
   const Icon = format.icon;
   const accentText = getFormatAccentText(format.id);
+  const accentBg = getFormatAccentBg(format.id);
 
   return (
     <div
@@ -112,7 +128,7 @@ function FormatDetailView({ format, onSelectTab }: Readonly<FormatDetailViewProp
       <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-200 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3.5">
-            <div className="w-14 h-14 rounded-2xl bg-stone-50 border border-gray-200 text-brand-coral flex items-center justify-center shrink-0 shadow-xs">
+            <div className={`w-14 h-14 rounded-2xl bg-stone-50 border border-gray-200 ${accentText} flex items-center justify-center shrink-0 shadow-xs`}>
               <Icon className="w-8 h-8" />
             </div>
             <div>
@@ -160,7 +176,7 @@ function FormatDetailView({ format, onSelectTab }: Readonly<FormatDetailViewProp
             <div className="bg-stone-50/70 rounded-2xl p-6 border border-gray-200 shadow-2xs h-full flex flex-col justify-between">
               <div>
                 <h4 className="text-xs uppercase font-extrabold text-gray-900 tracking-wider mb-3 flex items-center gap-2">
-                  <HiSparkles className="w-4 h-4 text-brand-coral" />
+                  <HiSparkles className={`w-4 h-4 ${accentText}`} />
                   Purpose of the Initiative
                 </h4>
                 <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-6">
@@ -175,7 +191,7 @@ function FormatDetailView({ format, onSelectTab }: Readonly<FormatDetailViewProp
                 <ul className="space-y-2">
                   {format.topicsOrActivities.map((topic) => (
                     <li key={topic} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700">
-                      <span className="w-1.5 h-1.5 rounded-full bg-brand-coral shrink-0 mt-2" />
+                      <span className={`w-1.5 h-1.5 rounded-full ${accentBg} shrink-0 mt-2`} />
                       <span>{topic}</span>
                     </li>
                   ))}
@@ -188,13 +204,13 @@ function FormatDetailView({ format, onSelectTab }: Readonly<FormatDetailViewProp
           <div className="lg:col-span-6">
             <div className="bg-stone-50/70 rounded-2xl p-6 border border-gray-200 shadow-2xs">
               <h4 className="text-xs uppercase font-extrabold text-gray-900 tracking-wider mb-3.5 flex items-center gap-2">
-                <HiCheck className="w-4 h-4 text-brand-coral" />
+                <HiCheck className={`w-4 h-4 ${accentText}`} />
                 What the Instructor Does
               </h4>
               <ul className="space-y-2.5">
                 {format.instructorRole.map((roleItem) => (
                   <li key={roleItem} className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700 leading-relaxed">
-                    <HiCheck className="w-4 h-4 text-brand-coral shrink-0 mt-0.5" />
+                    <HiCheck className={`w-4 h-4 ${accentText} shrink-0 mt-0.5`} />
                     <span>{roleItem}</span>
                   </li>
                 ))}
@@ -212,7 +228,7 @@ function FormatDetailView({ format, onSelectTab }: Readonly<FormatDetailViewProp
                 key={other.id}
                 type="button"
                 onClick={() => onSelectTab(other.id)}
-                className="text-xs font-bold text-brand-coral hover:underline cursor-pointer"
+                className={`text-xs font-bold ${getFormatAccentText(other.id)} hover:underline cursor-pointer`}
               >
                 {other.shortName}
               </button>
@@ -278,7 +294,7 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
 
                 {/* Format Title & Subtitle */}
                 <div className="flex items-start gap-3.5 mb-4">
-                  <div className="w-11 h-11 rounded-2xl bg-stone-50 border border-gray-200 text-brand-coral flex items-center justify-center shrink-0 shadow-2xs">
+                  <div className={`w-11 h-11 rounded-2xl bg-stone-50 border border-gray-200 ${getFormatAccentText(format.id)} flex items-center justify-center shrink-0 shadow-2xs`}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <div>
@@ -308,10 +324,10 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
                 <button
                   type="button"
                   onClick={() => onSelectTab(format.id)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-stone-50 hover:bg-stone-100 border border-gray-200 text-gray-900 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 group-hover:border-brand-coral/50 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-stone-50 hover:bg-stone-100 border border-gray-200 text-gray-900 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 hover:border-current cursor-pointer"
                 >
                   <span>Explore {format.shortName} Format</span>
-                  <HiArrowRight className="w-4 h-4 text-brand-coral group-hover:translate-x-0.5 transition-transform" />
+                  <HiArrowRight className={`w-4 h-4 ${getFormatAccentText(format.id)} group-hover:translate-x-0.5 transition-transform`} />
                 </button>
               </div>
             </div>

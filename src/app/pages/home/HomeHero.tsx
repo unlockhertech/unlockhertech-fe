@@ -180,7 +180,7 @@ export function HomeHero({
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-stone-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              The community where authentic tech journeys meet live algorithmic problem-solving. We empower women, non-binary technologists, and allies through fortnightly LeetCode sessions, mentorship, and in-depth podcast dialogues.
+              The community where authentic tech journeys meet live algorithmic problem-solving. We empower women, non-binary technologists, and allies through LeetCode sessions, mentorship, and in-depth podcast dialogues.
             </p>
 
             {/* Primary Action Buttons & Quick Jump Affordances */}

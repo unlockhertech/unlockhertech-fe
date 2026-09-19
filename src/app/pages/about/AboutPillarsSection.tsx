@@ -36,12 +36,12 @@ export function AboutPillarsSection() {
               </span>
               <h3 className="text-2xl font-black text-gray-900 mt-4 mb-3">She Leads Tech</h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                Fortnightly technical sessions structured across Theory, Practice, and Review. We learn concepts together, solve problems live, and reinforce knowledge across DSA, system design, and software engineering.
+                Technical sessions structured across Theory, Practice, and Review. We learn concepts together, solve problems live, and reinforce knowledge across DSA, system design, and software engineering.
               </p>
               <div className="space-y-2 mb-6 text-xs text-gray-500 font-medium">
                 <div className="flex items-center gap-2">
                   <HiCheckCircle className="w-4 h-4 text-brand-green shrink-0" />
-                  <span>Held every 2 weeks live</span>
+                  <span>Held live</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <HiCheckCircle className="w-4 h-4 text-brand-green shrink-0" />
@@ -69,12 +69,12 @@ export function AboutPillarsSection() {
               </span>
               <h3 className="text-2xl font-black text-gray-900 mt-4 mb-3">The Unlock Her Tech Podcast</h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                Monthly deep-dive conversations with female founders, staff engineers, AI researchers, and tech allies. Real challenges, authentic lessons, and actionable career advice from people reshaping the industry.
+                Weekly deep-dive conversations with female founders, staff engineers, AI researchers, and tech allies. Real challenges, authentic lessons, and actionable career advice from people reshaping the industry.
               </p>
               <div className="space-y-2 mb-6 text-xs text-gray-500 font-medium">
                 <div className="flex items-center gap-2">
                   <HiCheckCircle className="w-4 h-4 text-brand-coral shrink-0" />
-                  <span>Monthly long-form episodes</span>
+                  <span>Weekly long-form episodes</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <HiCheckCircle className="w-4 h-4 text-brand-coral shrink-0" />

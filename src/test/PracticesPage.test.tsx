@@ -91,7 +91,7 @@ describe('PracticesPage', () => {
     expect(ctaLinks.length).toBeGreaterThan(0);
   });
 
-  it('renders live fortnightly practice countdown clock section', () => {
+  it('renders live practice countdown clock section', () => {
     renderPracticesPage();
     expect(screen.getByTestId('practice-countdown-section')).toBeInTheDocument();
     expect(screen.getAllByText(/She Leads Tech/i).length).toBeGreaterThan(0);

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router";
 import {
   HiCalendarDays,
@@ -10,12 +11,24 @@ import {
 import { usePracticeCountdown } from "./usePracticeCountdown";
 import { trackEvent } from "../../utils/analytics";
 import { BERRY, ORANGE, PINK, GREEN, BLUE } from "../../data";
+import type { ExternalEvent } from "../../types";
 
 interface PracticeCountdownCardProps {
   customTargetDate?: Date;
+  initialEvents?: ExternalEvent[];
+  event?: ExternalEvent;
 }
 
-export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCountdownCardProps>) {
+export function PracticeCountdownCard({
+  customTargetDate,
+  initialEvents,
+  event,
+}: Readonly<PracticeCountdownCardProps>) {
+  const eventsList = useMemo(() => {
+    if (event) return [event];
+    return initialEvents;
+  }, [event, initialEvents]);
+
   const {
     days,
     hours,
@@ -27,7 +40,8 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
     formattedDate,
     formattedTime,
     googleCalendarUrl,
-  } = usePracticeCountdown(customTargetDate);
+    rsvpUrl,
+  } = usePracticeCountdown(customTargetDate, eventsList);
 
   const handleCalendarClick = () => {
     trackEvent("add_to_calendar", "Practices", topic);
@@ -36,6 +50,8 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
   const handleRsvpClick = () => {
     trackEvent("click_practice_rsvp", "Practices", `Session #${sessionNumber} - ${topic}`);
   };
+
+  const isExternalRsvp = Boolean(rsvpUrl && /^https?:\/\//i.test(rsvpUrl));
 
   return (
     <section
@@ -63,7 +79,7 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
                 {isLive ? "Live Now" : `Session #${sessionNumber} Countdown`}
               </span>
               <span className="text-xs text-stone-500 font-semibold">
-                Fortnightly Live Series
+               Live Series
               </span>
             </div>
 
@@ -105,14 +121,27 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
                 <h3 className="text-lg sm:text-xl font-black text-stone-900 mb-3">
                   Live Workshop in Progress!
                 </h3>
-                <Link
-                  to="/events"
-                  onClick={handleRsvpClick}
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm transition-all shadow-md hover:scale-105"
-                >
-                  <HiCodeBracket className="w-5 h-5" />
-                  <span>Join Live Workshop</span>
-                </Link>
+                {isExternalRsvp ? (
+                  <a
+                    href={rsvpUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleRsvpClick}
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm transition-all shadow-md hover:scale-105"
+                  >
+                    <HiCodeBracket className="w-5 h-5" />
+                    <span>Join Live Workshop</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/events"
+                    onClick={handleRsvpClick}
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm transition-all shadow-md hover:scale-105"
+                  >
+                    <HiCodeBracket className="w-5 h-5" />
+                    <span>Join Live Workshop</span>
+                  </Link>
+                )}
               </div>
             ) : (
               /* Warm Brand Countdown Clock Grid */
@@ -164,14 +193,27 @@ export function PracticeCountdownCard({ customTargetDate }: Readonly<PracticeCou
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full max-w-lg justify-center lg:justify-end flex-wrap">
-              <Link
-                to="/events"
-                onClick={handleRsvpClick}
-                className="w-full sm:w-auto px-5 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <HiBell className="w-4 h-4" />
-                <span>RSVP & Link</span>
-              </Link>
+              {isExternalRsvp ? (
+                <a
+                  href={rsvpUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleRsvpClick}
+                  className="w-full sm:w-auto px-5 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <HiBell className="w-4 h-4" />
+                  <span>RSVP & Link</span>
+                </a>
+              ) : (
+                <Link
+                  to={rsvpUrl || "/events"}
+                  onClick={handleRsvpClick}
+                  className="w-full sm:w-auto px-5 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <HiBell className="w-4 h-4" />
+                  <span>RSVP & Link</span>
+                </Link>
+              )}
 
               <a
                 href="https://luma.com/sheleadstechpractice"

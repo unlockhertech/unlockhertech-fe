@@ -100,6 +100,7 @@ function DownloadLeadForm({
         name="resources-lead-magnet"
         method="POST"
         data-netlify="true"
+        noValidate
         onSubmit={onSubmit}
         className="space-y-4"
       >

@@ -45,6 +45,10 @@
   --podcast-yellow: #e8563a;
   --podcast-green: #72c472;
   --podcast-blue: #5f9de3;
+
+  --stage-theory: #ff6051;
+  --stage-practice: #b52970;
+  --stage-review: #72c472;
 }
 
 .dark {
@@ -128,6 +132,9 @@
   --color-brand-blue: var(--podcast-blue);
   --color-brand-pink: var(--podcast-pink);
   --color-brand-green: var(--podcast-green);
+  --color-stage-theory: var(--stage-theory);
+  --color-stage-practice: var(--stage-practice);
+  --color-stage-review: var(--stage-review);
 }
 
 @layer base {

@@ -32,7 +32,7 @@ Unlock Her Tech is a production-grade web application offering:
    - Live RSS feed integration (Anchor.fm / Spotify).
    - Global persistent audio player context with custom waveform visualizer and background playback.
 2. **She Leads Tech (Theory, Practice, Review)**:
-   - Fortnightly interactive technical engineering workshops.
+   - Interactive technical engineering workshops.
    - Three learning formats: Theory (instructor-led learning), Practice (hands-on problem solving), and Review (strengthening retention).
    - Covers DSA, System Design, Frontend, Backend, Cloud & AWS, and software engineering concepts.
    - Real-time countdown timer, curriculum spotlight, and 1-click Google Calendar / Luma integration.

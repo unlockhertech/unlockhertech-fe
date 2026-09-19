@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import {
   HiAcademicCap,
   HiCodeBracket,
-  HiCalendarDays,
   HiArrowRight,
 } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
@@ -40,18 +39,12 @@ export function HomeSheLeadsTechBanner() {
             </h2>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
-              From instructor-led Theory to hands-on collaborative Practice and reinforcement Reviews. Master algorithms, system design, and software engineering concepts together every two weeks.
+              From instructor-led Theory to hands-on collaborative Practice and reinforcement Reviews. Master algorithms, system design, and software engineering concepts together.
             </p>
 
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8 text-xs font-semibold text-white">
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCodeBracket className="w-4 h-4 text-brand-yellow" /> Theory • Practice • Review
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiAcademicCap className="w-4 h-4 text-brand-blue" /> Algorithms & System Design
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
-                <HiCalendarDays className="w-4 h-4 text-brand-green" /> Every 2 Weeks
+                <HiCodeBracket className="w-4 h-4 text-[#ff6051]" /> <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#72c472]">Review</span>
               </span>
             </div>
 

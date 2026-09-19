@@ -37,7 +37,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
                 <HiCodeBracket className="w-7 h-7" />
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-brand-coral text-[0.7rem] font-extrabold uppercase tracking-wider mb-3">
-                <HiCalendarDays className="w-3.5 h-3.5" /> Fortnightly Live
+                <HiCalendarDays className="w-3.5 h-3.5" /> Live
               </div>
               <h3 className="text-xl font-black text-gray-900 mb-3">
                 She Leads Tech

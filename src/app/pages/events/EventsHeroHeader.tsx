@@ -39,7 +39,7 @@ export function EventsHeroHeader({
             {displayCount} Upcoming
           </span>
           <span className="px-3.5 py-1 rounded-full text-stone-950 text-xs font-black bg-brand-yellow shadow-xs">
-            Fortnightly Practice
+           Practice
           </span>
           <a
             href="https://luma.com/sheleadstechpractice"

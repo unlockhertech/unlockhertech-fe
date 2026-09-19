@@ -31,7 +31,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
                 Featured Initiative
               </span>
               <span className="text-xs text-stone-500 font-semibold">
-                Fortnightly Live Series
+               Live Series
               </span>
             </div>
 
@@ -43,7 +43,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
 
             <div className="flex items-center gap-2 text-xs sm:text-sm text-stone-600 font-medium">
               <HiCalendarDays className="w-4 h-4 text-brand-coral shrink-0" />
-              <span>Held Every 2 Weeks Live • Active Format: Theory (Synced with Luma)</span>
+              <span>Held Live • Active Format: Theory (Synced with Luma)</span>
             </div>
 
             <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">

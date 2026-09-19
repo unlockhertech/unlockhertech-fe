@@ -45,7 +45,7 @@ export function AboutStorySection() {
                 As our community grew, we saw that inspiration alone was only half the equation. Technologists wanted <strong>practical, career-defining skills</strong> — a supportive space to practice algorithmic problem solving, pair program, and master technical interview patterns without judgment.
               </p>
               <p className="text-gray-900 font-semibold">
-                Today, we operate on dual pillars: inspiring podcast dialogues with tech trailblazers, paired with fortnightly <strong className="text-brand-coral">She Leads Tech</strong> sessions (spanning Theory, Practice, and Review).
+                Today, we operate on dual pillars: inspiring podcast dialogues with tech trailblazers, paired with <strong className="text-brand-coral">She Leads Tech</strong> sessions (spanning Theory, Practice, and Review).
               </p>
             </div>
 

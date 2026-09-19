@@ -16,7 +16,7 @@ export function AnnouncementBar() {
             <HiBolt className="w-3 h-3 text-brand-coral" /> NEW INITIATIVE
           </span>
           <p className="truncate font-medium text-white">
-            <span className="font-bold text-pink-200">She Leads Tech:</span> Live fortnightly engineering workshops — Theory, Practice & Review!
+            <span className="font-bold text-pink-200">She Leads Tech:</span> Live engineering workshops — Theory, Practice & Review!
           </p>
         </div>
 

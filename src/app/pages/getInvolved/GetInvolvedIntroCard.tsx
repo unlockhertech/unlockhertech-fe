@@ -53,7 +53,7 @@ export function GetInvolvedIntroCard({ activeTab }: Readonly<GetInvolvedIntroCar
           <h2 className="text-2xl font-extrabold text-gray-900">Mentor & Practice Leaders</h2>
         </div>
         <p className="text-gray-600 text-sm leading-relaxed mb-4">
-          Share your engineering expertise with women and non-binary developers. We welcome mentors who want to co-host fortnightly LeetCode problem-solving sessions, provide resume feedback, or conduct mock technical discussions.
+          Share your engineering expertise with women and non-binary developers. We welcome mentors who want to co-host LeetCode problem-solving sessions, provide resume feedback, or conduct mock technical discussions.
         </p>
         <div className="flex flex-wrap gap-2 text-xs font-semibold text-gray-700">
           <span className="px-3 py-1 rounded-full bg-stone-100">LeetCode Sessions</span>

@@ -28,14 +28,6 @@ export function PracticesHero() {
               Interactive technical workshops designed to build deep engineering understanding and coding confidence. Learn concepts through instructor-led <strong>Theory</strong>, apply what you know in hands-on <strong>Practice</strong>, and solidify mastery in <strong>Review</strong> sessions.
             </p>
 
-            {/* Live Session Notice */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-md text-white border border-white/25 text-xs sm:text-sm font-semibold mb-8">
-              <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse shrink-0" />
-              <span>
-                <strong>Live on Luma:</strong> Current sessions are <em>Theoretical (Theory)</em> with live walkthroughs!
-              </span>
-            </div>
-
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 flex-wrap">
               <Link
                 to="/events"
@@ -66,7 +58,7 @@ export function PracticesHero() {
 
             <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-white/80 font-medium">
               <span className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse"/>Held live fortnightly
+                <span className="w-2.5 h-2.5 rounded-full bg-brand-green animate-pulse"/>Held live
               </span>
               <span>•</span>
               <span>DSA, System Design & Full-Stack</span>
@@ -95,10 +87,10 @@ export function PracticesHero() {
                     Three Learning Formats
                   </span>
                   <p className="text-lg font-bold text-gray-900 mt-2.5">
-                    Theory • Practice • Review
+                    <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#92d599]">Review</span>
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Current live sessions: Theoretical
+                    Current sessions are: Theoretical
                   </p>
                 </div>
               </div>

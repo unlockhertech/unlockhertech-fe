@@ -49,7 +49,7 @@ export function getLinkItems(): LinkItem[] {
     {
       id: "practices",
       title: "She Leads Tech",
-      subtitle: "Fortnightly technical workshops — Theory, Practice & Review",
+      subtitle: "Technical workshops — Theory, Practice & Review",
       url: "/practices",
       isExternal: false,
       isFeatured: true,
