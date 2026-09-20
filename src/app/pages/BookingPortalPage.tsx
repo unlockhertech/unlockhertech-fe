@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { useMetaData } from "@/app/hooks/useMetaData.ts";
-import { bookingApi, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
+import { bookingApi, type AvailabilitySummary, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
 import { BookingLoading } from "@/app/components/BookingLoading";
 
@@ -39,6 +39,14 @@ export function BookingPage() {
     const [booking, setBooking] = useState(false);
     const loadingVersion = useRef(0);
     const requestId = useRef(crypto.randomUUID());
+    const [datesRevision, setDatesRevision] = useState(0);
+    const [dateState, setDateState] = useState<{
+        key: string; revision: number; summary: AvailabilitySummary; error: string | null;
+    } | null>(null);
+    const datesCurrent = dateState?.key === meeting?.key && dateState?.revision === datesRevision;
+    const dateSummary = datesCurrent ? dateState.summary : {};
+    const datesError = datesCurrent ? dateState.error : null;
+    const datesLoading = Boolean(meeting) && !datesCurrent;
     const [confirmation, setConfirmation] = useState<BookingResponse | null>(null);
     // Invalidate in-flight availability when leaving the page.
     useEffect(() => () => { loadingVersion.current++; }, []);
@@ -74,7 +82,7 @@ export function BookingPage() {
     }
 
     async function loadDate(value: string) {
-        if (!meeting || booking) return;
+        if (!meeting || booking || dateSummary[value] !== true) return;
         const version = ++loadingVersion.current;
         setSelectedDate(value);
         setSelectedSlot(null);
@@ -85,6 +93,10 @@ export function BookingPage() {
             const available = await bookingApi.getAvailableSlots(meeting.key, value);
             if (version !== loadingVersion.current) return;
             setSlots(available);
+            if (!available.length) {
+                setDateState(state => state?.key === meeting.key
+                    ? { ...state, summary: { ...state.summary, [value]: false } } : state);
+            }
             setSlotsStatus('success');
         } catch (error) {
             if (version !== loadingVersion.current) return;
@@ -110,23 +122,28 @@ export function BookingPage() {
         setConfirmation(null);
     }
 
-    // Prefetch the first eligible date's slots whenever the visible month or meeting changes.
-    // The API retains the result and shares this request with a click on the same date.
+    // Responses from an earlier meeting or refresh must never enable the current calendar.
     useEffect(() => {
-        if (!cfg || !meeting || !month) return;
-        const firstEligible = cfg.dates
-            .filter(d => d.value.startsWith(month))
-            .find(d => meeting.days.includes(d.weekday))?.value;
-        if (!firstEligible) return;
-        const prefetch = async () => {
+        if (!meeting) return;
+        let active = true;
+        const key = meeting.key;
+        const refresh = async () => {
             try {
-                await bookingApi.getAvailableSlots(meeting.key, firstEligible);
+                const summary = await bookingApi.getAvailabilitySummary(key);
+                if (active) setDateState({ key, revision: datesRevision, summary, error: null });
             } catch (error) {
-                console.debug('Booking availability prefetch failed', error);
+                if (active) setDateState({ key, revision: datesRevision, summary: {},
+                    error: error instanceof Error ? error.message : 'Could not load available dates.' });
             }
         };
-        void prefetch();
-    }, [cfg, meeting, month]);
+        void refresh();
+        return () => { active = false; };
+    }, [meeting, datesRevision]);
+
+    function refreshDates() {
+        resetAvailability();
+        setDatesRevision(revision => revision + 1);
+    }
 
     async function submit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -149,7 +166,9 @@ export function BookingPage() {
             setConfirmation(res);
         } catch (err: any) {
             setError(err?.message || 'Booking failed');
+            resetAvailability();
         } finally {
+            setDatesRevision(revision => revision + 1);
             setBooking(false);
         }
     }
@@ -247,8 +266,16 @@ export function BookingPage() {
                                         </div>
                                         <div className="calendar-grid" id="calendar" aria-label="Choose a date">
                                             {renderWeekdayHeaders()}
-                                            {renderCalendarDays(cfg.dates, month, meeting.days, selectedDate, d => loadDate(d))}
+                                            {renderCalendarDays(cfg.dates, month, meeting.days, selectedDate, d => loadDate(d), dateSummary, booking)}
                                         </div>
+                                        {datesLoading && <p role="status">Checking available dates…</p>}
+                                        {datesError && <p role="alert">{datesError}</p>}
+                                        {!datesLoading && !datesError && !Object.values(dateSummary).some(Boolean) && (
+                                            <p role="status">No available dates for this meeting. Please check back later.</p>
+                                        )}
+                                        <button type="button" className="tab" disabled={datesLoading || booking} onClick={refreshDates}>
+                                            {datesError ? 'Retry available dates' : 'Refresh availability'}
+                                        </button>
                                         <p className="timezone">All times: London, UK · adjusts for GMT / BST</p>
                                     </div>
 
@@ -323,7 +350,7 @@ export function BookingPage() {
                                     <p id="pending">Your Google Meet link is being prepared. It will appear in your calendar invitation.</p>
                                 )}
                                 <p id="confirmationContact">Need to make a change? <a href={`mailto:${cfg.contactEmail}`}>{cfg.contactEmail}</a></p>
-                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); resetAvailability(); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
+                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); refreshDates(); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
                             </section>
                         )}
                     </main>
@@ -365,7 +392,7 @@ function renderWeekdayHeaders() {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     return days.map(d => <div key={d} className="weekday">{d.slice(0, 1)}</div>);
 }
-function renderCalendarDays(allDates: { value: string; weekday: number }[], month: string, allowedDays: number[], sel: string | null, onPick: (d: string) => void) {
+function renderCalendarDays(allDates: { value: string; weekday: number }[], month: string, allowedDays: number[], sel: string | null, onPick: (d: string) => void, availability: AvailabilitySummary, booking: boolean) {
     const first = new Date(month + '-01T12:00:00Z');
     const year = first.getUTCFullYear();
     const mo = first.getUTCMonth();
@@ -376,7 +403,7 @@ function renderCalendarDays(allDates: { value: string; weekday: number }[], mont
     for (let d = 1; d <= daysInMonth; d++) {
         const value = `${month}-${String(d).padStart(2, '0')}`;
         const info = allDates.find(x => x.value === value);
-        const disabled = !info || !allowedDays.includes(info.weekday);
+        const disabled = booking || !info || !allowedDays.includes(info.weekday) || availability[value] !== true;
         chunks.push(
             <button
                 key={value}

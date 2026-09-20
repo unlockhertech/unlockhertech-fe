@@ -1,5 +1,6 @@
 import { BookingReadCache } from '../../lib/bookingReadCache';
 
+export type AvailabilitySummary = Record<string, boolean>;
 export type Slot = { startMs: number; endMs: number };
 export type MeetingType = {
   key: string;
@@ -51,11 +52,21 @@ export const bookingApi = {
       return unwrap<PublicConfig>(response);
     });
   },
+  async getAvailabilitySummary(meetingKey: string): Promise<AvailabilitySummary> {
+    const url = new URL(`${BASE}/api/availability-summary`, window.location.origin);
+    url.searchParams.set('meetingKey', meetingKey);
+    const data = await readBookingData<unknown>(url);
+    if (!data || typeof data !== 'object' || Array.isArray(data) ||
+        !Object.entries(data).every(([date, available]) => /^\d{4}-\d{2}-\d{2}$/.test(date) && typeof available === 'boolean')) {
+      throw new Error('Could not read available dates. Please try again.');
+    }
+    return data as AvailabilitySummary;
+  },
   async getAvailableSlots(meetingKey: string, date: string): Promise<Slot[]> {
     const u = new URL(`${BASE}/api/available-slots`, window.location.origin);
     u.searchParams.set('meetingKey', meetingKey);
     u.searchParams.set('date', date);
-    return slotsCache.read(`${meetingKey}|${date}`, 15000, () => readBookingData<Slot[]>(u));
+    return slotsCache.read(`${meetingKey}|${date}`, 0, () => readBookingData<Slot[]>(u));
   },
   async bookMeeting(payload: { meetingKey: string; startMs: number; name: string; email: string; notes?: string; requestId: string; }) {
     // A failed/ambiguous response may still have created a booking upstream.

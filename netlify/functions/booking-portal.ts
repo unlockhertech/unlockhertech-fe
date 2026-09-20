@@ -36,6 +36,20 @@ async function proxyJson(request: Request): Promise<Response> {
       return jsonResponse(JSON.stringify({ ok: false, error: 'Configuration temporarily unavailable. Please try again.' }), 502);
     }
   }
+  if (request.method === 'GET' && path.endsWith('/api/availability-summary')) {
+    const meetingKey = incoming.searchParams.get('meetingKey') || '';
+    if (!/^[a-z_]{1,80}$/.test(meetingKey)) {
+      return jsonResponse(JSON.stringify({ ok: false, error: 'Invalid meeting' }), 400);
+    }
+    base.searchParams.set('action', 'getAvailabilitySummary');
+    base.searchParams.set('meetingKey', meetingKey);
+    try {
+      return jsonResponse(await fetchJson(base));
+    } catch (error) {
+      console.warn('Booking dates unavailable', error);
+      return jsonResponse(JSON.stringify({ ok: false, error: 'Available dates could not be loaded. Please try again.' }), 502);
+    }
+  }
   if (request.method === 'GET' && path.endsWith('/api/available-slots')) {
     const meetingKey = incoming.searchParams.get('meetingKey') || '';
     const date = incoming.searchParams.get('date') || '';
@@ -46,8 +60,8 @@ async function proxyJson(request: Request): Promise<Response> {
     base.searchParams.set('meetingKey', meetingKey);
     base.searchParams.set('date', date);
     try {
-      const text = await slotsCache.read(`${meetingKey}|${date}`, 15000, () => fetchJson(base));
-      // Keep slot caching explicit and bounded; do not add a second CDN/browser TTL.
+      const text = await slotsCache.read(`${meetingKey}|${date}`, 0, () => fetchJson(base));
+      // Share concurrent reads only; each later request checks the shared calendar again.
       return jsonResponse(text);
     } catch (error) {
       console.warn('Booking availability unavailable', error);
