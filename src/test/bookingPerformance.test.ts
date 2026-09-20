@@ -50,7 +50,7 @@ describe('short-lived booking cache', () => {
 });
 
 describe('browser booking API', () => {
-  it('reuses prefetched slots, keeps dates separate, and expires slots', async () => {
+  it('shares concurrent slot reads but always refreshes later reads', async () => {
     const fetchMock = vi.fn(async () => json(slots));
     vi.stubGlobal('fetch', fetchMock);
     const { bookingApi } = await import('../app/lib/bookingApi');
@@ -58,13 +58,14 @@ describe('browser booking API', () => {
       bookingApi.getAvailableSlots('partnership_initial', '2026-09-21'),
       bookingApi.getAvailableSlots('partnership_initial', '2026-09-21'),
     ]);
-    await bookingApi.getAvailableSlots('partnership_initial', '2026-09-21');
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    await bookingApi.getAvailableSlots('partnership_initial', '2026-09-22');
+    await bookingApi.getAvailableSlots('partnership_initial', '2026-09-21');
     expect(fetchMock).toHaveBeenCalledTimes(2);
+    await bookingApi.getAvailableSlots('partnership_initial', '2026-09-22');
+    expect(fetchMock).toHaveBeenCalledTimes(3);
     vi.advanceTimersByTime(15000);
     await bookingApi.getAvailableSlots('partnership_initial', '2026-09-21');
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenCalledTimes(4);
   });
 
   it('reuses configuration and invalidates slots after an ambiguous booking failure', async () => {
@@ -91,22 +92,23 @@ describe('browser booking API', () => {
 });
 
 describe('Netlify booking proxy', () => {
-  it('serves fresh cached slots and config without another Google call', async () => {
+  it('shares concurrent slots, refreshes sequential slots, and caches config', async () => {
     const fetchMock = vi.fn(async () => json(slots));
     vi.stubGlobal('fetch', fetchMock);
     const { default: handler } = await import('../../netlify/functions/booking-portal');
     await Promise.all([handler(new Request(url)), handler(new Request(url))]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
     const response = await handler(new Request(url));
     expect(await response.json()).toEqual({ ok: true, data: slots });
     expect(response.headers.get('cache-control')).toBe('no-store');
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
     const config = 'https://example.com/api/booking-portal/api/public-config';
     await handler(new Request(config));
     await handler(new Request(config));
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
     vi.advanceTimersByTime(15000);
     await handler(new Request(url));
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenCalledTimes(4);
   });
 
   it('does not cache application errors and never retries booking writes', async () => {
@@ -152,5 +154,41 @@ describe('Netlify booking proxy', () => {
     await handler(new Request('https://example.com/api/booking-portal/api/book', { method: 'POST', body: '{}' }));
     await handler(new Request(url));
     expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+});
+
+
+describe('live date availability', () => {
+  it('forwards the selected meeting and keeps the token server-side', async () => {
+    vi.stubEnv('BOOKING_PORTAL_TOKEN', 'test-only-secret');
+    const summary = { '2026-09-23': false, '2026-09-24': true };
+    const fetchMock = vi.fn(async (_url: URL) => json(summary));
+    vi.stubGlobal('fetch', fetchMock);
+    try {
+      const { default: handler } = await import('../../netlify/functions/booking-portal');
+      const endpoint = 'https://example.com/api/booking-portal/api/availability-summary?meetingKey=careers_final';
+      const response = await handler(new Request(endpoint));
+      expect(await response.json()).toEqual({ ok: true, data: summary });
+      expect(response.headers.get('cache-control')).toBe('no-store');
+      const upstream = fetchMock.mock.calls[0]?.[0] as unknown as URL;
+      expect(upstream.searchParams.get('action')).toBe('getAvailabilitySummary');
+      expect(upstream.searchParams.get('meetingKey')).toBe('careers_final');
+      expect(upstream.searchParams.get('token')).toBe('test-only-secret');
+      await handler(new Request(endpoint));
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect((await handler(new Request(endpoint.replace('careers_final', 'invalid!')))).status).toBe(400);
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+    } finally { vi.unstubAllEnvs(); }
+  });
+
+  it('validates summary data and does not cache it in the browser', async () => {
+    const fetchMock = vi.fn(async () => json({ '2026-09-23': false }));
+    vi.stubGlobal('fetch', fetchMock);
+    const { bookingApi } = await import('../app/lib/bookingApi');
+    expect(await bookingApi.getAvailabilitySummary('careers_final')).toEqual({ '2026-09-23': false });
+    await bookingApi.getAvailabilitySummary('careers_final');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    fetchMock.mockResolvedValueOnce(json({ '2026-09-23': 'yes' }));
+    await expect(bookingApi.getAvailabilitySummary('careers_final')).rejects.toThrow('Could not read available dates');
   });
 });
