@@ -85,7 +85,7 @@ export function buildGoogleCalendarUrl(
   const calTitle = encodeURIComponent(title || "She Leads Tech: Theory & Technical Workshop");
   const calDetails = encodeURIComponent(
     description ||
-      `Join our interactive She Leads Tech session. Currently featuring instructor-led Theory workshops with step-by-step practical examples, architecture breakdowns, and Q&A.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/practices\nLuma: https://luma.com/sheleadstechpractice`
+      `Join our interactive She Leads Tech session. Currently featuring instructor-led Theory workshops with step-by-step practical examples, architecture breakdowns, and Q&A.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/she-leads-tech\nLuma: https://luma.com/sheleadstechpractice`
   );
   const calLocation = encodeURIComponent(location || "Online (Live Coding Workshop)");
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${startTimeUtc}/${endTimeUtc}&details=${calDetails}&location=${calLocation}`;

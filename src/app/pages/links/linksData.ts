@@ -50,7 +50,7 @@ export function getLinkItems(): LinkItem[] {
       id: "practices",
       title: "She Leads Tech",
       subtitle: "Technical workshops — Theory, Practice & Review",
-      url: "/practices",
+      url: "/she-leads-tech",
       isExternal: false,
       isFeatured: true,
       badge: "Live Workshops",

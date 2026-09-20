@@ -186,7 +186,7 @@ export function HomeHero({
             {/* Primary Action Buttons & Quick Jump Affordances */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-6">
               <Link
-                to="/practices"
+                to="/she-leads-tech"
                 className="w-full sm:w-auto px-8 py-4 rounded-full text-white flex items-center justify-center gap-2.5 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 bg-brand-coral font-bold text-sm"
               >
                 <HiCodeBracket className="w-5 h-5 text-brand-yellow" />

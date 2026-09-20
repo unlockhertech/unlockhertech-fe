@@ -33,7 +33,7 @@ function EventsEmptyState({ onClearFilter }: Readonly<EventsEmptyStateProps>) {
           Clear filter
         </button>
         <Link
-          to="/practices"
+          to="/she-leads-tech"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-brand-coral text-white font-bold text-sm hover:opacity-90 transition-opacity"
         >
           <span>Explore She Leads Tech</span>

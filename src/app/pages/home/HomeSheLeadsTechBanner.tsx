@@ -50,7 +50,7 @@ export function HomeSheLeadsTechBanner() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Link
-                to="/practices"
+                to="/she-leads-tech"
                 className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-brand-coral hover:bg-white/90 font-bold transition-all shadow-lg flex items-center justify-center gap-2 text-sm"
               >
                 <span>Explore She Leads Tech</span>

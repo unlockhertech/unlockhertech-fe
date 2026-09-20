@@ -292,19 +292,6 @@ function MobileNavigationMenu({
   return (
     <div className="md:hidden border-t border-white/20 bg-brand-coral">
       <div className="px-4 py-4 space-y-1">
-        <NavLink
-          to="/practices"
-          onClick={handleNavClick}
-          className={({ isActive }) =>
-            `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
-              isActive
-                ? "bg-white/20 text-white font-semibold"
-                : "text-white/80 hover:bg-white/10 hover:text-white"
-            }`
-          }
-        >
-          She Leads Tech
-        </NavLink>
 
         <NavLink
           to="/episodes"
@@ -318,6 +305,20 @@ function MobileNavigationMenu({
           }
         >
           Episodes
+        </NavLink>
+
+        <NavLink
+            to="/she-leads-tech"
+            onClick={handleNavClick}
+            className={({ isActive }) =>
+                `flex items-center justify-between px-4 py-3 rounded-xl text-sm transition-all ${
+                    isActive
+                        ? "bg-white/20 text-white font-semibold"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                }`
+            }
+        >
+          She Leads Tech
         </NavLink>
 
         {enableJobs && (
@@ -572,7 +573,7 @@ function LayoutInner() {
 
               {/* 2. She Leads Tech */}
               <NavLink
-                to="/practices"
+                to="/she-leads-tech"
                 onClick={scrollToPageTop}
                 className={({ isActive }) =>
                   `text-sm font-semibold transition-all pb-0.5 inline-flex items-center gap-1.5 ${
@@ -750,7 +751,7 @@ function LayoutInner() {
               <ul className="space-y-1 text-stone-300 text-xs sm:text-sm">
                 <li><Link to="/episodes" className="inline-block py-1 hover:text-white transition-colors">Latest Episode</Link></li>
                 <li><Link to="/episodes" className="inline-block py-1 hover:text-white transition-colors">All Episodes</Link></li>
-                <li><Link to="/practices" className="inline-block py-1 hover:text-white transition-colors">Practices</Link></li>
+                <li><Link to="/she-leads-tech" className="inline-block py-1 hover:text-white transition-colors">She Leads Tech</Link></li>
                 {enableJobs && (
                     <li><Link to="/jobs" className="inline-block py-1 hover:text-white transition-colors">Inclusive Job Board</Link></li>
                 )}

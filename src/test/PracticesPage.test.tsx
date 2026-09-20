@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router';
 import { PracticesPage } from '../app/pages/PracticesPage';
 
 describe('PracticesPage', () => {
-  const renderPracticesPage = (initialEntries: string[] = ['/practices']) => {
+  const renderPracticesPage = (initialEntries: string[] = ['/she-leads-tech']) => {
     return render(
       <MemoryRouter initialEntries={initialEntries}>
         <PracticesPage />
@@ -79,7 +79,7 @@ describe('PracticesPage', () => {
   });
 
   it('renders direct format tab when loaded with URL query param', () => {
-    renderPracticesPage(['/practices?format=practice']);
+    renderPracticesPage(['/she-leads-tech?format=practice']);
     const practiceTab = screen.getByRole('tab', { name: /Practice/i });
     expect(practiceTab).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByText(/Hands-On Experience & Problem Solving/i)).toBeInTheDocument();

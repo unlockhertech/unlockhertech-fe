@@ -71,7 +71,7 @@ export function EventsFeaturedBanner(_props: Readonly<EventsFeaturedBannerProps>
 
             <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full max-w-sm justify-center lg:justify-end flex-wrap">
               <Link
-                to="/practices"
+                to="/she-leads-tech"
                 className="w-full sm:w-auto px-5 py-3 rounded-full bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Explore She Leads Tech</span>

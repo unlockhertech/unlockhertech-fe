@@ -420,7 +420,7 @@ export async function generateCareerPlanPdf({
         {
           title: "She Leads Tech",
           desc: "Interactive workshops (Theory, Practice, Review). Master engineering and interview concepts together in a supportive environment.",
-          link: "unlockhertech.com/practices",
+          link: "unlockhertech.com/she-leads-tech",
         },
         {
           title: "Unlock Her Tech Podcast",

@@ -71,7 +71,7 @@ export const CATEGORY_RESOURCE_MAP: Record<
         badgeColor: "bg-emerald-100 text-brand-green border-emerald-200",
         description:
           "Technical sessions (Theory, Practice, Review) in a psychologically safe environment where no question is too basic.",
-        url: "/practices",
+        url: "/she-leads-tech",
         isExternal: false,
         ctaText: "Join She Leads Tech",
       },
@@ -131,7 +131,7 @@ export const CATEGORY_RESOURCE_MAP: Record<
         badgeColor: "bg-blue-100 text-brand-blue border-blue-200",
         description:
           "Live interactive workshops covering Theory, Practice, and Review across DSA, system design, and software engineering.",
-        url: "/practices",
+        url: "/she-leads-tech",
         isExternal: false,
         ctaText: "Explore She Leads Tech",
       },

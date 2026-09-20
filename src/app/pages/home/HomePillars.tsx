@@ -48,7 +48,7 @@ export function HomePillars({ enableGetInvolved }: Readonly<HomePillarsProps>) {
             </div>
 
             <Link
-              to="/practices"
+              to="/she-leads-tech"
               className="inline-flex items-center gap-2 text-sm font-bold text-brand-coral hover:gap-3 transition-all pt-4 border-t border-gray-100"
             >
               <span>Explore She Leads Tech</span>

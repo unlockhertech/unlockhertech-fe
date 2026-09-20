@@ -220,7 +220,7 @@ function generateLlmsTxt(flags) {
   const urls = [
     "- [Home](https://unlockhertech.com/): Official platform overview, latest episode player, and mission pillars.",
     "- [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.",
-    "- [She Leads Tech](https://unlockhertech.com/practices): Fortnightly technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.",
+    "- [She Leads Tech](https://unlockhertech.com/she-leads-tech): Technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.",
   ];
 
   if (flags.enableEvents) {

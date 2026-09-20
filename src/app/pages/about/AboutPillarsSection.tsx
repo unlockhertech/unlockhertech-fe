@@ -50,7 +50,7 @@ export function AboutPillarsSection() {
               </div>
             </div>
             <Link
-              to="/practices"
+              to="/she-leads-tech"
               className="inline-flex items-center gap-2 font-bold text-sm text-brand-coral hover:underline pt-4 border-t border-gray-100"
             >
               <span>Learn about She Leads Tech</span>

@@ -15,15 +15,15 @@ describe('Layout Navbar Scroll-to-Top Behavior', () => {
     vi.restoreAllMocks();
   });
 
-  const renderLayoutWithRoutes = (initialEntry = '/practices') => {
+  const renderLayoutWithRoutes = (initialEntry = '/she-leads-tech') => {
     const router = createMemoryRouter(
       [
         {
           element: <Layout />,
           children: [
             { path: '/', element: <div>Home Page Content</div> },
-            { path: '/practices', element: <div>Practices Page Content</div> },
             { path: '/episodes', element: <div>Episodes Page Content</div> },
+            { path: '/she-leads-tech', element: <div>She Leads Tech Page Content</div> },
             { path: '/about', element: <div>About Page Content</div> },
             { path: '/team', element: <div>Team Page Content</div> },
             { path: '/resources', element: <div>Resources Page Content</div> },

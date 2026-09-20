@@ -52,7 +52,7 @@ export function AboutStorySection() {
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4 mt-8">
               <Link
-                to="/practices"
+                to="/she-leads-tech"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white text-sm font-bold shadow-md hover:shadow-lg transition-all bg-brand-coral"
               >
                 <span>Explore She Leads Tech</span>

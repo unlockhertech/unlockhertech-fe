@@ -1,4 +1,4 @@
-import { LearningPathsSection } from "../practices/LearningPathsSection";
+import { LearningPathsSection } from "../sheleadstech/LearningPathsSection";
 
 export function PathsIndexPage() {
   return (

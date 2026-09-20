@@ -1,12 +1,12 @@
 import { imgSheLeadsTech } from "../data";
 import { useMetaData } from "../hooks/useMetaData";
 import { SubscribeCTA } from "../components/SubscribeCTA";
-import { PracticesHero } from "./practices/PracticesHero";
-import { PracticeCountdownCard } from "./practices/PracticeCountdownCard";
-import { SheLeadsTechStagesNavigator } from "./practices/SheLeadsTechStagesNavigator";
-// import { PracticePatternsGrid } from "./practices/PracticePatternsGrid";
-import { LearningPathsSection } from "./practices/LearningPathsSection";
-import { PracticeRequirementsSection } from "./practices/PracticeRequirementsSection";
+import { PracticesHero } from "@/app/pages/sheleadstech/PracticesHero";
+import { PracticeCountdownCard } from "@/app/pages/sheleadstech/PracticeCountdownCard";
+import { SheLeadsTechStagesNavigator } from "@/app/pages/sheleadstech/SheLeadsTechStagesNavigator";
+// import { PracticePatternsGrid } from "./sheleadstech/PracticePatternsGrid";
+import { LearningPathsSection } from "@/app/pages/sheleadstech/LearningPathsSection";
+import { PracticeRequirementsSection } from "@/app/pages/sheleadstech/PracticeRequirementsSection";
 
 const PRACTICES_META_JSON_LD = {
   "@context": "https://schema.org",

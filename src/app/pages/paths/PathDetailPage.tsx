@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { LEARNING_PATHS } from "../practices/learningPathsData";
+import { LEARNING_PATHS } from "../sheleadstech/learningPathsData";
 import { isPathEnabled } from "../../featureFlags";
 
 export function PathDetailPage() {
@@ -11,8 +11,8 @@ export function PathDetailPage() {
     <div className="bg-stone-50 min-h-screen py-10">
       <div className="max-w-5xl mx-auto px-4">
         <div className="mb-6">
-          <Link to="/practices" className="text-sm text-brand-coral font-bold hover:underline">
-            ← Back to Practices
+          <Link to="/she-leads-tech" className="text-sm text-brand-coral font-bold hover:underline">
+            ← Back to She Leads Tech
           </Link>
         </div>
 
@@ -60,9 +60,9 @@ export function PathDetailPage() {
               We’re preparing this learning path. In the meantime, explore other paths.
             </p>
             <Link
-              to="/practices"
+              to="/she-leads-tech"
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-brand-coral rounded-full hover:opacity-90 transition"
-              aria-label="Back to practices"
+              aria-label="Back to She Leads Tech"
             >
               <span>Explore other paths</span>
             </Link>

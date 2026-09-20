@@ -15,7 +15,7 @@
 
 - [Home](https://unlockhertech.com/): Official platform overview, latest episode player, and mission pillars.
 - [Podcast Episodes](https://unlockhertech.com/episodes): Full archive of podcast episodes with show notes and transcripts.
-- [She Leads Tech](https://unlockhertech.com/practices): Fortnightly technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.
+- [She Leads Tech](https://unlockhertech.com/she-leads-tech): Fortnightly technical workshop schedule across Theory, Practice, and Review, with Google Calendar sync.
 - [Events Calendar](https://unlockhertech.com/events): Upcoming workshops, community meetups, and live Q&A sessions.
 - [Blogs & Articles](https://unlockhertech.com/blog): Stories, engineering tutorials, and career transition guides.
 - [Career Resources & Guides](https://unlockhertech.com/resources): Downloadable PDF career guides and interview playbooks.

@@ -1,13 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router";
-import { PracticeCountdownCard } from "../app/pages/practices/PracticeCountdownCard";
+import { PracticeCountdownCard } from "@/app/pages/sheleadstech/PracticeCountdownCard";
 import {
   getNextPracticeSession,
   isSheLeadsTechEvent,
   extractSessionNumber,
   PRACTICE_ANCHOR_UTC,
-} from "../app/pages/practices/usePracticeCountdown";
+} from "@/app/pages/sheleadstech/usePracticeCountdown";
 import * as sanityUtils from "../app/utils/sanity";
 import type { ExternalEvent } from "../app/types";
 

@@ -187,7 +187,7 @@ export function EmailResultsCard({
       `YOUR NEXT-STEP RESOURCES`,
       `═══════════════════════════════════════`,
       `1. Join Live She Leads Tech Sessions (Theory, Practice, Review):`,
-      `   https://unlockhertech.com/practices`,
+      `   https://unlockhertech.com/she-leads-tech`,
       ``,
       `2. Listen to the Unlock Her Tech Podcast:`,
       `   https://pod.link/1800087284 (Spotify, Apple Podcasts, YouTube)`,

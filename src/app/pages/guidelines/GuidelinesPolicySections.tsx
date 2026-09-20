@@ -121,7 +121,7 @@ export function GuidelinesPolicySections() {
           <span>Last reviewed: August 2026</span>
           <div className="flex gap-4">
             <Link to="/about" className="text-brand-coral hover:underline">About Our Mission</Link>
-            <Link to="/practices" className="text-brand-coral hover:underline">She Leads Tech</Link>
+            <Link to="/she-leads-tech" className="text-brand-coral hover:underline">She Leads Tech</Link>
           </div>
         </div>
       </div>
