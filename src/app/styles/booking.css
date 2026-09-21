@@ -54,8 +54,17 @@ h2{font-size:25px;letter-spacing:-.8px;margin:7px 0 9px;line-height:1.22}
 .time-title{font-size:12px;font-weight:700;margin:2px 0 13px}
 .slots{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:235px;overflow:auto;min-height:140px}
 .slot{border:1px solid var(--line);border-radius:8px;background:white;padding:10px 6px;font-size:12px;color:var(--ink)}
-.slot:hover{border-color:var(--ink)}
-.slot[aria-pressed="true"]{border-color:var(--ink);background:var(--accent)}
+.slot{transition:border-color .16s ease,background-color .16s ease,box-shadow .16s ease}
+.slot:hover{border-color:var(--berry);background:color-mix(in srgb,var(--accent) 12%,white)}
+.slot:focus-visible{outline:2px solid var(--berry);outline-offset:2px}
+.slot[aria-pressed="true"]{border-color:var(--ink);background:var(--accent);box-shadow:inset 0 0 0 1px var(--ink);font-weight:700}
+.availability-loading{padding:3px;border-radius:18px;background:linear-gradient(115deg,var(--coral),var(--pink),var(--yellow),var(--green),var(--blue));box-shadow:0 8px 25px #9f326d0c}
+.availability-loading-body{background:var(--paper);border-radius:15px;text-align:center;padding:30px 14px;min-height:220px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.availability-loading-body strong{font-size:15px;line-height:1.45;margin:18px 0 8px}
+.availability-loading-body p{font-size:12px;line-height:1.6;color:var(--muted);margin:0;max-width:200px}
+.availability-loading-ring{width:45px;height:45px;border-radius:50%;background:conic-gradient(var(--coral),var(--pink),var(--yellow),var(--green),var(--blue),var(--coral));padding:4px;animation:availability-spin 2.4s linear infinite}
+.availability-loading-ring:after{content:'';display:block;border-radius:50%;height:100%;background:var(--paper)}
+@keyframes availability-spin{to{transform:rotate(360deg)}}
 .empty{font-size:12px;color:var(--muted);grid-column:1/-1;padding:8px 0}
 .timezone{font-size:11px;color:var(--muted);margin:18px 0 0}
 .details{margin-top:23px;padding-top:21px;border-top:1px solid var(--line)}
@@ -115,6 +124,7 @@ summary{cursor:pointer;font-weight:600}
   .fields{grid-template-columns:1fr}
   .form-end{align-items:stretch;flex-direction:column}
   .slots{grid-template-columns:repeat(3,1fr)}
+  .availability-loading-body{min-height:175px}
   .tab{font-size:12px;padding:9px 12px}
   .sidebar{padding:22px 18px}
 }
