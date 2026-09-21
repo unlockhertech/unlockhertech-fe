@@ -4,7 +4,7 @@ import { BookingPage } from '../app/pages/BookingPortalPage';
 import { bookingApi, type PublicConfig } from '../app/lib/bookingApi';
 
 vi.mock('../app/lib/bookingApi', () => ({ bookingApi: { getPublicConfig: vi.fn(), getAvailableSlots: vi.fn(), getAvailabilitySummary: vi.fn(), bookMeeting: vi.fn() } }));
-afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); });
 
 it('shows the portal heading and return link while configuration is pending', async () => {
   let finish!: (config: PublicConfig) => void;
@@ -31,6 +31,37 @@ const config: PublicConfig = {
   ],
 };
 const day = () => screen.getByRole('button', { name: /Wednesday,? 23 September/ });
+
+it('refreshes every five visible minutes and on return, preserving details when a slot disappears', async () => {
+    vi.mocked(bookingApi.getPublicConfig).mockResolvedValue(config);
+    vi.mocked(bookingApi.getAvailabilitySummary).mockResolvedValue({ '2026-09-23': true });
+    vi.mocked(bookingApi.getAvailableSlots).mockResolvedValue([{ startMs: Date.parse('2026-09-23T11:00:00Z'), endMs: Date.parse('2026-09-23T12:00:00Z') }]);
+    let hidden = false;
+    vi.spyOn(document, 'hidden', 'get').mockImplementation(() => hidden);
+    render(<BookingPage />);
+    await waitFor(() => expect(day()).toBeEnabled());
+    expect(screen.queryByRole('button', { name: 'Refresh availability' })).not.toBeInTheDocument();
+    vi.useFakeTimers();
+    await act(async () => { fireEvent.click(day()); });
+    fireEvent.click(screen.getByRole('button', { name: '12:00 pm to 1:00 pm' }));
+    fireEvent.change(screen.getByLabelText('Your name'), { target: { value: 'Visitor' } });
+    const calls = vi.mocked(bookingApi.getAvailabilitySummary).mock.calls.length;
+    await act(async () => { await vi.advanceTimersByTimeAsync(300000); });
+    expect(bookingApi.getAvailabilitySummary).toHaveBeenCalledTimes(calls + 1);
+    expect(screen.getByLabelText('Your name')).toHaveValue('Visitor');
+    hidden = true;
+    fireEvent(document, new Event('visibilitychange'));
+    await act(async () => { await vi.advanceTimersByTimeAsync(300000); });
+    expect(bookingApi.getAvailabilitySummary).toHaveBeenCalledTimes(calls + 1);
+    vi.mocked(bookingApi.getAvailableSlots).mockResolvedValue([]);
+    hidden = false;
+    await act(async () => { fireEvent(document, new Event('visibilitychange')); });
+    expect(bookingApi.getAvailabilitySummary).toHaveBeenCalledTimes(calls + 2);
+    expect(screen.getByRole('alert')).toHaveTextContent('This time is no longer available');
+    expect(day()).toBeDisabled();
+    expect(screen.getByLabelText('Your name')).toHaveValue('Visitor');
+    expect(screen.queryByRole('button', { name: /Confirm booking/ })).not.toBeInTheDocument();
+});
 
 it('disables dates while loading and when a required host has no available slot', async () => {
   vi.mocked(bookingApi.getPublicConfig).mockResolvedValue(config);
@@ -63,7 +94,7 @@ it('keeps dates disabled on errors and supports retry', async () => {
   render(<BookingPage />);
   expect(await screen.findByRole('alert')).toHaveTextContent('Calendar unavailable');
   expect(day()).toBeDisabled();
-  fireEvent.click(screen.getByRole('button', { name: 'Retry available dates' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
   await waitFor(() => expect(day()).toBeEnabled());
 });
 
