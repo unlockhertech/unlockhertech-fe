@@ -371,32 +371,25 @@ h2 {
   border-radius: 10px;
   background: white;
   color: var(--ink);
-  font-size: 12px;
-  line-height: 1.25;
-  text-align: center;
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease;
-}
-
-.slot {
-  transition:
-    border-color 0.16s ease,
-    background-color 0.16s ease,
-    box-shadow 0.16s ease;
+      box-shadow 0.16s ease;
+  font-size: 12px;
+  line-height: 1.25;
+  text-align: center;
 }
 
 .slot:hover,
 .slot:focus-visible {
   border-color: var(--ink);
-  background: white;
+  background: #faf7f9;
 }
 
 .slot[aria-pressed="true"] {
   border: 2px solid var(--ink);
-  padding: 8px 7px;
   background: white;
-  box-shadow: none;
+  box-shadow: inset 4px 0 var(--accent);
   font-weight: 700;
 }
 
