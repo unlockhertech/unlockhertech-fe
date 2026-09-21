@@ -140,6 +140,51 @@ export function BookingPage() {
         return () => { active = false; };
     }, [meeting, datesRevision]);
 
+    // Keep an open calendar current without resetting the visitor's form.
+    useEffect(() => {
+        if (!meeting || booking || confirmation || datesLoading) return;
+        let active = true;
+        let pending = false;
+        const refresh = async () => {
+            if (document.hidden || pending) return;
+            pending = true;
+            const version = loadingVersion.current;
+            try {
+                const summary = await bookingApi.getAvailabilitySummary(meeting.key);
+                const available = selectedDate
+                    ? await bookingApi.getAvailableSlots(meeting.key, selectedDate) : null;
+                if (!active || version !== loadingVersion.current) return;
+                if (selectedDate && available) summary[selectedDate] = available.length > 0;
+                setDateState({ key: meeting.key, revision: datesRevision, summary, error: null });
+                if (available) {
+                    setSlots(available);
+                    setSlotsStatus('success');
+                    setSlotsError(null);
+                    if (selectedSlot && !available.some(slot => slot.startMs === selectedSlot.startMs && slot.endMs === selectedSlot.endMs)) {
+                        setSelectedSlot(null);
+                        setError('This time is no longer available. Please choose another.');
+                    }
+                }
+            } catch (error) {
+                console.warn('Automatic booking availability refresh failed', error);
+                if (active && version === loadingVersion.current) {
+                    setDateState({ key: meeting.key, revision: datesRevision, summary: {},
+                        error: 'Could not update availability. Please try again.' });
+                }
+            } finally {
+                pending = false;
+            }
+        };
+        const timer = window.setInterval(() => { void refresh(); }, 5 * 60 * 1000);
+        const onVisible = () => { if (!document.hidden) void refresh(); };
+        document.addEventListener('visibilitychange', onVisible);
+        return () => {
+            active = false;
+            window.clearInterval(timer);
+            document.removeEventListener('visibilitychange', onVisible);
+        };
+    }, [meeting, selectedDate, selectedSlot, booking, confirmation, datesLoading, datesRevision]);
+
     function refreshDates() {
         resetAvailability();
         setDatesRevision(revision => revision + 1);
@@ -273,9 +318,9 @@ export function BookingPage() {
                                         {!datesLoading && !datesError && !Object.values(dateSummary).some(Boolean) && (
                                             <p role="status">No available dates for this meeting. Please check back later.</p>
                                         )}
-                                        <button type="button" className="tab" disabled={datesLoading || booking} onClick={refreshDates}>
-                                            {datesError ? 'Retry available dates' : 'Refresh availability'}
-                                        </button>
+                                        {datesError && <button type="button" className="tab" disabled={datesLoading || booking} onClick={refreshDates}>
+                                            Try again
+                                        </button>}
                                         <p className="timezone">All times: London, UK · adjusts for GMT / BST</p>
                                     </div>
 
