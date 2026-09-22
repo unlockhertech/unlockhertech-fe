@@ -313,7 +313,6 @@ export function BookingPage() {
                                             {renderWeekdayHeaders()}
                                             {renderCalendarDays(cfg.dates, month, meeting.days, selectedDate, d => loadDate(d), dateSummary, booking)}
                                         </div>
-                                        {datesLoading && <p role="status">Checking available dates…</p>}
                                         {datesError && <p role="alert">{datesError}</p>}
                                         {!datesLoading && !datesError && !Object.values(dateSummary).some(Boolean) && (
                                             <p role="status">No available dates for this meeting. Please check back later.</p>
@@ -326,8 +325,16 @@ export function BookingPage() {
 
                                     <div>
                                         <div className="time-title" id="timeTitle">{selectedDate ? formatFullDate(selectedDate) : 'Choose a date'}</div>
-                                        <div className="slots" id="slots" aria-live="polite" aria-busy={slotsStatus === 'loading'}>
-                                            {slotsStatus === 'loading' && <div className="empty" role="status">Loading available times…</div>}
+                                        {(datesLoading || slotsStatus === 'loading') && (
+                                            <div className="availability-loading" role="status">
+                                                <div className="availability-loading-body">
+                                                    <span className="availability-loading-ring" aria-hidden="true" />
+                                                    <strong>{datesLoading ? 'Finding available dates…' : 'Finding available times…'}</strong>
+                                                    <p>We’re checking the team’s calendar.<br />{datesLoading ? 'Available dates will light up shortly.' : 'Available times will appear shortly.'}</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className="slots" id="slots" aria-live="polite" hidden={datesLoading || slotsStatus === 'loading'}>
                                             {slotsStatus === 'error' && (
                                                 <div className="empty">
                                                     <p role="alert">{slotsError}</p>
