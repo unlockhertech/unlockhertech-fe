@@ -24,7 +24,7 @@ export function BookingPage() {
     }, []);
 
     const url = useMemo(() => new URL(window.location.href), []);
-    const initialSection = (url.searchParams.get('section') || 'partnerships') as MeetingType['section'];
+    const initialSection = (url.searchParams.get('section') || 'meet') as MeetingType['section'];
 
     const [cfg, setCfg] = useState<PublicConfig | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -54,7 +54,12 @@ export function BookingPage() {
     useEffect(() => {
         (async () => {
             try {
-                const c = await bookingApi.getPublicConfig();
+                const config = await bookingApi.getPublicConfig();
+                const c = {
+                    ...config,
+                    meetingTypes: [...config.meetingTypes].sort((a, b) =>
+                        Number(a.key === 'meet_cofounders') - Number(b.key === 'meet_cofounders')),
+                };
                 setError(null);
                 setCfg(c);
                 const first = c.meetingTypes.find(m => m.section === section) || c.meetingTypes[0] || null;
@@ -249,7 +254,7 @@ export function BookingPage() {
             {!cfg && <BookingLoading failed={Boolean(error)} />}
             {cfg && <div className="wrap">
                 <nav className="tabs" aria-label="Booking categories" id="tabs">
-                    {(['partnerships', 'careers', 'podcast', 'mentorship', 'meet'] as const).map(key => (
+                    {(['meet', 'mentorship', 'podcast', 'careers', 'partnerships'] as const).map(key => (
                         <button
                             key={key}
                             type="button"
@@ -415,7 +420,7 @@ export function BookingPage() {
 // --- helpers ---
 function sectionTitle(s: MeetingType['section']) {
     switch (s) {
-        case 'partnerships': return 'Partnerships';
+        case 'partnerships': return 'Partnership';
         case 'careers': return 'Careers';
         case 'podcast': return 'Podcast';
         case 'mentorship': return 'Mentorship';
