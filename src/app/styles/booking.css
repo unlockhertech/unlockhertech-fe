@@ -729,3 +729,40 @@ summary {
     scroll-behavior: auto !important;
   }
 }
+
+/* Category selection is a presentation layer over the existing booking rules. */
+.wrap-root .booking-progress { display:flex; justify-content:center; gap:48px; list-style:none; padding:0; margin:0 0 32px; color:var(--muted); font-size:14px; }
+.wrap-root .booking-progress li { display:flex; align-items:center; gap:10px; }
+.wrap-root .booking-progress span { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:#eee9ed; font-weight:700; }
+.wrap-root .booking-progress [aria-current="step"] { color:var(--berry); font-weight:700; }
+.wrap-root .booking-progress [aria-current="step"] span { background:var(--berry); color:white; }
+.wrap-root .category-picker { max-width:960px; margin:auto; }
+.wrap-root .category-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.wrap-root .category-card { display:flex; align-items:center; gap:18px; padding:24px; text-align:left; border:1px solid var(--line); border-left:4px solid var(--category-color,#ddd); border-radius:12px; background:white; color:var(--ink); text-decoration:none; min-width:0; }
+.wrap-root .category-card:hover { border-color:var(--category-color,var(--muted)); box-shadow:0 5px 18px #3417260a; }
+.wrap-root .category-card[aria-pressed="true"] { background:color-mix(in srgb,var(--category-color) 12%,white); border-color:var(--category-color); outline:1px solid var(--category-color); }
+.wrap-root .category-icon { background:var(--category-color,#ece9ed); border-radius:50%; width:58px; height:58px; flex-shrink:0; display:grid; place-items:center; font-size:27px; }
+.wrap-root .category-copy { flex:1; }
+.wrap-root .category-copy b { display:block; font-size:19px; letter-spacing:-.4px; }
+.wrap-root .category-copy span,.wrap-root .category-copy small { display:block; color:var(--muted); font-size:13px; margin-top:4px; }
+.wrap-root .category-copy small { font-size:11px; }
+.wrap-root .meeting-options { margin-top:22px; padding:26px; border-radius:14px; background:color-mix(in srgb,var(--accent) 12%,white); border:1px solid color-mix(in srgb,var(--accent) 45%,white); }
+.wrap-root .meeting-options h2 { font-size:22px; }
+.wrap-root .meeting-options p { margin:0 0 18px; color:var(--muted); font-size:13px; }
+.wrap-root .meeting-options .meeting-list { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+.wrap-root .meeting-summary { display:block; margin-top:10px; }
+.wrap-root .continue-calendar { width:100%; margin-top:24px; border-radius:8px; padding:16px; font-size:16px; }
+.wrap-root .primary { background:var(--berry); }
+.wrap-root .selection-note { text-align:center; color:var(--muted); font-size:12px; }
+.wrap-root .change-meeting { border:0; background:transparent; color:var(--berry); text-decoration:underline; padding:0; font-size:14px; }
+.wrap-root .booking-calendar .sidebar { border-top:5px solid var(--accent); }
+.wrap-root h1:focus { outline:none; }
+@media(max-width:600px) {
+  .wrap-root .category-grid { grid-template-columns:1fr; gap:12px; }
+  .wrap-root .category-card { padding:18px; gap:14px; }
+  .wrap-root .category-icon { width:46px; height:46px; font-size:23px; }
+  .wrap-root .booking-progress { gap:15px; font-size:11px; }
+  .wrap-root .booking-progress li { gap:5px; }
+  .wrap-root .booking-progress span { width:24px; height:24px; }
+  .wrap-root .meeting-options { padding:18px; }
+}

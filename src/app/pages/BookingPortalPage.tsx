@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef, useState, type JSX } from 'react';
+import { useEffect, useMemo, useRef, useState, type JSX, type CSSProperties } from 'react';
 import { useMetaData } from "@/app/hooks/useMetaData.ts";
 import { bookingApi, type AvailabilitySummary, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
 import { BookingLoading } from "@/app/components/BookingLoading";
+
+import { FiUsers, FiHeart, FiMic, FiBriefcase, FiHelpCircle, FiArrowRight, FiCheck } from 'react-icons/fi';
 
 interface BookingResponse { bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }
 
@@ -26,6 +28,9 @@ export function BookingPage() {
     const url = useMemo(() => new URL(window.location.href), []);
     const initialSection = (url.searchParams.get('section') || 'meet') as MeetingType['section'];
 
+    const [choosing, setChoosing] = useState(true);
+    const [categoryChosen, setCategoryChosen] = useState(Boolean(url.searchParams.get('section')));
+    const headingRef = useRef<HTMLHeadingElement>(null);
     const [cfg, setCfg] = useState<PublicConfig | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [section, setSection] = useState<MeetingType['section']>(initialSection);
@@ -64,6 +69,7 @@ export function BookingPage() {
                 setCfg(c);
                 const first = c.meetingTypes.find(m => m.section === section) || c.meetingTypes[0] || null;
                 setMeeting(first);
+                if (first) setSection(first.section);
                 const firstMonth = (c.dates?.[0]?.value || '').slice(0, 7) || new Date().toISOString().slice(0, 7);
                 setMonth(firstMonth);
             } catch (e: any) {
@@ -123,6 +129,7 @@ export function BookingPage() {
         resetAvailability();
         setError(null);
         setSection(key);
+        setCategoryChosen(true);
         setMeeting(cfg?.meetingTypes.find(m => m.section === key) || null);
         setConfirmation(null);
     }
@@ -223,6 +230,8 @@ export function BookingPage() {
         }
     }
 
+    useEffect(() => { headingRef.current?.focus(); }, [choosing]);
+
     const meetingsInSection = cfg?.meetingTypes.filter(m => m.section === section) ?? [];
 
     return (
@@ -246,49 +255,62 @@ export function BookingPage() {
 
             <div className="hero">
                 <div className="eyebrow">Connection starts with a conversation</div>
-                <h1>Make time for<br /><em>what comes next.</em></h1>
-                <p>Partner with us, join our team, share your story, find support, or connect with our co-founders.</p>
+                <h1 ref={headingRef} tabIndex={-1}>{choosing ? 'What brings you here?' : 'Let’s find a time.'}</h1>
+                <p>{choosing ? 'Choose a topic so we can connect you with the right people.' : 'Choose an available date and time for your conversation.'}</p>
                 <div className="rings" aria-hidden="true" />
             </div>
 
             {!cfg && <BookingLoading failed={Boolean(error)} />}
             {cfg && <div className="wrap">
-                <nav className="tabs" aria-label="Booking categories" id="tabs">
-                    {(['meet', 'mentorship', 'podcast', 'careers', 'partnerships'] as const).map(key => (
-                        <button
-                            key={key}
-                            type="button"
-                            className="tab"
-                            aria-pressed={key === section}
-                            onClick={() => handleSelectSection(key)}
-                        >
-                            <span className="dot" aria-hidden="true" style={{ ['--tabcolor' as any]: sectionAccent(key) }} />
-                            {sectionTitle(key)}
-                        </button>
-                    ))}
-                </nav>
-
-                <div className="booking">
-                    <aside className="sidebar">
-                        <div className="small-label">Book with Unlock Her Tech</div>
-                        <h2 id="sectionTitle">{sectionTitle(section)}</h2>
-                        <p className="section-text" id="sectionText">{sectionText(section)}</p>
-                        <div className="meeting-list" id="meetings">
-                            {meetingsInSection.map(m => (
-                                <button
-                                    key={m.key}
-                                    type="button"
-                                    className="meeting"
-                                    aria-pressed={meeting?.key === m.key}
-                                    onClick={() => handleSelectMeeting(m)}
-                                >
-                                    <b>{m.label}</b>
-                                    <span>{m.duration} min · {m.hosts.join(' + ')}</span>
-                                </button>
-                            ))}
+                <ol className="booking-progress" aria-label="Booking progress">
+                    <li aria-current={choosing ? 'step' : undefined}><span>{choosing ? '1' : '✓'}</span>Category</li>
+                    <li aria-current={!choosing && !selectedSlot && !confirmation ? 'step' : undefined}><span>2</span>Date &amp; time</li>
+                    <li aria-current={!choosing && (selectedSlot || confirmation) ? 'step' : undefined}><span>3</span>Your details</li>
+                </ol>
+                {choosing && <section className="category-picker" aria-label="Choose your conversation">
+                    <nav className="category-grid" aria-label="Booking categories">
+                        {(['partnerships', 'careers', 'podcast', 'mentorship', 'meet'] as const).map(key => {
+                            const Icon = categoryIcon(key);
+                            const count = cfg.meetingTypes.filter(m => m.section === key).length;
+                            const selected = categoryChosen && key === section;
+                            return <button key={key} type="button" className="category-card"
+                                style={{ '--category-color': sectionAccent(key) } as CSSProperties}
+                                aria-pressed={selected} aria-expanded={selected} aria-controls="meeting-options"
+                                disabled={!count} onClick={() => handleSelectSection(key)}>
+                                <span className="category-icon" aria-hidden="true"><Icon /></span>
+                                <span className="category-copy"><b>{categoryTitle(key)}</b><span>{sectionText(key)}</span>
+                                    <small>{count} meeting {count === 1 ? 'option' : 'options'}</small></span>
+                                <span aria-hidden="true">{selected ? <FiCheck /> : <FiArrowRight />}</span>
+                            </button>;
+                        })}
+                        <a className="category-card category-help" href={`mailto:${cfg.contactEmail}`}>
+                            <span className="category-icon" aria-hidden="true"><FiHelpCircle /></span>
+                            <span className="category-copy"><b>Not sure yet?</b><span>Contact us and we’ll help you find the right conversation.</span></span>
+                            <FiArrowRight aria-hidden="true" />
+                        </a>
+                    </nav>
+                    {categoryChosen && <section className="meeting-options" id="meeting-options" aria-labelledby="options-title">
+                        <h2 id="options-title">{section === 'meet' ? 'Who would you like to meet?' : `Choose your ${sectionTitle(section).toLowerCase()} conversation`}</h2>
+                        <p>Choose one. Your calendar will show availability for this meeting.</p>
+                        <div className="meeting-list">
+                            {meetingsInSection.map(m => <button key={m.key} type="button" className="meeting"
+                                aria-pressed={meeting?.key === m.key} onClick={() => handleSelectMeeting(m)}>
+                                <b>{m.label}</b><span>{m.duration} min · {m.hosts.join(' + ')}</span>
+                                <span className="meeting-summary">{m.summary}</span>
+                            </button>)}
                         </div>
-                        <div className="sidebar-note">
-                            Your meeting link and preparation details will be included in your calendar invitation after booking.
+                    </section>}
+                    <button type="button" className="primary continue-calendar" disabled={!categoryChosen || !meeting}
+                        onClick={() => setChoosing(false)}>Continue to calendar →</button>
+                    <p className="selection-note">You can change your category or meeting at any time.</p>
+                </section>}
+                <div className="booking booking-calendar" hidden={choosing}>
+                    <aside className="sidebar">
+                        <div className="small-label">Your conversation</div>
+                        <h2>{sectionTitle(section)}</h2>
+                        <p className="section-text">{meeting?.label}</p>
+                        <button type="button" className="change-meeting" disabled={booking} onClick={() => setChoosing(true)}>Change category or meeting</button>
+                        <div className="sidebar-note">Your meeting link and preparation details will be included in your calendar invitation after booking.
                             <div className="decoration" aria-hidden="true"><i /><i /><i /><i /><i /></div>
                         </div>
                     </aside>
@@ -298,7 +320,7 @@ export function BookingPage() {
 
                         {!confirmation && meeting && (
                             <div id="bookingContent">
-                                <div className="step">01 Choose a time · 02 Your details</div>
+                                <div className="step">02 Choose a time · 03 Your details</div>
                                 <h2 id="meetingTitle">{meeting.label}</h2>
                                 <p id="meetingSummary" className="summary">{meeting.summary}</p>
                                 <div className="meta" id="meta">
@@ -378,8 +400,9 @@ export function BookingPage() {
                                         </div>
                                     </div>
                                     <div className="notes">
-                                        <label htmlFor="notes">Anything you’d like us to know? <span style={{ fontWeight: 400 }}>(optional)</span></label>
-                                        <textarea id="notes" name="notes" maxLength={2000} />
+                                        <label htmlFor="notes">{meeting.notesLabel || 'Anything you’d like us to know? (optional)'}</label>
+                                        <textarea id="notes" name="notes" maxLength={2000} placeholder={meeting.notesPlaceholder} aria-describedby={meeting.notesHelpText ? 'notes-help' : undefined} />
+                                        {meeting.notesHelpText && <p id="notes-help" className="summary">{meeting.notesHelpText}</p>}
                                     </div>
                                     <div className="form-end">
                                         <p>We’ll use your details to arrange this meeting and send your invitation. <a href="/privacy-policy" target="_blank" rel="noopener">Privacy policy</a></p>
@@ -407,7 +430,7 @@ export function BookingPage() {
                                     <p id="pending">Your Google Meet link is being prepared. It will appear in your calendar invitation.</p>
                                 )}
                                 <p id="confirmationContact">Need to make a change? <a href={`mailto:${cfg.contactEmail}`}>{cfg.contactEmail}</a></p>
-                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); refreshDates(); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
+                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); setChoosing(true); refreshDates(); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
                             </section>
                         )}
                     </main>
@@ -418,6 +441,15 @@ export function BookingPage() {
 }
 
 // --- helpers ---
+function categoryIcon(section: MeetingType['section']) {
+    const icons = { partnerships: FiUsers, careers: FiBriefcase, podcast: FiMic, mentorship: FiHeart, meet: FiUsers };
+    return icons[section];
+}
+function categoryTitle(section: MeetingType['section']) {
+    if (section === 'partnerships') return 'Partner with us';
+    if (section === 'careers') return 'Join our team';
+    return sectionTitle(section);
+}
 function sectionTitle(s: MeetingType['section']) {
     switch (s) {
         case 'partnerships': return 'Partnership';
@@ -433,7 +465,7 @@ function sectionText(s: MeetingType['section']) {
         case 'careers': return 'Bring your skills. Be part of our volunteer team.';
         case 'podcast': return 'Your story belongs in the conversation.';
         case 'mentorship': return 'A little guidance. A world of possibilities.';
-        case 'meet': return 'Connect one-to-one with our co-founders.';
+        case 'meet': return 'Connect with Ellie, Pritanya or both co-founders.';
     }
 }
 function sectionAccent(s: MeetingType['section']) {
