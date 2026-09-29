@@ -343,8 +343,19 @@ export function BookingPage() {
     headingRef.current?.focus();
   }, [choosing]);
 
-  const meetingsInSection =
-    cfg?.meetingTypes.filter((m) => m.section === section) ?? [];
+  const partnershipOrder = [
+    "partnership_initial",
+    "partnership_strategy",
+    "partnership_followup",
+  ];
+
+  const meetingsInSection = (cfg?.meetingTypes ?? [])
+    .filter((m) => m.section === section)
+    .sort((a, b) => {
+      if (section !== "partnerships") return 0;
+
+      return partnershipOrder.indexOf(a.key) - partnershipOrder.indexOf(b.key);
+    });
 
   return (
     <div className="wrap-root">
@@ -495,7 +506,15 @@ export function BookingPage() {
                         aria-pressed={meeting?.key === m.key}
                         onClick={() => handleSelectMeeting(m)}
                       >
-                        <b>{meetingDisplayLabel(m)}</b>
+                        <b>
+                          {m.key === "partnership_initial"
+                            ? "Stage 1 · Initial Partnership Call"
+                            : m.key === "partnership_strategy"
+                              ? "Stage 2 · Collaboration Strategy Session"
+                              : m.key === "partnership_followup"
+                                ? "Stage 3 · Partnership Follow-Up"
+                                : m.label}
+                        </b>
                         <span>
                           {m.duration} min · {m.hosts.join(" + ")}
                         </span>
