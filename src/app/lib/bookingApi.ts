@@ -11,6 +11,9 @@ export type MeetingType = {
   hosts: string[];
   days: number[];
   schedule: string;
+  notesLabel?: string;
+  notesPlaceholder?: string;
+  notesHelpText?: string;
 };
 export type PublicConfig = {
   timeZone: string;
