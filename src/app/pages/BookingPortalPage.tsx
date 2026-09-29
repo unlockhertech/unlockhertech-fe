@@ -249,7 +249,7 @@ export function BookingPage() {
             {!cfg && <BookingLoading failed={Boolean(error)} />}
             {cfg && <div className="wrap">
                 <nav className="tabs" aria-label="Booking categories" id="tabs">
-                    {(['partnerships', 'careers', 'podcast', 'mentorship', 'meet'] as const).map(key => (
+                    {(['meet', 'mentorship', 'podcast', 'careers', 'partnerships'] as const).map(key => (
                         <button
                             key={key}
                             type="button"
@@ -415,7 +415,7 @@ export function BookingPage() {
 // --- helpers ---
 function sectionTitle(s: MeetingType['section']) {
     switch (s) {
-        case 'partnerships': return 'Partnerships';
+        case 'partnerships': return 'Partnership';
         case 'careers': return 'Careers';
         case 'podcast': return 'Podcast';
         case 'mentorship': return 'Mentorship';
