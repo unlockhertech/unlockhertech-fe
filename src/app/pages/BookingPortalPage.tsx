@@ -1,515 +1,1031 @@
-import { useEffect, useMemo, useRef, useState, type JSX, type CSSProperties } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type JSX,
+  type CSSProperties,
+} from "react";
 import { useMetaData } from "@/app/hooks/useMetaData.ts";
-import { bookingApi, type AvailabilitySummary, type PublicConfig, type Slot, type MeetingType } from "@/app/lib/bookingApi";
+import {
+  bookingApi,
+  type AvailabilitySummary,
+  type PublicConfig,
+  type Slot,
+  type MeetingType,
+} from "@/app/lib/bookingApi";
 import "@/app/styles/booking.css";
 import { BookingLoading } from "@/app/components/BookingLoading";
 
-import { FiUsers, FiHeart, FiMic, FiBriefcase, FiHelpCircle, FiArrowRight, FiCheck } from 'react-icons/fi';
+import {
+  FiUsers,
+  FiHeart,
+  FiMic,
+  FiBriefcase,
+  FiHelpCircle,
+  FiArrowRight,
+  FiCheck,
+} from "react-icons/fi";
 
-interface BookingResponse { bookingId: string; label: string; hosts: string[]; startMs: number; endMs: number; link?: string }
+interface BookingResponse {
+  bookingId: string;
+  label: string;
+  hosts: string[];
+  startMs: number;
+  endMs: number;
+  link?: string;
+}
 
 export function BookingPage() {
-    useMetaData(
-        "Booking Portal | Unlock Her Tech",
-        "Book your spot with Unlock Her Tech today!",
-        "https://unlockhertech.com/private-booking-portal",
-        { image: "/logo.png", type: "website" }
-    );
+  useMetaData(
+    "Booking Portal | Unlock Her Tech",
+    "Book your spot with Unlock Her Tech today!",
+    "https://unlockhertech.com/private-booking-portal",
+    { image: "/logo.png", type: "website" },
+  );
 
-    // Prevent SEO indexing
-    useEffect(() => {
-        const meta = document.createElement('meta');
-        meta.name = 'robots';
-        meta.content = 'noindex, nofollow';
-        document.head.appendChild(meta);
-        return () => meta.remove();
-    }, []);
+  // Prevent SEO indexing
+  useEffect(() => {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+    return () => meta.remove();
+  }, []);
 
-    const url = useMemo(() => new URL(window.location.href), []);
-    const initialSection = (url.searchParams.get('section') || 'meet') as MeetingType['section'];
+  const url = useMemo(() => new URL(window.location.href), []);
+  const initialSection = (url.searchParams.get("section") ||
+    "meet") as MeetingType["section"];
 
-    const [choosing, setChoosing] = useState(true);
-    const [categoryChosen, setCategoryChosen] = useState(Boolean(url.searchParams.get('section')));
-    const headingRef = useRef<HTMLHeadingElement>(null);
-    const [cfg, setCfg] = useState<PublicConfig | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [section, setSection] = useState<MeetingType['section']>(initialSection);
-    const [meeting, setMeeting] = useState<MeetingType | null>(null);
-    const [month, setMonth] = useState<string>(''); // YYYY-MM
-    const [selectedDate, setSelectedDate] = useState<string | null>(null); // YYYY-MM-DD
-    const [slots, setSlots] = useState<Slot[]>([]);
-    const [slotsStatus, setSlotsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-    const [slotsError, setSlotsError] = useState<string | null>(null);
-    const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-    const [booking, setBooking] = useState(false);
-    const loadingVersion = useRef(0);
-    const requestId = useRef(crypto.randomUUID());
-    const [datesRevision, setDatesRevision] = useState(0);
-    const [dateState, setDateState] = useState<{
-        key: string; revision: number; summary: AvailabilitySummary; error: string | null;
-    } | null>(null);
-    const datesCurrent = dateState?.key === meeting?.key && dateState?.revision === datesRevision;
-    const dateSummary = datesCurrent ? dateState.summary : {};
-    const datesError = datesCurrent ? dateState.error : null;
-    const datesLoading = Boolean(meeting) && !datesCurrent;
-    const [confirmation, setConfirmation] = useState<BookingResponse | null>(null);
-    // Invalidate in-flight availability when leaving the page.
-    useEffect(() => () => { loadingVersion.current++; }, []);
+  const [choosing, setChoosing] = useState(true);
+  const [categoryChosen, setCategoryChosen] = useState(
+    Boolean(url.searchParams.get("section")),
+  );
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const [cfg, setCfg] = useState<PublicConfig | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [section, setSection] =
+    useState<MeetingType["section"]>(initialSection);
+  const [meeting, setMeeting] = useState<MeetingType | null>(null);
+  const [month, setMonth] = useState<string>(""); // YYYY-MM
+  const [selectedDate, setSelectedDate] = useState<string | null>(null); // YYYY-MM-DD
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [slotsStatus, setSlotsStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [slotsError, setSlotsError] = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
+  const [booking, setBooking] = useState(false);
+  const loadingVersion = useRef(0);
+  const requestId = useRef(crypto.randomUUID());
+  const [datesRevision, setDatesRevision] = useState(0);
+  const [dateState, setDateState] = useState<{
+    key: string;
+    revision: number;
+    summary: AvailabilitySummary;
+    error: string | null;
+  } | null>(null);
+  const datesCurrent =
+    dateState?.key === meeting?.key && dateState?.revision === datesRevision;
+  const dateSummary = datesCurrent ? dateState.summary : {};
+  const datesError = datesCurrent ? dateState.error : null;
+  const datesLoading = Boolean(meeting) && !datesCurrent;
+  const [confirmation, setConfirmation] = useState<BookingResponse | null>(
+    null,
+  );
+  // Invalidate in-flight availability when leaving the page.
+  useEffect(
+    () => () => {
+      loadingVersion.current++;
+    },
+    [],
+  );
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const config = await bookingApi.getPublicConfig();
-                const c = {
-                    ...config,
-                    meetingTypes: [...config.meetingTypes].sort((a, b) =>
-                        Number(a.key === 'meet_cofounders') - Number(b.key === 'meet_cofounders')),
-                };
-                setError(null);
-                setCfg(c);
-                const first = c.meetingTypes.find(m => m.section === section) || c.meetingTypes[0] || null;
-                setMeeting(first);
-                if (first) setSection(first.section);
-                const firstMonth = (c.dates?.[0]?.value || '').slice(0, 7) || new Date().toISOString().slice(0, 7);
-                setMonth(firstMonth);
-            } catch (e: any) {
-                setError(e?.message || 'Booking is temporarily unavailable');
-            }
-        })();
-    }, []);
-
-    useEffect(() => {
-        if (!cfg || !meeting) return;
-        document.documentElement.style.setProperty('--accent', sectionAccent(section));
-    }, [cfg, meeting, section]);
-
-    function resetAvailability() {
-        loadingVersion.current++;
-        setSelectedDate(null);
-        setSelectedSlot(null);
-        setSlots([]);
-        setSlotsError(null);
-        setSlotsStatus('idle');
-    }
-
-    async function loadDate(value: string) {
-        if (!meeting || booking || dateSummary[value] !== true) return;
-        const version = ++loadingVersion.current;
-        setSelectedDate(value);
-        setSelectedSlot(null);
-        setSlots([]);
-        setSlotsError(null);
-        setSlotsStatus('loading');
-        try {
-            const available = await bookingApi.getAvailableSlots(meeting.key, value);
-            if (version !== loadingVersion.current) return;
-            setSlots(available);
-            if (!available.length) {
-                setDateState(state => state?.key === meeting.key
-                    ? { ...state, summary: { ...state.summary, [value]: false } } : state);
-            }
-            setSlotsStatus('success');
-        } catch (error) {
-            if (version !== loadingVersion.current) return;
-            setSlotsError(error instanceof Error ? error.message : 'Could not load availability. Please try again.');
-            setSlotsStatus('error');
-        }
-    }
-
-    function handleSelectMeeting(m: MeetingType) {
-        if (booking) return;
-        resetAvailability();
-        setError(null);
-        setMeeting(m);
-        setConfirmation(null);
-    }
-
-    function handleSelectSection(key: MeetingType['section']) {
-        if (booking) return;
-        resetAvailability();
-        setError(null);
-        setSection(key);
-        setCategoryChosen(true);
-        setMeeting(cfg?.meetingTypes.find(m => m.section === key) || null);
-        setConfirmation(null);
-    }
-
-    // Responses from an earlier meeting or refresh must never enable the current calendar.
-    useEffect(() => {
-        if (!meeting) return;
-        let active = true;
-        const key = meeting.key;
-        const refresh = async () => {
-            try {
-                const summary = await bookingApi.getAvailabilitySummary(key);
-                if (active) setDateState({ key, revision: datesRevision, summary, error: null });
-            } catch (error) {
-                if (active) setDateState({ key, revision: datesRevision, summary: {},
-                    error: error instanceof Error ? error.message : 'Could not load available dates.' });
-            }
+  useEffect(() => {
+    (async () => {
+      try {
+        const config = await bookingApi.getPublicConfig();
+        const c = {
+          ...config,
+          meetingTypes: [...config.meetingTypes].sort(
+            (a, b) =>
+              Number(a.key === "meet_cofounders") -
+              Number(b.key === "meet_cofounders"),
+          ),
         };
+        setError(null);
+        setCfg(c);
+        const first =
+          c.meetingTypes.find((m) => m.section === section) ||
+          c.meetingTypes[0] ||
+          null;
+        setMeeting(first);
+        if (first) setSection(first.section);
+        const firstMonth =
+          (c.dates?.[0]?.value || "").slice(0, 7) ||
+          new Date().toISOString().slice(0, 7);
+        setMonth(firstMonth);
+      } catch (e: any) {
+        setError(e?.message || "Booking is temporarily unavailable");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!cfg || !meeting) return;
+    document.documentElement.style.setProperty(
+      "--accent",
+      sectionAccent(section),
+    );
+  }, [cfg, meeting, section]);
+
+  function resetAvailability() {
+    loadingVersion.current++;
+    setSelectedDate(null);
+    setSelectedSlot(null);
+    setSlots([]);
+    setSlotsError(null);
+    setSlotsStatus("idle");
+  }
+
+  async function loadDate(value: string) {
+    if (!meeting || booking || dateSummary[value] !== true) return;
+    const version = ++loadingVersion.current;
+    setSelectedDate(value);
+    setSelectedSlot(null);
+    setSlots([]);
+    setSlotsError(null);
+    setSlotsStatus("loading");
+    try {
+      const available = await bookingApi.getAvailableSlots(meeting.key, value);
+      if (version !== loadingVersion.current) return;
+      setSlots(available);
+      if (!available.length) {
+        setDateState((state) =>
+          state?.key === meeting.key
+            ? { ...state, summary: { ...state.summary, [value]: false } }
+            : state,
+        );
+      }
+      setSlotsStatus("success");
+    } catch (error) {
+      if (version !== loadingVersion.current) return;
+      setSlotsError(
+        error instanceof Error
+          ? error.message
+          : "Could not load availability. Please try again.",
+      );
+      setSlotsStatus("error");
+    }
+  }
+
+  function handleSelectMeeting(m: MeetingType) {
+    if (booking) return;
+    resetAvailability();
+    setError(null);
+    setMeeting(m);
+    setConfirmation(null);
+  }
+
+  function handleSelectSection(key: MeetingType["section"]) {
+    if (booking) return;
+    resetAvailability();
+    setError(null);
+    setSection(key);
+    setCategoryChosen(true);
+    setMeeting(cfg?.meetingTypes.find((m) => m.section === key) || null);
+    setConfirmation(null);
+  }
+
+  // Responses from an earlier meeting or refresh must never enable the current calendar.
+  useEffect(() => {
+    if (!meeting) return;
+    let active = true;
+    const key = meeting.key;
+    const refresh = async () => {
+      try {
+        const summary = await bookingApi.getAvailabilitySummary(key);
+        if (active)
+          setDateState({ key, revision: datesRevision, summary, error: null });
+      } catch (error) {
+        if (active)
+          setDateState({
+            key,
+            revision: datesRevision,
+            summary: {},
+            error:
+              error instanceof Error
+                ? error.message
+                : "Could not load available dates.",
+          });
+      }
+    };
+    void refresh();
+    return () => {
+      active = false;
+    };
+  }, [meeting, datesRevision]);
+
+  // Keep an open calendar current without resetting the visitor's form.
+  useEffect(() => {
+    if (!meeting || booking || confirmation || datesLoading) return;
+    let active = true;
+    let pending = false;
+    const refresh = async () => {
+      if (document.hidden || pending) return;
+      pending = true;
+      const version = loadingVersion.current;
+      try {
+        const summary = await bookingApi.getAvailabilitySummary(meeting.key);
+        const available = selectedDate
+          ? await bookingApi.getAvailableSlots(meeting.key, selectedDate)
+          : null;
+        if (!active || version !== loadingVersion.current) return;
+        if (selectedDate && available)
+          summary[selectedDate] = available.length > 0;
+        setDateState({
+          key: meeting.key,
+          revision: datesRevision,
+          summary,
+          error: null,
+        });
+        if (available) {
+          setSlots(available);
+          setSlotsStatus("success");
+          setSlotsError(null);
+          if (
+            selectedSlot &&
+            !available.some(
+              (slot) =>
+                slot.startMs === selectedSlot.startMs &&
+                slot.endMs === selectedSlot.endMs,
+            )
+          ) {
+            setSelectedSlot(null);
+            setError(
+              "This time is no longer available. Please choose another.",
+            );
+          }
+        }
+      } catch (error) {
+        console.warn("Automatic booking availability refresh failed", error);
+        if (active && version === loadingVersion.current) {
+          setDateState({
+            key: meeting.key,
+            revision: datesRevision,
+            summary: {},
+            error: "Could not update availability. Please try again.",
+          });
+        }
+      } finally {
+        pending = false;
+      }
+    };
+    const timer = window.setInterval(
+      () => {
         void refresh();
-        return () => { active = false; };
-    }, [meeting, datesRevision]);
-
-    // Keep an open calendar current without resetting the visitor's form.
-    useEffect(() => {
-        if (!meeting || booking || confirmation || datesLoading) return;
-        let active = true;
-        let pending = false;
-        const refresh = async () => {
-            if (document.hidden || pending) return;
-            pending = true;
-            const version = loadingVersion.current;
-            try {
-                const summary = await bookingApi.getAvailabilitySummary(meeting.key);
-                const available = selectedDate
-                    ? await bookingApi.getAvailableSlots(meeting.key, selectedDate) : null;
-                if (!active || version !== loadingVersion.current) return;
-                if (selectedDate && available) summary[selectedDate] = available.length > 0;
-                setDateState({ key: meeting.key, revision: datesRevision, summary, error: null });
-                if (available) {
-                    setSlots(available);
-                    setSlotsStatus('success');
-                    setSlotsError(null);
-                    if (selectedSlot && !available.some(slot => slot.startMs === selectedSlot.startMs && slot.endMs === selectedSlot.endMs)) {
-                        setSelectedSlot(null);
-                        setError('This time is no longer available. Please choose another.');
-                    }
-                }
-            } catch (error) {
-                console.warn('Automatic booking availability refresh failed', error);
-                if (active && version === loadingVersion.current) {
-                    setDateState({ key: meeting.key, revision: datesRevision, summary: {},
-                        error: 'Could not update availability. Please try again.' });
-                }
-            } finally {
-                pending = false;
-            }
-        };
-        const timer = window.setInterval(() => { void refresh(); }, 5 * 60 * 1000);
-        const onVisible = () => { if (!document.hidden) void refresh(); };
-        document.addEventListener('visibilitychange', onVisible);
-        return () => {
-            active = false;
-            window.clearInterval(timer);
-            document.removeEventListener('visibilitychange', onVisible);
-        };
-    }, [meeting, selectedDate, selectedSlot, booking, confirmation, datesLoading, datesRevision]);
-
-    function refreshDates() {
-        resetAvailability();
-        setDatesRevision(revision => revision + 1);
-    }
-
-    async function submit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        if (!meeting || !selectedSlot) return;
-        const form = new FormData(e.currentTarget);
-        const name = String(form.get('name') || '').trim();
-        const email = String(form.get('email') || '').trim();
-        const notes = String(form.get('notes') || '').trim();
-        setBooking(true);
-        setError(null);
-        try {
-            const res = await bookingApi.bookMeeting({
-                meetingKey: meeting.key,
-                startMs: selectedSlot.startMs,
-                name,
-                email,
-                notes,
-                requestId: requestId.current,
-            });
-            setConfirmation(res);
-        } catch (err: any) {
-            setError(err?.message || 'Booking failed');
-            resetAvailability();
-        } finally {
-            setDatesRevision(revision => revision + 1);
-            setBooking(false);
-        }
-    }
-
-    useEffect(() => { headingRef.current?.focus(); }, [choosing]);
-
-    const meetingsInSection = cfg?.meetingTypes.filter(m => m.section === section) ?? [];
-
-    return (
-        <div className="wrap-root">
-            <div className="topline" aria-hidden="true" />
-            <header>
-                <a className="wordmark" href="https://www.unlockhertech.com">
-                    <img
-                      className="brand-logo"
-                      src="/logo.png"
-                      alt="Unlock Her Tech logo"
-                      width={68}
-                      height={68}
-                      decoding="async"
-                      fetchPriority="high"
-                    />
-                    Unlock Her Tech
-                </a>
-                <a href="https://www.unlockhertech.com">Back to our website ↗</a>
-            </header>
-
-            <div className="hero">
-                <div className="eyebrow">Connection starts with a conversation</div>
-                <h1 ref={headingRef} tabIndex={-1}>{choosing ? 'What brings you here?' : 'Let’s find a time.'}</h1>
-                <p>{choosing ? 'Choose a topic so we can connect you with the right people.' : 'Choose an available date and time for your conversation.'}</p>
-                <div className="rings" aria-hidden="true" />
-            </div>
-
-            {!cfg && <BookingLoading failed={Boolean(error)} />}
-            {cfg && <div className="wrap">
-                <ol className="booking-progress" aria-label="Booking progress">
-                    <li aria-current={choosing ? 'step' : undefined}><span>{choosing ? '1' : '✓'}</span>Category</li>
-                    <li aria-current={!choosing && !selectedSlot && !confirmation ? 'step' : undefined}><span>2</span>Date &amp; time</li>
-                    <li aria-current={!choosing && (selectedSlot || confirmation) ? 'step' : undefined}><span>3</span>Your details</li>
-                </ol>
-                {choosing && <section className="category-picker" aria-label="Choose your conversation">
-                    <nav className="category-grid" aria-label="Booking categories">
-                        {(['partnerships', 'careers', 'podcast', 'mentorship', 'meet'] as const).map(key => {
-                            const Icon = categoryIcon(key);
-                            const count = cfg.meetingTypes.filter(m => m.section === key).length;
-                            const selected = categoryChosen && key === section;
-                            return <button key={key} type="button" className="category-card"
-                                style={{ '--category-color': sectionAccent(key) } as CSSProperties}
-                                aria-pressed={selected} aria-expanded={selected} aria-controls="meeting-options"
-                                disabled={!count} onClick={() => handleSelectSection(key)}>
-                                <span className="category-icon" aria-hidden="true"><Icon /></span>
-                                <span className="category-copy"><b>{categoryTitle(key)}</b><span>{sectionText(key)}</span>
-                                    <small>{count} meeting {count === 1 ? 'option' : 'options'}</small></span>
-                                <span aria-hidden="true">{selected ? <FiCheck /> : <FiArrowRight />}</span>
-                            </button>;
-                        })}
-                        <a className="category-card category-help" href={`mailto:${cfg.contactEmail}`}>
-                            <span className="category-icon" aria-hidden="true"><FiHelpCircle /></span>
-                            <span className="category-copy"><b>Not sure yet?</b><span>Contact us and we’ll help you find the right conversation.</span></span>
-                            <FiArrowRight aria-hidden="true" />
-                        </a>
-                    </nav>
-                    {categoryChosen && <section className="meeting-options" id="meeting-options" aria-labelledby="options-title">
-                        <h2 id="options-title">{section === 'meet' ? 'Who would you like to meet?' : `Choose your ${sectionTitle(section).toLowerCase()} conversation`}</h2>
-                        <p>Choose one. Your calendar will show availability for this meeting.</p>
-                        <div className="meeting-list">
-                            {meetingsInSection.map(m => <button key={m.key} type="button" className="meeting"
-                                aria-pressed={meeting?.key === m.key} onClick={() => handleSelectMeeting(m)}>
-                                <b>{m.label}</b><span>{m.duration} min · {m.hosts.join(' + ')}</span>
-                                <span className="meeting-summary">{m.summary}</span>
-                            </button>)}
-                        </div>
-                    </section>}
-                    <button type="button" className="primary continue-calendar" disabled={!categoryChosen || !meeting}
-                        onClick={() => setChoosing(false)}>Continue to calendar →</button>
-                    <p className="selection-note">You can change your category or meeting at any time.</p>
-                </section>}
-                <div className="booking booking-calendar" hidden={choosing}>
-                    <aside className="sidebar">
-                        <div className="small-label">Your conversation</div>
-                        <h2>{sectionTitle(section)}</h2>
-                        <p className="section-text">{meeting?.label}</p>
-                        <button type="button" className="change-meeting" disabled={booking} onClick={() => setChoosing(true)}>Change category or meeting</button>
-                        <div className="sidebar-note">Your meeting link and preparation details will be included in your calendar invitation after booking.
-                            <div className="decoration" aria-hidden="true"><i /><i /><i /><i /><i /></div>
-                        </div>
-                    </aside>
-
-                    <main className="content" id="main">
-                        {error && <div id="error" role="alert" className="error">{error}</div>}
-
-                        {!confirmation && meeting && (
-                            <div id="bookingContent">
-                                <div className="step">02 Choose a time · 03 Your details</div>
-                                <h2 id="meetingTitle">{meeting.label}</h2>
-                                <p id="meetingSummary" className="summary">{meeting.summary}</p>
-                                <div className="meta" id="meta">
-                                    <span className="chip">{meeting.duration} minutes</span>
-                                    <span className="chip">{meeting.hosts.join(' + ')}</span>
-                                    <span className="chip">{meeting.key === 'podcast_recording' ? 'Riverside' : 'Google Meet'}</span>
-                                </div>
-
-                                <div className="choose">
-                                    <div>
-                                        <div className="calendar-head">
-                                            <button type="button" id="prevMonth" aria-label="Previous month" onClick={() => setMonth(prevMonth(month))}>‹</button>
-                                            <span id="monthTitle">{formatMonthTitle(month)}</span>
-                                            <button type="button" id="nextMonth" aria-label="Next month" onClick={() => setMonth(nextMonth(month))}>›</button>
-                                        </div>
-                                        <div className="calendar-grid" id="calendar" aria-label="Choose a date">
-                                            {renderWeekdayHeaders()}
-                                            {renderCalendarDays(cfg.dates, month, meeting.days, selectedDate, d => loadDate(d), dateSummary, booking)}
-                                        </div>
-                                        {datesError && <p role="alert">{datesError}</p>}
-                                        {!datesLoading && !datesError && !Object.values(dateSummary).some(Boolean) && (
-                                            <p role="status">No available dates for this meeting. Please check back later.</p>
-                                        )}
-                                        {datesError && <button type="button" className="tab" disabled={datesLoading || booking} onClick={refreshDates}>
-                                            Try again
-                                        </button>}
-                                        <p className="timezone">All times: London, UK · adjusts for GMT / BST</p>
-                                    </div>
-
-                                    <div>
-                                        <div className="time-title" id="timeTitle">{selectedDate ? formatFullDate(selectedDate) : 'Choose a date'}</div>
-                                        {(datesLoading || slotsStatus === 'loading') && (
-                                            <div className="availability-loading" role="status">
-                                                <div className="availability-loading-body">
-                                                    <span className="availability-loading-ring" aria-hidden="true" />
-                                                    <strong>{datesLoading ? 'Finding available dates…' : 'Finding available times…'}</strong>
-                                                    <p>We’re checking the team’s calendar.<br />{datesLoading ? 'Available dates will light up shortly.' : 'Available times will appear shortly.'}</p>
-                                                </div>
-                                            </div>
-                                        )}
-                                        <div className="slots" id="slots" aria-live="polite" hidden={datesLoading || slotsStatus === 'loading'}>
-                                            {slotsStatus === 'error' && (
-                                                <div className="empty">
-                                                    <p role="alert">{slotsError}</p>
-                                                    <button type="button" className="tab" onClick={() => { if (selectedDate) void loadDate(selectedDate); }}>
-                                                        Retry available times
-                                                    </button>
-                                                </div>
-                                            )}
-                                            {selectedDate && slotsStatus === 'success' && slots.length === 0 && <div className="empty">No times available on this date. Please choose another highlighted day.</div>}
-                                            {!selectedDate && <div className="empty">Select a highlighted date to see available times.</div>}
-                                            {slots.map(s => (
-                                                <button
-                                                    key={`${s.startMs}-${s.endMs}`}
-                                                    type="button"
-                                                    className="slot"
-                                                    aria-pressed={selectedSlot?.startMs === s.startMs}
-                                                    aria-label={`${formatTime(s.startMs)} to ${formatTime(s.endMs)}`}
-                                                    onClick={() => setSelectedSlot(s)}
-                                                >
-                                                    {formatTime(s.startMs)}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <form className="details" id="details" onSubmit={submit} hidden={!selectedSlot} noValidate>
-                                    <div className="fields">
-                                        <div>
-                                            <label htmlFor="name">Your name</label>
-                                            <input id="name" name="name" autoComplete="name" maxLength={100} required />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="email">Email address</label>
-                                            <input id="email" name="email" type="email" autoComplete="email" maxLength={254} required />
-                                        </div>
-                                    </div>
-                                    <div className="notes">
-                                        <label htmlFor="notes">{meeting.notesLabel || 'Anything you’d like us to know? (optional)'}</label>
-                                        <textarea id="notes" name="notes" maxLength={2000} placeholder={meeting.notesPlaceholder} aria-describedby={meeting.notesHelpText ? 'notes-help' : undefined} />
-                                        {meeting.notesHelpText && <p id="notes-help" className="summary">{meeting.notesHelpText}</p>}
-                                    </div>
-                                    <div className="form-end">
-                                        <p>We’ll use your details to arrange this meeting and send your invitation. <a href="/privacy-policy" target="_blank" rel="noopener">Privacy policy</a></p>
-                                        <button type="submit" className="primary" id="submit" disabled={booking}>{booking ? 'Confirming…' : 'Confirm booking →'}</button>
-                                    </div>
-                                </form>
-                            </div>
-                        )}
-
-                        {confirmation && (
-                            <section id="confirmation" className="success" aria-live="polite">
-                                <div className="check" aria-hidden="true">✓</div>
-                                <div className="eyebrow">You’re booked in</div>
-                                <h2>A conversation to look forward to.</h2>
-                                <p>Your booking is confirmed. A calendar invitation with your meeting link and preparation details has been requested for you and the team.</p>
-                                <div className="success-details">
-                                    <strong>{confirmation.label}</strong>
-                                    <div>{formatISODateForHuman(new Date(confirmation.startMs))}</div>
-                                    <div>{formatTime(confirmation.startMs)} – {formatTime(confirmation.endMs)} · London time</div>
-                                    <div>With {confirmation.hosts.join(', ')}</div>
-                                </div>
-                                {confirmation.link ? (
-                                    <a id="join" className="primary join" target="_blank" rel="noopener" href={confirmation.link}>Open your meeting link ↗</a>
-                                ) : (
-                                    <p id="pending">Your Google Meet link is being prepared. It will appear in your calendar invitation.</p>
-                                )}
-                                <p id="confirmationContact">Need to make a change? <a href={`mailto:${cfg.contactEmail}`}>{cfg.contactEmail}</a></p>
-                                <button type="button" className="tab" id="another" onClick={() => { setConfirmation(null); setChoosing(true); refreshDates(); requestId.current = crypto.randomUUID(); }}>Book another conversation</button>
-                            </section>
-                        )}
-                    </main>
-                </div>
-            </div>}
-        </div>
+      },
+      5 * 60 * 1000,
     );
+    const onVisible = () => {
+      if (!document.hidden) void refresh();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [
+    meeting,
+    selectedDate,
+    selectedSlot,
+    booking,
+    confirmation,
+    datesLoading,
+    datesRevision,
+  ]);
+
+  function refreshDates() {
+    resetAvailability();
+    setDatesRevision((revision) => revision + 1);
+  }
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!meeting || !selectedSlot) return;
+    const form = new FormData(e.currentTarget);
+    const name = String(form.get("name") || "").trim();
+    const email = String(form.get("email") || "").trim();
+    const notes = String(form.get("notes") || "").trim();
+    setBooking(true);
+    setError(null);
+    try {
+      const res = await bookingApi.bookMeeting({
+        meetingKey: meeting.key,
+        startMs: selectedSlot.startMs,
+        name,
+        email,
+        notes,
+        requestId: requestId.current,
+      });
+      setConfirmation(res);
+    } catch (err: any) {
+      setError(err?.message || "Booking failed");
+      resetAvailability();
+    } finally {
+      setDatesRevision((revision) => revision + 1);
+      setBooking(false);
+    }
+  }
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [choosing]);
+
+  const meetingsInSection =
+    cfg?.meetingTypes.filter((m) => m.section === section) ?? [];
+
+  return (
+    <div className="wrap-root">
+      <div className="topline" aria-hidden="true" />
+      <header>
+        <a className="wordmark" href="https://www.unlockhertech.com">
+          <img
+            className="brand-logo"
+            src="/logo.png"
+            alt="Unlock Her Tech logo"
+            width={68}
+            height={68}
+            decoding="async"
+            fetchPriority="high"
+          />
+          Unlock Her Tech
+        </a>
+        <a href="https://www.unlockhertech.com">Back to our website ↗</a>
+      </header>
+
+      <div className="hero">
+        <div className="eyebrow">Connection starts with a conversation</div>
+        <h1 ref={headingRef} tabIndex={-1}>
+          {choosing ? "Welcome to Unlock Her Tech." : "Let’s find a time."}
+        </h1>
+        <p>
+          {choosing
+            ? "Where skills grow and voices are heard."
+            : "Choose an available date and time for your conversation."}
+        </p>
+        <div className="rings" aria-hidden="true" />
+      </div>
+
+      {!cfg && <BookingLoading failed={Boolean(error)} />}
+      {cfg && (
+        <div className="wrap">
+          <ol className="booking-progress" aria-label="Booking progress">
+            <li aria-current={choosing ? "step" : undefined}>
+              <span>{choosing ? "1" : "✓"}</span>Category
+            </li>
+            <li
+              aria-current={
+                !choosing && !selectedSlot && !confirmation ? "step" : undefined
+              }
+            >
+              <span>{selectedSlot || confirmation ? "✓" : "2"}</span>
+              Date &amp; time
+            </li>
+
+            <li
+              aria-current={
+                !choosing && selectedSlot && !confirmation ? "step" : undefined
+              }
+            >
+              <span>{confirmation ? "✓" : "3"}</span>
+              Your details
+            </li>
+          </ol>
+          {choosing && (
+            <section
+              className="category-picker"
+              aria-label="Choose your conversation"
+            >
+              <nav className="category-grid" aria-label="Booking categories">
+                {(
+                  [
+                    "partnerships",
+                    "careers",
+                    "podcast",
+                    "mentorship",
+                    "meet",
+                  ] as const
+                ).map((key) => {
+                  const Icon = categoryIcon(key);
+                  const count = cfg.meetingTypes.filter(
+                    (m) => m.section === key,
+                  ).length;
+                  const selected = categoryChosen && key === section;
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      className="category-card"
+                      style={
+                        {
+                          "--category-color": sectionAccent(key),
+                        } as CSSProperties
+                      }
+                      aria-pressed={selected}
+                      aria-expanded={selected}
+                      aria-controls="meeting-options"
+                      disabled={!count}
+                      onClick={() => handleSelectSection(key)}
+                    >
+                      <span className="category-icon" aria-hidden="true">
+                        <Icon />
+                      </span>
+                      <span className="category-copy">
+                        <b>{categoryTitle(key)}</b>
+                        <span>{sectionText(key)}</span>
+                        <small>
+                          {count} meeting {count === 1 ? "option" : "options"}
+                        </small>
+                      </span>
+                      <span aria-hidden="true">
+                        {selected ? <FiCheck /> : <FiArrowRight />}
+                      </span>
+                    </button>
+                  );
+                })}
+                <a
+                  className="category-card category-help"
+                  href={`mailto:${cfg.contactEmail}`}
+                >
+                  <span className="category-icon" aria-hidden="true">
+                    <FiHelpCircle />
+                  </span>
+                  <span className="category-copy">
+                    <b>Not sure yet?</b>
+                    <span>
+                      Contact us and we’ll help you find the right conversation.
+                    </span>
+                  </span>
+                  <FiArrowRight aria-hidden="true" />
+                </a>
+              </nav>
+              {categoryChosen && (
+                <section
+                  className="meeting-options"
+                  id="meeting-options"
+                  aria-labelledby="options-title"
+                >
+                  <h2 id="options-title">
+                    {section === "meet"
+                      ? "Who would you like to meet?"
+                      : `Choose your ${sectionTitle(section).toLowerCase()} conversation`}
+                  </h2>
+                  <p>
+                    Choose one. Your calendar will show availability for this
+                    meeting.
+                  </p>
+                  <div className="meeting-list">
+                    {meetingsInSection.map((m) => (
+                      <button
+                        key={m.key}
+                        type="button"
+                        className="meeting"
+                        aria-pressed={meeting?.key === m.key}
+                        onClick={() => handleSelectMeeting(m)}
+                      >
+                        <b>{meetingDisplayLabel(m)}</b>
+                        <span>
+                          {m.duration} min · {m.hosts.join(" + ")}
+                        </span>
+                        <span className="meeting-summary">{m.summary}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
+              <button
+                type="button"
+                className="primary continue-calendar"
+                disabled={!categoryChosen || !meeting}
+                onClick={() => setChoosing(false)}
+              >
+                Continue to calendar →
+              </button>
+              <p className="selection-note">
+                You can change your category or meeting at any time.
+              </p>
+            </section>
+          )}
+          <div className="booking booking-calendar" hidden={choosing}>
+            <aside className="sidebar">
+              <div className="small-label">Your conversation</div>
+              <h2>{sectionTitle(section)}</h2>
+              <p className="section-text">{meeting?.label}</p>
+              <button
+                type="button"
+                className="back-choice"
+                disabled={booking}
+                onClick={() => setChoosing(true)}
+              >
+                ← Back to category and meeting
+              </button>
+              <div className="sidebar-note">
+                Your meeting link and preparation details will be included in
+                your calendar invitation after booking.
+                <div className="decoration" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              </div>
+            </aside>
+
+            <main className="content" id="main">
+              {error && (
+                <div id="error" role="alert" className="error">
+                  {error}
+                </div>
+              )}
+
+              {!confirmation && meeting && (
+                <div id="bookingContent">
+                  <div className="step">02 Choose a time · 03 Your details</div>
+                  <h2 id="meetingTitle">{meetingDisplayLabel(meeting)}</h2>
+                  <p id="meetingSummary" className="summary">
+                    {meeting.summary}
+                  </p>
+                  <div className="meta" id="meta">
+                    <span className="chip">{meeting.duration} minutes</span>
+                    <span className="chip">{meeting.hosts.join(" + ")}</span>
+                    <span className="chip">
+                      {meeting.key === "podcast_recording"
+                        ? "Riverside"
+                        : "Google Meet"}
+                    </span>
+                  </div>
+
+                  <div className="choose">
+                    <div>
+                      <div className="calendar-head">
+                        <button
+                          type="button"
+                          id="prevMonth"
+                          aria-label="Previous month"
+                          onClick={() => setMonth(prevMonth(month))}
+                        >
+                          ‹
+                        </button>
+                        <span id="monthTitle">{formatMonthTitle(month)}</span>
+                        <button
+                          type="button"
+                          id="nextMonth"
+                          aria-label="Next month"
+                          onClick={() => setMonth(nextMonth(month))}
+                        >
+                          ›
+                        </button>
+                      </div>
+                      <div
+                        className="calendar-grid"
+                        id="calendar"
+                        aria-label="Choose a date"
+                      >
+                        {renderWeekdayHeaders()}
+                        {renderCalendarDays(
+                          cfg.dates,
+                          month,
+                          meeting.days,
+                          selectedDate,
+                          (d) => loadDate(d),
+                          dateSummary,
+                          booking,
+                        )}
+                      </div>
+                      {datesError && <p role="alert">{datesError}</p>}
+                      {!datesLoading &&
+                        !datesError &&
+                        !Object.values(dateSummary).some(Boolean) && (
+                          <p role="status">
+                            No available dates for this meeting. Please check
+                            back later.
+                          </p>
+                        )}
+                      {datesError && (
+                        <button
+                          type="button"
+                          className="tab"
+                          disabled={datesLoading || booking}
+                          onClick={refreshDates}
+                        >
+                          Try again
+                        </button>
+                      )}
+                      <p className="timezone">
+                        All times: London, UK · adjusts for GMT / BST
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="time-title" id="timeTitle">
+                        {selectedDate
+                          ? formatFullDate(selectedDate)
+                          : "Choose a date"}
+                      </div>
+                      {(datesLoading || slotsStatus === "loading") && (
+                        <div className="availability-loading" role="status">
+                          <div className="availability-loading-body">
+                            <span
+                              className="availability-loading-ring"
+                              aria-hidden="true"
+                            />
+                            <strong>
+                              {datesLoading
+                                ? "Finding available dates…"
+                                : "Finding available times…"}
+                            </strong>
+                            <p>
+                              We’re checking the team’s calendar.
+                              <br />
+                              {datesLoading
+                                ? "Available dates will light up shortly."
+                                : "Available times will appear shortly."}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      <div
+                        className="slots"
+                        id="slots"
+                        aria-live="polite"
+                        hidden={datesLoading || slotsStatus === "loading"}
+                      >
+                        {slotsStatus === "error" && (
+                          <div className="empty">
+                            <p role="alert">{slotsError}</p>
+                            <button
+                              type="button"
+                              className="tab"
+                              onClick={() => {
+                                if (selectedDate) void loadDate(selectedDate);
+                              }}
+                            >
+                              Retry available times
+                            </button>
+                          </div>
+                        )}
+                        {selectedDate &&
+                          slotsStatus === "success" &&
+                          slots.length === 0 && (
+                            <div className="empty">
+                              No times available on this date. Please choose
+                              another highlighted day.
+                            </div>
+                          )}
+                        {!selectedDate && (
+                          <div className="empty">
+                            Select a highlighted date to see available times.
+                          </div>
+                        )}
+                        {slots.map((s) => (
+                          <button
+                            key={`${s.startMs}-${s.endMs}`}
+                            type="button"
+                            className="slot"
+                            aria-pressed={selectedSlot?.startMs === s.startMs}
+                            aria-label={`${formatTime(s.startMs)} to ${formatTime(s.endMs)}`}
+                            onClick={() => setSelectedSlot(s)}
+                          >
+                            {formatTime(s.startMs)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <form
+                    className="details"
+                    id="details"
+                    onSubmit={submit}
+                    hidden={!selectedSlot}
+                    noValidate
+                  >
+                    <div className="fields">
+                      <div>
+                        <label htmlFor="name">Your name</label>
+                        <input
+                          id="name"
+                          name="name"
+                          autoComplete="name"
+                          maxLength={100}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="email">Email address</label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          maxLength={254}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="notes">
+                      <label htmlFor="notes">
+                        {meeting.notesLabel ||
+                          "Anything you’d like us to know? (optional)"}
+                      </label>
+                      <textarea
+                        id="notes"
+                        name="notes"
+                        maxLength={2000}
+                        placeholder={meeting.notesPlaceholder}
+                        aria-describedby={
+                          meeting.notesHelpText ? "notes-help" : undefined
+                        }
+                      />
+                      {meeting.notesHelpText && (
+                        <p id="notes-help" className="summary">
+                          {meeting.notesHelpText}
+                        </p>
+                      )}
+                    </div>
+                    <div className="form-end">
+                      <p>
+                        We’ll use your details to arrange this meeting and send
+                        your invitation.{" "}
+                        <a
+                          href="/privacy-policy"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          Privacy policy
+                        </a>
+                      </p>
+                      <button
+                        type="submit"
+                        className="primary"
+                        id="submit"
+                        disabled={booking}
+                      >
+                        {booking ? "Confirming…" : "Confirm booking →"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {confirmation && (
+                <section
+                  id="confirmation"
+                  className="success"
+                  aria-live="polite"
+                >
+                  <div className="check" aria-hidden="true">
+                    ✓
+                  </div>
+                  <div className="eyebrow">You’re booked in</div>
+                  <h2>A conversation to look forward to.</h2>
+                  <p>
+                    Your booking is confirmed. A calendar invitation with your
+                    meeting link and preparation details has been requested for
+                    you and the team.
+                  </p>
+                  <div className="success-details">
+                    <strong>{confirmation.label}</strong>
+                    <div>
+                      {formatISODateForHuman(new Date(confirmation.startMs))}
+                    </div>
+                    <div>
+                      {formatTime(confirmation.startMs)} –{" "}
+                      {formatTime(confirmation.endMs)} · London time
+                    </div>
+                    <div>With {confirmation.hosts.join(", ")}</div>
+                  </div>
+                  {confirmation.link ? (
+                    <a
+                      id="join"
+                      className="primary join"
+                      target="_blank"
+                      rel="noopener"
+                      href={confirmation.link}
+                    >
+                      Open your meeting link ↗
+                    </a>
+                  ) : (
+                    <p id="pending">
+                      Your Google Meet link is being prepared. It will appear in
+                      your calendar invitation.
+                    </p>
+                  )}
+                  <p id="confirmationContact">
+                    Need to make a change?{" "}
+                    <a href={`mailto:${cfg.contactEmail}`}>
+                      {cfg.contactEmail}
+                    </a>
+                  </p>
+                  <button
+                    type="button"
+                    className="tab"
+                    id="another"
+                    onClick={() => {
+                      setConfirmation(null);
+                      setChoosing(true);
+                      refreshDates();
+                      requestId.current = crypto.randomUUID();
+                    }}
+                  >
+                    Book another conversation
+                  </button>
+                </section>
+              )}
+            </main>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // --- helpers ---
-function categoryIcon(section: MeetingType['section']) {
-    const icons = { partnerships: FiUsers, careers: FiBriefcase, podcast: FiMic, mentorship: FiHeart, meet: FiUsers };
-    return icons[section];
+function categoryIcon(section: MeetingType["section"]) {
+  const icons = {
+    partnerships: FiUsers,
+    careers: FiBriefcase,
+    podcast: FiMic,
+    mentorship: FiHeart,
+    meet: FiUsers,
+  };
+  return icons[section];
 }
-function categoryTitle(section: MeetingType['section']) {
-    if (section === 'partnerships') return 'Partner with us';
-    if (section === 'careers') return 'Join our team';
-    return sectionTitle(section);
+function categoryTitle(section: MeetingType["section"]) {
+  if (section === "partnerships") return "Partner with us";
+  if (section === "careers") return "Join our team";
+  return sectionTitle(section);
 }
-function sectionTitle(s: MeetingType['section']) {
-    switch (s) {
-        case 'partnerships': return 'Partnership';
-        case 'careers': return 'Careers';
-        case 'podcast': return 'Podcast';
-        case 'mentorship': return 'Mentorship';
-        case 'meet': return 'Meet';
+
+function meetingDisplayLabel(m: MeetingType) {
+  if (m.section === "partnerships") {
+    if (m.key === "partnership_initial") {
+      return "Stage 1 · Initial Partnership Call";
     }
-}
-function sectionText(s: MeetingType['section']) {
-    switch (s) {
-        case 'partnerships': return 'Let’s create something meaningful together.';
-        case 'careers': return 'Bring your skills. Be part of our volunteer team.';
-        case 'podcast': return 'Your story belongs in the conversation.';
-        case 'mentorship': return 'A little guidance. A world of possibilities.';
-        case 'meet': return 'Connect with Ellie, Pritanya or both co-founders.';
+
+    if (m.key === "partnership_strategy") {
+      return "Stage 2 · Collaboration Strategy Session";
     }
-}
-function sectionAccent(s: MeetingType['section']) {
-    switch (s) {
-        case 'partnerships': return 'var(--yellow)';
-        case 'careers': return 'var(--pink)';
-        case 'podcast': return 'var(--blue)';
-        case 'mentorship': return 'var(--green)';
-        case 'meet': return 'var(--coral)';
+
+    if (m.key === "partnership_followup") {
+      return "Stage 3 · Partnership Follow-Up";
     }
+  }
+
+  return m.label;
+}
+
+function sectionTitle(s: MeetingType["section"]) {
+  switch (s) {
+    case "partnerships":
+      return "Partnership";
+    case "careers":
+      return "Careers";
+    case "podcast":
+      return "Podcast";
+    case "mentorship":
+      return "Mentorship";
+    case "meet":
+      return "Meet";
+  }
+}
+function sectionText(s: MeetingType["section"]) {
+  switch (s) {
+    case "partnerships":
+      return "Let’s create something meaningful together.";
+    case "careers":
+      return "Bring your skills. Be part of our volunteer team.";
+    case "podcast":
+      return "Your story belongs in the conversation.";
+    case "mentorship":
+      return "A little guidance. A world of possibilities.";
+    case "meet":
+      return "Connect with Ellie, Pritanya or both co-founders.";
+  }
+}
+function sectionAccent(s: MeetingType["section"]) {
+  switch (s) {
+    case "partnerships":
+      return "var(--yellow)";
+    case "careers":
+      return "var(--pink)";
+    case "podcast":
+      return "var(--blue)";
+    case "mentorship":
+      return "var(--green)";
+    case "meet":
+      return "var(--coral)";
+  }
 }
 function renderWeekdayHeaders() {
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    return days.map(d => <div key={d} className="weekday">{d.slice(0, 1)}</div>);
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+  return days.map((d) => (
+    <div key={d} className="weekday">
+      {d.slice(0, 1)}
+    </div>
+  ));
 }
-function renderCalendarDays(allDates: { value: string; weekday: number }[], month: string, allowedDays: number[], sel: string | null, onPick: (d: string) => void, availability: AvailabilitySummary, booking: boolean) {
-    const first = new Date(month + '-01T12:00:00Z');
-    const year = first.getUTCFullYear();
-    const mo = first.getUTCMonth();
-    const leading = (first.getUTCDay() + 6) % 7;
-    const daysInMonth = new Date(Date.UTC(year, mo + 1, 0)).getUTCDate();
-    const chunks: JSX.Element[] = [];
-    for (let i = 0; i < leading; i++) chunks.push(<span key={'lead-' + i} />);
-    for (let d = 1; d <= daysInMonth; d++) {
-        const value = `${month}-${String(d).padStart(2, '0')}`;
-        const info = allDates.find(x => x.value === value);
-        const disabled = booking || !info || !allowedDays.includes(info.weekday) || availability[value] !== true;
-        chunks.push(
-            <button
-                key={value}
-                type="button"
-                className="day"
-                disabled={disabled}
-                aria-label={formatFullDate(value)}
-                aria-pressed={value === sel}
-                onClick={() => !disabled && onPick(value)}
-            >{d}</button>
-        );
-    }
-    return chunks;
+function renderCalendarDays(
+  allDates: { value: string; weekday: number }[],
+  month: string,
+  allowedDays: number[],
+  sel: string | null,
+  onPick: (d: string) => void,
+  availability: AvailabilitySummary,
+  booking: boolean,
+) {
+  const first = new Date(month + "-01T12:00:00Z");
+  const year = first.getUTCFullYear();
+  const mo = first.getUTCMonth();
+  const leading = (first.getUTCDay() + 6) % 7;
+  const daysInMonth = new Date(Date.UTC(year, mo + 1, 0)).getUTCDate();
+  const chunks: JSX.Element[] = [];
+  for (let i = 0; i < leading; i++) chunks.push(<span key={"lead-" + i} />);
+  for (let d = 1; d <= daysInMonth; d++) {
+    const value = `${month}-${String(d).padStart(2, "0")}`;
+    const info = allDates.find((x) => x.value === value);
+    const disabled =
+      booking ||
+      !info ||
+      !allowedDays.includes(info.weekday) ||
+      availability[value] !== true;
+    chunks.push(
+      <button
+        key={value}
+        type="button"
+        className="day"
+        disabled={disabled}
+        aria-label={formatFullDate(value)}
+        aria-pressed={value === sel}
+        onClick={() => !disabled && onPick(value)}
+      >
+        {d}
+      </button>,
+    );
+  }
+  return chunks;
 }
-function prevMonth(ym: string) { const d = new Date(ym + '-01T12:00:00Z'); d.setUTCMonth(d.getUTCMonth() - 1); return d.toISOString().slice(0,7); }
-function nextMonth(ym: string) { const d = new Date(ym + '-01T12:00:00Z'); d.setUTCMonth(d.getUTCMonth() + 1); return d.toISOString().slice(0,7); }
-function formatMonthTitle(ym: string) { const d = new Date(ym + '-01T12:00:00Z'); return new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(d); }
-function formatTime(ms: number) { return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: 'numeric', minute: '2-digit', hour12: true }).format(new Date(ms)); }
-function formatFullDate(value: string) { return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(value + 'T12:00:00Z')); }
-function formatISODateForHuman(d: Date) { return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d); }
+function prevMonth(ym: string) {
+  const d = new Date(ym + "-01T12:00:00Z");
+  d.setUTCMonth(d.getUTCMonth() - 1);
+  return d.toISOString().slice(0, 7);
+}
+function nextMonth(ym: string) {
+  const d = new Date(ym + "-01T12:00:00Z");
+  d.setUTCMonth(d.getUTCMonth() + 1);
+  return d.toISOString().slice(0, 7);
+}
+function formatMonthTitle(ym: string) {
+  const d = new Date(ym + "-01T12:00:00Z");
+  return new Intl.DateTimeFormat("en-GB", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(d);
+}
+function formatTime(ms: number) {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(ms));
+}
+function formatFullDate(value: string) {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(new Date(value + "T12:00:00Z"));
+}
+function formatISODateForHuman(d: Date) {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d);
+}
