@@ -1,7 +1,8 @@
-import { createClient } from "@sanity/client";
-import {createImageUrlBuilder} from "@sanity/image-url";
+import {createClient} from "@sanity/client";
 import type {SanityImageSource} from "@sanity/image-url";
-import type { BlogPost, ExternalEvent, Resource } from "../types";
+import {createImageUrlBuilder} from "@sanity/image-url";
+import type {BlogPost, ExternalEvent, Resource} from "../types";
+import imgAiBuildersLockup from "../../assets/conference-lockup-dark.svg";
 
 
 const getEnv = () => {
@@ -107,8 +108,6 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   }
 }
 
-import imgAiBuildersLockup from "../../assets/conference-lockup-dark.svg";
-
 export const DEFAULT_FALLBACK_EVENTS: ExternalEvent[] = [
   {
     title: "AI Builders Global Conference 2026",
@@ -206,8 +205,7 @@ export async function getAllResources(): Promise<Resource[]> {
       requiresLogin
     }`;
 
-    const resources: Resource[] = await sanityClient.fetch(query);
-    return resources;
+    return await sanityClient.fetch(query);
   } catch (error) {
     console.warn("Could not fetch resources from Sanity:", error);
     return [];

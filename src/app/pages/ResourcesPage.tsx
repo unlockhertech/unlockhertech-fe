@@ -18,6 +18,7 @@ import { ResourceStageNav } from "./resources/ResourceStageNav";
 import { ResourceStageSection } from "./resources/ResourceStageSection";
 import { ResourceCard } from "./resources/ResourceCard";
 import { ResourceUpcomingSpotlight } from "./resources/ResourceUpcomingSpotlight";
+import { ResourceUnlockToast } from "./resources/ResourceUnlockToast";
 import { BrandPatternOverlay } from "../components/BrandPatternBackground";
 
 const RESOURCES_META_JSON_LD = {
@@ -73,12 +74,15 @@ export function ResourcesPage() {
     handleResetFilters,
     userEmail,
     isModalOpen,
-    setIsModalOpen,
+    handleCloseModal,
     activeResource,
     isEarlyAccessMode,
+    isSwitchEmailMode,
     handleOpenDownload,
     handleSuccessUnlock,
-    handleClearUserEmail,
+    handleChangeEmail,
+    unlockToastEmail,
+    handleDismissUnlockToast,
   } = useResources();
 
   const resourceCounts = useMemo(() => {
@@ -126,7 +130,7 @@ export function ResourcesPage() {
       {/* ── 1. Page Header ─────────────────────────────────────────────── */}
       <ResourcesHeroHeader
         userEmail={userEmail}
-        onClearEmail={handleClearUserEmail}
+        onChangeEmail={handleChangeEmail}
       />
 
       {/* ── 2a. Multi-Track Collection Switcher ────────────────────────── */}
@@ -283,11 +287,15 @@ export function ResourcesPage() {
       {/* ── 7. Download / Notification Modal ───────────────────────────── */}
       <DownloadResourceModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         resource={activeResource}
         isEarlyAccessMode={isEarlyAccessMode}
+        isSwitchEmailMode={isSwitchEmailMode}
         onSuccessUnlock={handleSuccessUnlock}
       />
+
+      {/* ── 8. Unlock Confirmation Toast ───────────────────────────────── */}
+      <ResourceUnlockToast email={unlockToastEmail} onDismiss={handleDismissUnlockToast} />
     </div>
   );
 }

@@ -30,6 +30,10 @@ export function useResources() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeResource, setActiveResource] = useState<Resource | null>(null);
   const [isEarlyAccessMode, setIsEarlyAccessMode] = useState(false);
+  const [isSwitchEmailMode, setIsSwitchEmailMode] = useState(false);
+
+  // Unlock confirmation banner/toast (survives navigation + filter changes)
+  const [unlockToastEmail, setUnlockToastEmail] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -185,6 +189,24 @@ export function useResources() {
 
   const handleSuccessUnlock = useCallback((email: string) => {
     setUserEmail(email);
+    setIsSwitchEmailMode(false);
+    // Surface an immediate, Brevo-backed confirmation so users always know
+    // access is active — this toast persists independently of filter/collection changes.
+    setUnlockToastEmail(email);
+  }, []);
+
+  const handleDismissUnlockToast = useCallback(() => {
+    setUnlockToastEmail(null);
+  }, []);
+
+  // Opens the unlock modal pre-cleared so a user can switch accounts WITHOUT
+  // losing their current access — identity is only replaced once the new
+  // email is successfully submitted (see handleSuccessUnlock).
+  const handleChangeEmail = useCallback(() => {
+    setActiveResource(null);
+    setIsEarlyAccessMode(true);
+    setIsSwitchEmailMode(true);
+    setIsModalOpen(true);
   }, []);
 
   const handleClearUserEmail = useCallback(() => {
@@ -195,6 +217,11 @@ export function useResources() {
       console.warn("Could not clear user email from localStorage:", err);
     }
     setUserEmail(null);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setIsSwitchEmailMode(false);
   }, []);
 
   return {
@@ -214,10 +241,15 @@ export function useResources() {
     userEmail,
     isModalOpen,
     setIsModalOpen,
+    handleCloseModal,
     activeResource,
     isEarlyAccessMode,
+    isSwitchEmailMode,
     handleOpenDownload,
     handleSuccessUnlock,
     handleClearUserEmail,
+    handleChangeEmail,
+    unlockToastEmail,
+    handleDismissUnlockToast,
   };
 }

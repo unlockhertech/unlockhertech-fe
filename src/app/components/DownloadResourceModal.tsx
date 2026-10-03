@@ -8,11 +8,13 @@ interface DownloadResourceModalProps {
   onClose: () => void;
   resource: Resource | null;
   isEarlyAccessMode?: boolean;
+  isSwitchEmailMode?: boolean;
   onSuccessUnlock?: (email: string) => void;
 }
 
 interface DownloadLeadFormProps {
   isCommunityGuide: boolean;
+  isSwitchEmailMode?: boolean;
   modalTitle: string;
   resourceTitle: string;
   fullName: string;
@@ -29,9 +31,17 @@ interface DownloadLeadFormProps {
   onSubmit: (e: SyntheticEvent) => void;
 }
 
-function renderSubmitButtonContent(isSubmitting: boolean, isCommunityGuide: boolean) {
+function renderSubmitButtonContent(isSubmitting: boolean, isCommunityGuide: boolean, isSwitchEmailMode: boolean) {
   if (isSubmitting) {
-    return <span>Unlocking...</span>;
+    return <span>{isSwitchEmailMode ? "Switching..." : "Unlocking..."}</span>;
+  }
+  if (isSwitchEmailMode) {
+    return (
+      <>
+        <HiShieldCheck className="w-5 h-5 text-brand-yellow" />
+        <span>Confirm New Email</span>
+      </>
+    );
   }
   if (isCommunityGuide) {
     return (
@@ -49,8 +59,30 @@ function renderSubmitButtonContent(isSubmitting: boolean, isCommunityGuide: bool
   );
 }
 
+function getPillText(isCommunityGuide: boolean, isSwitchEmailMode: boolean) {
+  if (isSwitchEmailMode) return "Switch Account · Your Current Access Stays Active";
+  if (isCommunityGuide) return "Free Community Access · Unlock Instant PDF Download";
+  return "Free Career Guide Download";
+}
+
+function getUnlockHeading(isCommunityGuide: boolean) {
+  return isCommunityGuide ? "Welcome to the Community! 🎉" : "You're on the VIP List! 🎉";
+}
+
+function getUnlockDescription(isCommunityGuide: boolean, resourceTitle: string) {
+  if (isCommunityGuide) {
+    return "Unlock our complete library of career guides for free by joining our WhatsApp & Discord community circles. Get direct access to playbooks, workshop alerts, and peer support.";
+  }
+  return (
+    <>
+      Download your free copy of <em>"{resourceTitle}"</em>. Enter your email below to receive the direct printable PDF download immediately.
+    </>
+  );
+}
+
 function DownloadLeadForm({
   isCommunityGuide,
+  isSwitchEmailMode = false,
   modalTitle,
   resourceTitle,
   fullName,
@@ -66,9 +98,7 @@ function DownloadLeadForm({
   onClose,
   onSubmit,
 }: Readonly<DownloadLeadFormProps>) {
-  const pillText = isCommunityGuide
-    ? "Free Community Access · Unlock Instant PDF Download"
-    : "Free Career Guide Download";
+  const pillText = getPillText(isCommunityGuide, isSwitchEmailMode);
 
   return (
     <>
@@ -84,14 +114,12 @@ function DownloadLeadForm({
       </h3>
 
       <p className="text-sm text-stone-600 leading-relaxed mb-6">
-        {isCommunityGuide ? (
+        {isSwitchEmailMode ? (
           <>
-            Unlock our complete library of career guides for free by joining our WhatsApp & Discord community circles. Get direct access to playbooks, workshop alerts, and peer support.
+            Not you? Enter a different email to switch accounts. Your current access stays active until this new email is confirmed — so you won't lose anything.
           </>
         ) : (
-          <>
-            Download your free copy of <em>"{resourceTitle}"</em>. Enter your email below to receive the direct printable PDF download immediately.
-          </>
+          getUnlockDescription(isCommunityGuide, resourceTitle)
         )}
       </p>
 
@@ -183,7 +211,7 @@ function DownloadLeadForm({
           disabled={isSubmitting}
           className="w-full py-3.5 px-6 rounded-full bg-brand-coral text-white font-extrabold text-sm hover:bg-brand-coral/90 active:scale-[0.99] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
         >
-          {renderSubmitButtonContent(isSubmitting, isCommunityGuide)}
+          {renderSubmitButtonContent(isSubmitting, isCommunityGuide, isSwitchEmailMode)}
         </button>
 
         <div className="text-[11px] text-stone-500 text-center leading-relaxed">
@@ -204,12 +232,35 @@ function DownloadLeadForm({
 
 interface DownloadSuccessStateProps {
   isCommunityGuide: boolean;
+  isSwitchEmailMode?: boolean;
   email: string;
   onClose: () => void;
 }
 
-function DownloadSuccessState({ isCommunityGuide, email, onClose }: Readonly<DownloadSuccessStateProps>) {
-  const heading = isCommunityGuide ? "Welcome to the Community! 🎉" : "You're on the VIP List! 🎉";
+function getSuccessMessage(isSwitchEmailMode: boolean, isCommunityGuide: boolean, email: string) {
+  if (isSwitchEmailMode) {
+    return (
+      <>
+        You're now switched to <strong>{email}</strong>. All community guides are unlocked for this account, and we've sent a confirmation to your inbox.
+      </>
+    );
+  }
+  if (isCommunityGuide) {
+    return (
+      <>
+        Thank you! We've registered <strong>{email}</strong> as a community member. Guides are now unlocked on your device, and we'll send your WhatsApp & Discord community invitations directly to your inbox.
+      </>
+    );
+  }
+  return (
+    <>
+      Thank you! We've registered <strong>{email}</strong>. Your download is ready and we have also sent a copy directly to your inbox.
+    </>
+  );
+}
+
+function DownloadSuccessState({ isCommunityGuide, isSwitchEmailMode = false, email, onClose }: Readonly<DownloadSuccessStateProps>) {
+  const heading = isSwitchEmailMode ? "Account Switched! 🎉" : getUnlockHeading(isCommunityGuide);
 
   return (
     <div className="text-center py-4 space-y-4">
@@ -222,15 +273,7 @@ function DownloadSuccessState({ isCommunityGuide, email, onClose }: Readonly<Dow
       </h3>
 
       <p className="text-stone-600 text-sm leading-relaxed max-w-xs mx-auto">
-        {isCommunityGuide ? (
-          <>
-            Thank you! We've registered <strong>{email}</strong> as a community member. Guides are now unlocked on your device, and we'll send your WhatsApp & Discord community invitations directly to your inbox.
-          </>
-        ) : (
-          <>
-            Thank you! We've registered <strong>{email}</strong>. Your download is ready and we have also sent a copy directly to your inbox.
-          </>
-        )}
+        {getSuccessMessage(isSwitchEmailMode, isCommunityGuide, email)}
       </p>
 
       <button
@@ -249,9 +292,11 @@ export function DownloadResourceModal({
   onClose,
   resource,
   isEarlyAccessMode = false,
+  isSwitchEmailMode = false,
   onSuccessUnlock,
 }: Readonly<DownloadResourceModalProps>) {
   const [email, setEmail] = useState(() => {
+    if (isSwitchEmailMode) return "";
     try {
       return localStorage.getItem("uht_user_email") || "";
     } catch (err) {
@@ -267,6 +312,21 @@ export function DownloadResourceModal({
   const [error, setError] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setIsSubmitted(false);
+    setError("");
+    if (isSwitchEmailMode) {
+      setEmail("");
+      return;
+    }
+    try {
+      setEmail(localStorage.getItem("uht_user_email") || "");
+    } catch (err) {
+      console.warn("Failed to read user email from localStorage:", err);
+    }
+  }, [isOpen, isSwitchEmailMode]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -375,6 +435,9 @@ export function DownloadResourceModal({
   };
 
   const getModalTitle = () => {
+    if (isSwitchEmailMode) {
+      return "Switch to a Different Email";
+    }
     if (isCommunityGuide) {
       return `Unlock ${resource?.title || "Guide 4+"}: Join Our Community`;
     }
@@ -417,6 +480,7 @@ export function DownloadResourceModal({
           {!isSubmitted ? (
             <DownloadLeadForm
               isCommunityGuide={Boolean(isCommunityGuide)}
+              isSwitchEmailMode={isSwitchEmailMode}
               modalTitle={getModalTitle()}
               resourceTitle={resourceTitle}
               fullName={fullName}
@@ -435,6 +499,7 @@ export function DownloadResourceModal({
           ) : (
             <DownloadSuccessState
               isCommunityGuide={Boolean(isCommunityGuide)}
+              isSwitchEmailMode={isSwitchEmailMode}
               email={email}
               onClose={onClose}
             />

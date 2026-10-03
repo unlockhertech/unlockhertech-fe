@@ -9,10 +9,10 @@ import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 
 interface ResourcesHeroHeaderProps {
   userEmail: string | null;
-  onClearEmail: () => void;
+  onChangeEmail: () => void;
 }
 
-export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<ResourcesHeroHeaderProps>) {
+export function ResourcesHeroHeader({ userEmail, onChangeEmail }: Readonly<ResourcesHeroHeaderProps>) {
   return (
     <header className="relative py-16 lg:py-20 overflow-hidden bg-brand-coral text-white mb-12">
       <BrandPatternOverlay />
@@ -76,10 +76,10 @@ export function ResourcesHeroHeader({ userEmail, onClearEmail }: Readonly<Resour
                 <span>Community Member: {userEmail}</span>
                 <button
                   type="button"
-                  onClick={onClearEmail}
+                  onClick={onChangeEmail}
                   className="underline ml-1 text-white hover:text-stone-200 cursor-pointer"
                 >
-                  (Change)
+                  Not you? Switch email
                 </button>
               </span>
             </div>
