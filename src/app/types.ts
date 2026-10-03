@@ -64,6 +64,10 @@ export interface Resource {
   description: string;
   category: string;
   stage?: string;
+  collection?: string;
+  format?: string;
+  tags?: string[];
+  isFeatured?: boolean;
   pdfUrl?: string;
   fileSize?: string;
   pageCount?: string;

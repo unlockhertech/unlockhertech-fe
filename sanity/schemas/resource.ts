@@ -30,7 +30,7 @@ export const resourceSchema = defineType({
     }),
     defineField({
       name: 'category',
-      title: 'Category',
+      title: 'Category / Topic',
       type: 'string',
       options: {
         list: [
@@ -43,15 +43,56 @@ export const resourceSchema = defineType({
           { title: 'Networking', value: 'Networking' },
           { title: 'Interviewing', value: 'Interviewing' },
           { title: 'Insider Realities', value: 'Insider Realities' },
+          { title: 'Engineering & Architecture', value: 'Engineering & Architecture' },
+          { title: 'Job Search & Negotiation', value: 'Job Search & Negotiation' },
+          { title: 'Leadership & Mentorship', value: 'Leadership & Mentorship' },
+          { title: 'Templates & Worksheets', value: 'Templates & Worksheets' },
         ],
       },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'stage',
-      title: 'Transition Stage',
+      name: 'collection',
+      title: 'Collection / Track',
       type: 'string',
-      description: 'Which of the 4 transition stages this guide belongs to.',
+      description: 'Which track or collection this resource belongs to.',
+      options: {
+        list: [
+          { title: 'Career Transition Toolkit (10-Guide Series)', value: 'career-toolkit' },
+          { title: 'Technical & Engineering', value: 'tech-guides' },
+          { title: 'Job Search & Negotiation', value: 'job-search' },
+          { title: 'Leadership & Workplace', value: 'leadership' },
+          { title: 'Templates & Cheatsheets', value: 'templates' },
+        ],
+      },
+      initialValue: 'career-toolkit',
+    }),
+    defineField({
+      name: 'format',
+      title: 'Resource Format',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'PDF Playbook / Guide', value: 'guide' },
+          { title: 'Worksheet / Workbook', value: 'worksheet' },
+          { title: 'Cheatsheet / Checklist', value: 'cheatsheet' },
+          { title: 'Template', value: 'template' },
+        ],
+      },
+      initialValue: 'guide',
+    }),
+    defineField({
+      name: 'isFeatured',
+      title: 'Featured / Spotlight Resource?',
+      type: 'boolean',
+      description: 'Show highlighted in the top spotlight banner.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'stage',
+      title: 'Transition Stage (Career Toolkit Only)',
+      type: 'string',
+      description: 'Which of the 4 transition stages this guide belongs to (applicable for Career Toolkit).',
       options: {
         list: [
           { title: 'Stage 1: Exploration & Orientation', value: 'stage1' },
@@ -61,7 +102,6 @@ export const resourceSchema = defineType({
         ],
       },
       initialValue: 'stage1',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'weekNumber',

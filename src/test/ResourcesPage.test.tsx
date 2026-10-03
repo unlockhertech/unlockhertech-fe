@@ -52,4 +52,55 @@ describe('ResourcesPage', () => {
     expect(screen.getByText(/Unlock: Complete 10-Guide Transition Suite/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Email Address/i)).toBeInTheDocument();
   });
+
+  it('renders track switcher pills and allows switching to another track', async () => {
+    renderResourcesPage();
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+
+    const techTrackBtn = screen.getByRole('button', { name: /Technical & Engineering/i });
+    fireEvent.click(techTrackBtn);
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/Modern Frontend Architecture & System Design Primer/i).length).toBeGreaterThan(0);
+    });
+  });
+
+  it('filters resources based on keyword search query', async () => {
+    renderResourcesPage();
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+
+    const searchInput = screen.getByPlaceholderText(/Search by keyword, topic, or role/i);
+    fireEvent.change(searchInput, { target: { value: 'Jargon' } });
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { level: 3, name: /10 Essential Tech Jargon Terms Decoded/i })).toBeInTheDocument();
+      expect(screen.queryByRole('heading', { level: 3, name: /10 Myths About the Tech Industry/i })).not.toBeInTheDocument();
+    });
+  });
+
+  it('handles empty results and allows resetting filter', async () => {
+    renderResourcesPage();
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+
+    const searchInput = screen.getByPlaceholderText(/Search by keyword, topic, or role/i);
+    fireEvent.change(searchInput, { target: { value: 'nonexistentquery123xyz' } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/No guides match this filter/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Reset Filter/i })).toBeInTheDocument();
+    });
+
+    const resetBtn = screen.getByRole('button', { name: /Reset Filter/i });
+    fireEvent.click(resetBtn);
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+  });
 });

@@ -1,14 +1,22 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import type { Resource } from "../../types";
 import { getAllResources } from "../../utils/sanity";
-import { DEFAULT_RESOURCES, LAUNCH_DATE, type ExtendedResource } from "./resourceData";
+import {
+  DEFAULT_RESOURCES,
+  UPCOMING_COLLECTION_PREVIEWS,
+  LAUNCH_DATE,
+  type ExtendedResource,
+} from "./resourceData";
 
 const STORAGE_KEY_USER_EMAIL = "uht_user_email";
 
 export function useResources() {
   const [resources, setResources] = useState<ExtendedResource[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeCollection, setActiveCollection] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedFormat, setSelectedFormat] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [userEmail, setUserEmail] = useState<string | null>(() => {
     try {
       return localStorage.getItem(STORAGE_KEY_USER_EMAIL);
@@ -17,6 +25,7 @@ export function useResources() {
       return null;
     }
   });
+
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeResource, setActiveResource] = useState<Resource | null>(null);
@@ -30,6 +39,8 @@ export function useResources() {
         if ((sanityData?.length ?? 0) > 0) {
           const enriched: ExtendedResource[] = sanityData.map((item, idx) => ({
             ...item,
+            collection: item.collection || "career-toolkit",
+            format: item.format || "guide",
             weekNumber: item.weekNumber || idx + 1,
             requiresLogin: item.requiresLogin ?? idx + 1 > 3,
             releaseDate: item.publishedAt
@@ -62,10 +73,69 @@ export function useResources() {
   }, []);
 
   const filteredResources = useMemo(() => {
-    return selectedCategory === "All"
-      ? resources
-      : resources.filter((r) => r.category === selectedCategory);
-  }, [resources, selectedCategory]);
+    const q = searchQuery.trim().toLowerCase();
+    return resources.filter((item) => {
+      // 1. Collection filter
+      if (activeCollection !== "all") {
+        const itemCollection = item.collection || "career-toolkit";
+        if (itemCollection !== activeCollection) {
+          return false;
+        }
+      }
+
+      // 2. Category filter
+      if (selectedCategory !== "All" && item.category !== selectedCategory) {
+        return false;
+      }
+
+      // 3. Format filter
+      if (selectedFormat !== "all") {
+        const itemFormat = item.format || "guide";
+        if (itemFormat !== selectedFormat) {
+          return false;
+        }
+      }
+
+      // 4. Keyword search
+      if (q.length > 0) {
+        const titleMatch = item.title?.toLowerCase().includes(q) ?? false;
+        const descMatch = item.description?.toLowerCase().includes(q) ?? false;
+        const catMatch = item.category?.toLowerCase().includes(q) ?? false;
+        const tagsMatch = item.tags?.some((t) => t.toLowerCase().includes(q)) ?? false;
+        if (!titleMatch && !descMatch && !catMatch && !tagsMatch) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [resources, activeCollection, selectedCategory, selectedFormat, searchQuery]);
+
+  const upcomingForCollection = useMemo(() => {
+    const list =
+      activeCollection === "all"
+        ? UPCOMING_COLLECTION_PREVIEWS
+        : UPCOMING_COLLECTION_PREVIEWS.filter((item) => item.collection === activeCollection);
+
+    const q = searchQuery.trim().toLowerCase();
+    if (q.length === 0) {
+      return list;
+    }
+
+    return list.filter((item) => {
+      const titleMatch = item.title?.toLowerCase().includes(q) ?? false;
+      const descMatch = item.description?.toLowerCase().includes(q) ?? false;
+      const catMatch = item.category?.toLowerCase().includes(q) ?? false;
+      return titleMatch || descMatch || catMatch;
+    });
+  }, [activeCollection, searchQuery]);
+
+  const handleResetFilters = useCallback(() => {
+    setActiveCollection("all");
+    setSelectedCategory("All");
+    setSelectedFormat("all");
+    setSearchQuery("");
+  }, []);
 
   const triggerDirectDownload = useCallback((resource: Resource) => {
     if (resource.pdfUrl) {
@@ -83,6 +153,13 @@ export function useResources() {
   const handleOpenDownload = useCallback((resource: ExtendedResource | null, bundleMode = false) => {
     if (bundleMode || !resource) {
       setActiveResource(null);
+      setIsEarlyAccessMode(true);
+      setIsModalOpen(true);
+      return;
+    }
+
+    if (resource.isComingSoon) {
+      setActiveResource(resource);
       setIsEarlyAccessMode(true);
       setIsModalOpen(true);
       return;
@@ -123,9 +200,17 @@ export function useResources() {
   return {
     resources,
     filteredResources,
+    upcomingForCollection,
     isLoading,
+    activeCollection,
+    setActiveCollection,
     selectedCategory,
     setSelectedCategory,
+    selectedFormat,
+    setSelectedFormat,
+    searchQuery,
+    setSearchQuery,
+    handleResetFilters,
     userEmail,
     isModalOpen,
     setIsModalOpen,

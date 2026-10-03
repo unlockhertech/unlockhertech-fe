@@ -4,9 +4,11 @@ import {
   HiLockClosed,
   HiArrowDownTray,
   HiDocumentCheck,
+  HiBellAlert,
+  HiSparkles,
 } from "react-icons/hi2";
 import { PdfPaperThumbnail } from "../../components/PdfPaperThumbnail";
-import type { ExtendedResource } from "./resourceData";
+import { getFormatBadgeLabel, type ExtendedResource } from "./resourceData";
 
 interface ResourceCardProps {
   item: ExtendedResource;
@@ -38,7 +40,14 @@ function markResourceAsDownloaded(id: string) {
   }
 }
 
-function getActionButtonClasses(requiresCredentials: boolean, isUnlockedForUser: boolean): string {
+function getActionButtonClasses(
+  isComingSoon: boolean,
+  requiresCredentials: boolean,
+  isUnlockedForUser: boolean
+): string {
+  if (isComingSoon) {
+    return "bg-stone-800 text-white motion-safe:hover:scale-105 hover:bg-brand-coral";
+  }
   if (!requiresCredentials || isUnlockedForUser) {
     return "bg-emerald-600 text-white motion-safe:hover:scale-105 hover:bg-emerald-700";
   }
@@ -51,12 +60,19 @@ export function ResourceCard({
   userEmail,
   onOpenDownload,
 }: Readonly<ResourceCardProps>) {
+  const isComingSoon = Boolean(item.isComingSoon);
   const weekNum = item.weekNumber || index + 1;
   const requiresCredentials = item.requiresLogin || weekNum > 3;
   const isUnlockedForUser = Boolean(userEmail) || !requiresCredentials;
   const [isDownloaded, setIsDownloaded] = useState(() => readDownloadedIds().includes(item.id));
 
+  const formatLabel = getFormatBadgeLabel(item.format);
+
   const handleCardAction = () => {
+    if (isComingSoon) {
+      onOpenDownload(item, false);
+      return;
+    }
     if (!requiresCredentials || isUnlockedForUser) {
       markResourceAsDownloaded(item.id);
       setIsDownloaded(true);
@@ -65,6 +81,13 @@ export function ResourceCard({
   };
 
   const renderStatusPill = () => {
+    if (isComingSoon) {
+      return (
+        <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md">
+          <HiSparkles className="w-3 h-3 text-amber-600" /> Coming {item.releaseDate ?? "Soon"}
+        </span>
+      );
+    }
     if (!requiresCredentials) {
       return (
         <span className="inline-flex items-center gap-1 text-[0.65rem] font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
@@ -87,6 +110,14 @@ export function ResourceCard({
   };
 
   const renderButtonContent = () => {
+    if (isComingSoon) {
+      return (
+        <>
+          <HiBellAlert className="w-4 h-4 text-brand-yellow" />
+          <span>Notify Me</span>
+        </>
+      );
+    }
     if (isDownloaded && (!requiresCredentials || isUnlockedForUser)) {
       return (
         <>
@@ -119,9 +150,15 @@ export function ResourceCard({
     );
   };
 
-  const actionLabel = requiresCredentials && !isUnlockedForUser
-    ? `Unlock ${item.title}`
-    : `Download PDF: ${item.title}`;
+  const getActionLabel = (): string => {
+    if (isComingSoon) {
+      return `Get notified when ${item.title} is released`;
+    }
+    if (requiresCredentials && !isUnlockedForUser) {
+      return `Unlock ${item.title}`;
+    }
+    return `Download PDF: ${item.title}`;
+  };
 
   return (
     <div className="group bg-white rounded-3xl p-6 border border-stone-200/90 shadow-sm transition-all duration-300 flex flex-col justify-between hover:shadow-xl">
@@ -137,15 +174,20 @@ export function ResourceCard({
           customColor={item.accentColor}
           requiresLogin={requiresCredentials}
           isUnlocked={isUnlockedForUser}
-          isReleased={true}
+          isReleased={!isComingSoon}
         />
 
         {/* Copy */}
         <div className="mt-5 space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[0.7rem] font-extrabold text-brand-coral uppercase tracking-wider">
-              {item.category}
-            </span>
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[0.7rem] font-extrabold text-brand-coral uppercase tracking-wider">
+                {item.category}
+              </span>
+              <span className="text-[0.65rem] font-semibold text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+                {formatLabel}
+              </span>
+            </div>
 
             {/* Access Status Pill */}
             {renderStatusPill()}
@@ -163,14 +205,17 @@ export function ResourceCard({
       {/* Footer Action */}
       <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between">
         <span className="text-xs text-stone-400 font-medium">
-          PDF {weekNum} • {item.pageCount || "Printable PDF"}
+          {isComingSoon
+            ? `Dropping ${item.releaseDate ?? "Soon"}`
+            : `PDF ${weekNum} • ${item.pageCount || "Printable PDF"}`}
         </span>
 
         <button
           type="button"
           onClick={handleCardAction}
-          aria-label={actionLabel}
+          aria-label={getActionLabel()}
           className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ${getActionButtonClasses(
+            isComingSoon,
             requiresCredentials,
             isUnlockedForUser
           )}`}
