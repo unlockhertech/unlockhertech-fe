@@ -422,10 +422,10 @@ export function BookingPage() {
               <nav className="category-grid" aria-label="Booking categories">
                 {(
                   [
-                    "partnerships",
                     "careers",
-                    "podcast",
+                    "partnerships",
                     "mentorship",
+                    "podcast",
                     "meet",
                   ] as const
                 ).map((key) => {
@@ -474,9 +474,9 @@ export function BookingPage() {
                     <FiHelpCircle />
                   </span>
                   <span className="category-copy">
-                    <b>Not sure yet?</b>
+                    <b>Contact us</b>
                     <span>
-                      Contact us and we’ll help you find the right conversation.
+                      Get in touch — we’d love to hear from you.
                     </span>
                   </span>
                   <FiArrowRight aria-hidden="true" />
@@ -497,6 +497,9 @@ export function BookingPage() {
                     Choose one. Your calendar will show availability for this
                     meeting.
                   </p>
+                  <blockquote className="booking-quote booking-quote-inline">
+                    <p>“{sectionQuote(section)}”</p>
+                  </blockquote>
                   <div className="meeting-list">
                     {meetingsInSection.map((m) => (
                       <button
@@ -550,6 +553,9 @@ export function BookingPage() {
               >
                 ← Back to category and meeting
               </button>
+              <blockquote className="booking-quote">
+                <p>“{sectionQuote(section)}”</p>
+              </blockquote>
               <div className="sidebar-note">
                 Your meeting link and preparation details will be included in
                 your calendar invitation after booking.
@@ -873,6 +879,17 @@ export function BookingPage() {
 }
 
 // --- helpers ---
+function sectionQuote(section: MeetingType["section"]): string {
+  const quotes: Record<MeetingType["section"], string> = {
+    careers: "Your skills can make a difference. Together, we can open more doors.",
+    partnerships: "Great things grow when we bring our strengths together.",
+    mentorship: "Small steps today. More confidence tomorrow.",
+    podcast: "Your voice has the power to inspire someone else’s next chapter.",
+    meet: "Every meaningful connection starts with a simple hello.",
+  };
+  return quotes[section];
+}
+
 function categoryIcon(section: MeetingType["section"]) {
   const icons = {
     partnerships: FiUsers,
@@ -884,7 +901,8 @@ function categoryIcon(section: MeetingType["section"]) {
   return icons[section];
 }
 function categoryTitle(section: MeetingType["section"]) {
-  if (section === "partnerships") return "Partner with us";
+  if (section === "partnerships") return "Partnership";
+  if (section === "meet") return "Meet Founders";
   if (section === "careers") return "Join our team";
   return sectionTitle(section);
 }

@@ -911,3 +911,38 @@ summary {
     padding: 18px;
   }
 }
+
+/* Keep the booking flow comfortable to read on wide screens. */
+.wrap-root .hero,
+.wrap-root .wrap {
+  max-width: 1000px;
+  width: calc(100% - 48px);
+  margin-left: auto;
+  margin-right: auto;
+}
+.wrap-root .booking {
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+.wrap-root .content { min-width: 0; }
+.wrap-root .booking-quote {
+  margin: 26px 0 0;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, white);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 12%, white);
+}
+.wrap-root .booking-quote p {
+  margin: 0;
+  color: var(--ink);
+  font-family: Georgia, serif;
+  font-size: 18px;
+  line-height: 1.55;
+}
+.wrap-root .booking-quote-inline { margin: 0 0 20px; }
+@media (max-width: 800px) {
+  .wrap-root .booking { grid-template-columns: 1fr; }
+}
+@media (max-width: 490px) {
+  .wrap-root .hero,
+  .wrap-root .wrap { width: calc(100% - 32px); }
+}
