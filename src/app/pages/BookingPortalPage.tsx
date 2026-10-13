@@ -117,8 +117,8 @@ export function BookingPage() {
         setError(null);
         setCfg(c);
         const first =
-          c.meetingTypes.find((m) => m.section === section) ||
-          c.meetingTypes[0] ||
+          c.meetingTypes.find((m) => m.section === section && m.key !== "meet_pritanya") ||
+          c.meetingTypes.find((m) => m.key !== "meet_pritanya") ||
           null;
         setMeeting(first);
         if (first) setSection(first.section);
@@ -181,7 +181,7 @@ export function BookingPage() {
   }
 
   function handleSelectMeeting(m: MeetingType) {
-    if (booking) return;
+    if (booking || m.key === "meet_pritanya") return;
     resetAvailability();
     setError(null);
     setMeeting(m);
@@ -194,7 +194,9 @@ export function BookingPage() {
     setError(null);
     setSection(key);
     setCategoryChosen(true);
-    setMeeting(cfg?.meetingTypes.find((m) => m.section === key) || null);
+    setMeeting(
+      cfg?.meetingTypes.find((m) => m.section === key && m.key !== "meet_pritanya") || null,
+    );
     setConfirmation(null);
   }
 
@@ -508,6 +510,7 @@ export function BookingPage() {
                         type="button"
                         className="meeting"
                         aria-pressed={meeting?.key === m.key}
+                        disabled={m.key === "meet_pritanya"}
                         onClick={() => handleSelectMeeting(m)}
                       >
                         <b>
@@ -522,7 +525,9 @@ export function BookingPage() {
                         <span>
                           {m.duration} min · {m.hosts.join(" + ")}
                         </span>
-                        <span className="meeting-summary">{m.summary}</span>
+                        <span className="meeting-summary">
+                          {m.key === "meet_pritanya" ? "Coming soon" : m.summary}
+                        </span>
                       </button>
                     ))}
                   </div>

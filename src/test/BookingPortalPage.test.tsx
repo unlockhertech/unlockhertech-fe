@@ -142,7 +142,7 @@ it('requires a category, exposes configured meetings, and returns safely from th
   expect(screen.queryByRole('button', { name: /Wednesday,? 23 September/ })).not.toBeInTheDocument();
 });
 
-it('keeps all Meet subcategories and script-provided mentorship guidance', async () => {
+it('marks Pritanya coming soon and keeps mentorship guidance', async () => {
   const meetings = ['ellie', 'pritanya', 'cofounders'].map(name => ({
     ...config.meetingTypes[0]!, key: `meet_${name}`, section: 'meet' as const,
     label: `Meet ${name}`, hosts: [name],
@@ -156,6 +156,9 @@ it('keeps all Meet subcategories and script-provided mentorship guidance', async
   render(<BookingPage />);
   fireEvent.click(await screen.findByRole('button', { name: /^Meet Founders Connect/ }));
   for (const m of meetings) expect(screen.getByRole('button', { name: new RegExp(m.label) })).toBeVisible();
+  expect(screen.getByRole('button', { name: /Meet pritanya.*Coming soon/ })).toBeDisabled();
+  expect(screen.getByRole('button', { name: /Meet ellie/ })).toBeEnabled();
+  expect(screen.getByRole('button', { name: /Meet cofounders/ })).toBeEnabled();
   fireEvent.click(screen.getByRole('button', { name: /^Mentorship A little/ }));
   fireEvent.click(screen.getByRole('button', { name: /Continue to calendar/ }));
   await waitFor(() => expect(day()).toBeEnabled());
