@@ -26,7 +26,7 @@ import {
   FiArrowRight,
   FiCheck,
 } from "react-icons/fi";
-import { LuHandshake } from "react-icons/lu";
+import { LuGraduationCap, LuHandshake } from "react-icons/lu";
 
 interface BookingResponse {
   bookingId: string;
@@ -905,7 +905,7 @@ function categoryIcon(section: MeetingType["section"]) {
     partnerships: LuHandshake,
     careers: FiBriefcase,
     podcast: PodcastIcon,
-    mentorship: FiUsers,
+    mentorship: LuGraduationCap,
     meet: FiUsers,
   };
   return icons[section];
