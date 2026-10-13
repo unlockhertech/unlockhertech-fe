@@ -19,13 +19,14 @@ import { BookingLoading } from "@/app/components/BookingLoading";
 
 import {
   FiUsers,
-  FiHeart,
   FiMic,
   FiBriefcase,
-  FiHelpCircle,
+  FiMail,
+  FiHeadphones,
   FiArrowRight,
   FiCheck,
 } from "react-icons/fi";
+import { LuGraduationCap, LuHandshake } from "react-icons/lu";
 
 interface BookingResponse {
   bookingId: string;
@@ -116,8 +117,8 @@ export function BookingPage() {
         setError(null);
         setCfg(c);
         const first =
-          c.meetingTypes.find((m) => m.section === section) ||
-          c.meetingTypes[0] ||
+          c.meetingTypes.find((m) => m.section === section && m.key !== "meet_pritanya") ||
+          c.meetingTypes.find((m) => m.key !== "meet_pritanya") ||
           null;
         setMeeting(first);
         if (first) setSection(first.section);
@@ -180,7 +181,7 @@ export function BookingPage() {
   }
 
   function handleSelectMeeting(m: MeetingType) {
-    if (booking) return;
+    if (booking || m.key === "meet_pritanya") return;
     resetAvailability();
     setError(null);
     setMeeting(m);
@@ -193,7 +194,9 @@ export function BookingPage() {
     setError(null);
     setSection(key);
     setCategoryChosen(true);
-    setMeeting(cfg?.meetingTypes.find((m) => m.section === key) || null);
+    setMeeting(
+      cfg?.meetingTypes.find((m) => m.section === key && m.key !== "meet_pritanya") || null,
+    );
     setConfirmation(null);
   }
 
@@ -422,10 +425,10 @@ export function BookingPage() {
               <nav className="category-grid" aria-label="Booking categories">
                 {(
                   [
-                    "partnerships",
                     "careers",
-                    "podcast",
+                    "partnerships",
                     "mentorship",
+                    "podcast",
                     "meet",
                   ] as const
                 ).map((key) => {
@@ -471,12 +474,12 @@ export function BookingPage() {
                   href={`mailto:${cfg.contactEmail}`}
                 >
                   <span className="category-icon" aria-hidden="true">
-                    <FiHelpCircle />
+                    <FiMail />
                   </span>
                   <span className="category-copy">
-                    <b>Not sure yet?</b>
+                    <b>Contact us</b>
                     <span>
-                      Contact us and we’ll help you find the right conversation.
+                      Get in touch — we’d love to hear from you.
                     </span>
                   </span>
                   <FiArrowRight aria-hidden="true" />
@@ -497,6 +500,9 @@ export function BookingPage() {
                     Choose one. Your calendar will show availability for this
                     meeting.
                   </p>
+                  <blockquote className="booking-quote booking-quote-inline">
+                    <p>“{sectionQuote(section)}”</p>
+                  </blockquote>
                   <div className="meeting-list">
                     {meetingsInSection.map((m) => (
                       <button
@@ -504,6 +510,7 @@ export function BookingPage() {
                         type="button"
                         className="meeting"
                         aria-pressed={meeting?.key === m.key}
+                        disabled={m.key === "meet_pritanya"}
                         onClick={() => handleSelectMeeting(m)}
                       >
                         <b>
@@ -518,7 +525,9 @@ export function BookingPage() {
                         <span>
                           {m.duration} min · {m.hosts.join(" + ")}
                         </span>
-                        <span className="meeting-summary">{m.summary}</span>
+                        <span className="meeting-summary">
+                          {m.key === "meet_pritanya" ? "Coming soon" : m.summary}
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -550,6 +559,9 @@ export function BookingPage() {
               >
                 ← Back to category and meeting
               </button>
+              <blockquote className="booking-quote">
+                <p>“{sectionQuote(section)}”</p>
+              </blockquote>
               <div className="sidebar-note">
                 Your meeting link and preparation details will be included in
                 your calendar invitation after booking.
@@ -873,18 +885,39 @@ export function BookingPage() {
 }
 
 // --- helpers ---
+function sectionQuote(section: MeetingType["section"]): string {
+  const quotes: Record<MeetingType["section"], string> = {
+    careers: "Your skills can make a difference. Together, we can open more doors.",
+    partnerships: "Great things grow when we bring our strengths together.",
+    mentorship: "Small steps today. More confidence tomorrow.",
+    podcast: "Your voice has the power to inspire someone else’s next chapter.",
+    meet: "Every meaningful connection starts with a simple hello.",
+  };
+  return quotes[section];
+}
+
+function PodcastIcon() {
+  return (
+    <span className="podcast-icon">
+      <FiHeadphones className="podcast-headphones" />
+      <FiMic className="podcast-microphone" />
+    </span>
+  );
+}
+
 function categoryIcon(section: MeetingType["section"]) {
   const icons = {
-    partnerships: FiUsers,
+    partnerships: LuHandshake,
     careers: FiBriefcase,
-    podcast: FiMic,
-    mentorship: FiHeart,
+    podcast: PodcastIcon,
+    mentorship: LuGraduationCap,
     meet: FiUsers,
   };
   return icons[section];
 }
 function categoryTitle(section: MeetingType["section"]) {
-  if (section === "partnerships") return "Partner with us";
+  if (section === "partnerships") return "Partnership";
+  if (section === "meet") return "Meet Founders";
   if (section === "careers") return "Join our team";
   return sectionTitle(section);
 }
