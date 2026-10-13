@@ -19,13 +19,14 @@ import { BookingLoading } from "@/app/components/BookingLoading";
 
 import {
   FiUsers,
-  FiHeart,
   FiMic,
   FiBriefcase,
-  FiHelpCircle,
+  FiMail,
+  FiHeadphones,
   FiArrowRight,
   FiCheck,
 } from "react-icons/fi";
+import { LuHandshake } from "react-icons/lu";
 
 interface BookingResponse {
   bookingId: string;
@@ -471,7 +472,7 @@ export function BookingPage() {
                   href={`mailto:${cfg.contactEmail}`}
                 >
                   <span className="category-icon" aria-hidden="true">
-                    <FiHelpCircle />
+                    <FiMail />
                   </span>
                   <span className="category-copy">
                     <b>Contact us</b>
@@ -890,12 +891,21 @@ function sectionQuote(section: MeetingType["section"]): string {
   return quotes[section];
 }
 
+function PodcastIcon() {
+  return (
+    <span className="podcast-icon">
+      <FiHeadphones className="podcast-headphones" />
+      <FiMic className="podcast-microphone" />
+    </span>
+  );
+}
+
 function categoryIcon(section: MeetingType["section"]) {
   const icons = {
-    partnerships: FiUsers,
+    partnerships: LuHandshake,
     careers: FiBriefcase,
-    podcast: FiMic,
-    mentorship: FiHeart,
+    podcast: PodcastIcon,
+    mentorship: FiUsers,
     meet: FiUsers,
   };
   return icons[section];

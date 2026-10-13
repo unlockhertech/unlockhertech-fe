@@ -946,3 +946,23 @@ summary {
   .wrap-root .hero,
   .wrap-root .wrap { width: calc(100% - 32px); }
 }
+
+.wrap-root .podcast-icon {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+.wrap-root .podcast-headphones {
+  position: absolute;
+  inset: 0;
+  width: 30px;
+  height: 30px;
+}
+.wrap-root .podcast-microphone {
+  position: absolute;
+  left: 9px;
+  top: 10px;
+  width: 12px;
+  height: 19px;
+}
