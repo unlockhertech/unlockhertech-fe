@@ -61,7 +61,7 @@ export function getLinkItems(): LinkItem[] {
       id: "podcast",
       title: "Listen to the Podcast",
       subtitle: "Available on Spotify, Apple Podcasts & YouTube",
-      url: "https://pod.link/1800087284",
+      url: "https://www.unlockhertech.com/episodes",
       isExternal: true,
       badge: "New Episodes",
       icon: HiMicrophone,
