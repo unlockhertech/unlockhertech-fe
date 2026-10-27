@@ -2,21 +2,22 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import type { Resource } from "../../types";
 import { getAllResources } from "../../utils/sanity";
 import {
-  DEFAULT_RESOURCES,
   UPCOMING_COLLECTION_PREVIEWS,
   LAUNCH_DATE,
   type ExtendedResource,
 } from "./resourceData";
 
 const STORAGE_KEY_USER_EMAIL = "uht_user_email";
+const PAGE_SIZE = 9;
 
 export function useResources() {
   const [resources, setResources] = useState<ExtendedResource[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeCollection, setActiveCollection] = useState("all");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedFormat, setSelectedFormat] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCollection, setActiveCollectionState] = useState("all");
+  const [selectedCategory, setSelectedCategoryState] = useState("All");
+  const [selectedFormat, setSelectedFormatState] = useState("all");
+  const [searchQuery, setSearchQueryState] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [userEmail, setUserEmail] = useState<string | null>(() => {
     try {
       return localStorage.getItem(STORAGE_KEY_USER_EMAIL);
@@ -35,6 +36,26 @@ export function useResources() {
   // Unlock confirmation banner/toast (survives navigation + filter changes)
   const [unlockToastEmail, setUnlockToastEmail] = useState<string | null>(null);
 
+  const setActiveCollection = useCallback((col: string) => {
+    setActiveCollectionState(col);
+    setVisibleCount(PAGE_SIZE);
+  }, []);
+
+  const setSelectedCategory = useCallback((cat: string) => {
+    setSelectedCategoryState(cat);
+    setVisibleCount(PAGE_SIZE);
+  }, []);
+
+  const setSelectedFormat = useCallback((fmt: string) => {
+    setSelectedFormatState(fmt);
+    setVisibleCount(PAGE_SIZE);
+  }, []);
+
+  const setSearchQuery = useCallback((q: string) => {
+    setSearchQueryState(q);
+    setVisibleCount(PAGE_SIZE);
+  }, []);
+
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
@@ -45,6 +66,8 @@ export function useResources() {
             ...item,
             collection: item.collection || "career-toolkit",
             format: item.format || "guide",
+            targetLevel: item.targetLevel || "All Levels",
+            tags: item.tags || [],
             weekNumber: item.weekNumber || idx + 1,
             requiresLogin: item.requiresLogin ?? idx + 1 > 3,
             releaseDate: item.publishedAt
@@ -64,11 +87,11 @@ export function useResources() {
           }));
           setResources(enriched);
         } else {
-          setResources(DEFAULT_RESOURCES);
+          setResources([]);
         }
       } catch (err) {
-        console.error("Failed to load resources from Sanity, using defaults:", err);
-        setResources(DEFAULT_RESOURCES);
+        console.error("Failed to load resources from Sanity:", err);
+        setResources([]);
       } finally {
         setIsLoading(false);
       }
@@ -139,7 +162,7 @@ export function useResources() {
     setSelectedCategory("All");
     setSelectedFormat("all");
     setSearchQuery("");
-  }, []);
+  }, [setActiveCollection, setSelectedCategory, setSelectedFormat, setSearchQuery]);
 
   const triggerDirectDownload = useCallback((resource: Resource) => {
     if (resource.pdfUrl) {
@@ -224,6 +247,12 @@ export function useResources() {
     setIsSwitchEmailMode(false);
   }, []);
 
+  const handleLoadMore = useCallback(() => {
+    setVisibleCount((prev) => prev + PAGE_SIZE);
+  }, []);
+
+  const hasMore = filteredResources.length > visibleCount;
+
   return {
     resources,
     filteredResources,
@@ -238,6 +267,10 @@ export function useResources() {
     searchQuery,
     setSearchQuery,
     handleResetFilters,
+    visibleCount,
+    handleLoadMore,
+    hasMore,
+    totalFilteredCount: filteredResources.length,
     userEmail,
     isModalOpen,
     setIsModalOpen,

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
 import { PageLoadingFallback } from "../app/components/PageLoadingFallback";
 import { highlightCodeUnder } from "../app/utils/prism";
 import { AdminPage } from "../app/pages/AdminPage";
@@ -14,7 +15,11 @@ describe("PageLoadingFallback", () => {
 
 describe("AdminPage", () => {
   it("renders sanity studio when VITE_SANITY_PROJECT_ID is present", () => {
-    const { container } = render(<AdminPage />);
+    const { container } = render(
+      <MemoryRouter>
+        <AdminPage />
+      </MemoryRouter>
+    );
     expect(container.firstChild).toBeInTheDocument();
   });
 
@@ -22,7 +27,11 @@ describe("AdminPage", () => {
     const originalEnv = import.meta.env.VITE_SANITY_PROJECT_ID;
     try {
       (import.meta.env as unknown as { VITE_SANITY_PROJECT_ID: string }).VITE_SANITY_PROJECT_ID = "";
-      render(<AdminPage />);
+      render(
+        <MemoryRouter>
+          <AdminPage />
+        </MemoryRouter>
+      );
       expect(screen.getByText("Sanity Studio Setup Required")).toBeInTheDocument();
       expect(screen.getByRole("link", { name: /go to sanity dashboard/i })).toHaveAttribute(
         "href",

@@ -34,7 +34,7 @@ async function unwrap<T>(res: Response): Promise<T> {
     json = JSON.parse(text);
   } catch (error) {
     console.warn('Booking API returned an invalid JSON response', error);
-    throw new Error('The booking service could not respond. Please try again.');
+    throw new Error('The booking service could not respond. Please try again.', { cause: error });
   }
   if (!res.ok || json?.ok !== true) {
     throw new Error(json?.error || `Request failed (${res.status})`);

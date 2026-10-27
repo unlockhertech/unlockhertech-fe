@@ -295,6 +295,35 @@ export function DownloadResourceModal({
   isSwitchEmailMode = false,
   onSuccessUnlock,
 }: Readonly<DownloadResourceModalProps>) {
+  if (!isOpen) return null;
+
+  return (
+    <DownloadResourceModalDialog
+      key={`${resource?.id || "bundle"}-${isSwitchEmailMode ? "switch" : "normal"}`}
+      onClose={onClose}
+      resource={resource}
+      isEarlyAccessMode={isEarlyAccessMode}
+      isSwitchEmailMode={isSwitchEmailMode}
+      onSuccessUnlock={onSuccessUnlock}
+    />
+  );
+}
+
+interface DownloadResourceModalDialogProps {
+  onClose: () => void;
+  resource: Resource | null;
+  isEarlyAccessMode?: boolean;
+  isSwitchEmailMode?: boolean;
+  onSuccessUnlock?: (email: string) => void;
+}
+
+function DownloadResourceModalDialog({
+  onClose,
+  resource,
+  isEarlyAccessMode = false,
+  isSwitchEmailMode = false,
+  onSuccessUnlock,
+}: Readonly<DownloadResourceModalDialogProps>) {
   const [email, setEmail] = useState(() => {
     if (isSwitchEmailMode) return "";
     try {
@@ -314,23 +343,6 @@ export function DownloadResourceModal({
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
-    setIsSubmitted(false);
-    setError("");
-    if (isSwitchEmailMode) {
-      setEmail("");
-      return;
-    }
-    try {
-      setEmail(localStorage.getItem("uht_user_email") || "");
-    } catch (err) {
-      console.warn("Failed to read user email from localStorage:", err);
-    }
-  }, [isOpen, isSwitchEmailMode]);
-
-  useEffect(() => {
-    if (!isOpen) return undefined;
-
     previouslyFocusedElementRef.current = document.activeElement as HTMLElement | null;
 
     const focusTimer = window.setTimeout(() => {
@@ -368,9 +380,7 @@ export function DownloadResourceModal({
       document.removeEventListener("keydown", handleKeyDown);
       previouslyFocusedElementRef.current?.focus();
     };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  }, [onClose]);
 
   const isCommunityGuide = !isEarlyAccessMode && (resource?.requiresLogin || (resource?.weekNumber && resource.weekNumber > 3));
 
@@ -398,6 +408,9 @@ export function DownloadResourceModal({
       formData.append("discordHandle", discordHandle);
       formData.append("roleInterest", roleInterest);
       formData.append("resourceTitle", resourceTitle);
+      if (resource?.slug) formData.append("resourceSlug", resource.slug);
+      if (resource?.category) formData.append("category", resource.category);
+      if (resource?.collection) formData.append("collection", resource.collection);
       formData.append("mode", isCommunityGuide ? "Community Member Access (WhatsApp & Discord)" : "Complete 10-Guide Bundle Request");
 
       await fetch("/", {
@@ -419,10 +432,15 @@ export function DownloadResourceModal({
           discordHandle,
           roleInterest,
           resourceTitle,
+          resourceSlug: resource?.slug,
+          category: resource?.category,
+          collection: resource?.collection,
+          format: resource?.format,
+          pdfUrl: resource?.pdfUrl,
         }),
       });
     } catch (err) {
-      console.warn("Brevo subscribe-resource request error:", err);
+      console.warn("Brevo / Supabase subscribe-resource request error:", err);
     }
 
     setTimeout(() => {

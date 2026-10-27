@@ -43,10 +43,13 @@ export const resourceSchema = defineType({
           { title: 'Networking', value: 'Networking' },
           { title: 'Interviewing', value: 'Interviewing' },
           { title: 'Insider Realities', value: 'Insider Realities' },
-          { title: 'Engineering & Architecture', value: 'Engineering & Architecture' },
-          { title: 'Job Search & Negotiation', value: 'Job Search & Negotiation' },
-          { title: 'Leadership & Mentorship', value: 'Leadership & Mentorship' },
-          { title: 'Templates & Worksheets', value: 'Templates & Worksheets' },
+          { title: 'System Design & Architecture', value: 'System Design & Architecture' },
+          { title: 'Frontend & UI Engineering', value: 'Frontend & UI Engineering' },
+          { title: 'Backend & Cloud Systems', value: 'Backend & Cloud Systems' },
+          { title: 'AI & Machine Learning', value: 'AI & Machine Learning' },
+          { title: 'Salary & Compensation', value: 'Salary & Compensation' },
+          { title: 'Leadership & Management', value: 'Leadership & Management' },
+          { title: 'Checklists & Templates', value: 'Checklists & Templates' },
         ],
       },
       validation: (Rule) => Rule.required(),
@@ -60,6 +63,7 @@ export const resourceSchema = defineType({
         list: [
           { title: 'Career Transition Toolkit (10-Guide Series)', value: 'career-toolkit' },
           { title: 'Technical & Engineering', value: 'tech-guides' },
+          { title: 'AI & Data Systems', value: 'ai-data' },
           { title: 'Job Search & Negotiation', value: 'job-search' },
           { title: 'Leadership & Workplace', value: 'leadership' },
           { title: 'Templates & Cheatsheets', value: 'templates' },
@@ -74,12 +78,36 @@ export const resourceSchema = defineType({
       options: {
         list: [
           { title: 'PDF Playbook / Guide', value: 'guide' },
-          { title: 'Worksheet / Workbook', value: 'worksheet' },
+          { title: 'Worksheet / Workbook', value: 'workbook' },
           { title: 'Cheatsheet / Checklist', value: 'cheatsheet' },
           { title: 'Template', value: 'template' },
         ],
       },
       initialValue: 'guide',
+    }),
+    defineField({
+      name: 'targetLevel',
+      title: 'Target Experience Level',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'All Levels', value: 'All Levels' },
+          { title: 'Beginner', value: 'Beginner' },
+          { title: 'Intermediate', value: 'Intermediate' },
+          { title: 'Advanced', value: 'Advanced' },
+        ],
+      },
+      initialValue: 'All Levels',
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags / Keywords',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
+      description: 'Searchable keywords (e.g. "System Design", "AWS", "Resume", "Salary")',
     }),
     defineField({
       name: 'isFeatured',

@@ -56,7 +56,7 @@ export const CURATED_SEED_JOBS: Job[] = (
 export async function getAllJobs(): Promise<Job[]> {
   try {
     if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
-      return CURATED_SEED_JOBS.filter((j) => (!j.status || j.status === "active") && !j.isArchived);
+      return [];
     }
 
     const query = `*[_type == "job" && (!defined(status) || status == "active") && (!defined(isArchived) || isArchived == false)] | order(publishedAt desc) {
@@ -90,7 +90,7 @@ export async function getAllJobs(): Promise<Job[]> {
 
     const jobs: Job[] = await sanityClient.fetch(query);
     if (!jobs || jobs.length === 0) {
-      return CURATED_SEED_JOBS.filter((j) => (!j.status || j.status === "active") && !j.isArchived);
+      return [];
     }
 
     const now = Date.now();
@@ -106,16 +106,15 @@ export async function getAllJobs(): Promise<Job[]> {
         return true;
       });
   } catch (error) {
-    console.warn("Error fetching jobs from Sanity, using curated seed list:", error);
-    return CURATED_SEED_JOBS.filter((j) => (!j.status || j.status === "active") && !j.isArchived);
+    console.warn("Error fetching jobs from Sanity:", error);
+    return [];
   }
 }
 
 export async function getJobBySlug(slug: string): Promise<Job | null> {
   try {
     if (!import.meta.env.VITE_SANITY_PROJECT_ID) {
-      const found = CURATED_SEED_JOBS.find((j) => j.slug === slug);
-      return found ? cleanJobRecord(found) : null;
+      return null;
     }
 
     const query = `*[_type == "job" && slug.current == $slug][0] {
@@ -147,11 +146,9 @@ export async function getJobBySlug(slug: string): Promise<Job | null> {
 
     const job = await sanityClient.fetch(query, { slug });
     if (job) return cleanJobRecord(job);
-    const found = CURATED_SEED_JOBS.find((j) => j.slug === slug);
-    return found ? cleanJobRecord(found) : null;
+    return null;
   } catch (error) {
-    console.warn(`Error fetching job "${slug}" from Sanity, checking seed list:`, error);
-    const found = CURATED_SEED_JOBS.find((j) => j.slug === slug);
-    return found ? cleanJobRecord(found) : null;
+    console.warn(`Error fetching job "${slug}" from Sanity:`, error);
+    return null;
   }
 }

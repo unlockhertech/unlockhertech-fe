@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { HiOutlineArrowRight } from "react-icons/hi2";
-import coFoundersPhoto from "../../../assets/432250e0d9dc1c4cd94a60209ef0327c90f41452.png";
+import coFoundersPhoto from "../../../assets/432250e0d9dc1c4cd94a60209ef0327c90f41452.webp";
 
 export function AboutStorySection() {
   return (

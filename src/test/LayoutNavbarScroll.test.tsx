@@ -76,7 +76,7 @@ describe('Layout Navbar Scroll-to-Top Behavior', () => {
     const resourcesButton = screen.queryByRole('button', { name: /resources menu/i });
     if (resourcesButton) {
       fireEvent.click(resourcesButton);
-      const playbooksLink = screen.getByRole('link', { name: /career playbooks/i });
+      const playbooksLink = screen.getByRole('link', { name: /resources hub/i });
 
       scrollToMock.mockClear();
       fireEvent.click(playbooksLink);

@@ -126,11 +126,11 @@ export function BookingPage() {
           (c.dates?.[0]?.value || "").slice(0, 7) ||
           new Date().toISOString().slice(0, 7);
         setMonth(firstMonth);
-      } catch (e: any) {
-        setError(e?.message || "Booking is temporarily unavailable");
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Booking is temporarily unavailable");
       }
     })();
-  }, []);
+  }, [section]);
 
   useEffect(() => {
     if (!cfg || !meeting) return;
@@ -333,8 +333,8 @@ export function BookingPage() {
         requestId: requestId.current,
       });
       setConfirmation(res);
-    } catch (err: any) {
-      setError(err?.message || "Booking failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Booking failed");
       resetAvailability();
     } finally {
       setDatesRevision((revision) => revision + 1);
@@ -457,8 +457,8 @@ export function BookingPage() {
                         <Icon />
                       </span>
                       <span className="category-copy">
-                        <b>{categoryTitle(key)}</b>
-                        <span>{sectionText(key)}</span>
+                        <b>{categoryTitle(key)}</b>{" "}
+                        <span>{sectionText(key)}</span>{" "}
                         <small>
                           {count} meeting {count === 1 ? "option" : "options"}
                         </small>
@@ -626,15 +626,15 @@ export function BookingPage() {
                         aria-label="Choose a date"
                       >
                         {renderWeekdayHeaders()}
-                        {renderCalendarDays(
-                          cfg.dates,
-                          month,
-                          meeting.days,
-                          selectedDate,
-                          (d) => loadDate(d),
-                          dateSummary,
-                          booking,
-                        )}
+                        <CalendarDaysGrid
+                          allDates={cfg.dates}
+                          month={month}
+                          allowedDays={meeting.days}
+                          sel={selectedDate}
+                          onPick={loadDate}
+                          availability={dateSummary}
+                          booking={booking}
+                        />
                       </div>
                       {datesError && <p role="alert">{datesError}</p>}
                       {!datesLoading &&
@@ -998,15 +998,25 @@ function renderWeekdayHeaders() {
     </div>
   ));
 }
-function renderCalendarDays(
-  allDates: { value: string; weekday: number }[],
-  month: string,
-  allowedDays: number[],
-  sel: string | null,
-  onPick: (d: string) => void,
-  availability: AvailabilitySummary,
-  booking: boolean,
-) {
+interface CalendarDaysGridProps {
+  allDates: { value: string; weekday: number }[];
+  month: string;
+  allowedDays: number[];
+  sel: string | null;
+  onPick: (d: string) => void;
+  availability: AvailabilitySummary;
+  booking: boolean;
+}
+
+function CalendarDaysGrid({
+  allDates,
+  month,
+  allowedDays,
+  sel,
+  onPick,
+  availability,
+  booking,
+}: Readonly<CalendarDaysGridProps>) {
   const first = new Date(month + "-01T12:00:00Z");
   const year = first.getUTCFullYear();
   const mo = first.getUTCMonth();
@@ -1036,7 +1046,7 @@ function renderCalendarDays(
       </button>,
     );
   }
-  return chunks;
+  return <>{chunks}</>;
 }
 function prevMonth(ym: string) {
   const d = new Date(ym + "-01T12:00:00Z");

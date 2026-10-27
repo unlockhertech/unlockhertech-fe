@@ -7,7 +7,7 @@ urlOrId: "https://aibuildersnetwork.org/conference/tickets"
 discountCode: "UNLOCKHERTECH20-F056D5212AE7"
 ctaLabel: "Get tickets (20% off)"
 isPartner: true
-image: "src/assets/conference-lockup-dark.svg"
+image: "/logo.webp"
 description: "The #1 Virtual AI Conference for Builders, Tech Leaders, and Operators. 200+ sessions across AI Strategy, Startups, and AI Engineering."
 ---
 

@@ -29,10 +29,10 @@ export function ResourceUpcomingSpotlight({
               <span>In The Production Pipeline</span>
             </div>
             <h2 id="upcoming-resources-heading" className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Next PDF Drops & New Collections
+              Next PDF Drops & New Releases
             </h2>
             <p className="text-stone-300 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
-              We are expanding beyond the Career Transition Toolkit with new technical playbooks, salary negotiation scriptbooks, and engineering leadership frameworks.
+              We are continuously expanding the Resources Hub with new technical playbooks, system design cheatsheets, salary negotiation scriptbooks, and tech leadership frameworks.
             </p>
           </div>
         </div>

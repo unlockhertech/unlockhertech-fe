@@ -22,33 +22,29 @@ export function ResourcesHeroHeader({ userEmail, onChangeEmail }: Readonly<Resou
         <div className="flex items-center gap-2 text-white/60 text-sm mb-4 font-medium">
           <Link to="/" className="hover:text-white transition-colors">Home</Link>
           <span>/</span>
-          <span className="text-white">Resources</span>
+          <span className="text-white">Resources Hub</span>
         </div>
 
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">
             <HiSparkles className="w-4 h-4 text-brand-yellow" />
-            <span>All 10 Guides Live Now</span>
+            <span>Free Community Library • Playbooks & Cheatsheets</span>
           </div>
 
           <h1
             className="text-white font-black leading-[1.1] tracking-tight"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}
           >
-            Career Transition <br />
-            <span className="text-brand-yellow">Playbooks & Guides</span>
+            Technical & Career <br />
+            <span className="text-brand-yellow">Resources Hub</span>
           </h1>
 
           <p className="text-white/85 text-base sm:text-lg leading-relaxed font-normal max-w-2xl">
-            Clean, practical PDF guides created specifically for career changers, non-tech pivoters, and ambitious women in technology. All 10 guides are <strong>available today</strong> — no waiting required.
+            Comprehensive playbooks, system design cheatsheets, interview templates, and career transition roadmaps — built for engineers, leaders, and ambitious women in tech.
           </p>
 
           {/* TRUST BADGES BAR */}
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs sm:text-sm font-semibold text-white/90">
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
-              <HiSparkles className="w-4 h-4 text-brand-yellow" />
-              <span>Full Library Available</span>
-            </div>
             <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
               <HiGift className="w-4 h-4 text-brand-green" />
               <span>PDFs 1–3 Open Access (No Login)</span>

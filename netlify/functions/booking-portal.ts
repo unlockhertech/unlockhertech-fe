@@ -152,7 +152,7 @@ export default async function handler(request: Request): Promise<Response> {
         "  try { var nav = g.navigator; if(nav){ try{ Object.defineProperty(nav,'serviceWorker',{ get:function(){ return void 0; }, configurable:true }); }catch(_){} } } catch(_){}\n" +
         "  g.addEventListener('error', function(e){ try{ var m = e && (e.message||''); if(typeof m==='string' && m.indexOf('Service worker is disabled because the context is sandboxed')!==-1){ e.preventDefault&&e.preventDefault(); e.stopImmediatePropagation&&e.stopImmediatePropagation(); return false; } }catch(_){} }, true);\n" +
         "  g.addEventListener('unhandledrejection', function(e){ try{ var r = e && (e.reason||{}); var m = (r && (r.message||r))+''; if(m.indexOf('Service worker is disabled because the context is sandboxed')!==-1){ e.preventDefault&&e.preventDefault(); e.stopImmediatePropagation&&e.stopImmediatePropagation(); return false; } }catch(_){} }, true);\n" +
-        "}catch(_){}})();<\/script>"
+        "}catch(_){}})();</script>"
       );
       if (/<head[^>]*>/i.test(body)) {
         body = body.replace(/<head[^>]*>/i, (m) => m + "\n" + disableSwSnippet);

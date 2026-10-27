@@ -1,9 +1,16 @@
 import type { Handler, HandlerEvent, HandlerResponse } from "@netlify/functions";
+import { recordResourceLead } from "./lib/supabaseClient";
 
 interface SubscribeResourcePayload {
   email?: string;
   fullName?: string;
   resourceTitle?: string;
+  resourceSlug?: string;
+  category?: string;
+  resourceCategory?: string;
+  collection?: string;
+  format?: string;
+  pdfUrl?: string;
   discordHandle?: string;
   roleInterest?: string;
   mode?: string;
@@ -262,56 +269,80 @@ export const handler: Handler = async (event: HandlerEvent): Promise<HandlerResp
 
   const fullName = payload.fullName?.trim() ?? "";
   const resourceTitle = payload.resourceTitle?.trim() ?? "";
+  const resourceSlug = payload.resourceSlug?.trim() ?? "";
+  const category = (payload.resourceCategory || payload.category)?.trim() ?? "";
+  const collection = payload.collection?.trim() ?? "";
   const discordHandle = payload.discordHandle?.trim() ?? "";
   const roleInterest = payload.roleInterest?.trim() ?? "";
+  const pdfUrl = payload.pdfUrl?.trim() ?? "https://unlockhertech.com/resources";
   const { firstName, lastName } = splitName(fullName);
 
-  const apiKey = process.env.BREVO_API_KEY?.trim();
-  if (!apiKey) {
-    console.warn("BREVO_API_KEY is not set. Resource lead recorded locally:", {
-      email: rawEmail,
-      fullName,
-      resourceTitle,
-    });
-    return createSuccessResponse({
-      success: true,
-      message: "Subscribed successfully (simulated mode, missing BREVO_API_KEY)",
-      contactCreated: false,
-      emailSent: false,
-    });
-  }
-
-  const listIdRaw = process.env.BREVO_RESOURCES_LIST_ID?.trim() || process.env.BREVO_LIST_ID?.trim();
-  const listId = listIdRaw ? Number.parseInt(listIdRaw, 10) : undefined;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL?.trim();
-  const senderName = process.env.BREVO_SENDER_NAME?.trim() || "Unlock Her Tech";
-
-  const contactCreated = await upsertBrevoContact({
-    apiKey,
+  // 1. Dual-write to Supabase (PostgreSQL with timestamp & structured attributes)
+  const userAgent = event.headers?.["user-agent"] || undefined;
+  const referrer = event.headers?.["referer"] || event.headers?.["referrer"] || undefined;
+  const supabasePromise = recordResourceLead({
     email: rawEmail,
-    firstName,
-    lastName,
-    resourceTitle,
-    discordHandle,
-    roleInterest,
-    listId,
+    full_name: fullName,
+    discord_handle: discordHandle,
+    role_interest: roleInterest,
+    resource_title: resourceTitle || "Career Resource",
+    resource_slug: resourceSlug,
+    category,
+    collection,
+    download_date: new Date().toISOString(),
+    created_at: new Date().toISOString(),
+    user_agent: userAgent,
+    referrer,
   });
 
+  // 2. Dual-write to Brevo CRM if API key configured
+  const apiKey = process.env.BREVO_API_KEY?.trim();
+  let contactCreated = false;
   let emailSent = false;
-  if (senderEmail) {
-    emailSent = await sendBrevoTransactionalEmail(apiKey, senderEmail, senderName, {
+
+  if (apiKey) {
+    const listIdRaw = process.env.BREVO_RESOURCES_LIST_ID?.trim() || process.env.BREVO_LIST_ID?.trim();
+    const listId = listIdRaw ? Number.parseInt(listIdRaw, 10) : undefined;
+    const senderEmail = process.env.BREVO_SENDER_EMAIL?.trim();
+    const senderName = process.env.BREVO_SENDER_NAME?.trim() || "Unlock Her Tech";
+
+    contactCreated = await upsertBrevoContact({
+      apiKey,
+      email: rawEmail,
+      firstName,
+      lastName,
+      resourceTitle,
+      discordHandle,
+      roleInterest,
+      listId,
+    });
+
+    if (senderEmail) {
+      emailSent = await sendBrevoTransactionalEmail(apiKey, senderEmail, senderName, {
+        email: rawEmail,
+        fullName,
+        firstName,
+        resourceTitle,
+        pdfUrl,
+      });
+    }
+  } else {
+    console.warn("BREVO_API_KEY is not set. Resource lead recorded locally & in Supabase:", {
       email: rawEmail,
       fullName,
-      firstName,
       resourceTitle,
-      pdfUrl: "https://unlockhertech.com/resources",
+      category,
     });
   }
+
+  // Await Supabase persistence outcome (non-blocking errors)
+  const supabaseResult = await supabasePromise;
 
   return createSuccessResponse({
     success: true,
     message: "Subscribed successfully",
     contactCreated,
     emailSent,
+    dbRecorded: supabaseResult.success,
   });
 };

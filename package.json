@@ -26,6 +26,7 @@
     "@portabletext/react": "^8.0.1",
     "@sanity/client": "^8.4.0",
     "@sanity/image-url": "^2.1.1",
+    "@supabase/supabase-js": "^2.118.0",
     "@types/prismjs": "^1.26.6",
     "canvas-confetti": "^1.9.4",
     "gray-matter": "^4.0.3",

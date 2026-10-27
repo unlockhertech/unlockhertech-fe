@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { episodes as mockEpisodes } from "../data";
+import {
+  IMG_HERO,
+  IMG_STUDIO_MIC,
+  IMG_DESK_SETUP,
+  IMG_AUDIO_EQ,
+  IMG_DIVERSE,
+  IMG_PODCAST_FUN,
+} from "../data";
 import type { Episode } from "../types";
 
 export const RSS_FEED_URL = "https://anchor.fm/s/e6cb6024/podcast/rss";
@@ -16,8 +23,15 @@ const CACHE_KEY = "uht_rss_episodes_cache";
 // Cover colours cycle for RSS-sourced episodes (they have no custom colours)
 const COLORS = ["#B42970", "#72c472", "#5f9de3", "#e8563a", "#f4a0b4"];
 
-// Fallback Unsplash images to cycle through
-const FALLBACK_IMAGES = mockEpisodes.map((e) => e.imageUrl ?? "");
+// Default brand imagery to cycle through if an episode lacks its own artwork
+const FALLBACK_IMAGES = [
+  IMG_PODCAST_FUN,
+  IMG_DIVERSE,
+  IMG_STUDIO_MIC,
+  IMG_AUDIO_EQ,
+  IMG_DESK_SETUP,
+  IMG_HERO,
+];
 
 // ── RSS parser ─────────────────────────────────────────────────────────────────
 const ITUNES = "https://www.itunes.com/dtds/podcast-1.0.dtd";
@@ -166,7 +180,7 @@ function getInitialRssState(): { episodes: Episode[]; isLive: boolean } {
   } catch (err) {
     console.warn("[RSS Cache] Read error:", err);
   }
-  return { episodes: mockEpisodes, isLive: false };
+  return { episodes: [], isLive: false };
 }
 
 async function fetchRssFeedText(endpoints: string[]): Promise<string> {
@@ -232,7 +246,7 @@ export function useRssFeed(): UseRssFeedResult {
       } catch (err: unknown) {
         if (!isMounted) return;
         const msg = err instanceof Error ? err.message : "Live fetch failed";
-        console.warn("[RSS] Live fetch failed, using fallback:", msg);
+        console.warn("[RSS] Live fetch failed:", msg);
         setError(msg);
         setLoading(false);
       }

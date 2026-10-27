@@ -211,8 +211,7 @@ export function usePracticeCountdown(
 
   useEffect(() => {
     if (initialEvents && initialEvents.length > 0) {
-      setEvents(initialEvents);
-      return;
+      return undefined;
     }
 
     let isMounted = true;

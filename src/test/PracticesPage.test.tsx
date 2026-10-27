@@ -20,19 +20,11 @@ describe('PracticesPage', () => {
     expect(screen.getByText(/Current sessions are/i)).toBeInTheDocument();
   });
 
-  it('renders engineering curriculum topics section with active and pipeline tiers', () => {
+  it('renders learning paths section and pathways', () => {
     renderPracticesPage();
-    expect(screen.getByText(/Engineering Topics & Domains We Cover/i)).toBeInTheDocument();
-    expect(screen.getByText(/Active Workshop Tracks/i)).toBeInTheDocument();
-    expect(screen.getByText(/Live in Rotation Now/i)).toBeInTheDocument();
-    expect(screen.getByText(/Curriculum Expansion Roadmap/i)).toBeInTheDocument();
-    expect(screen.getByText(/In Pipeline · Coming Next Year/i)).toBeInTheDocument();
-
-    expect(screen.getAllByText(/Data Structures & Algorithms/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/System Design/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Frontend Engineering/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Cloud & AWS/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Scheduled Next Year/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Learning Paths/i)).toBeInTheDocument();
+    expect(screen.getByText(/Choose your path. Build your future./i)).toBeInTheDocument();
+    expect(screen.getByText(/Interview Preparation Path/i)).toBeInTheDocument();
   });
 
   it('renders She Leads Tech learning formats and key differences', () => {

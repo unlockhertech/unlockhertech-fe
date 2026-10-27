@@ -1,11 +1,14 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MemoryRouter } from 'react-router';
 import { ResourcesPage } from '../app/pages/ResourcesPage';
+import { DEFAULT_RESOURCES } from '../app/pages/resources/resourceData';
+import * as sanityUtils from '../app/utils/sanity';
 
 describe('ResourcesPage', () => {
   beforeEach(() => {
     localStorage.clear();
+    vi.spyOn(sanityUtils, 'getAllResources').mockResolvedValue(DEFAULT_RESOURCES);
   });
 
   const renderResourcesPage = () => {
@@ -18,8 +21,8 @@ describe('ResourcesPage', () => {
 
   it('renders page header and hero text', () => {
     renderResourcesPage();
-    expect(screen.getByRole('heading', { level: 1, name: /Career Transition Playbooks & Guides/i })).toBeInTheDocument();
-    expect(screen.getByText(/All 10 Guides Live Now/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /Technical & Career Resources Hub/i })).toBeInTheDocument();
+    expect(screen.getByText(/Free Community Library • Playbooks & Cheatsheets/i)).toBeInTheDocument();
     expect(screen.getByText(/PDF 4\+ Community Access/i)).toBeInTheDocument();
   });
 
@@ -73,7 +76,7 @@ describe('ResourcesPage', () => {
       expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
     });
 
-    const searchInput = screen.getByPlaceholderText(/Search by keyword, topic, or role/i);
+    const searchInput = screen.getByPlaceholderText(/Search by topic, keyword, or role/i);
     fireEvent.change(searchInput, { target: { value: 'Jargon' } });
 
     await waitFor(() => {
@@ -88,7 +91,7 @@ describe('ResourcesPage', () => {
       expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
     });
 
-    const searchInput = screen.getByPlaceholderText(/Search by keyword, topic, or role/i);
+    const searchInput = screen.getByPlaceholderText(/Search by topic, keyword, or role/i);
     fireEvent.change(searchInput, { target: { value: 'nonexistentquery123xyz' } });
 
     await waitFor(() => {
@@ -98,6 +101,35 @@ describe('ResourcesPage', () => {
 
     const resetBtn = screen.getByRole('button', { name: /Reset Filter/i });
     fireEvent.click(resetBtn);
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+  });
+
+  it('filters resources by category pill', async () => {
+    renderResourcesPage();
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+
+    const categoryBtn = screen.getByRole('button', { name: /Myth Busting/i });
+    fireEvent.click(categoryBtn);
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { level: 3, name: /10 Myths About the Tech Industry/i })).toBeInTheDocument();
+      expect(screen.queryByRole('heading', { level: 3, name: /10 Things to Know When Transitioning into Tech/i })).not.toBeInTheDocument();
+    });
+  });
+
+  it('filters resources by format pill', async () => {
+    renderResourcesPage();
+    await waitFor(() => {
+      expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);
+    });
+
+    const formatBtn = screen.getByRole('button', { name: /Playbooks/i });
+    fireEvent.click(formatBtn);
 
     await waitFor(() => {
       expect(screen.getAllByText(/10 Things to Know When Transitioning into Tech/i).length).toBeGreaterThan(0);

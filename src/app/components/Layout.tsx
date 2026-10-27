@@ -82,8 +82,8 @@ function DesktopResourcesDropdown({
                 }}
                 className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
               >
-                <span className="text-gray-900 font-bold text-sm">Career Playbooks</span>
-                <span className="text-gray-500 text-xs">Free downloadable PDF guides</span>
+                <span className="text-gray-900 font-bold text-sm">Resources Hub</span>
+                <span className="text-gray-500 text-xs">Free playbooks, cheatsheets & guides</span>
               </Link>
               <Link
                 to="/assessment"
@@ -365,7 +365,7 @@ function MobileNavigationMenu({
               }`
             }
           >
-            Career Playbooks
+            Resources Hub
           </NavLink>
         )}
 

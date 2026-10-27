@@ -57,6 +57,9 @@ export interface ExternalEvent {
   isPartner?: boolean;
 }
 
+export type ResourceFormat = "guide" | "cheatsheet" | "workbook" | "worksheet" | "template";
+export type ResourceTargetLevel = "All Levels" | "Beginner" | "Intermediate" | "Advanced";
+
 export interface Resource {
   id: string;
   title: string;
@@ -65,7 +68,8 @@ export interface Resource {
   category: string;
   stage?: string;
   collection?: string;
-  format?: string;
+  format?: ResourceFormat | string;
+  targetLevel?: ResourceTargetLevel | string;
   tags?: string[];
   isFeatured?: boolean;
   pdfUrl?: string;
@@ -76,6 +80,7 @@ export interface Resource {
   publishedAt?: string;
   weekNumber?: number;
   requiresLogin?: boolean;
+  downloadCount?: number;
 }
 
 export type JobCategory =

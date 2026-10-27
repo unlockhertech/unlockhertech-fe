@@ -132,15 +132,13 @@ describe('ATS Sync and Ingestion Engine', () => {
     });
   });
 
-  describe('Sanity Fallback Dataset', () => {
-    it('loads more than 10 vetted jobs from fallback data', async () => {
+  describe('Curated Seed Jobs Dataset', () => {
+    it('contains vetted seed jobs with valid properties', async () => {
       const realSanity = await vi.importActual<typeof import('../app/utils/jobsSanity')>('../app/utils/jobsSanity');
       expect(realSanity.CURATED_SEED_JOBS.length).toBeGreaterThan(10);
-      const jobs = await realSanity.getAllJobs();
-      expect(jobs.length).toBeGreaterThan(10);
       
-      // Ensure all jobs have valid application URLs, non-empty descriptions, whyApply, and decoded entities
-      jobs.forEach((job) => {
+      // Ensure all seed jobs have valid application URLs, non-empty descriptions, whyApply, and decoded entities
+      realSanity.CURATED_SEED_JOBS.forEach((job) => {
         expect(job.title).toBeTruthy();
         expect(job.company).toBeTruthy();
         expect(job.applyUrl).toMatch(/^https?:\/\//);

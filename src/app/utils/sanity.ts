@@ -2,7 +2,6 @@ import {createClient} from "@sanity/client";
 import type {SanityImageSource} from "@sanity/image-url";
 import {createImageUrlBuilder} from "@sanity/image-url";
 import type {BlogPost, ExternalEvent, Resource} from "../types";
-import imgAiBuildersLockup from "../../assets/conference-lockup-dark.svg";
 
 
 const getEnv = () => {
@@ -108,22 +107,6 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
   }
 }
 
-export const DEFAULT_FALLBACK_EVENTS: ExternalEvent[] = [
-  {
-    title: "AI Builders Global Conference 2026",
-    slug: "ai-builders-global-conference-2026",
-    date: "2026-10-14T13:00:00.000Z",
-    platform: "Conference",
-    urlOrId: "https://aibuildersnetwork.org/conference/tickets",
-    image: imgAiBuildersLockup,
-    description: "The #1 Virtual AI Conference for Builders, Tech Leaders, and Operators. 200+ sessions across AI Strategy, Startups, and AI Engineering.",
-    discountCode: "UNLOCKHERTECH20-F056D5212AE7",
-    discountPercentage: "20%",
-    ctaLabel: "Get tickets (20% off)",
-    isPartner: true,
-  },
-];
-
 /**
  * Fetches external events, sorted by date ascending.
  * Automatically filters out past events unless `includePast` is set to true.
@@ -131,13 +114,7 @@ export const DEFAULT_FALLBACK_EVENTS: ExternalEvent[] = [
 export async function getAllExternalEvents(includePast = false): Promise<ExternalEvent[]> {
   try {
     if (!env.VITE_SANITY_PROJECT_ID) {
-      return includePast
-        ? DEFAULT_FALLBACK_EVENTS
-        : DEFAULT_FALLBACK_EVENTS.filter((event) => {
-            const eventTime = new Date(event.date).getTime();
-            if (Number.isNaN(eventTime)) return true;
-            return eventTime + 3 * 60 * 60 * 1000 >= Date.now();
-          });
+      return [];
     }
 
     const query = `*[_type == "event"] | order(date asc) {
@@ -154,9 +131,11 @@ export async function getAllExternalEvents(includePast = false): Promise<Externa
     }`;
 
     const sanityEvents: ExternalEvent[] = await sanityClient.fetch(query);
-    const sanitySlugs = new Set(sanityEvents.map((e) => e.slug).filter(Boolean));
-    const missingFallbacks = DEFAULT_FALLBACK_EVENTS.filter((e) => !sanitySlugs.has(e.slug));
-    const events: ExternalEvent[] = [...sanityEvents, ...missingFallbacks].sort(
+    if (!sanityEvents || sanityEvents.length === 0) {
+      return [];
+    }
+
+    const events: ExternalEvent[] = [...sanityEvents].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
@@ -171,8 +150,8 @@ export async function getAllExternalEvents(includePast = false): Promise<Externa
       return eventTime + THREE_HOURS_MS >= now;
     });
   } catch (error) {
-    console.warn("Could not fetch external events from Sanity, using fallback:", error);
-    return DEFAULT_FALLBACK_EVENTS;
+    console.warn("Could not fetch external events from Sanity:", error);
+    return [];
   }
 }
 
@@ -193,6 +172,8 @@ export async function getAllResources(): Promise<Resource[]> {
       category,
       collection,
       format,
+      targetLevel,
+      tags,
       isFeatured,
       stage,
       "pdfUrl": coalesce(pdfFile.asset->url, externalPdfUrl, ""),
@@ -202,7 +183,8 @@ export async function getAllResources(): Promise<Resource[]> {
       isPublished,
       publishedAt,
       weekNumber,
-      requiresLogin
+      requiresLogin,
+      downloadCount
     }`;
 
     return await sanityClient.fetch(query);

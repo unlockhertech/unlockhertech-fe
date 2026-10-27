@@ -36,7 +36,7 @@ export function ResourceCategoryFilter({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search by keyword, topic, or role..."
+              placeholder="Search by topic, keyword, or role (e.g. System Design, Resume, AI)..."
               className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-coral focus:bg-white text-stone-900 transition-all placeholder:text-stone-400"
             />
             {searchQuery.length > 0 && (
@@ -74,27 +74,6 @@ export function ResourceCategoryFilter({
             })}
           </div>
         )}
-      </div>
-
-      {/* Category Pills */}
-      <div className="bg-white rounded-2xl shadow-xs p-2.5 border border-stone-200/80 flex items-center justify-start gap-1.5 overflow-x-auto scrollbar-none">
-        {RESOURCE_CATEGORIES.map((cat) => {
-          const isActive = selectedCategory === cat;
-          return (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => onSelectCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all cursor-pointer ${
-                isActive
-                  ? "bg-brand-coral text-white shadow-xs"
-                  : "bg-stone-100 text-stone-600 hover:bg-stone-200/70 hover:text-stone-900"
-              }`}
-            >
-              {cat}
-            </button>
-          );
-        })}
       </div>
     </div>
   );

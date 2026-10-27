@@ -180,13 +180,18 @@ export function ResourceCard({
         {/* Copy */}
         <div className="mt-5 space-y-2">
           <div className="flex items-center justify-between gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-[0.7rem] font-extrabold text-brand-coral uppercase tracking-wider">
                 {item.category}
               </span>
-              <span className="text-[0.65rem] font-semibold text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded">
+              <span className="text-[0.65rem] font-semibold text-stone-500 bg-stone-100 px-1.5 py-0.5 rounded">
                 {formatLabel}
               </span>
+              {item.targetLevel && (
+                <span className="text-[0.65rem] font-medium text-stone-500 bg-stone-50 border border-stone-200/80 px-1.5 py-0.5 rounded">
+                  {item.targetLevel}
+                </span>
+              )}
             </div>
 
             {/* Access Status Pill */}
@@ -199,6 +204,19 @@ export function ResourceCard({
           <p className="text-stone-600 text-sm leading-relaxed line-clamp-3">
             {item.description}
           </p>
+
+          {(item.tags?.length ?? 0) > 0 && (
+            <div className="flex items-center gap-1 flex-wrap pt-1">
+              {item.tags?.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[0.65rem] font-medium text-stone-500 bg-stone-50 border border-stone-100 px-1.5 py-0.5 rounded-md"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

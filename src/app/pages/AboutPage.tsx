@@ -1,7 +1,7 @@
 import { SubscribeCTA } from "../components/SubscribeCTA";
 import { useMetaData } from "../hooks/useMetaData";
 import { IMG_AUDIO_EQ } from "../data";
-import coFoundersPhoto from "../../assets/432250e0d9dc1c4cd94a60209ef0327c90f41452.png";
+import coFoundersPhoto from "../../assets/432250e0d9dc1c4cd94a60209ef0327c90f41452.webp";
 import { AboutHeroHeader } from "./about/AboutHeroHeader";
 import { AboutStorySection } from "./about/AboutStorySection";
 import { AboutPillarsSection } from "./about/AboutPillarsSection";

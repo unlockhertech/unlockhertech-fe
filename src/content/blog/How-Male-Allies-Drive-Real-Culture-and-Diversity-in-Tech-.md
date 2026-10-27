@@ -13,7 +13,7 @@ tags:
   - CompanyCulture
   - OrganisationalChange
 canonicalUrl: 'https://www.unlockhertech.com/'
-imageUrl: /assets/b8c7e416-4abb-41d2-ad8e-6dcf673843da.jpg
+imageUrl: /assets/b8c7e416-4abb-41d2-ad8e-6dcf673843da.webp
 ---
 
 Let's start with a simple exercise. Try naming 10 women currently in prominent leadership roles in the global tech industry without using a search engine. When I tried this myself, I struggled. Truth be told, the first names that come to mind are retrospective. Even now, I can see a couple of faces in my head, but do I remember their names? Honestly, no. Where's the progress in that?

@@ -4,7 +4,6 @@ import { SubscribeCTA } from "../components/SubscribeCTA";
 import { useMetaData } from "../hooks/useMetaData";
 import { BERRY, ORANGE, PINK, GREEN, BLUE, IMG_AUDIO_EQ } from "../data";
 import {
-  DEFAULT_RESOURCES,
   RESOURCE_COLLECTIONS,
   TRANSITION_STAGES,
 } from "./resources/resourceData";
@@ -21,43 +20,9 @@ import { ResourceUpcomingSpotlight } from "./resources/ResourceUpcomingSpotlight
 import { ResourceUnlockToast } from "./resources/ResourceUnlockToast";
 import { BrandPatternOverlay } from "../components/BrandPatternBackground";
 
-const RESOURCES_META_JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Unlock Her Tech Career Transition Guides",
-  "itemListElement": DEFAULT_RESOURCES.map((r, idx) => ({
-    "@type": "ListItem",
-    "position": idx + 1,
-    "item": {
-      "@type": "DigitalDocument",
-      "name": r.title,
-      "description": r.description,
-      "url": `https://unlockhertech.com/resources#${r.slug}`,
-      "fileFormat": "application/pdf",
-      "isAccessibleForFree": true,
-      "publisher": {
-        "@type": "Organization",
-        "name": "Unlock Her Tech",
-        "url": "https://unlockhertech.com",
-      },
-    },
-  })),
-};
-
 const BRAND_DOTS = [BERRY, ORANGE, PINK, GREEN, BLUE];
 
 export function ResourcesPage() {
-  useMetaData(
-    "Career Playbooks & PDF Guides | Unlock Her Tech",
-    "Free bite-sized PDF guides and career frameworks for career changers, non-tech pivoters, and ambitious women in technology.",
-    undefined,
-    {
-      image: "/logo.png",
-      type: "website",
-      jsonLd: RESOURCES_META_JSON_LD,
-    }
-  );
-
   const {
     resources,
     filteredResources,
@@ -72,6 +37,8 @@ export function ResourcesPage() {
     searchQuery,
     setSearchQuery,
     handleResetFilters,
+    visibleCount,
+    handleLoadMore,
     userEmail,
     isModalOpen,
     handleCloseModal,
@@ -84,6 +51,40 @@ export function ResourcesPage() {
     unlockToastEmail,
     handleDismissUnlockToast,
   } = useResources();
+
+  const resourcesJsonLd = useMemo(() => ({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Unlock Her Tech Resources Hub",
+    "itemListElement": resources.map((r, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "item": {
+        "@type": "DigitalDocument",
+        "name": r.title,
+        "description": r.description,
+        "url": `https://unlockhertech.com/resources#${r.slug}`,
+        "fileFormat": "application/pdf",
+        "isAccessibleForFree": true,
+        "publisher": {
+          "@type": "Organization",
+          "name": "Unlock Her Tech",
+          "url": "https://unlockhertech.com",
+        },
+      },
+    })),
+  }), [resources]);
+
+  useMetaData(
+    "Technical & Career Resources Hub | Unlock Her Tech",
+    "Download free technical playbooks, system design cheatsheets, AI guides, career transition roadmaps, and salary negotiation workbooks for women in tech.",
+    undefined,
+    {
+      image: "/logo.png",
+      type: "website",
+      jsonLd: resourcesJsonLd,
+    }
+  );
 
   const resourceCounts = useMemo(() => {
     const counts: Record<string, number> = {
@@ -131,13 +132,6 @@ export function ResourcesPage() {
       <ResourcesHeroHeader
         userEmail={userEmail}
         onChangeEmail={handleChangeEmail}
-      />
-
-      {/* ── 2a. Multi-Track Collection Switcher ────────────────────────── */}
-      <ResourceTrackSwitcher
-        activeCollection={activeCollection}
-        onSelectCollection={setActiveCollection}
-        resourceCounts={resourceCounts}
       />
 
       {/* ── 2b. Universal Search & Category Filter ─────────────────────── */}
@@ -240,19 +234,24 @@ export function ResourcesPage() {
 
           {/* Dedicated Catalog View for Non-Toolkit Collections or Extra Resources */}
           {!isLoading && nonToolkitResources.length > 0 && (
-            <div className="mt-12">
-              <div className="mb-8">
-                <h2 className="text-2xl font-extrabold text-stone-900">
-                  {activeCollectionMeta?.label ?? "Specialized Engineering & Career Guides"}
-                </h2>
-                <p className="text-stone-500 text-sm mt-1">
-                  {activeCollectionMeta?.description ??
-                    "In-depth guides, playbooks, and templates beyond the transition roadmap."}
-                </p>
+            <div className={showRoadmap ? "mt-12" : "mt-4"}>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                  <h2 className="text-2xl font-extrabold text-stone-900">
+                    {activeCollectionMeta?.label ?? "Specialized Engineering & Career Guides"}
+                  </h2>
+                  <p className="text-stone-500 text-sm mt-1">
+                    {activeCollectionMeta?.description ??
+                      "In-depth guides, playbooks, and templates beyond the transition roadmap."}
+                  </p>
+                </div>
+                <span className="text-xs font-extrabold text-stone-600 uppercase tracking-wider bg-stone-200/80 px-3.5 py-1.5 rounded-full self-start sm:self-auto">
+                  {nonToolkitResources.length} {nonToolkitResources.length === 1 ? "Guide" : "Guides"} Available
+                </span>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {nonToolkitResources.map((item, idx) => (
+                {nonToolkitResources.slice(0, visibleCount).map((item, idx) => (
                   <ResourceCard
                     key={item.id}
                     item={item}
@@ -262,6 +261,18 @@ export function ResourcesPage() {
                   />
                 ))}
               </div>
+
+              {nonToolkitResources.length > visibleCount && (
+                <div className="mt-10 text-center">
+                  <button
+                    type="button"
+                    onClick={handleLoadMore}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-stone-200 text-stone-800 font-extrabold text-xs shadow-xs hover:bg-stone-50 hover:border-stone-300 transition-all cursor-pointer"
+                  >
+                    Load More Guides ({nonToolkitResources.length - visibleCount} remaining)
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

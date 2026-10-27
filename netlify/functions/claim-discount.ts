@@ -1,4 +1,5 @@
 import type { Handler, HandlerEvent, HandlerResponse } from "@netlify/functions";
+import { recordDiscountClaim } from "./lib/supabaseClient";
 
 interface ClaimDiscountPayload {
   email?: string;
@@ -288,56 +289,66 @@ export const handler: Handler = async (event: HandlerEvent): Promise<HandlerResp
   const ticketUrl = payload.ticketUrl?.trim() ?? "";
   const { firstName, lastName } = splitName(fullName);
 
-  const apiKey = process.env.BREVO_API_KEY?.trim();
-  if (!apiKey) {
-    console.warn("BREVO_API_KEY is not set. Discount lead recorded locally:", {
-      email: rawEmail,
-      fullName,
-      eventTitle,
-      discountCode,
-    });
-    return createSuccessResponse({
-      success: true,
-      message: "Discount claimed successfully (simulated mode, missing BREVO_API_KEY)",
-      contactCreated: false,
-      emailSent: false,
-    });
-  }
-
-  const listIdRaw = process.env.BREVO_LIST_ID?.trim();
-  const listId = listIdRaw ? Number.parseInt(listIdRaw, 10) : undefined;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL?.trim();
-  const senderName = process.env.BREVO_SENDER_NAME?.trim() || "Unlock Her Tech";
-
-  // 1. Sync contact to Brevo
-  const contactCreated = await upsertBrevoContact({
-    apiKey,
+  // 1. Dual-write to Supabase (PostgreSQL with timestamp)
+  const supabasePromise = recordDiscountClaim({
     email: rawEmail,
-    firstName,
-    lastName,
-    eventTitle,
-    discountCode,
-    listId,
+    full_name: fullName,
+    event_title: eventTitle || "Community Event",
+    discount_code: discountCode,
+    discount_percentage: discountPercentage,
+    ticket_url: ticketUrl,
+    created_at: new Date().toISOString(),
   });
 
-  // 2. Optionally send transactional confirmation email if sender email is configured
+  const apiKey = process.env.BREVO_API_KEY?.trim();
+  let contactCreated = false;
   let emailSent = false;
-  if (senderEmail && discountCode) {
-    emailSent = await sendBrevoTransactionalEmail(apiKey, senderEmail, senderName, {
+
+  if (apiKey) {
+    const listIdRaw = process.env.BREVO_LIST_ID?.trim();
+    const listId = listIdRaw ? Number.parseInt(listIdRaw, 10) : undefined;
+    const senderEmail = process.env.BREVO_SENDER_EMAIL?.trim();
+    const senderName = process.env.BREVO_SENDER_NAME?.trim() || "Unlock Her Tech";
+
+    // Sync contact to Brevo
+    contactCreated = await upsertBrevoContact({
+      apiKey,
       email: rawEmail,
-      fullName,
       firstName,
+      lastName,
       eventTitle,
       discountCode,
-      discountPercentage,
-      ticketUrl,
+      listId,
+    });
+
+    // Optionally send transactional confirmation email if sender email is configured
+    if (senderEmail && discountCode) {
+      emailSent = await sendBrevoTransactionalEmail(apiKey, senderEmail, senderName, {
+        email: rawEmail,
+        fullName,
+        firstName,
+        eventTitle,
+        discountCode,
+        discountPercentage,
+        ticketUrl,
+      });
+    }
+  } else {
+    console.warn("BREVO_API_KEY is not set. Discount lead recorded locally & in Supabase:", {
+      email: rawEmail,
+      fullName,
+      eventTitle,
+      discountCode,
     });
   }
+
+  const supabaseResult = await supabasePromise;
 
   return createSuccessResponse({
     success: true,
     message: "Discount claimed successfully",
     contactCreated,
     emailSent,
+    dbRecorded: supabaseResult.success,
   });
 };

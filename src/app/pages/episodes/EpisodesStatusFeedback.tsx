@@ -29,7 +29,7 @@ export function EpisodesStatusFeedback({
       {error && (
         <div className="flex items-center gap-2 mb-4 text-xs text-amber-600">
           <HiOutlineExclamationCircle className="w-3.5 h-3.5" />
-          <span>Using cached data — RSS fetch failed: {error}</span>
+          <span>{totalFiltered > 0 ? `Using cached data — RSS fetch failed: ${error}` : `RSS fetch failed: ${error}`}</span>
         </div>
       )}
       {loading && (
