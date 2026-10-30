@@ -16,7 +16,7 @@ function useActiveStageId(): string {
       (el): el is HTMLElement => Boolean(el)
     );
 
-    if (sections.length === 0) return undefined;
+    if (typeof IntersectionObserver === "undefined" || sections.length === 0) return undefined;
 
     const observer = new IntersectionObserver(
       (entries) => {

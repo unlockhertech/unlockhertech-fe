@@ -27,6 +27,26 @@ const storageInstance = new LocalStorageMock();
 Object.defineProperty(window, 'localStorage', { value: storageInstance, writable: true, configurable: true });
 Object.defineProperty(globalThis, 'localStorage', { value: storageInstance, writable: true, configurable: true });
 
+class IntersectionObserverMock {
+  readonly root: Element | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  takeRecords = vi.fn(() => []);
+}
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserverMock,
+});
+Object.defineProperty(globalThis, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserverMock,
+});
+
 globalThis.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
 globalThis.HTMLMediaElement.prototype.play = () => Promise.resolve();
 globalThis.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };

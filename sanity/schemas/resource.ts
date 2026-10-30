@@ -2,7 +2,7 @@ import { defineType, defineField } from 'sanity';
 
 export const resourceSchema = defineType({
   name: 'resource',
-  title: 'Resource (PDF Guide)',
+  title: 'Resource',
   type: 'document',
   fields: [
     defineField({
@@ -29,8 +29,38 @@ export const resourceSchema = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'type',
+      title: 'Resource Format Type',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'PDF Guide / Playbook', value: 'guide' },
+          { title: 'Template / Cheatsheet', value: 'template' },
+          { title: 'Interactive Tool', value: 'tool' },
+          { title: 'Video Workshop / Tutorial', value: 'video' },
+          { title: 'Editorial Article / Deep Dive', value: 'article' },
+        ],
+      },
+      initialValue: 'guide',
+    }),
+    defineField({
+      name: 'topicCluster',
+      title: 'High-Level Topic Domain',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Career Change', value: 'career-change' },
+          { title: 'Engineering', value: 'engineering' },
+          { title: 'AI & Data', value: 'ai-data' },
+          { title: 'Job Search', value: 'job-search' },
+          { title: 'Leadership', value: 'leadership' },
+        ],
+      },
+      initialValue: 'career-change',
+    }),
+    defineField({
       name: 'category',
-      title: 'Category / Topic',
+      title: 'Specific Topic / Category',
       type: 'string',
       options: {
         list: [
@@ -53,6 +83,35 @@ export const resourceSchema = defineType({
         ],
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'level',
+      title: 'Experience Level',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'All Levels', value: 'All Levels' },
+          { title: 'Beginner', value: 'Beginner' },
+          { title: 'Intermediate', value: 'Intermediate' },
+          { title: 'Advanced', value: 'Advanced' },
+        ],
+      },
+      initialValue: 'All Levels',
+    }),
+    defineField({
+      name: 'durationOrPages',
+      title: 'Length / Duration / Page Count (e.g. "14 pages", "12 min watch", "Interactive tool")',
+      type: 'string',
+    }),
+    defineField({
+      name: 'actionLabel',
+      title: 'Action Button Label (e.g. "Download PDF", "Open Tool", "Watch Video", "Read Article")',
+      type: 'string',
+    }),
+    defineField({
+      name: 'actionUrl',
+      title: 'Action Target URL (External tool/video link or document)',
+      type: 'url',
     }),
     defineField({
       name: 'collection',

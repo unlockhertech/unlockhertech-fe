@@ -100,7 +100,9 @@ describe("PracticeCountdownCard & usePracticeCountdown", () => {
     expect(screen.getByTestId("practice-countdown-section")).toBeInTheDocument();
     expect(screen.getByTestId("countdown-digits-grid")).toBeInTheDocument();
     expect(screen.getAllByText(/She Leads Tech/i).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Theory Session/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Theory Session/i).length).toBeGreaterThan(0);
+    expect(screen.getByTestId("topic-format-pill")).toHaveTextContent(/Theory Session/i);
+    expect(screen.getByTestId("format-subtitle")).toHaveTextContent(/Theory Session • Instructor-Led Learning/i);
     expect(screen.getByText(/Days/i)).toBeInTheDocument();
     expect(screen.getByText(/Hours/i)).toBeInTheDocument();
     expect(screen.getByText(/Mins/i)).toBeInTheDocument();
@@ -111,6 +113,57 @@ describe("PracticeCountdownCard & usePracticeCountdown", () => {
       "https://luma.com/sheleadstechpractice"
     );
     expect(screen.getByRole("link", { name: /Google Cal/i })).toBeInTheDocument();
+  });
+
+  it("dynamically shows Practice topic pill and format info when subject is practical", () => {
+    const futureDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+    const practicalEvent: ExternalEvent = {
+      title: "She Leads Tech Practical: Sliding Window Hands-On Coding",
+      slug: "she-leads-tech-practical-sliding-window",
+      date: futureDate.toISOString(),
+      platform: "Luma",
+      urlOrId: "https://lu.ma/she-leads-tech-practical-1",
+      description: "Hands-on coding session solving sliding window interview problems together.",
+    };
+
+    renderCard(undefined, undefined, practicalEvent);
+
+    const topicPill = screen.getByTestId("topic-format-pill");
+    expect(topicPill).toHaveTextContent(/Practice Session/i);
+    expect(topicPill).not.toHaveTextContent(/Theory/i);
+
+    const formatSubtitle = screen.getByTestId("format-subtitle");
+    expect(formatSubtitle).toHaveTextContent(/Practice Session • Hands-On Problem Solving/i);
+
+    expect(screen.getByText(/Current live sessions follow our/i)).toHaveTextContent(/Practice/i);
+  });
+
+  it("dynamically shows Review and Build topic pills for review and build events", () => {
+    const futureDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+    const reviewEvent: ExternalEvent = {
+      title: "She Leads Tech Review: Tree Algorithms & Edge Cases Recap",
+      slug: "she-leads-tech-review-trees",
+      date: futureDate.toISOString(),
+      platform: "Luma",
+      urlOrId: "https://lu.ma/review-trees",
+    };
+
+    const { unmount } = renderCard(undefined, undefined, reviewEvent);
+    expect(screen.getByTestId("topic-format-pill")).toHaveTextContent(/Review Session/i);
+    expect(screen.getByTestId("format-subtitle")).toHaveTextContent(/Review Session • Mastery & Recall/i);
+    unmount();
+
+    const buildEvent: ExternalEvent = {
+      title: "She Leads Tech Build: End-to-End Microservices Architecture Project",
+      slug: "she-leads-tech-build-project",
+      date: futureDate.toISOString(),
+      platform: "Luma",
+      urlOrId: "https://lu.ma/build-project",
+    };
+
+    renderCard(undefined, undefined, buildEvent);
+    expect(screen.getByTestId("topic-format-pill")).toHaveTextContent(/Build Session/i);
+    expect(screen.getByTestId("format-subtitle")).toHaveTextContent(/Build Session • Real-World Projects/i);
   });
 
   it("displays newly added event topic when passed as event prop", () => {

@@ -60,27 +60,27 @@ export function PdfPaperThumbnail({
 
   if (isPlaceholder) {
     return (
-      <div className="relative w-full aspect-4/3 rounded-2xl bgbg-linear-to-brrom-stone-100 to-stone-200/80 p-5 flex flex-col items-center justify-center border-2 border-dashed border-stone-300 group-hover:border-brand-coral/50 transition-all overflow-hidden shadow-inner">
+      <div className="relative w-full aspect-4/3 rounded-2xl bg-linear-to-br from-pink-50/80 via-white to-amber-50/60 p-5 flex flex-col items-center justify-center border-2 border-dashed border-brand-coral/30 group-hover:border-brand-coral/60 transition-all overflow-hidden shadow-xs">
         <div className="absolute inset-0 bg-linear-to-tr from-brand-coral/5 via-transparent to-transparent pointer-events-none" />
         
-        <div className="relative w-32 h-40 bg-white/70 backdrop-blur-xs rounded-xl shadow-md border border-stone-300/60 flex flex-col justify-between p-3.5 transform group-hover:scale-105 transition-transform duration-300">
+        <div className="relative w-32 h-40 bg-white/90 backdrop-blur-xs rounded-xl shadow-md border border-stone-200 flex flex-col justify-between p-3.5 transform group-hover:scale-105 transition-transform duration-300">
           <div className="border-b border-stone-200 pb-2">
-            <div className="w-10 h-2 bg-stone-300 rounded mb-1.5" />
-            <div className="text-[10px] font-bold text-stone-400 leading-tight">Next Drop...</div>
+            <div className="w-10 h-2 bg-brand-coral/30 rounded mb-1.5" />
+            <div className="text-[10px] font-bold text-stone-600 leading-tight">Next Drop...</div>
           </div>
 
           <div className="flex flex-col items-center justify-center my-2 py-1">
-            <div className="w-9 h-9 rounded-full bg-stone-200 flex items-center justify-center text-stone-500 shadow-inner">
-              <HiLockClosed className="w-4 h-4 text-stone-500" />
+            <div className="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center text-brand-coral shadow-inner">
+              <HiLockClosed className="w-4 h-4 text-brand-coral" />
             </div>
           </div>
 
-          <div className="bg-stone-200 text-stone-600 text-[9px] font-bold py-1 px-1.5 rounded text-center truncate">
+          <div className="bg-stone-100 text-stone-700 text-[9px] font-bold py-1 px-1.5 rounded text-center truncate">
             {`PDF ${weekNumber} • Coming Soon`}
           </div>
         </div>
 
-        <span className="mt-3 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[0.7rem] font-extrabold bg-stone-900/10 text-stone-700 uppercase tracking-wider">
+        <span className="mt-3 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[0.7rem] font-extrabold bg-brand-coral/10 text-brand-coral uppercase tracking-wider border border-brand-coral/20">
           In Production
         </span>
       </div>

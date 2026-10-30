@@ -47,9 +47,11 @@ Unlock Her Tech is a production-grade web application offering:
    - Free curated PDF frameworks for career switchers with lead-magnet capture forms.
 6. **Embedded Sanity Studio**:
    - Direct in-app content management for blog posts, episodes, events, and job requisitions at `/admin`.
-7. **Social Bio & Linktree Hub**:
+7. **Live Discord Community**:
+   - Official real-time community server ([discord.gg/7yC78Yhem6](https://discord.gg/7yC78Yhem6)) for She Leads Tech workshop study groups, episode discussions, career advice, and inclusive networking.
+8. **Social Bio & Linktree Hub**:
    - Custom branded link-in-bio page with video spotlight and social links (`/links`, `/bio`, `/linktree`).
-8. **Trust & Privacy Suite**:
+9. **Trust & Privacy Suite**:
    - Fully compliant with GDPR and UK Data Protection Act 2018.
    - Granular cookie consent management and detailed privacy policies.
 

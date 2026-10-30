@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback, type MouseEvent } from "reac
 import { useSearchParams } from "react-router";
 import type { Job } from "../../types";
 import { getAllJobs } from "../../utils/jobsSanity";
+import { useSanityQuery } from "../../hooks/useSanityQuery";
 import { trackJobSave, trackJobShare } from "../../utils/analytics";
 import { filterAndSortJobs, type JobSortOption } from "./jobUtils";
 
@@ -11,8 +12,17 @@ export type { JobSortOption };
 
 export function useJobs() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  const fetchJobs = useCallback(async (): Promise<Job[]> => {
+    return await getAllJobs();
+  }, []);
+
+  const { data: rawJobs, loading } = useSanityQuery<Job[]>(
+    "sanity_all_jobs",
+    fetchJobs
+  );
+
+  const jobs = useMemo(() => rawJobs ?? [], [rawJobs]);
 
   // Filter States initialised from URL params if present
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get("q") || "");
@@ -40,21 +50,6 @@ export function useJobs() {
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
   const [reportedJobIds, setReportedJobIds] = useState<string[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadJobs() {
-      setLoading(true);
-      try {
-        const data = await getAllJobs();
-        setJobs(data);
-      } catch (err) {
-        console.error("Failed to load jobs:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadJobs();
-  }, []);
 
   // Sync active filters to URL search params
   useEffect(() => {

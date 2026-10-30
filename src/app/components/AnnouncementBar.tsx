@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { HiBolt, HiXMark, HiArrowRight } from "react-icons/hi2";
+import { HiXMark, HiArrowRight } from "react-icons/hi2";
+import { FaDiscord } from "react-icons/fa6";
+import { DISCORD_INVITE_URL } from "../data";
 
 export function AnnouncementBar() {
   const [dismissed, setDismissed] = useState(false);
@@ -8,27 +9,30 @@ export function AnnouncementBar() {
   if (dismissed) return null;
 
   return (
-    <div className="bg-[#8a1f55] text-white text-xs sm:text-sm py-2 px-4 relative z-50 border-b border-white/15 shadow-sm overflow-hidden">
+    <div className="bg-[#5865F2] text-white text-xs sm:text-sm py-2 px-4 relative z-50 border-b border-white/15 shadow-sm overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 relative z-10">
         
         <div className="flex items-center gap-2 overflow-hidden mx-auto sm:mx-0">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-brand-coral font-black text-[0.65rem] uppercase tracking-wider shrink-0 shadow-xs">
-            <HiBolt className="w-3 h-3 text-brand-coral" /> NEW INITIATIVE
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#5865F2] font-black text-[0.65rem] uppercase tracking-wider shrink-0 shadow-xs">
+            <FaDiscord className="w-3 h-3 text-[#5865F2]" /> DISCORD LAUNCH
           </span>
           <p className="truncate font-medium text-white">
-            <span className="font-bold text-pink-200">She Leads Tech:</span> Live engineering workshops — Theory, Practice & Review!
+            <span className="font-bold text-white">We are live on Discord!</span>{" "}
+            Join study groups, debrief podcast episodes & connect in real-time.
           </p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <Link
-            to="/she-leads-tech"
-            aria-label="Learn more about She Leads Tech"
-            className="hidden sm:inline-flex items-center gap-1 px-3.5 py-1 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition-colors border border-white/30"
+          <a
+            href={DISCORD_INVITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Join Discord Community"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white text-[#5865F2] hover:bg-white/90 font-bold text-xs transition-colors shadow-xs"
           >
-            <span>Explore She Leads Tech</span>{" "}
+            <span>Join Our Discord</span>
             <HiArrowRight className="w-3 h-3" />
-          </Link>
+          </a>
 
           <button
             type="button"

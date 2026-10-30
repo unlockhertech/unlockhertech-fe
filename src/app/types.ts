@@ -12,6 +12,13 @@ export interface Episode {
   imageUrl?: string;
 }
 
+export type TeamDepartmentId =
+  | "leadership"
+  | "research"
+  | "podcast"
+  | "community"
+  | "design";
+
 export interface TeamMember {
   name: string;
   role: string;
@@ -20,6 +27,7 @@ export interface TeamMember {
   linkedinUrl?: string;
   avatarColor: string;
   photoUrl: string;
+  department?: TeamDepartmentId;
 }
 
 export interface Platform {
@@ -57,6 +65,15 @@ export interface ExternalEvent {
   isPartner?: boolean;
 }
 
+export type ResourceType = "guide" | "template" | "tool" | "video" | "article";
+export type ResourceLevel = "All Levels" | "Beginner" | "Intermediate" | "Advanced";
+export type ResourceTopicCluster =
+  | "career-change"
+  | "engineering"
+  | "ai-data"
+  | "job-search"
+  | "leadership";
+
 export type ResourceFormat = "guide" | "cheatsheet" | "workbook" | "worksheet" | "template";
 export type ResourceTargetLevel = "All Levels" | "Beginner" | "Intermediate" | "Advanced";
 
@@ -65,19 +82,28 @@ export interface Resource {
   title: string;
   slug: string;
   description: string;
+  type?: ResourceType;
   category: string;
+  topicCluster?: ResourceTopicCluster;
+  level?: ResourceLevel;
+  durationOrPages?: string;
+  actionLabel?: string;
+  actionUrl?: string;
   stage?: string;
   collection?: string;
   format?: ResourceFormat | string;
   targetLevel?: ResourceTargetLevel | string;
   tags?: string[];
   isFeatured?: boolean;
+  isComingSoon?: boolean;
   pdfUrl?: string;
   fileSize?: string;
   pageCount?: string;
   accentColor?: string;
-  isPublished: boolean;
+  isPublished?: boolean;
   publishedAt?: string;
+  releaseDate?: string;
+  releaseTimestamp?: number;
   weekNumber?: number;
   requiresLogin?: boolean;
   downloadCount?: number;

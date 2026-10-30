@@ -9,7 +9,11 @@ import imgRupi from '../assets/5865071a697a5a7a468424e514c3437692713cc9.webp';
 import imgTim from '../assets/0b5f71adb2d06053e52d7a5d98977673c1679de0.webp';
 import imgAlbert from '../assets/cc744fd1-b50d-4441-ad1e-722214345c01.webp';
 import imgOlha from '../assets/317e3cec-2b64-424f-bbda-6e01d712f8f3.webp';
-import imgSheLeadsTech from '../assets/a6601dd5-4c26-44d0-9828-952122709520.webp';
+import imgSheLeadsTech from '../assets/she-leads-new-logo.webp';
+import imgClaudia from '../assets/claudia.webp';
+import imgLorraine from '../assets/lorraine.webp';
+import imgNina from '../assets/nina.webp';
+import imgRufus from '../assets/rufus.webp';
 
 export { imgSheLeadsTech };
 // ── Brand palette ──────────────────────────────────────────────────────────────
@@ -18,6 +22,9 @@ export const ORANGE = "#e8563a";
 export const BLUE   = "#5f9de3";
 export const PINK   = "#f4a0b4";
 export const GREEN  = "#72c472";
+
+// ── Community Links ───────────────────────────────────────────────────────────
+export const DISCORD_INVITE_URL = "https://discord.gg/7yC78Yhem6";
 // ── Images ─────────────────────────────────────────────────────────────────────
 export const IMG_HERO        = "https://images.unsplash.com/photo-1617745546548-9324da9e2b7c?auto=format&fit=crop&q=80&w=800";
 export const IMG_STUDIO_MIC  = "https://images.unsplash.com/photo-1769509068789-f242b5a6fc47?auto=format&fit=crop&q=80&w=600";
@@ -59,15 +66,16 @@ export const episodes: Episode[] = [
 ];
 
 // ── Team ───────────────────────────────────────────────────────────────────────
-export const teamMembers = [
+export const teamMembers: import("./types").TeamMember[] = [
     { 
       name: "Pritanya Fritz", 
-      role: "Co-Founder, Podcast Host & Product & Tech Lead", 
+      role: "Co-Founder, Podcast Host & Chief Product & Technology Officer", 
       tagline: "Tech professional, passionate storyteller & proud new mum",
       linkedinUrl: "https://www.linkedin.com/in/pritanyafritz/",
       bio: "Pritanya/Pritty is a passionate storyteller and product leader who co-created Unlock Her Tech to shine a light on the brilliant women shaping the future of tech. She brings an infectious energy to the mic, drawing out authentic voices from founders, engineers, and innovators worldwide.", 
       avatarColor: BERRY, 
-      photoUrl: imgPritty 
+      photoUrl: imgPritty,
+      department: "leadership"
     },
     { 
       name: "Ellie Tahmasebi",
@@ -76,7 +84,38 @@ export const teamMembers = [
       linkedinUrl: "https://www.linkedin.com/in/ellie-tahmasebi/",
       bio: "Elaheh/Ellie is a visionary co-founder and software engineer who channels her passion for technical equity, strategic partnerships, and hands-on growth into every podcast conversation and community initiative, empowering women across the tech landscape.", 
       avatarColor: BLUE, 
-      photoUrl: imgElaheh 
+      photoUrl: imgElaheh,
+      department: "leadership"
+    },
+    { 
+      name: "Rupi Sagoo", 
+      role: "Lead Researcher", 
+      tagline: "Curious tech researcher, data investigator & community builder",
+      linkedinUrl: "https://www.linkedin.com/in/rupi-sagoo-8285762/",
+      bio: "Rupi leads research and editorial strategy at Unlock Her Tech. She guides deep-dive investigations into industry trends, timely themes, and background research to ensure every episode and article is rich, rigorous, and deeply relevant.", 
+      avatarColor: GREEN, 
+      photoUrl: imgRupi,
+      department: "research"
+    },
+    { 
+      name: "Nina Vorobeva", 
+      role: "Podcast Researcher", 
+      tagline: "Insightful researcher exploring technical innovations & inspiring career journeys",
+      linkedinUrl: "https://www.linkedin.com/in/nina-vorobeva/",
+      bio: "Nina uncovers key technological developments and compelling guest stories, delivering rich background research and context to power insightful podcast conversations.", 
+      avatarColor: PINK, 
+      photoUrl: imgNina,
+      department: "research"
+    },
+    { 
+      name: "Lorraine Muchingaguyo", 
+      role: "Podcast Researcher", 
+      tagline: "Passionate investigator uncovering authentic stories & tech industry trends",
+      linkedinUrl: "https://www.linkedin.com/in/lorraine-muchingaguyo-7782a11b9/",
+      bio: "Lorraine investigates emerging tech topics, industry milestones, and guest backgrounds to ensure every episode delivers deep, actionable insights for our community.", 
+      avatarColor: ORANGE, 
+      photoUrl: imgLorraine,
+      department: "research"
     },
     { 
       name: "Jen Carswell", 
@@ -85,52 +124,18 @@ export const teamMembers = [
       linkedinUrl: "https://www.linkedin.com/in/jen-carswell-aa096193/",
       bio: "Jen is a curious, empathetic co-host who brings warmth and wit to the mic. She has a gift for making guests feel at ease and drawing out the stories behind the stories — the pivots, the failures, and the small wins that add up to something extraordinary.", 
       avatarColor: GREEN, 
-      photoUrl: imgJen 
+      photoUrl: imgJen,
+      department: "podcast"
     },
     { 
-      name: "Albert Duker", 
-      role: "Partnerships & Strategy Lead", 
-      tagline: "Strategic relationship builder, ecosystem driver & inclusion advocate",
-      linkedinUrl: "https://www.linkedin.com/in/albert-duker/",
-      bio: "Albert leads strategic partnerships and ecosystem growth at Unlock Her Tech. He builds meaningful collaborations with tech companies, community networks, and industry leaders to expand our impact and create new opportunities for our community.", 
-      avatarColor: ORANGE, 
-      photoUrl: imgAlbert 
-    },
-    { 
-      name: "Sabrina Scollan", 
-      role: "Partnerships & Events Coordinator", 
-      tagline: "Sharp, detail-oriented coordinator connecting communities through impactful events",
-      linkedinUrl: "https://www.linkedin.com/in/sabrina-scollan-60064047/",
-      bio: "Sabrina drives Unlock Her Tech's partnerships and community events with sharp organisation and creative execution. She brings people together through engaging experiences and builds strong relationships that elevate women and allies across the tech landscape.", 
+      name: "Claudia Tiller", 
+      role: "Podcast Coordinator", 
+      tagline: "Organised orchestrator driving guest relations, recording logistics & production flow",
+      linkedinUrl: "https://www.linkedin.com/in/cst7/",
+      bio: "Claudia coordinates podcast operations from initial guest outreach and scheduling to recording logistics, ensuring smooth, seamless production for every episode.", 
       avatarColor: PINK, 
-      photoUrl: "https://ui-avatars.com/api/?name=Sabrina+Scollan&background=f4a0b4&color=fff&size=400&bold=true&rounded=true" 
-    },
-    { 
-      name: "Shelly Chambers", 
-      role: "Social Media & Strategy Lead", 
-      tagline: "Product strategist, platform explorer & community growth champion",
-      linkedinUrl: "https://www.linkedin.com/in/s-j-chambers/",
-      bio: "Shelly sits at the intersection of strategy and growth, steering Unlock Her Tech toward the listeners and community members who need it most. She leads social campaigns, platform strategy, and audience development — turning a passionate community into a thriving movement.", 
-      avatarColor: BLUE, 
-      photoUrl: imgShelly 
-    },
-    { 
-      name: "Rupi Sagoo", 
-      role: "Podcast & Content Researcher", 
-      tagline: "Curious tech researcher, data investigator & community builder",
-      linkedinUrl: "https://www.linkedin.com/in/rupi-sagoo-8285762/",
-      bio: "Rupi is the intellectual backbone of Unlock Her Tech. She dives deep into industry trends, timely themes, and editorial research to ensure every episode and article is rich, informed, and deeply relevant.", 
-      avatarColor: GREEN, 
-      photoUrl: imgRupi 
-    },
-    { 
-      name: "Olha Danylevska", 
-      role: "UI/UX Designer", 
-      tagline: "Human-centered designer crafting intuitive, accessible & engaging digital experiences",
-      linkedinUrl: "https://www.linkedin.com/in/olha-danylevska-117810a5/",
-      bio: "Olha shapes the visual and interactive experience of Unlock Her Tech. Passionate about user-centric and accessible design, she ensures our digital platforms are welcoming, engaging, and effortless to navigate.", 
-      avatarColor: ORANGE, 
-      photoUrl: imgOlha
+      photoUrl: imgClaudia,
+      department: "podcast"
     },
     { 
       name: "Tim Price", 
@@ -139,6 +144,57 @@ export const teamMembers = [
       linkedinUrl: "https://www.linkedin.com/in/timpricemedia/",
       bio: "Tim is the audio and video craftsman who transforms raw recordings into polished, professional episodes. With a keen eye and ear for pacing, clarity, and storytelling flow, he ensures every listen and watch feels seamless.", 
       avatarColor: BERRY, 
-      photoUrl: imgTim 
+      photoUrl: imgTim,
+      department: "podcast"
+    },
+    { 
+      name: "Rufus Hainge", 
+      role: "Podcast & Video Editor", 
+      tagline: "Creative editor shaping crisp audio narratives & dynamic video visuals",
+      linkedinUrl: "https://www.linkedin.com/in/rufus-hainge-79b693323/",
+      bio: "Rufus elevates Unlock Her Tech's multimedia presence, editing audio and video content with sharp precision, engaging pacing, and studio-grade sound quality.", 
+      avatarColor: BLUE, 
+      photoUrl: imgRufus,
+      department: "podcast"
+    },
+    { 
+      name: "Albert Duker", 
+      role: "Partnerships & Strategy Lead", 
+      tagline: "Strategic relationship builder, ecosystem driver & inclusion advocate",
+      linkedinUrl: "https://www.linkedin.com/in/albert-duker/",
+      bio: "Albert leads strategic partnerships and ecosystem growth at Unlock Her Tech. He builds meaningful collaborations with tech companies, community networks, and industry leaders to expand our impact and create new opportunities for our community.", 
+      avatarColor: ORANGE, 
+      photoUrl: imgAlbert,
+      department: "community"
+    },
+    // {
+    //   name: "Sabrina Scollan",
+    //   role: "Partnerships & Events Coordinator",
+    //   tagline: "Sharp, detail-oriented coordinator connecting communities through impactful events",
+    //   linkedinUrl: "https://www.linkedin.com/in/sabrina-scollan-60064047/",
+    //   bio: "Sabrina drives Unlock Her Tech's partnerships and community events with sharp organisation and creative execution. She brings people together through engaging experiences and builds strong relationships that elevate women and allies across the tech landscape.",
+    //   avatarColor: PINK,
+    //   photoUrl: "https://ui-avatars.com/api/?name=Sabrina+Scollan&background=f4a0b4&color=fff&size=400&bold=true&rounded=true",
+    //   department: "community"
+    // },
+    { 
+      name: "Shelly Chambers", 
+      role: "Social Media & Strategy Lead", 
+      tagline: "Product strategist, platform explorer & community growth champion",
+      linkedinUrl: "https://www.linkedin.com/in/s-j-chambers/",
+      bio: "Shelly sits at the intersection of strategy and growth, steering Unlock Her Tech toward the listeners and community members who need it most. She leads social campaigns, platform strategy, and audience development — turning a passionate community into a thriving movement.", 
+      avatarColor: BLUE, 
+      photoUrl: imgShelly,
+      department: "community"
+    },
+    { 
+      name: "Olha Danylevska", 
+      role: "UI/UX Designer", 
+      tagline: "Human-centered designer crafting intuitive, accessible & engaging digital experiences",
+      linkedinUrl: "https://www.linkedin.com/in/olha-danylevska-117810a5/",
+      bio: "Olha shapes the visual and interactive experience of Unlock Her Tech. Passionate about user-centric and accessible design, she ensures our digital platforms are welcoming, engaging, and effortless to navigate.", 
+      avatarColor: ORANGE, 
+      photoUrl: imgOlha,
+      department: "design"
     },
 ];

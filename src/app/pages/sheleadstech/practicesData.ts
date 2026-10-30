@@ -11,7 +11,7 @@ import {
 } from "react-icons/hi2";
 
 export interface LearningFormat {
-  id: "theory" | "practice" | "review";
+  id: "theory" | "practice" | "review" | "build";
   title: string;
   shortName: string;
   subtitle: string;
@@ -70,6 +70,7 @@ export interface Requirement {
 export const STAGE_THEORY_HEX = "#ff6051";
 export const STAGE_PRACTICE_HEX = "#b52970";
 export const STAGE_REVIEW_HEX = "#72c472";
+export const STAGE_BUILD_HEX = "#1e72b5";
 
 export const LEARNING_FORMATS: LearningFormat[] = [
   {
@@ -164,6 +165,34 @@ export const LEARNING_FORMATS: LearningFormat[] = [
       "Collaborative Q&A and trade-off comparisons",
     ],
   },
+  {
+    id: "build",
+    title: "She Leads Tech Build",
+    shortName: "Build",
+    subtitle: "Real-World Projects & Collaborative Engineering",
+    badge: "Ship & Collaborate",
+    badgeColor: "bg-[#1e72b5] text-white",
+    mantra: "Design it → Build it → Ship it → Add to Portfolio.",
+    purpose:
+      "Designed to help participants build real-world engineering projects from end to end. Participants collaborate in teams or work individually to architect, code, test, and deploy functional applications, integrating theoretical knowledge and problem-solving skills into tangible portfolio projects.",
+    keyDifference: "Participants build and ship complete projects — they are primarily creating and engineering end-to-end solutions.",
+    icon: HiRocketLaunch,
+    instructorRole: [
+      "Provide project briefs, architectural blueprints, and starter templates.",
+      "Guide system architecture, API design, and database schema decisions.",
+      "Facilitate peer code reviews, pair programming, and git collaboration workflows.",
+      "Demonstrate real-world development workflows, CI/CD, and deployment strategies.",
+      "Help unblock complex engineering hurdles, dependency issues, and bugs.",
+      "Provide actionable feedback on code quality, scalability, accessibility, and security.",
+      "Help participants package, document, and showcase their projects for resumes and portfolios.",
+    ],
+    topicsOrActivities: [
+      "Full-stack web applications with modern frameworks & APIs",
+      "Microservices, distributed backend systems & database integration",
+      "AI-powered tools, LLM integrations & RAG applications",
+      "Cloud infrastructure, containerization & automated deployment pipelines",
+    ],
+  },
 ];
 
 export const KEY_DIFFERENCES: KeyDifferenceItem[] = [
@@ -193,6 +222,15 @@ export const KEY_DIFFERENCES: KeyDifferenceItem[] = [
     mantra: "Remember it → Practise it again → Understand it better → Make it stick.",
     color: "border-[#72c472]/40 bg-[#72c472]/15 text-stone-900",
     badgeColor: "bg-[#72c472] text-white",
+  },
+  {
+    format: "Build",
+    whoLeads: "Participants architect & build with engineering mentorship",
+    participantsRole: "Participants are primarily building, shipping, and collaborating",
+    coreFocus: "Design it → Build it → Ship it → Showcase it",
+    mantra: "Design it → Build it → Ship it → Add to Portfolio.",
+    color: "border-[#1e72b5]/40 bg-[#1e72b5]/10 text-stone-900",
+    badgeColor: "bg-[#1e72b5] text-white",
   },
 ];
 

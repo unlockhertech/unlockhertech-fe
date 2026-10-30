@@ -15,6 +15,7 @@ interface DownloadResourceModalProps {
 interface DownloadLeadFormProps {
   isCommunityGuide: boolean;
   isSwitchEmailMode?: boolean;
+  isQuickUnlockMode?: boolean;
   modalTitle: string;
   resourceTitle: string;
   fullName: string;
@@ -27,19 +28,34 @@ interface DownloadLeadFormProps {
   onEmailChange: (val: string) => void;
   onDiscordHandleChange: (val: string) => void;
   onRoleInterestChange: (val: string) => void;
+  onToggleQuickUnlock?: () => void;
   onClose: () => void;
   onSubmit: (e: SyntheticEvent) => void;
 }
 
-function renderSubmitButtonContent(isSubmitting: boolean, isCommunityGuide: boolean, isSwitchEmailMode: boolean) {
+function renderSubmitButtonContent(
+  isSubmitting: boolean,
+  isCommunityGuide: boolean,
+  isSwitchEmailMode: boolean,
+  isQuickUnlockMode: boolean
+) {
   if (isSubmitting) {
-    return <span>{isSwitchEmailMode ? "Switching..." : "Unlocking..."}</span>;
+    if (isSwitchEmailMode) return <span>Switching...</span>;
+    return <span>Unlocking...</span>;
   }
   if (isSwitchEmailMode) {
     return (
       <>
         <HiShieldCheck className="w-5 h-5 text-brand-yellow" />
         <span>Confirm New Email</span>
+      </>
+    );
+  }
+  if (isQuickUnlockMode) {
+    return (
+      <>
+        <HiSparkles className="w-5 h-5 text-brand-yellow" />
+        <span>Quick Unlock Resource</span>
       </>
     );
   }
@@ -59,8 +75,9 @@ function renderSubmitButtonContent(isSubmitting: boolean, isCommunityGuide: bool
   );
 }
 
-function getPillText(isCommunityGuide: boolean, isSwitchEmailMode: boolean) {
+function getPillText(isCommunityGuide: boolean, isSwitchEmailMode: boolean, isQuickUnlockMode: boolean) {
   if (isSwitchEmailMode) return "Switch Account · Your Current Access Stays Active";
+  if (isQuickUnlockMode) return "Returning Member · Instant Email Re-verification";
   if (isCommunityGuide) return "Free Community Access · Unlock Instant PDF Download";
   return "Free Career Guide Download";
 }
@@ -83,6 +100,7 @@ function getUnlockDescription(isCommunityGuide: boolean, resourceTitle: string) 
 function DownloadLeadForm({
   isCommunityGuide,
   isSwitchEmailMode = false,
+  isQuickUnlockMode = false,
   modalTitle,
   resourceTitle,
   fullName,
@@ -95,10 +113,11 @@ function DownloadLeadForm({
   onEmailChange,
   onDiscordHandleChange,
   onRoleInterestChange,
+  onToggleQuickUnlock,
   onClose,
   onSubmit,
 }: Readonly<DownloadLeadFormProps>) {
-  const pillText = getPillText(isCommunityGuide, isSwitchEmailMode);
+  const pillText = getPillText(isCommunityGuide, isSwitchEmailMode, isQuickUnlockMode);
 
   return (
     <>
@@ -113,15 +132,37 @@ function DownloadLeadForm({
         {modalTitle}
       </h3>
 
-      <p className="text-sm text-stone-600 leading-relaxed mb-6">
-        {isSwitchEmailMode ? (
+      <p className="text-sm text-stone-600 leading-relaxed mb-4">
+        {isSwitchEmailMode && (
           <>
             Not you? Enter a different email to switch accounts. Your current access stays active until this new email is confirmed — so you won't lose anything.
           </>
-        ) : (
+        )}
+        {isQuickUnlockMode && !isSwitchEmailMode && (
+          <>
+            Already unlocked on another device? Enter your email to verify membership and instantly unlock <em>"{resourceTitle}"</em>.
+          </>
+        )}
+        {!isSwitchEmailMode && !isQuickUnlockMode && (
           getUnlockDescription(isCommunityGuide, resourceTitle)
         )}
       </p>
+
+      {/* Quick unlock mode toggle for returning members */}
+      {!isSwitchEmailMode && onToggleQuickUnlock && (
+        <div className="mb-4 p-2.5 rounded-xl bg-stone-50 border border-stone-200/80 flex items-center justify-between text-xs">
+          <span className="text-stone-600 font-medium">
+            {isQuickUnlockMode ? "Need full registration?" : "Already a community member?"}
+          </span>
+          <button
+            type="button"
+            onClick={onToggleQuickUnlock}
+            className="text-brand-coral font-bold hover:underline cursor-pointer"
+          >
+            {isQuickUnlockMode ? "Complete Full Profile" : "Quick Email Unlock"}
+          </button>
+        </div>
+      )}
 
       {/* Form */}
       <form
@@ -135,21 +176,23 @@ function DownloadLeadForm({
         <input type="hidden" name="form-name" value="resources-lead-magnet" />
         <input type="hidden" name="resourceTitle" value={resourceTitle} />
 
-        <div>
-          <label htmlFor="modal-name-input" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
-            Your Full Name <span className="text-brand-coral">*</span>
-          </label>
-          <input
-            id="modal-name-input"
-            type="text"
-            name="fullName"
-            required
-            value={fullName}
-            onChange={(e) => onFullNameChange(e.target.value)}
-            placeholder="e.g. Alex Morgan"
-            className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-coral/20 text-stone-900 text-sm outline-none transition-all"
-          />
-        </div>
+        {!isQuickUnlockMode && (
+          <div>
+            <label htmlFor="modal-name-input" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Your Full Name <span className="text-brand-coral">*</span>
+            </label>
+            <input
+              id="modal-name-input"
+              type="text"
+              name="fullName"
+              required
+              value={fullName}
+              onChange={(e) => onFullNameChange(e.target.value)}
+              placeholder="e.g. Alex Morgan"
+              className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-coral/20 text-stone-900 text-sm outline-none transition-all"
+            />
+          </div>
+        )}
 
         <div>
           <label htmlFor="modal-email-input" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
@@ -170,39 +213,43 @@ function DownloadLeadForm({
           </div>
         </div>
 
-        <div>
-          <label htmlFor="modal-discord-input" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
-            WhatsApp Phone or Discord Handle <span className="text-stone-400 font-normal lowercase">(optional)</span>
-          </label>
-          <input
-            id="modal-discord-input"
-            type="text"
-            name="discordHandle"
-            value={discordHandle}
-            onChange={(e) => onDiscordHandleChange(e.target.value)}
-            placeholder="e.g. +44 7123... or @alex_dev"
-            className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-coral/20 text-stone-900 text-sm outline-none transition-all"
-          />
-        </div>
+        {!isQuickUnlockMode && (
+          <>
+            <div>
+              <label htmlFor="modal-discord-input" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+                WhatsApp Phone or Discord Handle <span className="text-stone-400 font-normal lowercase">(optional)</span>
+              </label>
+              <input
+                id="modal-discord-input"
+                type="text"
+                name="discordHandle"
+                value={discordHandle}
+                onChange={(e) => onDiscordHandleChange(e.target.value)}
+                placeholder="e.g. +44 7123... or @alex_dev"
+                className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-coral/20 text-stone-900 text-sm outline-none transition-all"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="modal-role-select" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
-            What best describes your tech transition goal?
-          </label>
-          <select
-            id="modal-role-select"
-            name="roleInterest"
-            value={roleInterest}
-            onChange={(e) => onRoleInterestChange(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-coral/20 text-stone-800 text-sm outline-none bg-white transition-all"
-          >
-            <option value="Non-tech to Tech Switcher">Non-tech to Tech Switcher</option>
-            <option value="Software / Data Engineer">Software / Data Engineering</option>
-            <option value="Product & UX Design">Product Management & UX</option>
-            <option value="Tech Leadership / Management">Tech Leadership & Management</option>
-            <option value="Other Career Transition">Other Career Goal</option>
-          </select>
-        </div>
+            <div>
+              <label htmlFor="modal-role-select" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+                What best describes your tech transition goal?
+              </label>
+              <select
+                id="modal-role-select"
+                name="roleInterest"
+                value={roleInterest}
+                onChange={(e) => onRoleInterestChange(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-brand-coral/20 text-stone-800 text-sm outline-none bg-white transition-all"
+              >
+                <option value="Non-tech to Tech Switcher">Non-tech to Tech Switcher</option>
+                <option value="Software / Data Engineer">Software / Data Engineering</option>
+                <option value="Product & UX Design">Product Management & UX</option>
+                <option value="Tech Leadership / Management">Tech Leadership & Management</option>
+                <option value="Other Career Transition">Other Career Goal</option>
+              </select>
+            </div>
+          </>
+        )}
 
         {error && <p className="text-xs text-red-600 font-semibold">{error}</p>}
 
@@ -211,7 +258,7 @@ function DownloadLeadForm({
           disabled={isSubmitting}
           className="w-full py-3.5 px-6 rounded-full bg-brand-coral text-white font-extrabold text-sm hover:bg-brand-coral/90 active:scale-[0.99] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
         >
-          {renderSubmitButtonContent(isSubmitting, isCommunityGuide, isSwitchEmailMode)}
+          {renderSubmitButtonContent(isSubmitting, isCommunityGuide, isSwitchEmailMode, isQuickUnlockMode)}
         </button>
 
         <div className="text-[11px] text-stone-500 text-center leading-relaxed">
@@ -333,6 +380,7 @@ function DownloadResourceModalDialog({
       return "";
     }
   });
+  const [isQuickUnlockMode, setIsQuickUnlockMode] = useState(false);
   const [fullName, setFullName] = useState("");
   const [discordHandle, setDiscordHandle] = useState("");
   const [roleInterest, setRoleInterest] = useState("Non-tech to Tech Switcher");
@@ -411,7 +459,13 @@ function DownloadResourceModalDialog({
       if (resource?.slug) formData.append("resourceSlug", resource.slug);
       if (resource?.category) formData.append("category", resource.category);
       if (resource?.collection) formData.append("collection", resource.collection);
-      formData.append("mode", isCommunityGuide ? "Community Member Access (WhatsApp & Discord)" : "Complete 10-Guide Bundle Request");
+      
+      const formMode = isQuickUnlockMode
+        ? "Returning Member Quick Email Unlock"
+        : isCommunityGuide
+        ? "Community Member Access (WhatsApp & Discord)"
+        : "Complete 10-Guide Bundle Request";
+      formData.append("mode", formMode);
 
       await fetch("/", {
         method: "POST",
@@ -456,6 +510,9 @@ function DownloadResourceModalDialog({
     if (isSwitchEmailMode) {
       return "Switch to a Different Email";
     }
+    if (isQuickUnlockMode) {
+      return `Quick Unlock: ${resource?.title || "Community Guides"}`;
+    }
     if (isCommunityGuide) {
       return `Unlock ${resource?.title || "Guide 4+"}: Join Our Community`;
     }
@@ -499,6 +556,7 @@ function DownloadResourceModalDialog({
             <DownloadLeadForm
               isCommunityGuide={Boolean(isCommunityGuide)}
               isSwitchEmailMode={isSwitchEmailMode}
+              isQuickUnlockMode={isQuickUnlockMode}
               modalTitle={getModalTitle()}
               resourceTitle={resourceTitle}
               fullName={fullName}
@@ -511,6 +569,7 @@ function DownloadResourceModalDialog({
               onEmailChange={setEmail}
               onDiscordHandleChange={setDiscordHandle}
               onRoleInterestChange={setRoleInterest}
+              onToggleQuickUnlock={() => setIsQuickUnlockMode((prev) => !prev)}
               onClose={onClose}
               onSubmit={handleSubmit}
             />

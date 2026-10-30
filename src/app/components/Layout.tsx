@@ -1,6 +1,7 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { Outlet, NavLink, Link, ScrollRestoration, useLocation } from "react-router";
 import { HiBars3, HiXMark, HiChevronDown } from "react-icons/hi2";
+import { FaDiscord } from "react-icons/fa6";
 import logoImage from "../../assets/logo-header.webp";
 import { MiniPlayer } from "./MiniPlayer";
 import { CookieBanner } from "./CookieBanner";
@@ -8,7 +9,7 @@ import { AnnouncementBar } from "./AnnouncementBar";
 import { BackToTopButton } from "./BackToTopButton";
 import { AudioPlayerProvider } from "../context/AudioPlayerContext";
 import { useAudioPlayer } from "../hooks/useAudioPlayer";
-import { BERRY, ORANGE, BLUE, PINK, GREEN, platforms } from "../data";
+import { BERRY, ORANGE, BLUE, PINK, GREEN, platforms, DISCORD_INVITE_URL } from "../data";
 import * as React from "react";
 
 function scrollToPageTop(smooth: boolean | React.MouseEvent = false) {
@@ -206,6 +207,19 @@ function DesktopAboutDropdown({
               <span className="text-gray-900 font-bold text-sm">Community Guidelines</span>
               <span className="text-gray-500 text-xs">Our values & code of conduct</span>
             </Link>
+            <a
+              href={DISCORD_INVITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-stone-50 transition-colors"
+            >
+              <span className="text-gray-900 font-bold text-sm flex items-center justify-between">
+                <span>Join Our Discord</span>
+                <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-md bg-[#5865F2]/10 text-[#5865F2]">Live</span>
+              </span>
+              <span className="text-gray-500 text-xs">Chat, collaborate & grow</span>
+            </a>
           </div>
         </>
       )}
@@ -444,6 +458,16 @@ function MobileNavigationMenu({
           >
             Community Guidelines
           </NavLink>
+          <a
+            href={DISCORD_INVITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleNavClick}
+            className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-white/85 hover:bg-white/10 hover:text-white transition-all font-medium"
+          >
+            <span>Join Our Discord</span>
+            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-[#5865F2]/40 text-white">Live</span>
+          </a>
         </div>
 
         {enableGetInvolved && (
@@ -767,10 +791,21 @@ function LayoutInner() {
             </div>
 
             <div>
-              <p className="text-white text-sm mb-4 font-bold">About & Team</p>
+              <p className="text-white text-sm mb-4 font-bold">About & Community</p>
               <ul className="space-y-1 text-stone-300 text-xs sm:text-sm">
                 <li><Link to="/about" className="inline-block py-1 hover:text-white transition-colors">Our Mission & Story</Link></li>
                 <li><Link to="/team" className="inline-block py-1 hover:text-white transition-colors">Meet the Team</Link></li>
+                <li>
+                  <a
+                    href={DISCORD_INVITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 py-1 text-brand-pink hover:text-white transition-colors font-semibold"
+                  >
+                    <span>Join Our Discord</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#5865F2]/40 text-white border border-[#5865F2]/50">Live</span>
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -807,6 +842,15 @@ function LayoutInner() {
                     <Icon className="w-4 h-4" />
                   </a>
                 ))}
+                <a
+                  href={DISCORD_INVITE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Join our Discord Community"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#5865F2] text-white flex items-center justify-center transition-colors"
+                >
+                  <FaDiscord className="w-4 h-4" />
+                </a>
               </div>
             </div>
           </div>

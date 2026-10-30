@@ -41,6 +41,7 @@ export function PracticeCountdownCard({
     formattedTime,
     googleCalendarUrl,
     rsvpUrl,
+    formatInfo,
   } = usePracticeCountdown(customTargetDate, eventsList);
 
   const handleCalendarClick = () => {
@@ -78,6 +79,12 @@ export function PracticeCountdownCard({
                 <span className={`w-2 h-2 rounded-full ${isLive ? "bg-emerald-500 animate-ping" : "bg-brand-coral animate-pulse"}`} />
                 {isLive ? "Live Now" : `Session #${sessionNumber} Countdown`}
               </span>
+              <span
+                data-testid="topic-format-pill"
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border ${formatInfo.pillBadgeClass}`}
+              >
+                {formatInfo.pillLabel}
+              </span>
               <span className="text-xs text-stone-500 font-semibold">
                Live Series
               </span>
@@ -87,8 +94,11 @@ export function PracticeCountdownCard({
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-stone-900 mt-1 leading-snug">
                 She Leads Tech
               </h2>
-              <p className="text-xs sm:text-sm font-bold text-brand-coral uppercase tracking-wider mt-0.5">
-                Theory Session • Instructor-Led Learning
+              <p
+                data-testid="format-subtitle"
+                className={`text-xs sm:text-sm font-bold uppercase tracking-wider mt-0.5 ${formatInfo.subtitleColorClass}`}
+              >
+                {formatInfo.subtitle}
               </p>
             </div>
 
@@ -104,7 +114,7 @@ export function PracticeCountdownCard({
             <p className="text-xs text-stone-600 leading-relaxed bg-pink-50/50 border border-brand-pink/30 rounded-xl p-3 flex items-start gap-2">
               <HiLightBulb className="w-4 h-4 text-brand-coral shrink-0 mt-0.5" />
               <span>
-                <strong>Format Spotlight:</strong> Current live sessions follow our <strong>Theory</strong> format — instructor-led concept deconstruction with real-world examples and step-by-step problem walkthroughs. Full registration details are synced with Luma.
+                <strong>Format Spotlight:</strong> {formatInfo.spotlightText}
               </span>
             </p>
           </div>

@@ -66,4 +66,41 @@ describe("DownloadResourceModal", () => {
     expect(localStorage.getItem("uht_user_email")).toBe("member@example.com");
     expect(localStorage.getItem("uht_community_member")).toBe("true");
   });
+
+  it("toggles quick email unlock mode and allows quick unlock for returning members", () => {
+    const handleSuccessUnlock = vi.fn();
+    render(
+      <MemoryRouter>
+        <DownloadResourceModal
+          isOpen={true}
+          onClose={vi.fn()}
+          resource={mockResource4}
+          isEarlyAccessMode={false}
+          onSuccessUnlock={handleSuccessUnlock}
+        />
+      </MemoryRouter>
+    );
+
+    // Initial state: full form is visible
+    expect(screen.getByPlaceholderText(/e\.g\. Alex Morgan/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Quick Email Unlock/i })).toBeInTheDocument();
+
+    // Toggle to quick unlock mode
+    fireEvent.click(screen.getByRole("button", { name: /Quick Email Unlock/i }));
+
+    // Name and discord inputs are hidden in quick unlock mode
+    expect(screen.queryByPlaceholderText(/e\.g\. Alex Morgan/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/Returning Member · Instant Email Re-verification/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Complete Full Profile/i })).toBeInTheDocument();
+
+    // Submit quick unlock
+    const emailInput = screen.getByPlaceholderText(/you@example.com/i);
+    const quickUnlockBtn = screen.getByRole("button", { name: /Quick Unlock Resource/i });
+
+    fireEvent.change(emailInput, { target: { value: "returning@example.com" } });
+    fireEvent.click(quickUnlockBtn);
+
+    expect(localStorage.getItem("uht_user_email")).toBe("returning@example.com");
+    expect(localStorage.getItem("uht_community_member")).toBe("true");
+  });
 });

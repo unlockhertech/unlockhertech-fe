@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router";
 import type { ExternalEvent } from "../../types";
 import { getAllExternalEvents } from "../../utils/sanity";
+import { useSanityQuery } from "../../hooks/useSanityQuery";
 import {
   type EventCategory,
   isEventUpcoming,
@@ -33,9 +34,18 @@ function resolveCategoryParam(paramValue: string | null): EventCategory {
 }
 
 export function useEvents() {
-  const [allEvents, setAllEvents] = useState<ExternalEvent[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const fetchEvents = useCallback(async (): Promise<ExternalEvent[]> => {
+    return await getAllExternalEvents(true);
+  }, []);
+
+  const { data: rawEvents, loading } = useSanityQuery<ExternalEvent[]>(
+    "sanity_all_external_events",
+    fetchEvents
+  );
+
+  const allEvents = useMemo(() => rawEvents ?? [], [rawEvents]);
 
   // URL-driven state
   const tagParam = searchParams.get("tag") ?? searchParams.get("category");
@@ -83,22 +93,6 @@ export function useEvents() {
     },
     [setSearchParams]
   );
-
-  useEffect(() => {
-    async function fetchEvents() {
-      setLoading(true);
-      try {
-        const eventList = await getAllExternalEvents(true);
-        setAllEvents(eventList);
-      } catch (err) {
-        console.error("Failed to load events:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEvents();
-  }, []);
 
   const upcomingEvents = useMemo(() => allEvents.filter((e) => isEventUpcoming(e.date)), [allEvents]);
   const pastEvents = useMemo(() => allEvents.filter((e) => !isEventUpcoming(e.date)), [allEvents]);

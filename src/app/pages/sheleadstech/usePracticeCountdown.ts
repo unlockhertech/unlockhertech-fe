@@ -3,6 +3,90 @@ import type { ExternalEvent } from "../../types";
 import { getAllExternalEvents } from "../../utils/sanity";
 import { getEventExternalUrl } from "../../utils/luma";
 
+export type SheLeadsTechFormatId = "theory" | "practice" | "review" | "build";
+
+export interface SessionFormatInfo {
+  id: SheLeadsTechFormatId;
+  pillLabel: string;
+  heroLabel: string;
+  subtitle: string;
+  pillBadgeClass: string;
+  subtitleColorClass: string;
+  spotlightText: string;
+}
+
+export function detectSessionFormat(topicOrTitle?: string, event?: ExternalEvent): SheLeadsTechFormatId {
+  const text = `${topicOrTitle ?? ""} ${event?.title ?? ""} ${event?.description ?? ""} ${event?.slug ?? ""}`.toLowerCase();
+
+  if (text.includes("build") || text.includes("project")) {
+    return "build";
+  }
+  if (text.includes("review") || text.includes("recap")) {
+    return "review";
+  }
+  if (
+    text.includes("practical") ||
+    text.includes("practice") ||
+    text.includes("hands-on") ||
+    text.includes("leetcode") ||
+    text.includes("coding session") ||
+    text.includes("problem solving")
+  ) {
+    return "practice";
+  }
+  return "theory";
+}
+
+export function getSessionFormatInfo(format: SheLeadsTechFormatId): SessionFormatInfo {
+  switch (format) {
+    case "practice":
+      return {
+        id: "practice",
+        pillLabel: "Practice Session",
+        heroLabel: "Practical",
+        subtitle: "Practice Session • Hands-On Problem Solving",
+        pillBadgeClass: "bg-pink-50 text-[#b52970] border-pink-200",
+        subtitleColorClass: "text-[#b52970]",
+        spotlightText:
+          "Current live sessions follow our Practice format — hands-on collaborative problem solving, live coding challenges, and interactive pairing. Full registration details are synced with Luma.",
+      };
+    case "review":
+      return {
+        id: "review",
+        pillLabel: "Review Session",
+        heroLabel: "Review",
+        subtitle: "Review Session • Mastery & Recall",
+        pillBadgeClass: "bg-emerald-50 text-brand-green border-emerald-200",
+        subtitleColorClass: "text-brand-green",
+        spotlightText:
+          "Current live sessions follow our Review format — reinforcement of core patterns, common edge cases, and active recall. Full registration details are synced with Luma.",
+      };
+    case "build":
+      return {
+        id: "build",
+        pillLabel: "Build Session",
+        heroLabel: "Build",
+        subtitle: "Build Session • Real-World Projects",
+        pillBadgeClass: "bg-blue-50 text-brand-blue border-blue-200",
+        subtitleColorClass: "text-brand-blue",
+        spotlightText:
+          "Current live sessions follow our Build format — end-to-end real-world project development, architecture blueprints, and collaborative shipping. Full registration details are synced with Luma.",
+      };
+    case "theory":
+    default:
+      return {
+        id: "theory",
+        pillLabel: "Theory Session",
+        heroLabel: "Theoretical",
+        subtitle: "Theory Session • Instructor-Led Learning",
+        pillBadgeClass: "bg-orange-50 text-[#ff6051] border-orange-200",
+        subtitleColorClass: "text-brand-coral",
+        spotlightText:
+          "Current live sessions follow our Theory format — instructor-led concept deconstruction with real-world examples and step-by-step problem walkthroughs. Full registration details are synced with Luma.",
+      };
+  }
+}
+
 export interface PracticeSessionInfo {
   targetDate: Date;
   topic: string;
@@ -12,6 +96,8 @@ export interface PracticeSessionInfo {
   googleCalendarUrl: string;
   event?: ExternalEvent;
   rsvpUrl: string;
+  format: SheLeadsTechFormatId;
+  formatInfo: SessionFormatInfo;
 }
 
 export interface PracticeCountdownState extends PracticeSessionInfo {
@@ -76,16 +162,35 @@ export function buildGoogleCalendarUrl(
   title: string,
   targetDate: Date,
   description?: string,
-  location?: string
+  location?: string,
+  format: SheLeadsTechFormatId = "theory"
 ): string {
   const startTimeUtc = targetDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
   const endDate = new Date(targetDate.getTime() + SESSION_DURATION_MS);
   const endTimeUtc = endDate.toISOString().replace(/-|:|\.\d\d\d/g, "");
 
-  const calTitle = encodeURIComponent(title || "She Leads Tech: Theory & Technical Workshop");
+  const formatText =
+    format === "practice"
+      ? "hands-on collaborative Practice workshop"
+      : format === "review"
+      ? "reinforcement Review workshop"
+      : format === "build"
+      ? "real-world Build workshop"
+      : "instructor-led Theory workshop";
+
+  const defaultTitle =
+    format === "practice"
+      ? "She Leads Tech: Practice & Problem Solving Workshop"
+      : format === "review"
+      ? "She Leads Tech: Review & Recall Workshop"
+      : format === "build"
+      ? "She Leads Tech: Build & Architecture Workshop"
+      : "She Leads Tech: Theory & Technical Workshop";
+
+  const calTitle = encodeURIComponent(title || defaultTitle);
   const calDetails = encodeURIComponent(
     description ||
-      `Join our interactive She Leads Tech session. Currently featuring instructor-led Theory workshops with step-by-step practical examples, architecture breakdowns, and Q&A.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/she-leads-tech\nLuma: https://luma.com/sheleadstechpractice`
+      `Join our interactive She Leads Tech session. Currently featuring our ${formatText} with step-by-step practical examples, architecture breakdowns, and Q&A.\n\nLocation: Live Online\nWebsite: https://unlockhertech.com/she-leads-tech\nLuma: https://luma.com/sheleadstechpractice`
   );
   const calLocation = encodeURIComponent(location || "Online (Live Coding Workshop)");
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${calTitle}&dates=${startTimeUtc}/${endTimeUtc}&details=${calDetails}&location=${calLocation}`;
@@ -111,6 +216,8 @@ export function getNextPracticeSession(
       const targetTime = targetDate.getTime();
       const sessionNumber = extractSessionNumber(nextEvent.title, targetTime);
       const topic = nextEvent.title;
+      const format = detectSessionFormat(topic, nextEvent);
+      const formatInfo = getSessionFormatInfo(format);
 
       const formattedDate = targetDate.toLocaleDateString("en-GB", {
         weekday: "long",
@@ -132,7 +239,8 @@ export function getNextPracticeSession(
         nextEvent.title,
         targetDate,
         nextEvent.description,
-        eventUrl
+        eventUrl,
+        format
       );
 
       const rsvpUrl = nextEvent.urlOrId ? getEventExternalUrl(nextEvent.urlOrId) : "/events";
@@ -146,6 +254,8 @@ export function getNextPracticeSession(
         googleCalendarUrl,
         event: nextEvent,
         rsvpUrl,
+        format,
+        formatInfo,
       };
     }
   }
@@ -172,6 +282,8 @@ export function getNextPracticeSession(
   );
   const sessionNumber = sessionIndex + 1;
   const topic = PRACTICE_TOPICS[sessionIndex % PRACTICE_TOPICS.length] ?? PRACTICE_TOPICS[0];
+  const format = detectSessionFormat(topic);
+  const formatInfo = getSessionFormatInfo(format);
 
   const formattedDate = targetDate.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -187,8 +299,11 @@ export function getNextPracticeSession(
   });
 
   const googleCalendarUrl = buildGoogleCalendarUrl(
-    "She Leads Tech: Theory & Technical Workshop",
-    targetDate
+    topic,
+    targetDate,
+    undefined,
+    undefined,
+    format
   );
 
   return {
@@ -199,6 +314,8 @@ export function getNextPracticeSession(
     formattedTime,
     googleCalendarUrl,
     rsvpUrl: "/events",
+    format,
+    formatInfo,
   };
 }
 
@@ -253,6 +370,8 @@ export function usePracticeCountdown(
         minute: "2-digit",
         timeZoneName: "short",
       });
+      const format = detectSessionFormat("She Leads Tech Theory: Live Workshop");
+      const formatInfo = getSessionFormatInfo(format);
       return {
         targetDate: customTargetDate,
         topic: "She Leads Tech Theory: Live Workshop",
@@ -261,6 +380,8 @@ export function usePracticeCountdown(
         formattedTime,
         googleCalendarUrl: "#",
         rsvpUrl: "/events",
+        format,
+        formatInfo,
       };
     }
     return getNextPracticeSession(now, events);

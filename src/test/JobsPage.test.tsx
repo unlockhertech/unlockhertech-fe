@@ -161,6 +161,19 @@ describe('JobsPage', () => {
     });
   });
 
+  it('renders and updates aria-live announcement region on search', async () => {
+    renderJobsPage();
+    const liveRegion = screen.getByRole('status');
+    expect(liveRegion).toHaveAttribute('aria-live', 'polite');
+
+    const searchInput = screen.getByPlaceholderText(/Search by role title, company, skills/i);
+    fireEvent.change(searchInput, { target: { value: 'Designer' } });
+
+    await waitFor(() => {
+      expect(liveRegion).toHaveTextContent(/matching "Designer"/i);
+    });
+  });
+
   it('renders inclusivity & transparency vetting standards section', async () => {
     renderJobsPage();
     await waitFor(() => {

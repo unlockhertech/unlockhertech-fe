@@ -22,6 +22,7 @@ import { generateCareerPlanPdf } from "./generateCareerPlanPdf";
 import { EmailResultsCard } from "./EmailResultsCard";
 import { AutoMatchedResourcesSection } from "./AutoMatchedResourcesSection";
 import { getAutoMatchedResources } from "./matchedResources";
+import { AssessmentOnScreenPlan } from "./AssessmentOnScreenPlan";
 import { trackEvent } from "../../utils/analytics";
 
 interface AssessmentResultsProps {
@@ -129,7 +130,18 @@ export function AssessmentResults({
         </div>
       )}
 
-      <div className="text-center border-b border-stone-100 pb-8">
+      {/* ── Semantic On-Screen Action Plan Dashboard ── */}
+      <AssessmentOnScreenPlan
+        scores={scores}
+        grandTotal={grandTotal}
+        totalAnswered={totalAnswered}
+        readinessBadge={readinessBadge}
+        recommendation={recommendation}
+        onDownloadPdf={handleDownloadPdf}
+        isGeneratingPdf={isGeneratingPdf}
+      />
+
+      <div className="text-center border-b border-stone-100 pb-8 mt-10">
         <span className="inline-block bg-brand-coral text-white text-xs font-extrabold px-3.5 py-1 rounded-full mb-3 uppercase tracking-wider shadow-xs">
           Real-time Breakdown
         </span>

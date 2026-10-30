@@ -23,11 +23,13 @@ describe('LinksPage', () => {
     renderLinksPage();
     expect(screen.getByText(/She Leads Tech/i)).toBeInTheDocument();
     expect(screen.getByText(/Listen to the Podcast/i)).toBeInTheDocument();
+    expect(screen.getByText(/Join Our Discord Community/i)).toBeInTheDocument();
     expect(screen.getByText(/Follow On LinkedIn/i)).toBeInTheDocument();
   });
 
   it('renders social icons and back to main website link', () => {
     renderLinksPage();
+    expect(screen.getByLabelText(/Unlock Her Tech on Discord/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Unlock Her Tech on Instagram/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Unlock Her Tech on Spotify/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Unlock Her Tech on Apple Podcasts/i)).toBeInTheDocument();

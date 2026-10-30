@@ -64,8 +64,8 @@ export function ResourceCategoryFilter({
                   onClick={() => onSelectFormat(fmt.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     isFmtActive
-                      ? "bg-stone-900 text-white shadow-xs"
-                      : "bg-stone-100 text-stone-600 hover:bg-stone-200/80 hover:text-stone-900"
+                      ? "bg-brand-coral text-white shadow-xs"
+                      : "bg-pink-50 text-brand-coral hover:bg-pink-100 hover:text-brand-coral"
                   }`}
                 >
                   {fmt.shortLabel}
@@ -74,6 +74,27 @@ export function ResourceCategoryFilter({
             })}
           </div>
         )}
+      </div>
+
+      {/* Category Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        {RESOURCE_CATEGORIES.map((cat) => {
+          const isCatActive = selectedCategory === cat;
+          return (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => onSelectCategory(cat)}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer border ${
+                isCatActive
+                  ? "bg-brand-coral text-white border-brand-coral shadow-xs"
+                  : "bg-white text-stone-600 border-stone-200 hover:bg-stone-50 hover:text-stone-900"
+              }`}
+            >
+              {cat}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

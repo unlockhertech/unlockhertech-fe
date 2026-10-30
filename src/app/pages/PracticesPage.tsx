@@ -11,8 +11,8 @@ import { PracticeRequirementsSection } from "@/app/pages/sheleadstech/PracticeRe
 const PRACTICES_META_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Course",
-  "name": "She Leads Tech: Theory, Practice & Review Workshop Series",
-  "description": "Interactive engineering workshops designed to help developers master technical concepts through instructor-led Theory, hands-on Practice, and reinforcement Review. Covering DSA, system design, cloud, architecture, and full-stack engineering.",
+  "name": "She Leads Tech: Theory, Practice, Review & Build Workshop Series",
+  "description": "Interactive engineering workshops designed to help developers master technical concepts through instructor-led Theory, hands-on Practice, reinforcement Review, and real-world project Build sessions. Covering DSA, system design, cloud, architecture, and full-stack engineering.",
   "provider": {
     "@type": "Organization",
     "name": "Unlock Her Tech",
@@ -30,8 +30,8 @@ const PRACTICES_META_JSON_LD = {
 
 export function PracticesPage() {
   useMetaData(
-    "She Leads Tech | Theory, Practice & Review Workshop Series",
-    "Join live, interactive She Leads Tech engineering workshops. Master concepts through instructor-led Theory, hands-on collaborative Practice, and reinforcement Review sessions.",
+    "She Leads Tech | Theory, Practice, Review & Build Workshop Series",
+    "Join live, interactive She Leads Tech engineering workshops. Master concepts through instructor-led Theory, hands-on collaborative Practice, reinforcement Review sessions, and end-to-end Build projects.",
     undefined,
     {
       image: imgSheLeadsTech,
@@ -48,7 +48,7 @@ export function PracticesPage() {
       {/* ── 2. Live Practice Countdown Clock ─────────────────────── */}
       <PracticeCountdownCard />
 
-      {/* ── 3. Three Stages Navigator (Theory, Practice, Review) ─────────── */}
+      {/* ── 3. Four Stages Navigator (Theory, Practice, Review, Build) ──── */}
       <SheLeadsTechStagesNavigator />
 
       {/* ── 4. Learning Paths Grid ───────────────────────────────────────── */}

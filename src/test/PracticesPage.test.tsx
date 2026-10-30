@@ -15,16 +15,28 @@ describe('PracticesPage', () => {
   it('renders page header and hero title', () => {
     renderPracticesPage();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/She Leads Tech/i);
-    expect(screen.getAllByText(/Theory • Practice • Review/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Theory • Practice • Review • Build/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Interactive technical workshops designed to build deep engineering understanding/i)).toBeInTheDocument();
     expect(screen.getByText(/Current sessions are/i)).toBeInTheDocument();
   });
 
   it('renders learning paths section and pathways', () => {
     renderPracticesPage();
-    expect(screen.getByText(/Learning Paths/i)).toBeInTheDocument();
+    expect(screen.getByText(/Curriculum Pathways/i)).toBeInTheDocument();
     expect(screen.getByText(/Choose your path. Build your future./i)).toBeInTheDocument();
     expect(screen.getByText(/Interview Preparation Path/i)).toBeInTheDocument();
+    expect(screen.getByText(/Live Workshop Track/i)).toBeInTheDocument();
+    expect(screen.getByText(/Data Structures & Algorithms/i)).toBeInTheDocument();
+    expect(screen.getByText(/System Design & Scalability/i)).toBeInTheDocument();
+  });
+
+  it('renders The Learning Progression section with all 4 stages', () => {
+    renderPracticesPage();
+    expect(screen.getByText(/The Learning Progression/i)).toBeInTheDocument();
+    expect(screen.getByText(/Stage 1: Theory/i)).toBeInTheDocument();
+    expect(screen.getByText(/Stage 2: Practice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Stage 3: Review/i)).toBeInTheDocument();
+    expect(screen.getByText(/Stage 4: Build/i)).toBeInTheDocument();
   });
 
   it('renders She Leads Tech learning formats and key differences', () => {
@@ -33,10 +45,12 @@ describe('PracticesPage', () => {
     expect(screen.getAllByText(/She Leads Tech Theory/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/She Leads Tech Practice/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/She Leads Tech Review/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/She Leads Tech Build/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/The Key Difference/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Learn it → Understand it → See it applied/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Try it → Solve it → Discuss it → Improve it/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Remember it → Practise it again/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Design it → Build it → Ship it/i).length).toBeGreaterThan(0);
   });
 
   it('allows switching between format tabs interactively', () => {
@@ -63,6 +77,13 @@ describe('PracticesPage', () => {
     expect(screen.getByText(/Repetition & Long-Term Mastery/i)).toBeInTheDocument();
     expect(screen.getByText(/Give a short recap of the original concept/i)).toBeInTheDocument();
 
+    // Click Build tab
+    const buildTab = screen.getByRole('tab', { name: /Build/i });
+    fireEvent.click(buildTab);
+    expect(buildTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Real-World Projects & Collaborative Engineering/i)).toBeInTheDocument();
+    expect(screen.getByText(/Provide project briefs, architectural blueprints, and starter templates/i)).toBeInTheDocument();
+
     // Click Back to Overview
     const overviewTab = screen.getByRole('tab', { name: /Overview & Compare/i });
     fireEvent.click(overviewTab);
@@ -71,10 +92,10 @@ describe('PracticesPage', () => {
   });
 
   it('renders direct format tab when loaded with URL query param', () => {
-    renderPracticesPage(['/she-leads-tech?format=practice']);
-    const practiceTab = screen.getByRole('tab', { name: /Practice/i });
-    expect(practiceTab).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByText(/Hands-On Experience & Problem Solving/i)).toBeInTheDocument();
+    renderPracticesPage(['/she-leads-tech?format=build']);
+    const buildTab = screen.getByRole('tab', { name: /Build/i });
+    expect(buildTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Real-World Projects & Collaborative Engineering/i)).toBeInTheDocument();
   });
 
   it('renders RSVP / practice registration CTAs', () => {

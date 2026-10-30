@@ -10,6 +10,7 @@ import { HomeHero } from "./home/HomeHero";
 import { HomePillars } from "./home/HomePillars";
 import { HomeSheLeadsTechBanner } from "./home/HomeSheLeadsTechBanner";
 import { HomeInclusivitySection } from "./home/HomeInclusivitySection";
+import { HomeDiscordBanner } from "./home/HomeDiscordBanner";
 import { HomeFeaturedEvents } from "./home/HomeFeaturedEvents";
 import { HomeFeaturedPosts } from "./home/HomeFeaturedPosts";
 
@@ -89,13 +90,16 @@ export function HomePage() {
       {/* ── 4. Inclusivity & Community Roles ────────────────────────────── */}
       <HomeInclusivitySection />
 
-      {/* ── 5. Upcoming Events ──────────────────────────────────────────── */}
+      {/* ── 5. Discord Live Community Banner ────────────────────────────── */}
+      <HomeDiscordBanner />
+
+      {/* ── 6. Upcoming Events ──────────────────────────────────────────── */}
       {enableEvents && <HomeFeaturedEvents events={featuredEvents} />}
 
-      {/* ── 6. Latest From The Blog ─────────────────────────────────────── */}
+      {/* ── 7. Latest From The Blog ─────────────────────────────────────── */}
       <HomeFeaturedPosts posts={featuredPosts} />
 
-      {/* ── 7. Subscribe Banner ─────────────────────────────────────────── */}
+      {/* ── 8. Subscribe Banner ─────────────────────────────────────────── */}
       <SubscribeCTA bgImage={IMG_AUDIO_EQ} />
 
       <style>{`@keyframes waveBar { from { transform: scaleY(1); } to { transform: scaleY(0.25); } }`}</style>

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { HiArrowRight, HiBolt, HiCodeBracket, HiUsers, HiCalendarDays } from "react-icons/hi2";
+import { HiArrowRight, HiBolt, HiCodeBracket, HiUsers, HiCalendarDays, HiRocketLaunch } from "react-icons/hi2";
 import { imgSheLeadsTech } from "../data";
 import { BrandPatternOverlay } from "./BrandPatternBackground";
 
@@ -41,11 +41,11 @@ export function SheLeadsTechSpotlight() {
               She Leads Tech
             </h2>
             <p className="text-brand-pink font-extrabold text-lg sm:text-xl mb-4">
-              <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#72c472]">Review</span>
+              <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#72c472]">Review</span> • <span className="text-[#1e72b5]">Build</span>
             </p>
 
             <p className="text-white/90 text-base sm:text-lg mb-6 leading-relaxed max-w-2xl font-medium">
-              Interactive workshops designed to help technologists master algorithms, system design, and software engineering concepts through instructor-led Theory, hands-on Practice, and reinforcement Review.
+              Interactive workshops designed to help technologists master algorithms, system design, and software engineering concepts through instructor-led Theory, hands-on Practice, reinforcement Review, and real-world project Builds.
             </p>
 
             {/* Quick feature pills */}
@@ -58,6 +58,9 @@ export function SheLeadsTechSpotlight() {
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
                 <HiCalendarDays className="w-4 h-4 text-[#72c472]" /> Review: Reinforce & Retain
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 border border-white/20">
+                <HiRocketLaunch className="w-4 h-4 text-[#1e72b5]" /> Build: Real-World Projects
               </span>
             </div>
 

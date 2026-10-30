@@ -46,12 +46,12 @@ function getActionButtonClasses(
   isUnlockedForUser: boolean
 ): string {
   if (isComingSoon) {
-    return "bg-stone-800 text-white motion-safe:hover:scale-105 hover:bg-brand-coral";
+    return "bg-amber-500 text-gray-950 motion-safe:hover:scale-105 hover:bg-amber-400 font-bold";
   }
   if (!requiresCredentials || isUnlockedForUser) {
     return "bg-emerald-600 text-white motion-safe:hover:scale-105 hover:bg-emerald-700";
   }
-  return "bg-stone-900 text-white motion-safe:hover:scale-105 hover:bg-brand-coral";
+  return "bg-brand-coral text-white motion-safe:hover:scale-105 hover:bg-brand-coral/90";
 }
 
 export function ResourceCard({

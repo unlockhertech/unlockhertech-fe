@@ -5,200 +5,145 @@ sessionId: session-261027-114814-1fdq
 # Requirements
 
 ### Overview & Goals
-Unlock Her Tech is expanding its content offering and platform infrastructure in two key areas:
-1. **Supabase Data & Timestamp Capture:** Integrate Supabase (PostgreSQL) to reliably capture and persist user leads, resource download records, booking dates/timestamps, and event discount claims. This provides structured analytics and lead tracking while maintaining strict secret hygiene (`CWE-312`/`CWE-798`).
-2. **Multi-Category Resources Hub Expansion:** Evolve the Resources page (`/resources`) from its initial 10-guide Career Transition Toolkit into an extensive, multi-category library of technical playbooks, system design cheatsheets, AI guides, salary negotiation workbooks, and leadership frameworks.
+Based on the comprehensive architectural and UI/UX evaluation of the Unlock Her Tech platform, this plan prioritizes high-impact improvements across user experience, accessibility, performance, and data architecture (excluding 2A interactive track progress).
+
+The overarching objective is to maximize positive user outcomes — reducing friction for learners and podcast listeners, elevating accessibility for assistive technologies, accelerating page responsiveness, and establishing clean data fetching patterns across the codebase.
 
 ---
 
-### Scope
+### Prioritized Scope & Objectives
 
-#### In Scope
-- **Supabase Integration:**
-  - Serverless persistence handlers in `netlify/functions/` (`subscribe-resource.ts`, `claim-discount.ts`, and booking capture) using `@supabase/supabase-js`.
-  - Database schema definitions for `resource_leads`, `booking_leads`, and `discount_claims` with timestamp tracking (`created_at`, `download_date`).
-  - Graceful degradation: Network or database timeouts must never block visitors from receiving their promised PDF downloads.
-- **Resources Page Multi-Category Expansion:**
-  - Expanded category taxonomy in `sanity/schemas/resource.ts`, `src/app/types.ts`, and `resourceData.ts`.
-  - Upgraded UI filtering and track navigation in `ResourceCategoryFilter.tsx`, `ResourceTrackSwitcher.tsx`, and `ResourcesPage.tsx`.
-  - Progressive disclosure and anti-scroll-fatigue layout (`PAGE_SIZE = 9` with "Load More") adhering to repository quality guidelines.
-  - Enhanced `ResourceCard.tsx` supporting category badges, format pills (Playbooks, Cheatsheets, Workbooks, Templates), target audience level, and direct download unlock triggers.
+#### Priority 1: High-Utility Audio Player Controls & Member Unlock Persistence
+- **Playback Controls & Persistence:**
+  - Add playback rate controls (`0.75x`, `1x`, `1.25x`, `1.5x`, `1.75x`, `2x`) and 15-second skip backward / forward buttons in `MiniPlayer.tsx`.
+  - Persist playback rate and volume settings in `localStorage` (`uht_audio_playback_rate`, `uht_audio_volume`) within `AudioPlayerContext.tsx`.
+- **Existing Member Direct Unlock:**
+  - Add a lightweight "Already unlocked? Quick email entry" mode in `DownloadResourceModal.tsx` so returning visitors or multi-device users bypass full form fields while ensuring proper Supabase lead attribution.
+
+#### Priority 2: Accessible Live Filter Announcements (`aria-live`)
+- **Assistive Navigation Feedback:**
+  - Add accessible `aria-live="polite"` dynamic announcement regions in `ResourcesPage.tsx` and `JobsPage.tsx`.
+  - Announce real-time result counts and active filter states (e.g. *"Showing 6 technical playbooks matching System Design"*) to screen readers on search or category changes.
+
+#### Priority 3: Assessment Semantic On-Screen Action Plan
+- **Accessible & Mobile-First Assessment Dashboard:**
+  - Enhance `AssessmentPage.tsx` to render an accessible on-screen breakdown of category scores, career readiness stage, and top 3 prioritized action items directly above the PDF download trigger.
+  - Ensures mobile users and visitors using assistive technologies receive immediate value without requiring external PDF viewer switching.
+
+#### Priority 4: Standardized In-Memory SWR Caching Layer (`useSanityQuery`)
+- **Deduplicated Data Fetching:**
+  - Introduce a reusable `useSanityQuery<T>` hook with in-memory caching and configurable TTL (default 5 minutes).
+  - Adopt across `useResources.ts`, `useJobs.ts`, and `useEvents.ts` to prevent redundant network fetches, eliminate layout shift during rapid route switching, and provide unified loading/error states.
 
 #### Out of Scope
-- Migrating historical blog posts or job listings out of Sanity into Supabase (Sanity remains the headless CMS for editorial content).
-- Requiring paid subscriptions or payment gateway integrations for PDF downloads (all resources remain free community assets).
+- Interactive learning progress tracking in She Leads Tech (explicitly excluded).
+- Breaking existing Sanity schemas or modifying Netlify serverless routing contracts.
 
 ---
 
 ### User Stories
-- **As a non-tech career pivoter or engineer**, I want to browse resources by specialized technical categories (e.g., AI, System Design, Frontend, Leadership) and formats (Cheatsheets, Workbooks) so that I can quickly find guides relevant to my career stage.
-- **As a community member**, I want to unlock and download downloadable PDF guides by entering my email once and having immediate access across all categories.
-- **As an admin / platform operator**, I want all lead captures and download dates stored in Supabase with structured metadata (resource slug, category, role interest, UTM parameters) so that we have actionable data for community growth and outreach.
-
----
-
-### Functional Requirements
-
-#### 1. Supabase Lead & Timestamp Capture
-- All resource unlock submissions from `DownloadResourceModal.tsx` must dispatch to `/.netlify/functions/subscribe-resource`.
-- The serverless handler must insert a new record into the Supabase `resource_leads` table containing:
-  - `email` (string, lowercase trimmed)
-  - `full_name` (string)
-  - `discord_handle` (optional string)
-  - `role_interest` (string)
-  - `resource_id` / `resource_slug` / `resource_title` (string)
-  - `category` & `collection` (string)
-  - `download_date` / `created_at` (ISO 8601 UTC timestamp)
-  - `user_agent` & `referrer` (optional client context)
-- Serverless calls must dual-write to Supabase and Brevo CRM (if configured), logging structured errors on failure without breaking client responses.
-
-#### 2. Multi-Category Resources Taxonomy
-- Supported Resource Collections:
-  1. `career-toolkit`: 10-Guide Career Transition Roadmap (Stages 1–4)
-  2. `tech-guides`: Engineering & Architecture (System Design, Frontend, Backend, Cloud)
-  3. `ai-data`: AI Engineering, LLM Prompting & Data Systems
-  4. `job-search`: Resume Optimization, Interview Mastery & Salary Negotiation
-  5. `leadership`: Tech Lead Frameworks, Mentorship & Workplace Culture
-  6. `templates`: Cheatsheets, Worksheets & Planning Templates
-- Supported Resource Formats:
-  - `guide`: Comprehensive PDF Playbook / Guide
-  - `cheatsheet`: Quick-Reference Cheatsheet / Checklist
-  - `workbook`: Interactive Worksheet / Action Planner
-  - `template`: ATS Resume / Architecture Template
-
-#### 3. Responsive Filtering & Progressive Disclosure
-- Category tabs must support one-click filtering, dynamic item counts, and clear-all triggers.
-- Multi-category views must render up to 9 cards initially with a "Load More" affordance to prevent scroll fatigue.
-- Search input must perform real-time, debounced filtering across titles, descriptions, categories, and tags.
+- **As a podcast listener**, I want to adjust playback speed (`1.25x`, `1.5x`, etc.) and skip backwards/forwards 15 seconds so that I can consume audio content at my preferred pace.
+- **As a returning community member**, I want to quickly re-enter my email without re-filling every form field so that I can unlock new guides immediately on any device.
+- **As a screen reader user**, I want search and category filter count changes announced aloud so that I understand how many matching guides or job listings are available.
+- **As a career assessment taker on mobile**, I want to see my customized scores and key focus recommendations directly on the screen so that I do not have to switch apps or download files to view my results.
 
 ---
 
 ### Non-Functional Requirements
-- **Security & Secret Hygiene (`CWE-312`/`CWE-798`):** `SUPABASE_SERVICE_ROLE_KEY` must never be bundled into client-side Vite builds; database writes must execute exclusively in Netlify Functions.
-- **Accessibility & SonarQube Compliance:** All buttons must have explicit `type="button"`, modals must use native `<dialog open ...>`, and inputs must pair with explicit `<label htmlFor="...">`.
-- **Performance:** Client-side category filtering must execute in under 16ms (60 FPS) with memoized computations (`useMemo`).
+- **Accessibility:** WCAG 2.1 AA compliance with explicit ARIA labels, polite live regions, and keyboard-focusable audio controls.
+- **Performance:** Zero layout shifts (CLS < 0.01) during data refetching; cached Sanity responses resolve synchronously in under 5ms.
+- **Code Quality:** Adhere strictly to `.agents/skills/frontend-code-quality/SKILL.md` (explicit button types, readonly props, no nested ternaries, native dialogs).
 
 # Technical Design
 
 ### Current Implementation
-- **Lead Capture:** `DownloadResourceModal.tsx` submits via `POST` to Netlify Forms (`form-name="resources-lead-magnet"`) and `/.netlify/functions/subscribe-resource.ts` which forwards to Brevo API v3 (`api.brevo.com/v3/contacts`).
-- **Resource Management:** `sanity/schemas/resource.ts` defines the Sanity document schema. `src/app/utils/sanity.ts` (`getAllResources`) queries Sanity using GROQ.
-- **Resources UI:** `src/app/pages/ResourcesPage.tsx` currently divides guides into Career Toolkit Stages (1 to 4) and a flat secondary grid for non-toolkit guides.
+- **Audio Playback:** Managed by `AudioPlayerContext.tsx` and `AudioPlayerCtx.ts` with controls in `MiniPlayer.tsx`. Supports play/pause, seek slider, and close button, but lacks speed controls, skip buttons, or persistent preferences.
+- **Lead Capture Modal:** `DownloadResourceModal.tsx` stores email in `localStorage` but requires filling out the full multi-input form if the local storage is cleared or on a new device.
+- **Filter Announcements:** `ResourcesPage.tsx` and `JobsPage.tsx` update DOM elements dynamically without `aria-live` containers.
+- **Assessment Results:** `AssessmentPage.tsx` renders stage summaries and immediately prompts for a 2-page PDF download via `jspdf`, lacking a comprehensive interactive on-screen action breakdown.
+- **Data Fetching Hooks:** `useResources.ts`, `useJobs.ts`, and `useEvents.ts` independently fetch from Sanity without client-side caching.
 
 ---
 
 ### Key Decisions
-1. **Server-Side Supabase Client in Netlify Functions:** Use `@supabase/supabase-js` inside `netlify/functions/` initialized with `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. This keeps write tokens off the client bundle and allows direct insertion into PostgreSQL with automatic timestamp generation.
-2. **Dual-Write Architecture with Graceful Degradation:** The serverless function will write to both Supabase and Brevo in parallel (`Promise.allSettled`). Even if Supabase is unreachable or unconfigured in local preview, the function returns a 200 HTTP response so users receive their PDF download.
-3. **Unified Sanity Schema with Extended Metadata:** Retain Sanity Studio at `/admin` as the content authoring tool for PDF uploads and descriptions, expanding its schema fields (`category`, `collection`, `format`, `targetLevel`, `tags`) to support all new technical tracks.
-4. **Anti-Scroll-Fatigue Progressive Disclosure:** Implement tabbed track switching and chunked card rendering (`PAGE_SIZE = 9` with "Load More" button) as required by repository standards.
+1. **Audio Player Context Extensions:** Extend `AudioPlayerState` with `playbackRate: number`, `setPlaybackRate: (rate: number) => void`, `skip: (seconds: number) => void`, and `volume: number`. Persist values to `localStorage` on change and restore on audio mount.
+2. **Accessible Live Region Strategy:** Utilize visually hidden `aria-live="polite"` elements with debounced text updates to prevent screen reader stuttering while typing in search inputs.
+3. **Responsive Assessment Summary Component:** Decompose assessment results into a clean, semantic `AssessmentScoreCard` and `AssessmentActionSteps` component rendered directly on `/assessment`.
+4. **Lightweight Stale-While-Revalidate Caching Hook:** Implement `useSanityQuery<T>` utilizing a module-scoped in-memory cache map with timestamp-based TTL invalidation.
 
 ---
 
-### Proposed Changes
+### Data Models & Component Contracts
 
-#### 1. Backend / Serverless Layer
-- **`netlify/functions/lib/supabaseClient.ts`:** Centralized helper initializing the Supabase client using environment variables.
-- **`netlify/functions/subscribe-resource.ts`:** Enhanced to accept `resourceCategory`, `resourceSlug`, and `collection`, inserting records into `resource_leads`.
-- **Database Schema Migration:** Define the SQL table definition with Row Level Security (RLS) enabled.
-
-#### 2. CMS & Data Contracts
-- **`sanity/schemas/resource.ts`:** Add new category and collection choices, target experience level, and tags array.
-- **`src/app/types.ts`:** Update `Resource` interface with `collection`, `format`, `targetLevel`, `tags`, and `downloadCount`.
-- **`src/app/pages/resources/resourceData.ts`:** Update `RESOURCE_COLLECTIONS`, `RESOURCE_CATEGORIES`, and `RESOURCE_FORMATS`.
-- **`src/app/utils/sanity.ts`:** Update `getAllResources` GROQ query to project the new schema fields.
-
-#### 3. Frontend Components & UI
-- **`src/app/pages/resources/useResources.ts`:** Add pagination state (`visibleCount`), active format filters, and multi-field keyword search.
-- **`src/app/pages/resources/ResourceCategoryFilter.tsx`:** Modernized filter bar with category pills, format toggles, and live search.
-- **`src/app/pages/resources/ResourceTrackSwitcher.tsx`:** Updated track chips displaying live document counts per collection.
-- **`src/app/pages/resources/ResourceCard.tsx`:** Enhanced card design displaying category badges, format icons, page counts, and direct download triggers.
-- **`src/app/pages/ResourcesPage.tsx`:** Cohesive grid rendering with progressive disclosure, empty state illustrations, and scroll-to-top helpers.
-- **`src/app/components/DownloadResourceModal.tsx`:** Forward complete resource metadata (category, collection, slug) to the serverless function.
-
----
-
-### Data Models / Contracts
-
-#### Supabase Database Schema (`resource_leads` Table)
-```sql
-CREATE TABLE IF NOT EXISTS public.resource_leads (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email TEXT NOT NULL,
-  full_name TEXT,
-  discord_handle TEXT,
-  role_interest TEXT,
-  resource_title TEXT NOT NULL,
-  resource_slug TEXT,
-  category TEXT,
-  collection TEXT,
-  download_date TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- Enable RLS and restrict direct public writes (writes occur via Netlify Function service role)
-ALTER TABLE public.resource_leads ENABLE ROW LEVEL SECURITY;
+#### 1. Audio Player State Interface (`src/app/context/AudioPlayerCtx.ts`)
+```ts
+export interface AudioPlayerState {
+  currentEpisode: Episode | null;
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  playbackRate: number;
+  volume: number;
+  hasError: boolean;
+  toggle: (episode: Episode) => void;
+  seek: (seconds: number) => void;
+  skip: (seconds: number) => void;
+  setPlaybackRate: (rate: number) => void;
+  setVolume: (volume: number) => void;
+  dismiss: () => void;
+  isActive: (id: number) => boolean;
+  isThisPlaying: (id: number) => boolean;
+}
 ```
 
-#### TypeScript Resource Contract (`src/app/types.ts`)
+#### 2. Generic Sanity Query Hook Contract (`src/app/hooks/useSanityQuery.ts`)
 ```ts
-export type ResourceFormat = "guide" | "cheatsheet" | "workbook" | "template";
-export type ResourceTargetLevel = "All Levels" | "Beginner" | "Intermediate" | "Advanced";
-
-export interface Resource {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  category: string;
-  collection?: string;
-  format?: ResourceFormat;
-  targetLevel?: ResourceTargetLevel;
-  tags?: string[];
-  stage?: string;
-  isFeatured?: boolean;
-  pdfUrl?: string;
-  fileSize?: string;
-  pageCount?: string;
-  accentColor?: string;
-  isPublished: boolean;
-  publishedAt?: string;
-  weekNumber?: number;
-  requiresLogin?: boolean;
+export interface QueryResult<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
+  refetch: () => Promise<void>;
 }
+
+export function useSanityQuery<T>(
+  queryKey: string,
+  fetcher: () => Promise<T>,
+  options?: { ttlMs?: number; enabled?: boolean }
+): QueryResult<T>;
 ```
 
 ---
 
 ### File Structure
 ```text
-netlify/
-└── functions/
-    ├── lib/
-    │   └── supabaseClient.ts          # [NEW] Serverless Supabase client factory
-    └── subscribe-resource.ts          # [MODIFIED] Dual-write to Brevo and Supabase
-
-sanity/
-└── schemas/
-    └── resource.ts                    # [MODIFIED] Expanded categories & format fields
-
 src/
 ├── app/
+│   ├── context/
+│   │   ├── AudioPlayerContext.tsx        # [MODIFIED] Add speed, skip, volume & localStorage sync
+│   │   └── AudioPlayerCtx.ts             # [MODIFIED] Extended AudioPlayerState contract
+│   ├── hooks/
+│   │   ├── useSanityQuery.ts             # [NEW] Reusable in-memory SWR caching hook
+│   │   └── useAudioPlayer.ts             # [UNTOUCHED] Consumer hook
 │   ├── components/
-│   │   └── DownloadResourceModal.tsx  # [MODIFIED] Include category & collection in payload
+│   │   ├── MiniPlayer.tsx                # [MODIFIED] Add speed dropdown & 15s skip buttons
+│   │   ├── DownloadResourceModal.tsx     # [MODIFIED] Add fast-path returning member toggle
+│   │   └── assessments/
+│   │       └── AssessmentOnScreenPlan.tsx # [NEW] Semantic interactive action plan dashboard
 │   ├── pages/
+│   │   ├── AssessmentPage.tsx            # [MODIFIED] Integrate on-screen action plan display
+│   │   ├── ResourcesPage.tsx             # [MODIFIED] Add aria-live count announcements & useSanityQuery
+│   │   ├── JobsPage.tsx                  # [MODIFIED] Add aria-live count announcements & useSanityQuery
 │   │   ├── resources/
-│   │   │   ├── ResourceCard.tsx       # [MODIFIED] Badge, format & level display
-│   │   │   ├── ResourceCategoryFilter.tsx # [MODIFIED] Dynamic category & format pills
-│   │   │   ├── ResourceTrackSwitcher.tsx  # [MODIFIED] Collection chips with counts
-│   │   │   ├── resourceData.ts        # [MODIFIED] Taxonomy constants & type definitions
-│   │   │   └── useResources.ts        # [MODIFIED] Multi-category search & pagination
-│   │   └── ResourcesPage.tsx          # [MODIFIED] Progressive disclosure & catalog grid
-│   ├── types.ts                       # [MODIFIED] Extended Resource interface
-│   └── utils/
-│       └── sanity.ts                  # [MODIFIED] Updated GROQ projection query
+│   │   │   └── useResources.ts           # [MODIFIED] Integrate useSanityQuery caching
+│   │   ├── jobs/
+│   │   │   └── useJobs.ts                # [MODIFIED] Integrate useSanityQuery caching
+│   │   └── events/
+│   │       └── useEvents.ts              # [MODIFIED] Integrate useSanityQuery caching
 └── test/
-    └── ResourcesPage.test.tsx         # [MODIFIED] Test multi-category filtering
+    ├── AudioPlayerControls.test.tsx      # [NEW] Test skip, playback rates, and volume
+    ├── DownloadResourceModal.test.tsx    # [MODIFIED] Test returning member fast path
+    ├── AssessmentPage.test.tsx           # [MODIFIED] Test on-screen summary rendering
+    └── useSanityQuery.test.ts            # [NEW] Test in-memory cache TTL and refetching
 ```
 
 ---
@@ -206,86 +151,89 @@ src/
 ### Architecture Diagram
 ```mermaid
 graph TD
-    A[Visitor on /resources] -->|Browse Categories / Search| B[ResourcesPage & useResources]
-    B -->|Fetch Published Guides| C[Sanity Headless CMS]
-    A -->|Clicks Download / Unlock| D[DownloadResourceModal]
-    D -->|POST /subscribe-resource| E[Netlify Serverless Function]
-    E -->|Insert Lead & Date| F[(Supabase PostgreSQL)]
-    E -->|Upsert Contact| G[Brevo CRM API]
-    D -->|Unlock Stored in localStorage| H[Direct PDF Download / View]
+    subgraph UI & Accessibility
+        A[MiniPlayer & Controls] -->|Speed / Skip / Volume| AP[AudioPlayerContext]
+        R[Resources & Jobs Pages] -->|Aria-Live Updates| SR[Screen Reader Polite Region]
+        AS[AssessmentPage] -->|Semantic View| OP[On-Screen Action Plan]
+    end
+
+    subgraph Caching & Persistence
+        AP -->|Store Preferences| LS[(localStorage)]
+        M[DownloadResourceModal] -->|Quick Email Re-entry| LS
+        M -->|Attribution Log| SB[(Supabase Lead Capture)]
+        RQ[useResources / useJobs / useEvents] --> SQ[useSanityQuery SWR Hook]
+        SQ -->|In-Memory Map Cache| SC[Sanity Client API]
+    end
 ```
 
 ---
 
 ### Risks & Mitigations
-- **Missing Supabase Environment Variables:** If `SUPABASE_URL` or `SUPABASE_SERVICE_ROLE_KEY` are not set in a staging or preview environment, `supabaseClient.ts` will log a warning and return `null`, allowing lead capture to fall back gracefully without blocking user downloads.
-- **Large DOM Render / Scroll Fatigue:** With dozens of PDFs across multiple categories, rendering all cards simultaneously degrades performance. Mitigated by chunked pagination (`PAGE_SIZE = 9`) with an interactive "Load More" trigger.
+- **Audio Playback Speed Support on Mobile Browsers:** Standard HTMLAudioElement `playbackRate` is supported across modern browsers (Safari iOS, Chrome Android). We ensure fallback to `1.0` if unsupported.
+- **Cache Invalidation:** SWR cache TTL is defaulted to 5 minutes with automatic background revalidation so fresh content published in Sanity Studio reflects quickly.
 
 # Testing
 
 ### Validation Approach
-Verification will be conducted using automated Vitest unit/integration tests, TypeScript compiler verification (`tsc -b`), ESLint rule enforcement, and production build validation.
+Automated validation through Vitest unit and component tests, verifying audio playback controls, modal fast-paths, on-screen assessment summaries, and cached query hooks.
 
 ---
 
 ### Key Scenarios
 
-1. **Category & Track Filtering:**
-   - Navigating between collections (e.g. "All Resources" -> "Technical & Engineering" -> "Templates & Cheatsheets") updates the displayed card catalog and active counts.
-   - Selecting a category pill (e.g. "AI & Machine Learning") filters out non-matching resources.
-   - Searching for keywords (e.g. "System Design", "Salary") matches across title, description, category, and tags.
+1. **Audio Player Controls:**
+   - Verify changing playback speed (`0.75x`, `1.5x`, `2x`) updates `audio.playbackRate` and persists in `localStorage`.
+   - Verify clicking "+15s" and "-15s" adjusts `audio.currentTime` within `[0, duration]` bounds.
+   - Verify volume slider updates audio volume and persists across sessions.
 
-2. **Lead Capture & Supabase Persistence:**
-   - Submitting the download modal triggers `POST /.netlify/functions/subscribe-resource` with full payload (`email`, `fullName`, `resourceTitle`, `category`, `collection`).
-   - The serverless handler inserts a row into Supabase with valid `created_at` / `download_date` timestamps.
-   - The modal updates `localStorage` (`uht_user_email`, `uht_community_member`) and reveals the direct download link.
+2. **Lead Capture Modal Quick Re-Entry:**
+   - Verify toggling "Already unlocked? Quick unlock" renders simplified email input.
+   - Verify submitting valid email immediately unlocks resource and posts to `/subscribe-resource`.
 
-3. **Graceful Fallback on Network Error:**
-   - When Supabase or Brevo API endpoints simulate a network timeout (500/504), the serverless function handles the error cleanly, logs context, and allows the frontend to complete the unlock flow.
+3. **Dynamic Filter `aria-live` Announcements:**
+   - Verify changing search query or category filter updates the polite aria-live container text with exact count.
 
----
+4. **Assessment On-Screen Summary:**
+   - Verify completing all 4 assessment categories renders the interactive on-screen action plan alongside the PDF download button.
 
-### Edge Cases
-- **Empty Search Results:** Searching for a non-existent keyword displays a clean empty state with a "Reset all filters" button.
-- **Already Unlocked Community Member:** Users who previously entered their email bypass the modal and download additional PDFs directly with 1 click.
-- **Missing Resource Assets:** Resources with external URLs (`externalPdfUrl`) vs uploaded Sanity files (`pdfFile`) resolve correctly via `pdfUrl` coalesce.
-
----
-
-### Test Changes
-- Update `src/test/ResourcesPage.test.tsx` to assert multi-category filtering, collection switcher interactions, format filtering, and search query matching.
-- Add test coverage for `subscribe-resource` payload structure and Supabase client error handling.
+5. **`useSanityQuery` Caching:**
+   - Verify second mount of a component within TTL serves data from cache synchronously with zero extra network calls.
+   - Verify `refetch()` bypasses cache and updates state with fresh data.
 
 # Delivery Steps
 
-### ✓ Step 1: Setup Supabase client and serverless data capture pipeline
-Set up Supabase integration layer and serverless data capture pipeline with graceful degradation.
+### ✓ Step 1: Implement Audio Player Speed, Skip & Volume Persistence Controls
+The global audio player supports speed selection (0.75x–2x), 15s skip buttons, and persistent volume/rate preferences.
 
-- Create `netlify/functions/lib/supabaseClient.ts` to initialize an authenticated server-side Supabase client using `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
-- Define PostgreSQL schema and RLS policies for `resource_leads`, `booking_leads`, and `event_discount_claims` tables with UTC timestamps (`created_at`).
-- Update `netlify/functions/subscribe-resource.ts` to persist lead submissions to Supabase while maintaining existing Brevo CRM synchronization.
-- Implement robust error handling and fallback logging (`console.warn`) so database connectivity issues never block user downloads.
+- Extend `AudioPlayerCtx.ts` with `playbackRate`, `skip`, `setPlaybackRate`, and `setVolume` methods.
+- Update `AudioPlayerContext.tsx` to handle playback rates, skip delta calculations, and bidirectional `localStorage` sync.
+- Update `MiniPlayer.tsx` with playback speed dropdown, 15s backward/forward buttons, and accessible volume control.
+- Add test coverage in `src/test/AudioPlayerControls.test.tsx` verifying speed adjustments, skip bounds, and preference persistence.
 
-### ✓ Step 2: Expand Sanity resource schema and data contracts
-Enhance Sanity CMS schema, frontend data types, and static category definitions to support a multi-domain PDF library.
+### ✓ Step 2: Add Returning Member Fast-Path Unlock to Download Modal
+Community members can quickly unlock resources with a streamlined single-input email form across devices.
 
-- Update `sanity/schemas/resource.ts` with expanded categories (AI & Cloud, System Design, Frontend/Backend, Leadership, Interview Mastery), target experience levels, and tag arrays.
-- Extend `Resource` and `ExtendedResource` interfaces in `src/app/types.ts` and `src/app/pages/resources/resourceData.ts`.
-- Update Sanity fetch query in `src/app/utils/sanity.ts` (`getAllResources`) to select all new fields (`collection`, `format`, `targetLevel`, `tags`, `downloadCount`).
-- Define updated collection metadata and category color mappings in `resourceData.ts`.
+- Enhance `DownloadResourceModal.tsx` with a toggleable "Already unlocked? Quick unlock" state.
+- Wire the quick unlock form to `/.netlify/functions/subscribe-resource` to maintain Supabase lead attribution.
+- Update `DownloadResourceModal.test.tsx` verifying quick unlock submission and validation behavior.
 
-### ✓ Step 3: Upgrade Resources page UI and category filtering
-Overhaul Resources page filtering, track switching, and card presentation with anti-scroll-fatigue architecture.
+### ✓ Step 3: Add Accessible Live Filter Announcements to Resources and Job Board
+Dynamic filter and search count changes are announced politely to screen reader users.
 
-- Update `ResourceCategoryFilter.tsx` and `ResourceTrackSwitcher.tsx` to handle expanded categories, collection counts, and format pills.
-- Refactor `ResourcesPage.tsx` and `useResources.ts` to support seamless filtering across collections, categories, formats, and keyword search.
-- Enhance `ResourceCard.tsx` to display category tags, format indicators (Playbook, Cheatsheet, Workbook), target audience badges, and file sizes.
-- Implement progressive disclosure and chunked pagination (`PAGE_SIZE = 9` with "Load More" controls) for extensive multi-category catalogs.
+- Add visually hidden `aria-live="polite"` feedback containers to `ResourcesPage.tsx` and `JobsPage.tsx`.
+- Connect debounced result count strings to active filters (e.g., "Showing 8 resources for AI & Data").
+- Update `ResourcesPage.test.tsx` and `JobsPage.test.tsx` to assert accessibility live region content.
 
-### ✓ Step 4: Integrate modal capture and verify end-to-end workflows
-Connect lead capture modals to the new Supabase-backed pipeline and verify end-to-end functionality.
+### ✓ Step 4: Build Semantic On-Screen Assessment Action Plan
+Assessment takers on mobile and assistive devices can review their personalized action steps directly on-screen.
 
-- Update `DownloadResourceModal.tsx` to pass full resource context (category, collection, slug, format) in form submissions.
-- Ensure community unlock state (`uht_user_email`, `uht_community_member`) properly persists in `localStorage` across all resource categories.
-- Update test suites (`ResourcesPage.test.tsx`, `subscribe-resource` tests) to verify category filtering, lead submission payloads, and error resiliency.
-- Run `npm run typecheck`, `npm run lint`, `npm run test`, and `npm run build` to ensure clean compilation and 100% test pass rate.
+- Create `AssessmentOnScreenPlan.tsx` to format category scores, readiness stage, and top 3 prioritized action items.
+- Embed `AssessmentOnScreenPlan.tsx` in `AssessmentPage.tsx` above the PDF generation download trigger.
+- Update `src/test/AssessmentPage.test.tsx` to assert on-screen scoring and action step presentation.
+
+### ✓ Step 5: Implement Standardized In-Memory SWR Caching for Sanity Queries
+Redundant Sanity network calls across route transitions are eliminated through cached query hooks.
+
+- Implement `useSanityQuery.ts` with in-memory map caching, 5-minute TTL, and background revalidation.
+- Refactor `useResources.ts`, `useJobs.ts`, and `useEvents.ts` to utilize `useSanityQuery`.
+- Add test suite `src/test/useSanityQuery.test.ts` and verify all tests and production builds pass cleanly.

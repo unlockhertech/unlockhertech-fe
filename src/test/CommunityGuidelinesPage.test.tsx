@@ -30,4 +30,12 @@ describe('CommunityGuidelinesPage', () => {
     expect(screen.getByText(/Reporting & Enforcement/i)).toBeInTheDocument();
     expect(screen.getByText(/Unacceptable Behavior/i)).toBeInTheDocument();
   });
+
+  it('renders live Discord server community section', () => {
+    renderGuidelinesPage();
+    expect(screen.getByText(/Our Official Discord Server/i)).toBeInTheDocument();
+    const discordLink = screen.getByRole('link', { name: /Join Discord Server/i });
+    expect(discordLink).toBeInTheDocument();
+    expect(discordLink).toHaveAttribute('href', 'https://discord.gg/7yC78Yhem6');
+  });
 });

@@ -5,6 +5,7 @@ import {
   FaApple,
   FaYoutube,
   FaLinkedinIn,
+  FaDiscord,
 } from "react-icons/fa6";
 import {
   HiCodeBracket,
@@ -107,6 +108,17 @@ export function getLinkItems(): LinkItem[] {
       enabled: enableBlog,
     },
     {
+      id: "discord",
+      title: "Join Our Discord Community",
+      subtitle: "Connect with women & allies in tech, chat live & collaborate",
+      url: "https://discord.gg/7yC78Yhem6",
+      isExternal: true,
+      isFeatured: true,
+      badge: "Live Discord",
+      icon: FaDiscord,
+      enabled: true,
+    },
+    {
       id: "linkedin",
       title: "Follow On LinkedIn",
       subtitle: "Join our professional community updates",
@@ -137,6 +149,11 @@ export function getLinkItems(): LinkItem[] {
 }
 
 export const SOCIAL_LINKS: SocialLink[] = [
+  {
+    name: "Discord",
+    url: "https://discord.gg/7yC78Yhem6",
+    icon: FaDiscord,
+  },
   {
     name: "Instagram",
     url: "https://www.instagram.com/unlockhertech/",

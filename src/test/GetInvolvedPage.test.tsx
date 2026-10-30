@@ -73,4 +73,12 @@ describe('GetInvolvedPage', () => {
     expect(screen.getByText(/Thank you for submitting your transparent role!/i)).toBeInTheDocument();
     expect(screen.getByText(/reviews all listings against our 4 vetting standards/i)).toBeInTheDocument();
   });
+
+  it('renders Discord community callout with invite link', () => {
+    renderGetInvolvedPage();
+    expect(screen.getByText(/Want to connect and collaborate in real-time\?/i)).toBeInTheDocument();
+    const discordLink = screen.getByRole('link', { name: /Join Unlock Her Tech Discord Server/i });
+    expect(discordLink).toBeInTheDocument();
+    expect(discordLink).toHaveAttribute('href', 'https://discord.gg/7yC78Yhem6');
+  });
 });

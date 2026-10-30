@@ -2,8 +2,10 @@ import { Link } from "react-router";
 import { HiCodeBracket, HiCalendarDays, HiBell, HiArrowTopRightOnSquare } from "react-icons/hi2";
 import { BrandPatternOverlay } from "../../components/BrandPatternBackground";
 import { imgSheLeadsTech } from "../../data";
+import { usePracticeCountdown } from "./usePracticeCountdown";
 
 export function PracticesHero() {
+  const { formatInfo } = usePracticeCountdown();
   return (
     <header className="relative bg-brand-coral text-white overflow-hidden py-20 lg:py-24">
       <BrandPatternOverlay />
@@ -20,12 +22,12 @@ export function PracticesHero() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-3 text-white">
               She Leads Tech
             </h1>
-            <p className="text-xl sm:text-2xl font-black text-brand-pink tracking-wide mb-6">
-              Theory • Practice • Review
+            <p className="text-xl sm:text-2xl font-black text-brand-blue tracking-wide mb-6">
+              Theory • Practice • Review • Build
             </p>
 
             <p className="text-lg sm:text-xl text-white/90 font-medium mb-6 leading-relaxed max-w-2xl">
-              Interactive technical workshops designed to build deep engineering understanding and coding confidence. Learn concepts through instructor-led <strong>Theory</strong>, apply what you know in hands-on <strong>Practice</strong>, and solidify mastery in <strong>Review</strong> sessions.
+              Interactive technical workshops designed to build deep engineering understanding and coding confidence. Learn concepts through instructor-led <strong>Theory</strong>, apply what you know in hands-on <strong>Practice</strong>, solidify mastery in <strong>Review</strong> sessions, and engineer portfolio-grade applications in <strong>Build</strong> labs.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 flex-wrap">
@@ -84,13 +86,13 @@ export function PracticesHero() {
                 </div>
                 <div className="text-center">
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-coral bg-brand-pink/20 px-3 py-1 rounded-full">
-                    Three Learning Formats
+                    Four Learning Formats
                   </span>
                   <p className="text-lg font-bold text-gray-900 mt-2.5">
-                    <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#92d599]">Review</span>
+                    <span className="text-[#ff6051]">Theory</span> • <span className="text-[#b52970]">Practice</span> • <span className="text-[#92d599]">Review</span> • <span className="text-brand-blue">Build</span>
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Current sessions are: Theoretical
+                    Current sessions are: {formatInfo.heroLabel}
                   </p>
                 </div>
               </div>

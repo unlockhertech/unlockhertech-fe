@@ -1,64 +1,40 @@
+export type PathIconType = "academic" | "code" | "server" | "mobile";
+
 export interface LearningPath {
   slug: string;
   title: string;
+  subtitle: string;
   description: string;
   topics: readonly string[];
   href: string; // internal route
-  icon?: string; // reserved for future use
+  iconType: PathIconType;
+  accentGradient: string;
+  badge: string;
+  badgeClass: string;
+  pillBadgeClass: string;
+  isLive: boolean;
 }
 
 export const LEARNING_PATHS: readonly LearningPath[] = [
   {
-    slug: "frontend",
-    title: "Front-End Path",
-    description:
-      "Build beautiful, accessible and high-performance web experiences.",
-    topics: [
-      "JavaScript & TypeScript",
-      "React",
-      "Accessibility",
-      "Testing",
-      "Performance",
-    ],
-    href: "/paths/frontend",
-  },
-  {
-    slug: "backend",
-    title: "Backend Path",
-    description: "Learn to build scalable, secure and reliable systems.",
-    topics: [
-      "APIs & Microservices",
-      "Databases",
-      "DevOps",
-      "AWS & Cloud",
-      "Architecture",
-    ],
-    href: "/paths/backend",
-  },
-  {
-    slug: "mobile",
-    title: "Mobile Path",
-    description: "Create impactful mobile applications for iOS and Android.",
-    topics: [
-      "iOS / Swift",
-      "Android / Kotlin",
-      "Mobile Architecture",
-      "APIs",
-      "Testing",
-    ],
-    href: "/paths/mobile",
-  },
-  {
     slug: "interview",
     title: "Interview Preparation Path",
+    subtitle: "Algorithms, System Design & Interview Mastery",
     description:
-      "Build confidence and get ready for your next opportunity.",
+      "Build deep problem-solving intuition and confidence for technical interviews with live coding practice, system design blueprints, and behavioral frameworks.",
     topics: [
       "Data Structures & Algorithms",
-      "System Design",
-      "Coding Interviews",
-      "Behavioural Interviews",
+      "System Design & Scalability",
+      "Live Coding Challenges",
+      "Behavioural & Leadership Prep",
+      "Mock Technical Interviews",
     ],
     href: "/paths/interview",
+    iconType: "academic",
+    accentGradient: "from-[#b52970] via-[#ff6051] to-[#f4a0b4]",
+    badge: "Live Workshop Track",
+    badgeClass: "bg-pink-100 text-[#b52970] border-pink-200",
+    pillBadgeClass: "bg-pink-50 text-[#911f59] border-pink-200/80 hover:bg-pink-100 hover:border-pink-300",
+    isLive: true,
   },
 ] as const;

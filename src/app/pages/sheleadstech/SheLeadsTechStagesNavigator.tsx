@@ -5,6 +5,7 @@ import {
   HiBookOpen,
   HiWrenchScrewdriver,
   HiArrowPath,
+  HiRocketLaunch,
   HiSquares2X2,
   HiArrowRight,
   HiSparkles,
@@ -16,7 +17,7 @@ import {
   type LearningFormat,
 } from "./practicesData";
 
-export type FormatTabId = "all" | "theory" | "practice" | "review";
+export type FormatTabId = "all" | "theory" | "practice" | "review" | "build";
 
 interface StageTabItem {
   id: FormatTabId;
@@ -62,12 +63,27 @@ const STAGE_TABS: StageTabItem[] = [
     badgeColor: "bg-[#72c472] text-white",
     icon: HiArrowPath,
   },
+  {
+    id: "build",
+    stageNumber: "Stage 4",
+    label: "Build",
+    short: "Build",
+    badge: "Ship & Collaborate",
+    badgeColor: "bg-[#1e72b5] text-white",
+    icon: HiRocketLaunch,
+  },
 ];
 
 function parseValidTab(rawTab: string | null | undefined): FormatTabId | null {
   if (!rawTab) return null;
   const normalized = rawTab.toLowerCase().replace("#", "").trim();
-  if (normalized === "theory" || normalized === "practice" || normalized === "review" || normalized === "all") {
+  if (
+    normalized === "theory" ||
+    normalized === "practice" ||
+    normalized === "review" ||
+    normalized === "build" ||
+    normalized === "all"
+  ) {
     return normalized as FormatTabId;
   }
   return null;
@@ -84,27 +100,33 @@ function getTabButtonClass(tabId: FormatTabId, activeTab: FormatTabId): string {
     if (tabId === "review") {
       return "bg-[#72c472] text-stone-900 shadow-md border-[#72c472] font-bold";
     }
+    if (tabId === "build") {
+      return "bg-[#1e72b5] text-white shadow-md border-[#1e72b5] font-bold";
+    }
     return "bg-brand-coral text-white shadow-md border-brand-coral font-bold";
   }
   return "bg-white text-gray-700 hover:text-gray-900 hover:bg-stone-100 border-gray-200 font-semibold";
 }
 
-function getCardAccentBorder(formatId: "theory" | "practice" | "review"): string {
+function getCardAccentBorder(formatId: "theory" | "practice" | "review" | "build"): string {
   if (formatId === "theory") return "border-[#ff6051]/40 hover:border-[#ff6051]";
   if (formatId === "practice") return "border-[#b52970]/40 hover:border-[#b52970]";
-  return "border-[#72c472]/50 hover:border-[#72c472]";
+  if (formatId === "review") return "border-[#72c472]/50 hover:border-[#72c472]";
+  return "border-[#1e72b5]/50 hover:border-[#1e72b5]";
 }
 
-function getFormatAccentText(formatId: "theory" | "practice" | "review"): string {
+function getFormatAccentText(formatId: "theory" | "practice" | "review" | "build"): string {
   if (formatId === "theory") return "text-[#ff6051]";
   if (formatId === "practice") return "text-[#b52970]";
-  return "text-[#72c472]";
+  if (formatId === "review") return "text-[#72c472]";
+  return "text-[#1e72b5]";
 }
 
-function getFormatAccentBg(formatId: "theory" | "practice" | "review"): string {
+function getFormatAccentBg(formatId: "theory" | "practice" | "review" | "build"): string {
   if (formatId === "theory") return "bg-[#ff6051]";
   if (formatId === "practice") return "bg-[#b52970]";
-  return "bg-[#72c472]";
+  if (formatId === "review") return "bg-[#72c472]";
+  return "bg-[#1e72b5]";
 }
 
 interface FormatDetailViewProps {
@@ -261,8 +283,8 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
       aria-labelledby="tab-all"
       className="space-y-12 animate-fadeIn"
     >
-      {/* 3 Stages Summary Cards Grid */}
-      <div className="grid lg:grid-cols-3 gap-8">
+      {/* 4 Stages Summary Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {LEARNING_FORMATS.map((format, idx) => {
           const Icon = format.icon;
           const borderClass = getCardAccentBorder(format.id);
@@ -271,7 +293,7 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
           return (
             <div
               key={format.id}
-              className={`bg-white rounded-3xl p-6 sm:p-8 border ${borderClass} shadow-xs flex flex-col justify-between hover:shadow-md transition-all relative group`}
+              className={`bg-white rounded-3xl p-6 sm:p-7 border ${borderClass} shadow-xs flex flex-col justify-between hover:shadow-md transition-all relative group`}
             >
               <div>
                 {/* Top Header Badge & Live status */}
@@ -293,22 +315,22 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
                 </div>
 
                 {/* Format Title & Subtitle */}
-                <div className="flex items-start gap-3.5 mb-4">
-                  <div className={`w-11 h-11 rounded-2xl bg-stone-50 border border-gray-200 ${getFormatAccentText(format.id)} flex items-center justify-center shrink-0 shadow-2xs`}>
-                    <Icon className="w-6 h-6" />
+                <div className="flex items-start gap-3 mb-4">
+                  <div className={`w-10 h-10 rounded-2xl bg-stone-50 border border-gray-200 ${getFormatAccentText(format.id)} flex items-center justify-center shrink-0 shadow-2xs`}>
+                    <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-gray-900 leading-tight">{format.title}</h3>
+                    <h3 className="text-lg font-black text-gray-900 leading-tight">{format.title}</h3>
                     <p className="text-xs font-semibold text-gray-500 mt-0.5">{format.subtitle}</p>
                   </div>
                 </div>
 
                 {/* Mantra Pill */}
-                <div className="bg-stone-50 border border-gray-200 rounded-2xl p-3.5 mb-5 shadow-2xs">
-                  <span className="text-[11px] uppercase tracking-wider font-bold text-gray-500 block mb-1">
+                <div className="bg-stone-50 border border-gray-200 rounded-2xl p-3 mb-4 shadow-2xs">
+                  <span className="text-[10px] uppercase tracking-wider font-bold text-gray-500 block mb-1">
                     Think of {format.shortName} as:
                   </span>
-                  <p className="text-sm font-extrabold text-stone-900 italic">
+                  <p className="text-xs sm:text-sm font-extrabold text-stone-900 italic">
                     {format.mantra}
                   </p>
                 </div>
@@ -326,7 +348,7 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
                   onClick={() => onSelectTab(format.id)}
                   className="w-full py-2.5 px-4 rounded-xl bg-stone-50 hover:bg-stone-100 border border-gray-200 text-gray-900 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 hover:border-current cursor-pointer"
                 >
-                  <span>Explore {format.shortName} Format</span>
+                  <span>Explore {format.shortName}</span>
                   <HiArrowRight className={`w-4 h-4 ${getFormatAccentText(format.id)} group-hover:translate-x-0.5 transition-transform`} />
                 </button>
               </div>
@@ -336,7 +358,7 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
       </div>
 
       {/* The Key Difference Comparison Table */}
-      <div className="bg-white rounded-3xl p-8 sm:p-10 border border-gray-200 shadow-sm">
+      <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-200 shadow-sm">
         <div className="text-center max-w-2xl mx-auto mb-8">
           <span className="text-xs uppercase tracking-widest font-extrabold text-brand-coral mb-2 block">
             Quick Comparison
@@ -345,11 +367,11 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
             The Key Difference
           </h3>
           <p className="text-gray-600 text-sm leading-relaxed">
-            How the roles and focus shift across the three She Leads Tech formats.
+            How the roles and focus shift across the four She Leads Tech formats.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {KEY_DIFFERENCES.map((diff) => (
             <div
               key={diff.format}
@@ -361,7 +383,13 @@ function OverviewStagesView({ onSelectTab }: Readonly<OverviewStagesViewProps>) 
                     {diff.format}
                   </span>
                   <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full ${diff.badgeColor}`}>
-                    {diff.format === "Theory" ? "Learning" : diff.format === "Practice" ? "Doing" : "Strengthening"}
+                    {diff.format === "Theory"
+                      ? "Learning"
+                      : diff.format === "Practice"
+                      ? "Doing"
+                      : diff.format === "Review"
+                      ? "Strengthening"
+                      : "Building"}
                   </span>
                 </div>
 
@@ -445,7 +473,7 @@ export function SheLeadsTechStagesNavigator() {
             She Leads Tech Learning Formats
           </h2>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-            Three interconnected stages designed to guide you from foundational comprehension to hands-on execution and long-term engineering mastery.
+            Four interconnected stages designed to guide you from foundational comprehension to hands-on execution, long-term mastery, and shipping real-world projects.
           </p>
         </div>
 

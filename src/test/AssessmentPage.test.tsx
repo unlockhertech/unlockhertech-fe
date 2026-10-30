@@ -57,9 +57,17 @@ describe('AssessmentPage', () => {
     renderAssessmentPage();
     expect(screen.getByText(/Personal Reflection & Next Actions/i)).toBeInTheDocument();
     expect(screen.getByText(/Print \/ Save PDF/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Download My Career Plan \(PDF\)/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /Download My Career Plan \(PDF\)/i }).length).toBeGreaterThan(0);
     expect(screen.getByText(/Email Results & Action Plan to Myself/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Enter your email address/i)).toBeInTheDocument();
+  });
+
+  it('renders semantic on-screen career action plan dashboard', () => {
+    renderAssessmentPage();
+    expect(screen.getByRole('heading', { level: 3, name: /Your Personalized Career Action Plan/i })).toBeInTheDocument();
+    expect(screen.getByText(/Interactive On-Screen Dashboard/i)).toBeInTheDocument();
+    expect(screen.getByText(/Top 3 Prioritized Action Steps/i)).toBeInTheDocument();
+    expect(screen.getByText(/Establish a 45-Minute Daily Growth Rhythm/i)).toBeInTheDocument();
   });
 
   it('renders auto-matched resources tailored to growth areas', () => {

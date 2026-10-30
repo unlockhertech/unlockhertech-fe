@@ -1,5 +1,7 @@
 import { Link } from "react-router";
 import { HiExclamationTriangle, HiEnvelope } from "react-icons/hi2";
+import { FaDiscord } from "react-icons/fa6";
+import { DISCORD_INVITE_URL } from "../../data";
 
 export function GuidelinesPolicySections() {
   return (
@@ -83,7 +85,7 @@ export function GuidelinesPolicySections() {
             <h2 className="text-2xl font-extrabold text-gray-900">Guidelines for Live Technical Sessions</h2>
           </div>
           <div className="space-y-3 text-gray-600 text-sm sm:text-base leading-relaxed">
-            <p>During our <em>She Leads Tech</em> sessions (Theory, Practice, and Review):</p>
+            <p>During our <em>She Leads Tech</em> sessions (Theory, Practice, Review, and Build):</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong className="text-gray-900">Low-pressure participation:</strong> Cameras are always optional. You are free to engage through voice, chat, or by observing if you are not ready to code live.</li>
               <li><strong className="text-gray-900">Pair programming etiquette:</strong> When pairing, allow your partner time to think through problems and share their approach before jumping in with the solution.</li>
@@ -92,7 +94,37 @@ export function GuidelinesPolicySections() {
           </div>
         </section>
 
-        {/* Section 5 */}
+        {/* Section 5: Official Discord Server */}
+        <section className="bg-gradient-to-br from-[#5865F2]/10 via-purple-50/50 to-pink-50/40 rounded-3xl p-6 sm:p-8 border border-[#5865F2]/20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#5865F2]/15 text-[#5865F2] text-xs font-bold uppercase tracking-wider mb-3">
+                <FaDiscord className="w-4 h-4" />
+                <span>Live Discord Community</span>
+              </div>
+              <h2 className="text-2xl font-black text-gray-900 mb-2">Our Official Discord Server</h2>
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                Our Discord is a safe, moderated space for women, non-binary technologists, and allies to ask technical questions, discuss podcast episodes, collaborate on projects, and support each other&apos;s careers in real time.
+              </p>
+              <ul className="mt-3 list-disc pl-5 text-xs sm:text-sm text-gray-600 space-y-1">
+                <li>Keep discussions in their designated topic channels.</li>
+                <li>Be respectful and constructive in text and voice study rooms.</li>
+                <li>Direct messaging members without permission or for unsolicited sales is prohibited.</li>
+              </ul>
+            </div>
+            <a
+              href={DISCORD_INVITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#5865F2] hover:bg-[#4752c4] text-white font-bold text-sm shadow-md transition-colors shrink-0"
+            >
+              <FaDiscord className="w-5 h-5" />
+              <span>Join Discord Server</span>
+            </a>
+          </div>
+        </section>
+
+        {/* Section 6 */}
         <section className="bg-stone-50 rounded-2xl p-6 sm:p-8 border border-gray-200">
           <div className="flex items-center gap-3 mb-3">
             <HiEnvelope className="w-6 h-6 text-brand-coral" />

@@ -111,8 +111,34 @@ export function JobsPage() {
     );
   };
 
+  const announcementText = useMemo(() => {
+    if (loading) return "Loading verified inclusive opportunities…";
+    const count = filteredJobs.length;
+    const roleWord = count === 1 ? "role" : "roles";
+    if (showSavedOnly) {
+      return `Showing ${count} saved ${roleWord}`;
+    }
+    if (searchQuery) {
+      return `Showing ${count} ${roleWord} matching "${searchQuery}"`;
+    }
+    if (selectedCategory !== "All Roles") {
+      return `Showing ${count} ${roleWord} in ${selectedCategory}`;
+    }
+    return `Showing all ${count} inclusive tech ${roleWord}`;
+  }, [loading, filteredJobs.length, showSavedOnly, searchQuery, selectedCategory]);
+
   return (
     <div className="bg-stone-50 min-h-screen">
+      {/* ── Accessible Live Filter Announcement ───────────────────────── */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {announcementText}
+      </div>
+
       {/* ── Toast Notification for Reporting ─────────────────────────────── */}
       {toastMessage && (
         <aside

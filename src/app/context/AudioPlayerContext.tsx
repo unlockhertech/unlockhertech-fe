@@ -9,6 +9,39 @@ import {
 import type { Episode } from "../data";
 import { Ctx } from "./AudioPlayerCtx";
 
+const PLAYBACK_RATE_KEY = "uht_audio_playback_rate";
+const VOLUME_KEY = "uht_audio_volume";
+
+function getStoredPlaybackRate(): number {
+  try {
+    const stored = localStorage.getItem(PLAYBACK_RATE_KEY);
+    if (stored) {
+      const parsed = Number.parseFloat(stored);
+      if (!Number.isNaN(parsed) && parsed > 0 && parsed <= 4) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn("Failed to read audio playback rate from localStorage:", err);
+  }
+  return 1;
+}
+
+function getStoredVolume(): number {
+  try {
+    const stored = localStorage.getItem(VOLUME_KEY);
+    if (stored) {
+      const parsed = Number.parseFloat(stored);
+      if (!Number.isNaN(parsed) && parsed >= 0 && parsed <= 1) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn("Failed to read audio volume from localStorage:", err);
+  }
+  return 1;
+}
+
 // ── Provider ───────────────────────────────────────────────────────────────────
 export const AudioPlayerProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -17,12 +50,16 @@ export const AudioPlayerProvider = ({ children }: Readonly<{ children: ReactNode
   const [isPlaying,      setIsPlaying]      = useState(false);
   const [currentTime,    setCurrentTime]    = useState(0);
   const [duration,       setDuration]       = useState(0);
+  const [playbackRate,   setPlaybackRateState] = useState<number>(getStoredPlaybackRate);
+  const [volume,         setVolumeState]       = useState<number>(getStoredVolume);
   const [hasError,       setHasError]       = useState(false);
 
   // Create the single <audio> element once on mount
   useEffect(() => {
     const audio = new Audio();
     audio.preload = "metadata";
+    audio.playbackRate = getStoredPlaybackRate();
+    audio.volume = getStoredVolume();
     audioRef.current = audio;
 
     const onTime  = () => setCurrentTime(audio.currentTime);
@@ -66,6 +103,8 @@ export const AudioPlayerProvider = ({ children }: Readonly<{ children: ReactNode
     } else {
       audio.pause();
       audio.src = episode.audioUrl;
+      audio.playbackRate = playbackRate;
+      audio.volume = volume;
       audio.load();
       setCurrentEpisode(episode);
       setCurrentTime(0);
@@ -74,17 +113,60 @@ export const AudioPlayerProvider = ({ children }: Readonly<{ children: ReactNode
       // Wait for enough data before playing
       audio.addEventListener(
         "canplay",
-        () => { audio.play().catch(() => setHasError(true)); setIsPlaying(true); },
+        () => {
+          audio.playbackRate = playbackRate;
+          audio.volume = volume;
+          audio.play().catch(() => setHasError(true));
+          setIsPlaying(true);
+        },
         { once: true }
       );
     }
-  }, [currentEpisode, isPlaying]);
+  }, [currentEpisode, isPlaying, playbackRate, volume]);
 
   // ── seek ───────────────────────────────────────────────────────────────────
   const seek = useCallback((seconds: number) => {
     if (audioRef.current) {
       audioRef.current.currentTime = seconds;
       setCurrentTime(seconds);
+    }
+  }, []);
+
+  // ── skip ───────────────────────────────────────────────────────────────────
+  const skip = useCallback((seconds: number) => {
+    if (audioRef.current) {
+      const current = audioRef.current.currentTime || 0;
+      const dur = audioRef.current.duration || 0;
+      const target = dur > 0 ? Math.max(0, Math.min(dur, current + seconds)) : Math.max(0, current + seconds);
+      audioRef.current.currentTime = target;
+      setCurrentTime(target);
+    }
+  }, []);
+
+  // ── setPlaybackRate ────────────────────────────────────────────────────────
+  const setPlaybackRate = useCallback((rate: number) => {
+    setPlaybackRateState(rate);
+    if (audioRef.current) {
+      audioRef.current.playbackRate = rate;
+    }
+    try {
+      localStorage.setItem(PLAYBACK_RATE_KEY, String(rate));
+    } catch (err) {
+      console.warn("Failed to persist audio playback rate to localStorage:", err);
+    }
+  }, []);
+
+  // ── setVolume ──────────────────────────────────────────────────────────────
+  const setVolume = useCallback((newVolume: number) => {
+    const clamped = Math.max(0, Math.min(1, newVolume));
+    setVolumeState(clamped);
+    if (audioRef.current) {
+      audioRef.current.volume = clamped;
+    }
+    try {
+      localStorage.setItem(VOLUME_KEY, String(clamped));
+    } catch (err) {
+      console.warn("Failed to persist audio volume to localStorage:", err);
     }
   }, []);
 
@@ -109,13 +191,34 @@ export const AudioPlayerProvider = ({ children }: Readonly<{ children: ReactNode
     isPlaying,
     currentTime,
     duration,
+    playbackRate,
+    volume,
     hasError,
     toggle,
     seek,
+    skip,
+    setPlaybackRate,
+    setVolume,
     dismiss,
     isActive,
     isThisPlaying
-  }), [currentEpisode, isPlaying, currentTime, duration, hasError, toggle, seek, dismiss, isActive, isThisPlaying]);
+  }), [
+    currentEpisode,
+    isPlaying,
+    currentTime,
+    duration,
+    playbackRate,
+    volume,
+    hasError,
+    toggle,
+    seek,
+    skip,
+    setPlaybackRate,
+    setVolume,
+    dismiss,
+    isActive,
+    isThisPlaying
+  ]);
 
   return (
     <Ctx.Provider value={value}>

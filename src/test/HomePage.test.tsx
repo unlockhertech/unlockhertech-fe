@@ -28,4 +28,18 @@ describe('HomePage', () => {
     expect(screen.getAllByText(/Spotify/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Apple Podcasts/i).length).toBeGreaterThan(0);
   });
+
+  it('renders live Discord community launch banner with channel cards and join CTA', () => {
+    renderHomePage();
+    expect(screen.getByText(/Official Community Launch • Now Live/i)).toBeInTheDocument();
+    expect(screen.getByText(/Connect, Collaborate & Grow on/i)).toBeInTheDocument();
+    expect(screen.getByText(/#she-leads-tech/i)).toBeInTheDocument();
+    expect(screen.getByText(/#podcast-discussion/i)).toBeInTheDocument();
+    expect(screen.getByText(/#job-opportunities/i)).toBeInTheDocument();
+    expect(screen.getByText(/#intros-and-networking/i)).toBeInTheDocument();
+
+    const joinBtn = screen.getByRole('link', { name: /Join Unlock Her Tech Discord Server/i });
+    expect(joinBtn).toBeInTheDocument();
+    expect(joinBtn).toHaveAttribute('href', 'https://discord.gg/7yC78Yhem6');
+  });
 });
