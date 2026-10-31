@@ -207,4 +207,35 @@ describe('AssessmentPage', () => {
     fireEvent.click(celebrateAgainBtn);
     expect(confetti).toHaveBeenCalledTimes(2);
   });
+
+  it('renders how-it-works instructions banner and toggles scoring guide details', () => {
+    renderAssessmentPage();
+
+    // Verify 3-step banner is rendered
+    expect(screen.getByRole('heading', { level: 2, name: /Complete Your Readiness Check in 3 Quick Steps/i })).toBeInTheDocument();
+    expect(screen.getByText(/Rate 16 Prompts Honestly/i)).toBeInTheDocument();
+    expect(screen.getByText(/Choose Your Work Mode/i)).toBeInTheDocument();
+    expect(screen.getByText(/Unlock Custom Action Plan/i)).toBeInTheDocument();
+    expect(screen.getByText(/3–5 Mins/i)).toBeInTheDocument();
+    expect(screen.getByText(/Autosaved Locally/i)).toBeInTheDocument();
+
+    // Toggle button for scoring scale details
+    const toggleBtn = screen.getByRole('button', { name: /Understanding the 1–5 Rating Scale & Scoring Guidance/i });
+    expect(toggleBtn).toBeInTheDocument();
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
+
+    // Details should not be visible initially
+    expect(screen.queryByText(/Brand new territory or an area where you have little to no previous exposure/i)).not.toBeInTheDocument();
+
+    // Expand details
+    fireEvent.click(toggleBtn);
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText(/Brand new territory or an area where you have little to no previous exposure/i)).toBeInTheDocument();
+    expect(screen.getByText(/Honest self-reflection unlocks the best results/i)).toBeInTheDocument();
+
+    // Collapse details
+    fireEvent.click(toggleBtn);
+    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByText(/Brand new territory or an area where you have little to no previous exposure/i)).not.toBeInTheDocument();
+  });
 });

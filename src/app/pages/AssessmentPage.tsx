@@ -9,6 +9,7 @@ import { CategorySection } from "./assessment/CategorySection";
 import { AssessmentFocusSteps } from "./assessment/AssessmentFocusSteps";
 import { AssessmentResults } from "./assessment/AssessmentResults";
 import { AssessmentStickyBar } from "./assessment/AssessmentStickyBar";
+import { AssessmentInstructionsBanner } from "./assessment/AssessmentInstructionsBanner";
 import { BrandPatternOverlay } from "../components/BrandPatternBackground";
 
 export { ReadinessRadarChart } from "./assessment/ReadinessRadarChart";
@@ -70,6 +71,9 @@ export function AssessmentPage() {
 
       {/* ── 2. Assessment Main Container ──────────────────────────────── */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 relative z-10">
+        {/* ── Instructions & How-It-Works Banner ── */}
+        <AssessmentInstructionsBanner />
+
         {/* Progress Tracker Bar & View Mode Toggle */}
         <AssessmentProgressBar
           progressPercent={progressPercent}
