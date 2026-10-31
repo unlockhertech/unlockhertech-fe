@@ -75,5 +75,27 @@ export const eventSchema = defineType({
       },
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      platform: 'platform',
+      date: 'date',
+      media: 'image',
+    },
+    prepare({ title, platform, date, media }) {
+      const formattedDate = date
+        ? new Date(date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })
+        : '';
+      return {
+        title: title || 'Untitled Event',
+        subtitle: [platform, formattedDate].filter(Boolean).join(' · '),
+        media,
+      };
+    },
+  },
 });
 

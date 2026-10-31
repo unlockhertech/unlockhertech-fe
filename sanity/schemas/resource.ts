@@ -42,6 +42,7 @@ export const resourceSchema = defineType({
         ],
       },
       initialValue: 'guide',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'topicCluster',
@@ -57,6 +58,7 @@ export const resourceSchema = defineType({
         ],
       },
       initialValue: 'career-change',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
@@ -100,80 +102,33 @@ export const resourceSchema = defineType({
     }),
     defineField({
       name: 'durationOrPages',
-      title: 'Length / Duration / Page Count (e.g. "14 pages", "12 min watch", "Interactive tool")',
+      title: 'Length / Duration / Page Count',
       type: 'string',
+      description: 'e.g. "14 pages", "12 min watch", "Interactive tool", or "8 min read"',
     }),
     defineField({
       name: 'actionLabel',
-      title: 'Action Button Label (e.g. "Download PDF", "Open Tool", "Watch Video", "Read Article")',
+      title: 'Action Button Label',
       type: 'string',
+      description: 'e.g. "Download PDF", "Open Tool", "Watch Video", or "Read Article"',
     }),
     defineField({
       name: 'actionUrl',
-      title: 'Action Target URL (External tool/video link or document)',
+      title: 'Action Target URL',
       type: 'url',
+      description: 'Target link for interactive tools, external videos, or articles',
     }),
     defineField({
       name: 'collection',
-      title: 'Collection / Track',
+      title: 'Curated Collection',
       type: 'string',
-      description: 'Which track or collection this resource belongs to.',
+      description: 'Optional curated collection series (e.g. Career Transition Toolkit).',
       options: {
         list: [
+          { title: 'None / Standalone Resource', value: '' },
           { title: 'Career Transition Toolkit (10-Guide Series)', value: 'career-toolkit' },
-          { title: 'Technical & Engineering', value: 'tech-guides' },
-          { title: 'AI & Data Systems', value: 'ai-data' },
-          { title: 'Job Search & Negotiation', value: 'job-search' },
-          { title: 'Leadership & Workplace', value: 'leadership' },
-          { title: 'Templates & Cheatsheets', value: 'templates' },
         ],
       },
-      initialValue: 'career-toolkit',
-    }),
-    defineField({
-      name: 'format',
-      title: 'Resource Format',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'PDF Playbook / Guide', value: 'guide' },
-          { title: 'Worksheet / Workbook', value: 'workbook' },
-          { title: 'Cheatsheet / Checklist', value: 'cheatsheet' },
-          { title: 'Template', value: 'template' },
-        ],
-      },
-      initialValue: 'guide',
-    }),
-    defineField({
-      name: 'targetLevel',
-      title: 'Target Experience Level',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'All Levels', value: 'All Levels' },
-          { title: 'Beginner', value: 'Beginner' },
-          { title: 'Intermediate', value: 'Intermediate' },
-          { title: 'Advanced', value: 'Advanced' },
-        ],
-      },
-      initialValue: 'All Levels',
-    }),
-    defineField({
-      name: 'tags',
-      title: 'Tags / Keywords',
-      type: 'array',
-      of: [{ type: 'string' }],
-      options: {
-        layout: 'tags',
-      },
-      description: 'Searchable keywords (e.g. "System Design", "AWS", "Resume", "Salary")',
-    }),
-    defineField({
-      name: 'isFeatured',
-      title: 'Featured / Spotlight Resource?',
-      type: 'boolean',
-      description: 'Show highlighted in the top spotlight banner.',
-      initialValue: false,
     }),
     defineField({
       name: 'stage',
@@ -188,19 +143,32 @@ export const resourceSchema = defineType({
           { title: 'Stage 4: Resilience & Reality', value: 'stage4' },
         ],
       },
-      initialValue: 'stage1',
     }),
     defineField({
       name: 'weekNumber',
       title: 'Release Week Number',
       type: 'number',
-      description: 'Sequence number (1-10) controlling weekly drop order.',
+      description: 'Sequence number (1-10) controlling weekly drop order in collections.',
+    }),
+    defineField({
+      name: 'isFeatured',
+      title: 'Featured / Spotlight Resource?',
+      type: 'boolean',
+      description: 'Highlight in top editorial spotlight cards.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'isComingSoon',
+      title: 'Coming Soon / In Development?',
+      type: 'boolean',
+      description: 'Show as an upcoming preview badge.',
+      initialValue: false,
     }),
     defineField({
       name: 'requiresLogin',
       title: 'Requires Community Unlock?',
       type: 'boolean',
-      description: 'If true, visitors must submit their email before downloading (guides 4+).',
+      description: 'If true, visitors must provide their email before downloading exclusive PDFs.',
       initialValue: false,
     }),
     defineField({
@@ -210,7 +178,7 @@ export const resourceSchema = defineType({
       options: {
         accept: '.pdf',
       },
-      description: 'Upload the downloadable PDF document here',
+      description: 'Upload downloadable PDF document (for PDF guides and playbooks)',
     }),
     defineField({
       name: 'externalPdfUrl',
@@ -220,19 +188,25 @@ export const resourceSchema = defineType({
     }),
     defineField({
       name: 'fileSize',
-      title: 'File Size Label (e.g. 2.4 MB)',
+      title: 'File Size Label',
       type: 'string',
-    }),
-    defineField({
-      name: 'pageCount',
-      title: 'Page Count Label (e.g. 12 Pages)',
-      type: 'string',
+      placeholder: 'e.g. 2.4 MB',
     }),
     defineField({
       name: 'accentColor',
       title: 'Accent Hex Color (Optional override)',
       type: 'string',
-      description: 'Default rotates: #ff9fb0, #b52970, #ffcb00, #ff6051, #92d599, #5f9de3',
+      description: 'Brand colors rotate automatically: #ff9fb0, #b52970, #ffcb00, #ff6051, #92d599, #5f9de3',
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags / Keywords',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
+      description: 'Searchable keywords (e.g. "System Design", "AWS", "Resume", "Salary")',
     }),
     defineField({
       name: 'isPublished',
@@ -251,12 +225,14 @@ export const resourceSchema = defineType({
     select: {
       title: 'title',
       subtitle: 'category',
+      type: 'type',
       week: 'weekNumber',
     },
-    prepare({ title, subtitle, week }) {
+    prepare({ title, subtitle, type, week }) {
+      const typeLabel = type ? `[${type.toUpperCase()}] ` : '';
       return {
-        title,
-        subtitle: week ? `Week ${week} · ${subtitle}` : subtitle,
+        title: `${typeLabel}${title || 'Untitled Resource'}`,
+        subtitle: week ? `Week ${week} · ${subtitle || ''}` : subtitle || '',
       };
     },
   },

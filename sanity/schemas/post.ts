@@ -64,4 +64,26 @@ export const postSchema = defineType({
       type: 'text',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      author: 'author',
+      date: 'date',
+      media: 'imageUrl',
+    },
+    prepare({ title, author, date, media }) {
+      const formattedDate = date
+        ? new Date(date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })
+        : '';
+      return {
+        title: title || 'Untitled Post',
+        subtitle: [author, formattedDate].filter(Boolean).join(' · '),
+        media,
+      };
+    },
+  },
 });

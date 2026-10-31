@@ -234,8 +234,17 @@ export const jobSchema = defineType({
   preview: {
     select: {
       title: 'title',
-      subtitle: 'company',
+      company: 'company',
+      status: 'status',
       media: 'companyLogo',
+    },
+    prepare({ title, company, status, media }) {
+      const statusPrefix = status && status !== 'active' ? `[${status.toUpperCase()}] ` : '';
+      return {
+        title: `${statusPrefix}${title || 'Untitled Job'}`,
+        subtitle: company || '',
+        media,
+      };
     },
   },
 });

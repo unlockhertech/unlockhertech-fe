@@ -30,7 +30,7 @@ const DISCORD_CHANNELS = [
     id: "intros-networking",
     icon: HiSparkles,
     name: "#intros-and-networking",
-    description: "Meet women, non-binary technologists & allies worldwide.",
+    description: "Connect with other women in tech, non-binary technologists & allies worldwide.",
     badgeColor: "bg-emerald-50 text-brand-green border-emerald-200",
   },
 ];
