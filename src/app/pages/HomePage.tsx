@@ -18,6 +18,7 @@ const enableEvents = import.meta.env.VITE_ENABLE_EVENTS === "true";
 const enableGetInvolved = import.meta.env.VITE_ENABLE_GET_INVOLVED === "true";
 
 export function HomePage() {
+  const enableDiscordAnnouncement = import.meta.env.VITE_ENABLE_DISCORD_ANNOUNCEMENT === "true";
   useMetaData(
     "Unlock Her Tech | Where Skills Grow And Voices Are Heard",
     "Join Unlock Her Tech: A vibrant community for women, non-binary people, and allies in tech. Featuring She Leads Tech engineering workshops, mentorship, and inspiring podcast episodes.",
@@ -91,7 +92,7 @@ export function HomePage() {
       <HomeInclusivitySection />
 
       {/* ── 5. Discord Live Community Banner ────────────────────────────── */}
-      <HomeDiscordBanner />
+      {enableDiscordAnnouncement && <HomeDiscordBanner />}
 
       {/* ── 6. Upcoming Events ──────────────────────────────────────────── */}
       {enableEvents && <HomeFeaturedEvents events={featuredEvents} />}

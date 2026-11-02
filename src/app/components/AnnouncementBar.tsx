@@ -6,7 +6,9 @@ import { DISCORD_INVITE_URL } from "../data";
 export function AnnouncementBar() {
   const [dismissed, setDismissed] = useState(false);
 
-  if (dismissed) return null;
+  const isEnabled = import.meta.env.VITE_ENABLE_DISCORD_ANNOUNCEMENT === "true";
+
+  if (!isEnabled || dismissed) return null;
 
   return (
     <div className="bg-[#5865F2] text-white text-xs sm:text-sm py-2 px-4 relative z-50 border-b border-white/15 shadow-sm overflow-hidden">

@@ -536,6 +536,7 @@ function LayoutInner() {
   const enableAssessment = import.meta.env.VITE_ENABLE_ASSESSMENT === "true";
   const enableGetInvolved = import.meta.env.VITE_ENABLE_GET_INVOLVED === "true";
   const enableJobs = import.meta.env.VITE_ENABLE_JOBS !== "false";
+  const enableDiscordAnnouncement = import.meta.env.VITE_ENABLE_DISCORD_ANNOUNCEMENT === "true";
 
   const hasMultipleResources = enableResources && enableAssessment;
 
@@ -552,7 +553,7 @@ function LayoutInner() {
       </a>
 
       {/* ── Top Announcement Banner ────────────────────────────────────────────── */}
-      <AnnouncementBar />
+      {enableDiscordAnnouncement && <AnnouncementBar />}
 
       {/* ── Nav ────────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 shadow-sm bg-brand-coral">

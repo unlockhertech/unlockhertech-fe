@@ -2,9 +2,19 @@ import { render, screen } from '@testing-library/react';
 import { HomePage } from '../app/pages/HomePage.tsx';
 import { MemoryRouter } from 'react-router';
 import { AudioPlayerProvider } from '../app/context/AudioPlayerContext.tsx';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('HomePage', () => {
+  const originalEnv = import.meta.env.VITE_ENABLE_DISCORD_ANNOUNCEMENT;
+
+  beforeEach(() => {
+    (import.meta.env as unknown as Record<string, string>).VITE_ENABLE_DISCORD_ANNOUNCEMENT = 'false';
+  });
+
+  afterEach(() => {
+    (import.meta.env as unknown as Record<string, string>).VITE_ENABLE_DISCORD_ANNOUNCEMENT = originalEnv;
+  });
+
   const renderHomePage = () => {
     return render(
       <MemoryRouter>
@@ -29,7 +39,14 @@ describe('HomePage', () => {
     expect(screen.getAllByText(/Apple Podcasts/i).length).toBeGreaterThan(0);
   });
 
-  it('renders live Discord community launch banner with channel cards and join CTA', () => {
+  it('does not render Discord community launch banner when announcement flag is disabled', () => {
+    (import.meta.env as unknown as Record<string, string>).VITE_ENABLE_DISCORD_ANNOUNCEMENT = 'false';
+    renderHomePage();
+    expect(screen.queryByText(/Official Community Launch • Now Live/i)).not.toBeInTheDocument();
+  });
+
+  it('renders live Discord community launch banner with channel cards and join CTA when announcement flag is enabled', () => {
+    (import.meta.env as unknown as Record<string, string>).VITE_ENABLE_DISCORD_ANNOUNCEMENT = 'true';
     renderHomePage();
     expect(screen.getByText(/Official Community Launch • Now Live/i)).toBeInTheDocument();
     expect(screen.getByText(/Connect, Collaborate & Grow on/i)).toBeInTheDocument();
