@@ -34,9 +34,40 @@ export function urlForOptimized(source: SanityImageSource, width = 800, quality 
 }
 
 
-function calculateReadingTime(content: string = ""): string {
+function extractTextFromBody(body?: unknown[]): string {
+  if (!body || !Array.isArray(body)) return "";
+  let text = "";
+  for (const block of body) {
+    if (block && typeof block === "object") {
+      const b = block as Record<string, unknown>;
+      if (Array.isArray(b.children)) {
+        for (const child of b.children) {
+          if (child && typeof child === "object" && typeof (child as Record<string, unknown>).text === "string") {
+            text += " " + (child as Record<string, unknown>).text;
+          }
+        }
+      }
+      if (typeof b.content === "string") {
+        text += " " + b.content;
+      }
+      if (Array.isArray(b.points)) {
+        text += " " + b.points.filter((p) => typeof p === "string").join(" ");
+      }
+      if (typeof b.referenceText === "string") {
+        text += " " + b.referenceText;
+      }
+      if (typeof b.quote === "string") {
+        text += " " + b.quote;
+      }
+    }
+  }
+  return text.trim();
+}
+
+function calculateReadingTime(content: string = "", body?: unknown[]): string {
   const wordsPerMinute = 225;
-  const noOfWords = content.trim().split(/\s+/).filter(Boolean).length;
+  const combined = `${content} ${extractTextFromBody(body)}`.trim();
+  const noOfWords = combined.split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.ceil(noOfWords / wordsPerMinute));
   return `${minutes} min read`;
 }
@@ -54,6 +85,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       title,
       date,
       author,
+      authorRole,
+      "authorAvatar": coalesce(authorAvatar.asset->url, authorAvatar),
+      authorBio,
+      authorLinkedin,
       tags,
       canonicalUrl,
       "slug": slug.current,
@@ -65,7 +100,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     const posts: BlogPost[] = await sanityClient.fetch(query);
     return posts.map((post) => ({
       ...post,
-      readingTime: calculateReadingTime(post.content || ""),
+      readingTime: calculateReadingTime(post.content || "", post.body),
     }));
   } catch (error) {
     console.warn("Could not fetch blog posts from Sanity, using fallback:", error);
@@ -86,6 +121,10 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       title,
       date,
       author,
+      authorRole,
+      "authorAvatar": coalesce(authorAvatar.asset->url, authorAvatar),
+      authorBio,
+      authorLinkedin,
       tags,
       canonicalUrl,
       "slug": slug.current,
@@ -99,7 +138,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 
     return {
       ...post,
-      readingTime: calculateReadingTime(post.content || ""),
+      readingTime: calculateReadingTime(post.content || "", post.body),
     };
   } catch (error) {
     console.warn(`Could not fetch blog post "${slug}" from Sanity:`, error);

@@ -36,10 +36,41 @@ export interface Platform {
   url: string;
 }
 
+export type CalloutVariant = "didYouKnow" | "keyTakeaway" | "tip" | "highlight" | "quote";
+
+export interface BlogPostCallout {
+  _type?: "callout";
+  variant: CalloutVariant;
+  title?: string;
+  content?: string;
+  points?: string[];
+  referenceText?: string;
+  referenceUrl?: string;
+}
+
+export interface BlogPostPullQuote {
+  _type?: "pullQuote";
+  quote: string;
+  attribution?: string;
+  role?: string;
+}
+
+export interface BlogPostCaptionedImage {
+  _type?: "captionedImage" | "image";
+  asset?: { url?: string };
+  imageUrl?: string;
+  caption?: string;
+  alt?: string;
+}
+
 export interface BlogPost {
   title: string;
   date: string;
   author: string;
+  authorRole?: string;
+  authorAvatar?: string;
+  authorBio?: string;
+  authorLinkedin?: string;
   tags: string[];
   canonicalUrl: string;
   slug: string;

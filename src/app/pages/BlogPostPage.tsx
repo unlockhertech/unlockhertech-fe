@@ -8,9 +8,11 @@ import { useBlogPost } from "./blogPost/useBlogPost";
 import { BlogPostHeader } from "./blogPost/BlogPostHeader";
 import { BlogPostContent } from "./blogPost/BlogPostContent";
 import { BlogPostNav } from "./blogPost/BlogPostNav";
+import { BlogAuthorBio } from "../components/blog/BlogAuthorBio";
+import { BlogRelatedPosts } from "../components/blog/BlogRelatedPosts";
 
 export function BlogPostPage() {
-  const { slug, post, prevPost, nextPost, loading } = useBlogPost();
+  const { slug, post, allPosts, prevPost, nextPost, loading } = useBlogPost();
 
   const blogPostJsonLd = useMemo(() => {
     if (!post) return undefined;
@@ -77,22 +79,38 @@ export function BlogPostPage() {
   }
 
   return (
-    <div className="bg-stone-50 min-h-screen relative overflow-hidden">
+    <div className="bg-stone-50 dark:bg-gray-950 min-h-screen relative overflow-hidden">
       <div className="relative">
         <BrandPatternOverlay variant="watermark" />
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-          {/* ── 1. Header (Breadcrumb, Image, Title, Meta & Share) ─────────── */}
+          {/* ── 1. Header (Breadcrumb, Tags, Title, Meta & Share, Hero) ───── */}
           <BlogPostHeader post={post} />
 
-          {/* ── 2. Content Body ────────────────────────────────────────────── */}
+          {/* ── 2. Content Body (PortableText / Markdown + Callouts) ─────── */}
           <BlogPostContent post={post} />
 
-          {/* ── 3. Post Navigation (Prev / Next) ───────────────────────────── */}
+          {/* ── 3. Author Spotlight / Bio ─────────────────────────────────── */}
+          <BlogAuthorBio
+            author={post.author}
+            authorRole={post.authorRole}
+            authorAvatar={post.authorAvatar}
+            authorBio={post.authorBio}
+            authorLinkedin={post.authorLinkedin}
+          />
+
+          {/* ── 4. Post Navigation (Prev / Next) ─────────────────────────── */}
           <BlogPostNav prevPost={prevPost} nextPost={nextPost} />
+
+          {/* ── 5. Recommended Reading / Related Articles ────────────────── */}
+          <BlogRelatedPosts
+            currentSlug={post.slug}
+            currentTags={post.tags}
+            posts={allPosts}
+          />
         </article>
       </div>
 
-      {/* ── 4. Subscribe CTA ──────────────────────────────────────────────── */}
+      {/* ── 6. Subscribe CTA ──────────────────────────────────────────────── */}
       <SubscribeCTA
         bgImage={IMG_AUDIO_EQ}
         title="Enjoyed This Article?"

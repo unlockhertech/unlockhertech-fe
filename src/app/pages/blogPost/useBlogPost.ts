@@ -12,6 +12,7 @@ export interface AdjacentPost {
 export function useBlogPost() {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
   const [prevPost, setPrevPost] = useState<AdjacentPost | null>(null);
   const [nextPost, setNextPost] = useState<AdjacentPost | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ export function useBlogPost() {
         }
 
         const postList = await getAllBlogPosts();
+        setAllPosts(postList);
         const currentIndex = postList.findIndex((p) => p.slug === slug);
 
         setPost(postData);
@@ -68,6 +70,7 @@ export function useBlogPost() {
   return {
     slug,
     post,
+    allPosts,
     prevPost,
     nextPost,
     loading,

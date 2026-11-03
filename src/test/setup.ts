@@ -70,6 +70,7 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
 
 vi.mock('../app/utils/sanity', () => ({
   getAllBlogPosts: vi.fn(() => Promise.resolve([])),
+  getBlogPostBySlug: vi.fn(() => Promise.resolve(null)),
   getAllExternalEvents: vi.fn(() => Promise.resolve([])),
   getAllResources: vi.fn(() => Promise.resolve([])),
   sanityClient: { fetch: vi.fn(() => Promise.resolve([])) },
