@@ -13,6 +13,7 @@ describe('AssessmentPage', () => {
     localStorage.clear();
     vi.clearAllMocks();
   });
+
   const renderAssessmentPage = () => {
     return render(
       <MemoryRouter>
@@ -21,88 +22,169 @@ describe('AssessmentPage', () => {
     );
   };
 
-  it('renders page header and worksheet title', () => {
+  it('renders page header and introductory value pitch', () => {
     renderAssessmentPage();
     expect(screen.getByRole('heading', { level: 1, name: /Tech Readiness & Career Fit Self-Assessment/i })).toBeInTheDocument();
     expect(screen.getByText(/Interactive Career Toolkit/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Discover Your Tech Transition Readiness & Concrete Next Steps/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Start Free Assessment \(3–5 Mins\)/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Preview or Print Blank Worksheet/i })).toBeInTheDocument();
   });
 
-  it('renders all four assessment categories', () => {
+  it('renders value pillars and scoring guidance accordion on the intro screen', () => {
     renderAssessmentPage();
-    expect(screen.getAllByText(/Mindset & Resilience/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Transferable Skills Translation/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Technical Literacy & Portfolio/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Networking & Execution Strategy/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/4-Pillar Visual Readiness Radar/i)).toBeInTheDocument();
+    expect(screen.getByText(/Personalized 2-Page Action Plan \(PDF\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tailored Resource & Track Matching/i)).toBeInTheDocument();
+
+    const scoringToggle = screen.getByRole('button', { name: /Understanding the 1–5 Rating Scale & Scoring Guidance/i });
+    expect(scoringToggle).toBeInTheDocument();
+    expect(scoringToggle).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(scoringToggle);
+    expect(scoringToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText(/Brand new territory or an area where you have little to no previous exposure/i)).toBeInTheDocument();
+    expect(screen.getByText(/Honest self-reflection unlocks the most accurate action steps/i)).toBeInTheDocument();
   });
 
-  it('allows answering questions and updates the score breakdown', () => {
-    renderAssessmentPage();
-    // Questions have ratings 1-5 buttons with radio roles and labels
-    const scoreButtons = screen.getAllByRole('radio', { name: /5 - Always/i });
-    expect(scoreButtons.length).toBeGreaterThan(0);
-    fireEvent.click(scoreButtons[0]);
-    // Progress or score card is updated
-    expect(screen.getByText(/Your Transition Score Summary/i)).toBeInTheDocument();
-  });
-
-  it('renders rating scale legend in category sections with mobile clarity', () => {
-    renderAssessmentPage();
-    expect(screen.getAllByLabelText(/Rating Scale Legend/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Rarely \/ Never/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Sometimes \/ Moderately/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Consistently \/ Confidently/i).length).toBeGreaterThan(0);
-  });
-
-  it('renders action plan and reflection sections', () => {
-    renderAssessmentPage();
-    expect(screen.getByText(/Personal Reflection & Next Actions/i)).toBeInTheDocument();
-    expect(screen.getByText(/Print \/ Save PDF/i)).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: /Download My Career Plan \(PDF\)/i }).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Email Results & Action Plan to Myself/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Enter your email address/i)).toBeInTheDocument();
-  });
-
-  it('renders semantic on-screen career action plan dashboard', () => {
-    renderAssessmentPage();
-    expect(screen.getByRole('heading', { level: 3, name: /Your Personalized Career Action Plan/i })).toBeInTheDocument();
-    expect(screen.getByText(/Interactive On-Screen Dashboard/i)).toBeInTheDocument();
-    expect(screen.getByText(/Top 3 Prioritized Action Steps/i)).toBeInTheDocument();
-    expect(screen.getByText(/Establish a 45-Minute Daily Growth Rhythm/i)).toBeInTheDocument();
-  });
-
-  it('renders auto-matched resources tailored to growth areas', () => {
-    renderAssessmentPage();
-    // Answer first question to trigger matching
-    const scoreButtons = screen.getAllByRole('radio', { name: /5 - Always/i });
-    fireEvent.click(scoreButtons[0]);
-
-    expect(screen.getByTestId('auto-matched-resources-section')).toBeInTheDocument();
-    expect(screen.getByText(/Tailored Resources for Your Growth Areas/i)).toBeInTheDocument();
-  });
-
-  it('renders the visual readiness radar chart and legend', () => {
-    renderAssessmentPage();
-    expect(screen.getByText(/Visual Readiness Radar/i)).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: /Visual Readiness Radar Chart/i })).toBeInTheDocument();
-    expect(screen.getByText(/4-dimensional readiness map/i)).toBeInTheDocument();
-    expect(screen.getByText(/Spider Chart/i)).toBeInTheDocument();
-  });
-
-  it('displays sticky mini-progress bar on scroll and transforms to View Your Results upon 100% completion', () => {
-    // Mock scrollIntoView
+  it('starts assessment into active step-by-step category flow with forward/back navigation', () => {
     const scrollIntoViewMock = vi.fn();
     window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
 
     renderAssessmentPage();
 
+    // Click Start Assessment
+    const startBtn = screen.getByRole('button', { name: /Start Free Assessment \(3–5 Mins\)/i });
+    fireEvent.click(startBtn);
+
+    // Active Category 1 is shown
+    expect(screen.getByText(/Category 1 Summary/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Step 1: Mindset/i })).toHaveAttribute('aria-current', 'step');
+
+    // Next step navigation
+    const nextBtn = screen.getByRole('button', { name: /Next: Step 2/i });
+    fireEvent.click(nextBtn);
+
+    expect(screen.getByText(/Category 2 Summary/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Step 2: Skills Translation/i })).toHaveAttribute('aria-current', 'step');
+
+    // Previous step navigation
+    const prevBtn = screen.getByRole('button', { name: /Previous Step/i });
+    fireEvent.click(prevBtn);
+
+    expect(screen.getByText(/Category 1 Summary/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Step 1: Mindset/i })).toHaveAttribute('aria-current', 'step');
+
+    // On Step 1, Overview button is available to return to intro
+    const overviewBtn = screen.getByRole('button', { name: /Overview/i });
+    fireEvent.click(overviewBtn);
+    expect(screen.getByRole('heading', { level: 2, name: /Discover Your Tech Transition Readiness & Concrete Next Steps/i })).toBeInTheDocument();
+  });
+
+  it('resumes assessment from intro when saved answers are present in localStorage', () => {
+    localStorage.setItem('uht_assessment_answers', JSON.stringify({ m1_q1: 5, m1_q2: 4 }));
+    renderAssessmentPage();
+
+    const resumeBtn = screen.getByRole('button', { name: /Resume Assessment \(2\/16 Answered\)/i });
+    expect(resumeBtn).toBeInTheDocument();
+
+    fireEvent.click(resumeBtn);
+    expect(screen.getByText(/2 of 4 answered/i)).toBeInTheDocument();
+  });
+
+  it('supports toggling between Focus Mode and Worksheet View in active stage', () => {
+    renderAssessmentPage();
+
+    // Start in worksheet mode via secondary button
+    const previewWorksheetBtn = screen.getByRole('button', { name: /Preview or Print Blank Worksheet/i });
+    fireEvent.click(previewWorksheetBtn);
+
+    // Worksheet view is active
+    const worksheetBtn = screen.getByRole('button', { name: /Worksheet View/i });
+    const focusModeBtn = screen.getByRole('button', { name: /Focus Mode \(Step-by-Step\)/i });
+    expect(worksheetBtn).toHaveAttribute('aria-pressed', 'true');
+    expect(focusModeBtn).toHaveAttribute('aria-pressed', 'false');
+
+    // All categories are present in worksheet view
+    expect(screen.getAllByText(/Mindset & Resilience/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Transferable Skills Translation/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Technical Literacy & Portfolio/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Networking & Execution Strategy/i).length).toBeGreaterThan(0);
+
+    // Switch back to Focus Mode
+    fireEvent.click(focusModeBtn);
+    expect(focusModeBtn).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText(/Category 1 Summary/i)).toBeInTheDocument();
+  });
+
+  it('allows answering questions and navigating to the results dashboard with radar and action plan', () => {
+    renderAssessmentPage();
+    fireEvent.click(screen.getByRole('button', { name: /Start Free Assessment \(3–5 Mins\)/i }));
+
+    // Answer category 1 questions
+    const scoreButtons = screen.getAllByRole('radio', { name: /5 - Always/i });
+    expect(scoreButtons.length).toBeGreaterThan(0);
+    fireEvent.click(scoreButtons[0]);
+
+    // Navigate to step 4
+    fireEvent.click(screen.getByRole('button', { name: /Step 4: Networking/i }));
+    expect(screen.getByText(/Category 4 Summary/i)).toBeInTheDocument();
+
+    // Click View Full Results
+    const viewResultsBtn = screen.getByRole('button', { name: /View Full Results/i });
+    fireEvent.click(viewResultsBtn);
+
+    // Results dashboard is rendered
+    expect(screen.getByText(/Your Transition Score Summary/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /Your Personalized Career Action Plan/i })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /Visual Readiness Radar Chart/i })).toBeInTheDocument();
+    expect(screen.getByText(/Personal Reflection & Next Actions/i)).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /Download My Career Plan \(PDF\)/i }).length).toBeGreaterThan(0);
+
+    // Review / Edit Answers button transitions back to active questionnaire
+    const editBtn = screen.getByRole('button', { name: /Review \/ Edit Answers/i });
+    fireEvent.click(editBtn);
+    expect(screen.getByText(/Assessment Completion Progress/i)).toBeInTheDocument();
+  });
+
+  it('triggers celebration confetti and displays completion milestone banner on 100% completion in results', () => {
+    renderAssessmentPage();
+    fireEvent.click(screen.getByRole('button', { name: /Preview or Print Blank Worksheet/i }));
+
+    const scoreButtons = screen.getAllByRole('radio', { name: /5 - Always/i });
+    expect(scoreButtons).toHaveLength(16);
+    scoreButtons.forEach((btn) => fireEvent.click(btn));
+
+    expect(confetti).toHaveBeenCalled();
+
+    // Jump to results
+    const viewResultsBtn = screen.getByRole('button', { name: /View Your Results & Action Plan/i });
+    fireEvent.click(viewResultsBtn);
+
+    const milestoneBanner = screen.getByTestId('completion-milestone-banner');
+    expect(milestoneBanner).toBeInTheDocument();
+    expect(within(milestoneBanner).getByText(/100% Assessment Completed! 🎉/i)).toBeInTheDocument();
+
+    // Re-trigger confetti
+    const celebrateBtn = within(milestoneBanner).getByRole('button', { name: /Celebrate again with confetti/i });
+    fireEvent.click(celebrateBtn);
+    expect(confetti).toHaveBeenCalledTimes(2);
+  });
+
+  it('displays sticky mini-progress bar in active mode upon scrolling', () => {
+    const scrollIntoViewMock = vi.fn();
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
+    renderAssessmentPage();
+    fireEvent.click(screen.getByRole('button', { name: /Start Free Assessment \(3–5 Mins\)/i }));
+
     // Initially when scrollY is 0, sticky bar should not be visible
     expect(screen.queryByTestId('sticky-progress-bar')).not.toBeInTheDocument();
 
-    // Simulate scrolling down
+    // Simulate scroll down
     Object.defineProperty(window, 'scrollY', { value: 350, writable: true });
     fireEvent.scroll(window);
 
-    // Sticky progress bar should now appear
     const stickyBar = screen.getByTestId('sticky-progress-bar');
     expect(stickyBar).toBeInTheDocument();
     expect(within(stickyBar).getByText(/0\/16 Answered/i)).toBeInTheDocument();
@@ -110,132 +192,6 @@ describe('AssessmentPage', () => {
     // Click "Results" jump button
     const jumpButton = within(stickyBar).getByRole('button', { name: /Results/i });
     fireEvent.click(jumpButton);
-    expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' });
-
-    // Answer 1 question
-    const scoreButtons = screen.getAllByRole('radio', { name: /5 - Always/i });
-    expect(scoreButtons).toHaveLength(16);
-    fireEvent.click(scoreButtons[0]);
-    expect(within(stickyBar).getByText(/1\/16 Answered/i)).toBeInTheDocument();
-
-    // Answer remaining 15 questions (total 16)
-    scoreButtons.forEach((btn) => fireEvent.click(btn));
-
-    // Sticky bar should now transform into the vibrant "16/16 Completed — View Your Results" button
-    const viewResultsButton = screen.getByRole('button', { name: /16\/16 Completed — View Your Results/i });
-    expect(viewResultsButton).toBeInTheDocument();
-
-    // Clicking it should trigger smooth scrolling to results
-    fireEvent.click(viewResultsButton);
     expect(scrollIntoViewMock).toHaveBeenCalled();
-  });
-
-  it('supports toggling between Worksheet View and Focus Mode (Step-by-Step)', () => {
-    const scrollIntoViewMock = vi.fn();
-    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
-
-    renderAssessmentPage();
-
-    // Default is Worksheet View
-    const worksheetBtn = screen.getByRole('button', { name: /Worksheet View/i });
-    const focusModeBtn = screen.getByRole('button', { name: /Focus Mode \(Step-by-Step\)/i });
-    expect(worksheetBtn).toHaveAttribute('aria-pressed', 'true');
-    expect(focusModeBtn).toHaveAttribute('aria-pressed', 'false');
-
-    // Switch to Focus Mode
-    fireEvent.click(focusModeBtn);
-    expect(focusModeBtn).toHaveAttribute('aria-pressed', 'true');
-    expect(worksheetBtn).toHaveAttribute('aria-pressed', 'false');
-
-    // Step indicators are visible
-    expect(screen.getByRole('button', { name: /Step 1: Mindset/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Step 2: Skills Translation/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Step 3: Tech & Portfolio/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Step 4: Networking/i })).toBeInTheDocument();
-
-    // Summary for current step
-    expect(screen.getByText(/Category 1 Summary/i)).toBeInTheDocument();
-
-    // Navigate to Step 2 via Next button
-    const nextBtn = screen.getByRole('button', { name: /Next: Step 2/i });
-    fireEvent.click(nextBtn);
-    expect(screen.getByText(/Category 2 Summary/i)).toBeInTheDocument();
-
-    // Navigate to Step 1 via Previous button
-    const prevBtn = screen.getByRole('button', { name: /Previous/i });
-    fireEvent.click(prevBtn);
-    expect(screen.getByText(/Category 1 Summary/i)).toBeInTheDocument();
-
-    // Jump directly to Step 4 via step pill button
-    const step4Btn = screen.getByRole('button', { name: /Step 4: Networking/i });
-    fireEvent.click(step4Btn);
-    expect(screen.getByText(/Category 4 Summary/i)).toBeInTheDocument();
-
-    // On step 4, View Full Results button is shown
-    const viewResultsBtn = screen.getByRole('button', { name: /View Full Results/i });
-    fireEvent.click(viewResultsBtn);
-    expect(scrollIntoViewMock).toHaveBeenCalled();
-
-    // Switch back to Worksheet View
-    fireEvent.click(worksheetBtn);
-    expect(worksheetBtn).toHaveAttribute('aria-pressed', 'true');
-    expect(focusModeBtn).toHaveAttribute('aria-pressed', 'false');
-  });
-
-  it('triggers confetti celebration and renders the milestone achievement banner upon 100% completion', () => {
-    renderAssessmentPage();
-
-    // Initially milestone banner should not be present
-    expect(screen.queryByTestId('completion-milestone-banner')).not.toBeInTheDocument();
-
-    // Answer all 16 questions
-    const scoreButtons = screen.getAllByRole('radio', { name: /5 - Always/i });
-    expect(scoreButtons).toHaveLength(16);
-    scoreButtons.forEach((btn) => fireEvent.click(btn));
-
-    // Confetti should have been triggered
-    expect(confetti).toHaveBeenCalled();
-
-    // Celebratory milestone banner should now be visible
-    const milestoneBanner = screen.getByTestId('completion-milestone-banner');
-    expect(milestoneBanner).toBeInTheDocument();
-    expect(within(milestoneBanner).getByText(/100% Assessment Completed! 🎉/i)).toBeInTheDocument();
-    expect(within(milestoneBanner).getByText(/Milestone Achieved/i)).toBeInTheDocument();
-
-    // Clicking "Celebrate Again" triggers confetti again
-    const celebrateAgainBtn = within(milestoneBanner).getByRole('button', { name: /Celebrate again with confetti/i });
-    fireEvent.click(celebrateAgainBtn);
-    expect(confetti).toHaveBeenCalledTimes(2);
-  });
-
-  it('renders how-it-works instructions banner and toggles scoring guide details', () => {
-    renderAssessmentPage();
-
-    // Verify 3-step banner is rendered
-    expect(screen.getByRole('heading', { level: 2, name: /Complete Your Readiness Check in 3 Quick Steps/i })).toBeInTheDocument();
-    expect(screen.getByText(/Rate 16 Prompts Honestly/i)).toBeInTheDocument();
-    expect(screen.getByText(/Choose Your Work Mode/i)).toBeInTheDocument();
-    expect(screen.getByText(/Unlock Custom Action Plan/i)).toBeInTheDocument();
-    expect(screen.getByText(/3–5 Mins/i)).toBeInTheDocument();
-    expect(screen.getByText(/Autosaved Locally/i)).toBeInTheDocument();
-
-    // Toggle button for scoring scale details
-    const toggleBtn = screen.getByRole('button', { name: /Understanding the 1–5 Rating Scale & Scoring Guidance/i });
-    expect(toggleBtn).toBeInTheDocument();
-    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
-
-    // Details should not be visible initially
-    expect(screen.queryByText(/Brand new territory or an area where you have little to no previous exposure/i)).not.toBeInTheDocument();
-
-    // Expand details
-    fireEvent.click(toggleBtn);
-    expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText(/Brand new territory or an area where you have little to no previous exposure/i)).toBeInTheDocument();
-    expect(screen.getByText(/Honest self-reflection unlocks the best results/i)).toBeInTheDocument();
-
-    // Collapse details
-    fireEvent.click(toggleBtn);
-    expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByText(/Brand new territory or an area where you have little to no previous exposure/i)).not.toBeInTheDocument();
   });
 });

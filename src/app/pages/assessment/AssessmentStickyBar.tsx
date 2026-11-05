@@ -29,7 +29,7 @@ export function AssessmentStickyBar({
           <button
             type="button"
             onClick={onScrollToResults}
-            className="w-full py-2.5 px-4 rounded-xl bg-linear-to-r from-brand-coral via-pink-600 to-brand-coral hover:opacity-95 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-coral/30 cursor-pointer transition-transform motion-safe:active:scale-98"
+            className="w-full py-2.5 px-4 rounded-xl bg-brand-coral hover:bg-brand-coral/90 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-brand-coral/30 cursor-pointer transition-transform motion-safe:active:scale-98"
           >
             <HiSparkles className="w-5 h-5 text-brand-yellow shrink-0 motion-safe:animate-pulse" />
             <span>16/16 Completed — View Your Results</span>

@@ -34,6 +34,7 @@ interface AssessmentResultsProps {
   reflectionNotes: string;
   onNotesChange: (notes: string) => void;
   onTriggerConfetti: () => void;
+  onEditResponses?: () => void;
 }
 
 export function AssessmentResults({
@@ -45,6 +46,7 @@ export function AssessmentResults({
   reflectionNotes,
   onNotesChange,
   onTriggerConfetti,
+  onEditResponses,
 }: Readonly<AssessmentResultsProps>) {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const isComplete = totalAnswered === TOTAL_QUESTIONS_COUNT;
@@ -180,10 +182,20 @@ export function AssessmentResults({
               </>
             )}
           </button>
+          {onEditResponses && (
+            <button
+              type="button"
+              onClick={onEditResponses}
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-sm transition-all border border-stone-200 cursor-pointer"
+            >
+              <HiArrowPath className="w-4 h-4 text-stone-500" />
+              <span>Review / Edit Answers</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={() => window.print()}
-            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-sm transition-all border border-stone-200 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-white hover:bg-stone-50 text-stone-700 font-bold text-sm transition-all border border-stone-200 cursor-pointer"
           >
             <HiPrinter className="w-4 h-4 text-stone-500" />
             <span>Print Worksheet</span>
