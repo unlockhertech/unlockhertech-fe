@@ -130,10 +130,4 @@
     Pragma = "no-cache"
     Expires = "0"
 
-[[plugins]]
-  package = "netlify-plugin-inline-critical-css"
-
-  [plugins.inputs]
-    # Restrict to only valid HTML entry points
-    fileFilter = ["index.html"]
 
