@@ -76,7 +76,7 @@ Unlock Her Tech is a production-grade web application offering:
 ## Getting Started
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/) (version `22.13.1` or higher recommended)
+- [Node.js](https://nodejs.org/) (version `20.0.0` or higher recommended)
 - npm (bundled with Node.js)
 
 ### Installation
