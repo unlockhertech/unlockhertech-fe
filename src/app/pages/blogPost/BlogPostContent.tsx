@@ -1,5 +1,7 @@
 import React, { type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import type { Components } from "react-markdown";
 import { PortableText, type PortableTextComponents, type PortableTextProps } from "@portabletext/react";
 import { BlogCallout } from "../../components/blog/BlogCallout";
@@ -171,11 +173,16 @@ const portableTextComponents: PortableTextComponents = {
         {children}
       </a>
     ),
+    "strike-through": ({ children }) => (
+      <del className="line-through opacity-80">{children}</del>
+    ),
   },
 };
 
 const markdownComponents: Components = {
   blockquote: ({ children }) => renderMarkdownBlockquote(children),
+  del: ({ children }) => <del className="line-through opacity-80">{children}</del>,
+  s: ({ children }) => <s className="line-through opacity-80">{children}</s>,
   img: ({ src, alt, title }) => (
     <BlogCaptionedImage src={src || ""} alt={alt} caption={title} />
   ),
@@ -204,7 +211,10 @@ export function BlogPostContent({ post }: Readonly<BlogPostContentProps>) {
           components={portableTextComponents}
         />
       ) : (
-        <ReactMarkdown components={markdownComponents}>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkBreaks]}
+          components={markdownComponents}
+        >
           {post.content || ""}
         </ReactMarkdown>
       )}

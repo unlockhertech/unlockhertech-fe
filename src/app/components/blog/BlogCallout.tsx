@@ -1,5 +1,9 @@
-import type { ReactNode } from "react";
+import { isValidElement, type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import {
   HiLightBulb,
   HiCheckCircle,
@@ -13,7 +17,7 @@ import type { CalloutVariant } from "../../types";
 export interface BlogCalloutProps {
   variant?: CalloutVariant;
   title?: string;
-  content?: string | ReactNode;
+  content?: string | PortableTextBlock[] | ReactNode;
   points?: string[];
   referenceText?: string;
   referenceUrl?: string;
@@ -109,11 +113,23 @@ function getCalloutTheme(variant: CalloutVariant = "didYouKnow"): CalloutTheme {
   }
 }
 
+function normalizeHtmlTags(text: string): string {
+  return text
+    .replace(/<(?:del|s|strike)>([\s\S]*?)<\/(?:del|s|strike)>/gi, "~~$1~~")
+    .replace(/<(?:strong|b)>([\s\S]*?)<\/(?:strong|b)>/gi, "**$1**")
+    .replace(/<(?:em|i)>([\s\S]*?)<\/(?:em|i)>/gi, "*$1*")
+    .replace(/<br\s*\/?>/gi, "\n");
+}
+
 function renderFormattedMarkdown(text: string, linkClass: string) {
+  const normalized = normalizeHtmlTags(text);
   return (
     <ReactMarkdown
+      remarkPlugins={[remarkGfm, remarkBreaks]}
       components={{
-        p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
+        p: ({ children }) => (
+          <p className="mb-2 last:mb-0 leading-relaxed whitespace-pre-line">{children}</p>
+        ),
         ul: ({ children }) => (
           <ul className="space-y-1.5 my-2.5 ml-4 list-disc marker:opacity-75">{children}</ul>
         ),
@@ -133,11 +149,104 @@ function renderFormattedMarkdown(text: string, linkClass: string) {
         ),
         strong: ({ children }) => <strong className="font-bold">{children}</strong>,
         em: ({ children }) => <em className="italic">{children}</em>,
+        del: ({ children }) => <del className="line-through opacity-80">{children}</del>,
+        s: ({ children }) => <s className="line-through opacity-80">{children}</s>,
+        code: ({ children }) => (
+          <code className="font-mono text-xs px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10">
+            {children}
+          </code>
+        ),
       }}
     >
-      {text}
+      {normalized}
     </ReactMarkdown>
   );
+}
+
+function createCalloutPortableTextComponents(linkClass: string): PortableTextComponents {
+  return {
+    block: {
+      normal: ({ children }) => (
+        <p className="mb-2 last:mb-0 leading-relaxed whitespace-pre-line">{children}</p>
+      ),
+    },
+    marks: {
+      strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+      em: ({ children }) => <em className="italic">{children}</em>,
+      "strike-through": ({ children }) => (
+        <del className="line-through opacity-80">{children}</del>
+      ),
+      underline: ({ children }) => <u className="underline underline-offset-2">{children}</u>,
+      code: ({ children }) => (
+        <code className="font-mono text-xs px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10">
+          {children}
+        </code>
+      ),
+      link: ({ value, children }) => (
+        <a
+          href={value?.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`font-semibold underline underline-offset-2 ${linkClass}`}
+        >
+          {children}
+        </a>
+      ),
+    },
+    list: {
+      bullet: ({ children }) => (
+        <ul className="space-y-1.5 my-2.5 ml-4 list-disc marker:opacity-75">{children}</ul>
+      ),
+      number: ({ children }) => (
+        <ol className="space-y-1.5 my-2.5 ml-4 list-decimal marker:opacity-75">{children}</ol>
+      ),
+    },
+    listItem: {
+      bullet: ({ children }) => <li className="leading-relaxed">{children}</li>,
+      number: ({ children }) => <li className="leading-relaxed">{children}</li>,
+    },
+  };
+}
+
+function isPortableTextBlocks(value: unknown): value is PortableTextBlock[] {
+  if (!Array.isArray(value) || value.length === 0) return false;
+  const first = value[0];
+  if (isValidElement(first)) return false;
+  return typeof first === "object" && first !== null && ("_type" in first || "_key" in first);
+}
+
+function renderCalloutBody(
+  bodyContent: string | PortableTextBlock[] | ReactNode,
+  theme: CalloutTheme
+) {
+  if (isPortableTextBlocks(bodyContent)) {
+    return (
+      <div className={`text-sm md:text-base leading-relaxed font-normal ${theme.textClass}`}>
+        <PortableText
+          value={bodyContent}
+          components={createCalloutPortableTextComponents(theme.linkClass)}
+        />
+      </div>
+    );
+  }
+
+  if (typeof bodyContent === "string") {
+    return (
+      <div className={`text-sm md:text-base leading-relaxed font-normal ${theme.textClass}`}>
+        {renderFormattedMarkdown(bodyContent, theme.linkClass)}
+      </div>
+    );
+  }
+
+  if (bodyContent) {
+    return (
+      <div className={`text-sm md:text-base leading-relaxed font-normal ${theme.textClass}`}>
+        {bodyContent}
+      </div>
+    );
+  }
+
+  return null;
 }
 
 export function BlogCallout({
@@ -174,17 +283,7 @@ export function BlogCallout({
             {headingText}
           </h4>
 
-          {typeof bodyContent === "string" && (
-            <div className={`text-sm md:text-base leading-relaxed font-normal ${theme.textClass}`}>
-              {renderFormattedMarkdown(bodyContent, theme.linkClass)}
-            </div>
-          )}
-
-          {typeof bodyContent !== "string" && bodyContent && (
-            <div className={`text-sm md:text-base leading-relaxed font-normal ${theme.textClass}`}>
-              {bodyContent}
-            </div>
-          )}
+          {renderCalloutBody(bodyContent, theme)}
 
           {hasPoints && (
             <ul className="space-y-2 mt-3 mb-1">

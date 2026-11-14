@@ -49,6 +49,8 @@ function extractTextFromBody(body?: unknown[]): string {
       }
       if (typeof b.content === "string") {
         text += " " + b.content;
+      } else if (Array.isArray(b.content)) {
+        text += " " + extractTextFromBody(b.content);
       }
       if (Array.isArray(b.points)) {
         text += " " + b.points.filter((p) => typeof p === "string").join(" ");

@@ -128,10 +128,47 @@ export const postSchema = defineType({
             }),
             defineField({
               name: 'content',
-              title: 'Callout Content / Markdown',
-              type: 'text',
-              rows: 3,
-              description: 'Body text or Markdown (supports - or * bullet points, and [links](url)).',
+              title: 'Callout Content',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'block',
+                  styles: [{ title: 'Normal', value: 'normal' }],
+                  lists: [
+                    { title: 'Bullet', value: 'bullet' },
+                    { title: 'Numbered', value: 'number' },
+                  ],
+                  marks: {
+                    decorators: [
+                      { title: 'Bold', value: 'strong' },
+                      { title: 'Italic', value: 'em' },
+                      { title: 'Strikethrough', value: 'strike-through' },
+                      { title: 'Underline', value: 'underline' },
+                      { title: 'Code', value: 'code' },
+                    ],
+                    annotations: [
+                      {
+                        name: 'link',
+                        type: 'object',
+                        title: 'Link',
+                        fields: [
+                          {
+                            title: 'URL',
+                            name: 'href',
+                            type: 'url',
+                            validation: (Rule) =>
+                              Rule.uri({
+                                scheme: ['http', 'https', 'mailto', 'tel'],
+                              }),
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                }),
+              ],
+              description:
+                'Formatted body text for the callout. Supports bold, italics, strikethrough, new lines, links, and bullet points. Copying and pasting formatted text retains formatting.',
             }),
             defineField({
               name: 'points',
@@ -168,7 +205,22 @@ export const postSchema = defineType({
                 tip: '📌 Pro Tip',
                 highlight: '✨ Highlight',
               };
-              let previewSubtitle = content ? content.slice(0, 60) + '…' : '';
+              let previewSubtitle = '';
+              if (typeof content === 'string') {
+                previewSubtitle = content.slice(0, 60) + '…';
+              } else if (Array.isArray(content) && content.length > 0) {
+                const firstBlockText = content
+                  .map((block: { children?: Array<{ text?: string }> }) =>
+                    Array.isArray(block?.children)
+                      ? block.children.map((child) => child?.text || '').join('')
+                      : ''
+                  )
+                  .filter(Boolean)
+                  .join(' ');
+                if (firstBlockText) {
+                  previewSubtitle = firstBlockText.slice(0, 60) + '…';
+                }
+              }
               if (!previewSubtitle && Array.isArray(points) && points.length > 0) {
                 previewSubtitle = `• ${points[0]}${points.length > 1 ? ` (+${points.length - 1} more)` : ''}`;
               }

@@ -277,6 +277,106 @@ describe("Editorial Callout & Discovery Component Unit Tests", () => {
     expect(screen.getByText("Key Highlight")).toBeInTheDocument();
   });
 
+  it("renders BlogCallout with PortableText array supporting bold, italics, strikethrough, underline, and newlines", () => {
+    render(
+      <BlogCallout
+        variant="tip"
+        title="Rich Formatting Callout"
+        content={[
+          {
+            _key: "b1",
+            _type: "block",
+            style: "normal",
+            children: [
+              { _key: "s1", _type: "span", text: "Leading statement with " },
+              { _key: "s2", _type: "span", text: "bold emphasis", marks: ["strong"] },
+              { _key: "s3", _type: "span", text: ", " },
+              { _key: "s4", _type: "span", text: "italic nuance", marks: ["em"] },
+              { _key: "s5", _type: "span", text: ", and " },
+              { _key: "s6", _type: "span", text: "deprecated strikethrough", marks: ["strike-through"] },
+              { _key: "s7", _type: "span", text: "." },
+            ],
+          },
+          {
+            _key: "b2",
+            _type: "block",
+            style: "normal",
+            children: [
+              { _key: "s8", _type: "span", text: "New line paragraph with " },
+              { _key: "s9", _type: "span", text: "underlined link text", marks: ["underline"] },
+            ],
+          },
+        ]}
+      />
+    );
+
+    expect(screen.getByText("Rich Formatting Callout")).toBeInTheDocument();
+
+    const boldEl = screen.getByText("bold emphasis");
+    expect(boldEl.tagName).toBe("STRONG");
+    expect(boldEl).toHaveClass("font-bold");
+
+    const italicEl = screen.getByText("italic nuance");
+    expect(italicEl.tagName).toBe("EM");
+    expect(italicEl).toHaveClass("italic");
+
+    const strikeEl = screen.getByText("deprecated strikethrough");
+    expect(strikeEl.tagName).toBe("DEL");
+    expect(strikeEl).toHaveClass("line-through");
+
+    const underlineEl = screen.getByText("underlined link text");
+    expect(underlineEl.tagName).toBe("U");
+    expect(underlineEl).toHaveClass("underline");
+
+    expect(screen.getByText(/New line paragraph with/i)).toBeInTheDocument();
+  });
+
+  it("renders BlogCallout with markdown text retaining bold, italics, strikethrough, and newlines", () => {
+    render(
+      <BlogCallout
+        variant="keyTakeaway"
+        title="Markdown Callout"
+        content={"First line notice\nSecond line with **critical bold**, *vital italics*, and ~~outdated strike~~"}
+      />
+    );
+
+    expect(screen.getByText("Markdown Callout")).toBeInTheDocument();
+
+    const boldEl = screen.getByText("critical bold");
+    expect(boldEl.tagName).toBe("STRONG");
+
+    const italicEl = screen.getByText("vital italics");
+    expect(italicEl.tagName).toBe("EM");
+
+    const strikeEl = screen.getByText("outdated strike");
+    expect(strikeEl.tagName).toBe("DEL");
+    expect(strikeEl).toHaveClass("line-through");
+
+    expect(screen.getByText(/First line notice/i)).toBeInTheDocument();
+  });
+
+  it("normalizes pasted HTML tags in callout string retaining formatting", () => {
+    render(
+      <BlogCallout
+        variant="didYouKnow"
+        title="Pasted Text Callout"
+        content={"Pasted from web with <b>bold text</b>, <i>italic text</i>, and <del>strikethrough text</del><br>Next line content"}
+      />
+    );
+
+    const boldEl = screen.getByText("bold text");
+    expect(boldEl.tagName).toBe("STRONG");
+
+    const italicEl = screen.getByText("italic text");
+    expect(italicEl.tagName).toBe("EM");
+
+    const strikeEl = screen.getByText("strikethrough text");
+    expect(strikeEl.tagName).toBe("DEL");
+    expect(strikeEl).toHaveClass("line-through");
+
+    expect(screen.getByText(/Next line content/i)).toBeInTheDocument();
+  });
+
   it("renders BlogPullQuote with decorative quote and attribution", () => {
     render(
       <BlogPullQuote

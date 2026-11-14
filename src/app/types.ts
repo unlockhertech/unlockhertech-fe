@@ -1,4 +1,5 @@
 import type { ElementType } from "react";
+import type { PortableTextBlock } from "@portabletext/types";
 
 export interface Episode {
   id: number;
@@ -42,7 +43,7 @@ export interface BlogPostCallout {
   _type?: "callout";
   variant: CalloutVariant;
   title?: string;
-  content?: string;
+  content?: string | PortableTextBlock[];
   points?: string[];
   referenceText?: string;
   referenceUrl?: string;
