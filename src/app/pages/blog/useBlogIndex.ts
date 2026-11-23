@@ -38,6 +38,7 @@ export function useBlogIndex() {
       const matchesSearch =
         !q ||
         post.title.toLowerCase().includes(q) ||
+        (post.excerpt?.toLowerCase().includes(q)) ||
         (post.content?.toLowerCase().includes(q)) ||
         (post.author?.toLowerCase().includes(q));
       return matchesTag && matchesSearch;

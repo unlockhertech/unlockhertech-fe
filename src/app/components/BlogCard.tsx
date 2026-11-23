@@ -2,12 +2,15 @@ import { Link } from "react-router";
 import { HiArrowRight, HiOutlineClock } from "react-icons/hi2";
 import type { BlogPost } from "../types";
 import { ImageWithFallback } from "./ImageWithFallback";
+import { getBlogPostExcerpt } from "../utils/blogUtils";
 
 interface BlogCardProps {
   post: BlogPost;
 }
 
 export function BlogCard({ post }: Readonly<BlogCardProps>) {
+  const snippet = getBlogPostExcerpt(post, 160);
+
   return (
     <Link 
       to={`/blog/${post.slug}`}
@@ -23,11 +26,14 @@ export function BlogCard({ post }: Readonly<BlogCardProps>) {
           />
         </div>
       )}
-      <div className="p-8 flex flex-col h-full">
-        <div className="flex items-center justify-between mb-6">
+      <div className="p-6 sm:p-7 flex flex-col h-full">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            {post.tags?.slice(0, 2).map(tag => (
-              <span key={`tag-${tag}`} className="text-[10px] font-bold uppercase tracking-widest text-brand-coral bg-brand-coral/5 px-2.5 py-1 rounded-lg">
+            {post.tags?.slice(0, 2).map((tag) => (
+              <span
+                key={`tag-${tag}`}
+                className="text-[10px] font-bold uppercase tracking-widest text-brand-coral bg-brand-coral/5 px-2.5 py-1 rounded-lg"
+              >
                 {tag}
               </span>
             ))}
@@ -39,20 +45,26 @@ export function BlogCard({ post }: Readonly<BlogCardProps>) {
             </div>
           )}
         </div>
-        
-        <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-brand-coral transition-colors line-clamp-2">
+
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 group-hover:text-brand-coral transition-colors line-clamp-2">
           {post.title}
         </h3>
-        
-        <p className="text-gray-600 mb-8 line-clamp-3 leading-relaxed">
-          {post.content?.substring(0, 160).replace(/[#*`]/g, '')}...
-        </p>
-        
-        <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between">
+
+        {snippet && (
+          <p className="text-gray-600 mb-4 text-sm sm:text-base line-clamp-3 leading-relaxed">
+            {snippet}
+          </p>
+        )}
+
+        <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-sm font-bold text-gray-900">{post.author}</span>
             <span className="text-xs text-gray-500">
-              {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              {new Date(post.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
             </span>
           </div>
           <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-brand-coral group-hover:text-white transition-all">

@@ -10,9 +10,14 @@ import { BlogPostContent } from "./blogPost/BlogPostContent";
 import { BlogPostNav } from "./blogPost/BlogPostNav";
 import { BlogAuthorBio } from "../components/blog/BlogAuthorBio";
 import { BlogRelatedPosts } from "../components/blog/BlogRelatedPosts";
+import { getBlogPostExcerpt } from "../utils/blogUtils";
 
 export function BlogPostPage() {
   const { slug, post, allPosts, prevPost, nextPost, loading } = useBlogPost();
+
+  const description = useMemo(() => {
+    return post ? getBlogPostExcerpt(post, 160) : undefined;
+  }, [post]);
 
   const blogPostJsonLd = useMemo(() => {
     if (!post) return undefined;
@@ -20,7 +25,7 @@ export function BlogPostPage() {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": post.title,
-      "description": post.content?.substring(0, 160).replace(/[#*`]/g, ""),
+      "description": description,
       "image": post.imageUrl ? [post.imageUrl] : undefined,
       "datePublished": post.date,
       "author": {
@@ -44,11 +49,11 @@ export function BlogPostPage() {
             : `https://unlockhertech.com/blog/${slug}`),
       },
     };
-  }, [post, slug]);
+  }, [post, slug, description]);
 
   useMetaData(
     post?.title || "Blog Post",
-    post?.content?.substring(0, 160).replace(/[#*`]/g, ""),
+    description,
     post?.canonicalUrl,
     post
       ? {

@@ -79,6 +79,14 @@ export const postSchema = defineType({
       },
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Excerpt / Summary',
+      type: 'text',
+      rows: 3,
+      description:
+        'Short 1-2 sentence preview for blog cards and search. If left empty, a preview will be generated automatically from the article body.',
+    }),
+    defineField({
       name: 'body',
       title: 'Body (Rich Text)',
       type: 'array',

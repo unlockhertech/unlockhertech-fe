@@ -2,6 +2,9 @@ import {createClient} from "@sanity/client";
 import type {SanityImageSource} from "@sanity/image-url";
 import {createImageUrlBuilder} from "@sanity/image-url";
 import type {BlogPost, ExternalEvent, Resource} from "../types";
+import { extractTextFromBody, getBlogPostExcerpt } from "./blogUtils";
+
+export { extractTextFromBody, getBlogPostExcerpt };
 
 
 const getEnv = () => {
@@ -34,38 +37,6 @@ export function urlForOptimized(source: SanityImageSource, width = 800, quality 
 }
 
 
-function extractTextFromBody(body?: unknown[]): string {
-  if (!body || !Array.isArray(body)) return "";
-  let text = "";
-  for (const block of body) {
-    if (block && typeof block === "object") {
-      const b = block as Record<string, unknown>;
-      if (Array.isArray(b.children)) {
-        for (const child of b.children) {
-          if (child && typeof child === "object" && typeof (child as Record<string, unknown>).text === "string") {
-            text += " " + (child as Record<string, unknown>).text;
-          }
-        }
-      }
-      if (typeof b.content === "string") {
-        text += " " + b.content;
-      } else if (Array.isArray(b.content)) {
-        text += " " + extractTextFromBody(b.content);
-      }
-      if (Array.isArray(b.points)) {
-        text += " " + b.points.filter((p) => typeof p === "string").join(" ");
-      }
-      if (typeof b.referenceText === "string") {
-        text += " " + b.referenceText;
-      }
-      if (typeof b.quote === "string") {
-        text += " " + b.quote;
-      }
-    }
-  }
-  return text.trim();
-}
-
 function calculateReadingTime(content: string = "", body?: unknown[]): string {
   const wordsPerMinute = 225;
   const combined = `${content} ${extractTextFromBody(body)}`.trim();
@@ -95,15 +66,23 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       canonicalUrl,
       "slug": slug.current,
       "imageUrl": imageUrl.asset->url,
+      excerpt,
       content,
       body
     }`;
 
     const posts: BlogPost[] = await sanityClient.fetch(query);
-    return posts.map((post) => ({
-      ...post,
-      readingTime: calculateReadingTime(post.content || "", post.body),
-    }));
+    return posts.map((post) => {
+      const excerpt = getBlogPostExcerpt(post, 160);
+      const textFromBody = extractTextFromBody(post.body);
+      const effectiveContent = post.content || textFromBody;
+      return {
+        ...post,
+        content: effectiveContent,
+        excerpt,
+        readingTime: calculateReadingTime(effectiveContent, post.body),
+      };
+    });
   } catch (error) {
     console.warn("Could not fetch blog posts from Sanity, using fallback:", error);
     return [];
@@ -131,6 +110,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       canonicalUrl,
       "slug": slug.current,
       "imageUrl": imageUrl.asset->url,
+      excerpt,
       content,
       body
     }`;
@@ -138,9 +118,15 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     const post = await sanityClient.fetch(query, { slug });
     if (!post) return null;
 
+    const excerpt = getBlogPostExcerpt(post, 160);
+    const textFromBody = extractTextFromBody(post.body);
+    const effectiveContent = post.content || textFromBody;
+
     return {
       ...post,
-      readingTime: calculateReadingTime(post.content || "", post.body),
+      content: effectiveContent,
+      excerpt,
+      readingTime: calculateReadingTime(effectiveContent, post.body),
     };
   } catch (error) {
     console.warn(`Could not fetch blog post "${slug}" from Sanity:`, error);

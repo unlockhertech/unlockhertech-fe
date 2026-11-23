@@ -75,6 +75,7 @@ export interface BlogPost {
   tags: string[];
   canonicalUrl: string;
   slug: string;
+  excerpt?: string;
   content?: string;
   body?: unknown[];
   readingTime?: string;
